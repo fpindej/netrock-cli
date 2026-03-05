@@ -10,9 +10,18 @@
     "test": "pnpm -r run test",
     "lint": "pnpm -r run lint",
     "check": "pnpm -r run check",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "generate": "pnpm --filter @netrock/core build && tsx scripts/generate.ts"
   },
   "devDependencies": {
-    "prettier": "^3.8.0"
+    "@inquirer/prompts": "^8.3.0",
+    "@netrock/core": "workspace:*",
+    "prettier": "^3.8.0",
+    "tsx": "^4.21.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
