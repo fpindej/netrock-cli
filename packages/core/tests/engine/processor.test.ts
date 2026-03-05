@@ -99,6 +99,35 @@ describe('processTemplate', () => {
 		expect(result).toBe(input);
 	});
 
+	it('includes negated block when feature is disabled', () => {
+		const input = [
+			'// @feature !auth',
+			'class Foo : DbContext {}',
+			'// @end',
+			'// @feature auth',
+			'class Foo : IdentityDbContext {}',
+			'// @end'
+		].join('\n');
+
+		const coreOnly = new Set<FeatureId>(['core']);
+		const result = processTemplate(input, coreOnly);
+		expect(result).toBe('class Foo : DbContext {}');
+	});
+
+	it('excludes negated block when feature is enabled', () => {
+		const input = [
+			'// @feature !auth',
+			'class Foo : DbContext {}',
+			'// @end',
+			'// @feature auth',
+			'class Foo : IdentityDbContext {}',
+			'// @end'
+		].join('\n');
+
+		const result = processTemplate(input, enabled);
+		expect(result).toBe('class Foo : IdentityDbContext {}');
+	});
+
 	it('handles multiple feature blocks in the same file', () => {
 		const input = [
 			'// @feature audit',

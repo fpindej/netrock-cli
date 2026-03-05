@@ -34,7 +34,12 @@ export function processTemplate(content: string, enabledFeatures: Set<FeatureId>
 	for (const line of lines) {
 		const startMatch = matchStart(line);
 		if (startMatch) {
-			if (skipDepth > 0 || !enabledFeatures.has(startMatch as FeatureId)) {
+			const negated = startMatch.startsWith('!');
+			const featureId = (negated ? startMatch.slice(1) : startMatch) as FeatureId;
+			const isEnabled = enabledFeatures.has(featureId);
+			const shouldInclude = negated ? !isEnabled : isEnabled;
+
+			if (skipDepth > 0 || !shouldInclude) {
 				skipDepth++;
 			}
 			// Always strip the marker line
