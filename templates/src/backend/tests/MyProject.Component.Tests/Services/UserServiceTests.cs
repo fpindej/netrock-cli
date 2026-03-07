@@ -5,12 +5,20 @@ using MyProject.Application.Caching.Constants;
 using MyProject.Infrastructure.Caching.Services;
 using MyProject.Application.Cookies;
 using MyProject.Application.Cookies.Constants;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
+// @feature avatars
 using MyProject.Application.Features.Avatar;
+// @end
 using MyProject.Application.Features.Authentication.Dtos;
+// @feature avatars
 using MyProject.Application.Features.Avatar.Dtos;
+// @end
+// @feature file-storage
 using MyProject.Application.Features.FileStorage;
 using MyProject.Application.Features.FileStorage.Dtos;
+// @end
 using MyProject.Application.Identity;
 using MyProject.Application.Identity.Constants;
 using MyProject.Application.Identity.Dtos;
@@ -29,9 +37,15 @@ public class UserServiceTests : IDisposable
     private readonly IUserContext _userContext;
     private readonly HybridCache _hybridCache;
     private readonly ICookieService _cookieService;
+    // @feature audit
     private readonly IAuditService _auditService;
+    // @end
+    // @feature file-storage
     private readonly IFileStorageService _fileStorageService;
+    // @end
+    // @feature avatars
     private readonly IImageProcessingService _imageProcessingService;
+    // @end
     private readonly MyProjectDbContext _dbContext;
     private readonly UserService _sut;
 
@@ -44,14 +58,28 @@ public class UserServiceTests : IDisposable
         _userContext = Substitute.For<IUserContext>();
         _hybridCache = Substitute.ForPartsOf<NoOpHybridCache>();
         _cookieService = Substitute.For<ICookieService>();
+        // @feature audit
         _auditService = Substitute.For<IAuditService>();
+        // @end
+        // @feature file-storage
         _fileStorageService = Substitute.For<IFileStorageService>();
+        // @end
+        // @feature avatars
         _imageProcessingService = Substitute.For<IImageProcessingService>();
+        // @end
         _dbContext = TestDbContextFactory.Create();
 
         _sut = new UserService(
             _userManager, _roleManager, _userContext, _hybridCache, _dbContext, _cookieService,
-            _auditService, _fileStorageService, _imageProcessingService,
+            // @feature audit
+            _auditService,
+            // @end
+            // @feature file-storage
+            _fileStorageService,
+            // @end
+            // @feature avatars
+            _imageProcessingService,
+            // @end
             Substitute.For<ILogger<UserService>>());
     }
 
@@ -131,6 +159,7 @@ public class UserServiceTests : IDisposable
         Assert.True(result.IsSuccess);
         Assert.Equal("Jane", result.Value.FirstName);
         Assert.Equal("Doe", result.Value.LastName);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.ProfileUpdate,
             userId: _userId,
@@ -138,6 +167,7 @@ public class UserServiceTests : IDisposable
             targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -206,6 +236,7 @@ public class UserServiceTests : IDisposable
         var result = await _sut.DeleteAccountAsync(new DeleteAccountInput("correct"));
 
         Assert.True(result.IsSuccess);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.AccountDeletion,
             userId: _userId,
@@ -213,6 +244,7 @@ public class UserServiceTests : IDisposable
             targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -331,6 +363,7 @@ public class UserServiceTests : IDisposable
 
     #endregion
 
+    // @feature avatars
     #region UploadAvatar
 
     [Fact]
@@ -355,10 +388,12 @@ public class UserServiceTests : IDisposable
         await _fileStorageService.Received(1).UploadAsync(
             $"avatars/{_userId}.webp", Arg.Any<byte[]>(), "image/webp", Arg.Any<CancellationToken>());
         await _hybridCache.Received().RemoveAsync(CacheKeys.User(_userId));
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.AvatarUpload, userId: _userId,
             targetEntityType: Arg.Any<string?>(), targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(), ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -425,10 +460,12 @@ public class UserServiceTests : IDisposable
         var result = await _sut.UploadAvatarAsync([0xFF, 0xD8], "photo.jpg", CancellationToken.None);
 
         Assert.True(result.IsFailure);
+        // @feature audit
         await _auditService.DidNotReceive().LogAsync(
             AuditActions.AvatarUpload, userId: Arg.Any<Guid>(),
             targetEntityType: Arg.Any<string?>(), targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(), ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -444,14 +481,18 @@ public class UserServiceTests : IDisposable
         var result = await _sut.RemoveAvatarAsync(CancellationToken.None);
 
         Assert.True(result.IsFailure);
+        // @feature audit
         await _auditService.DidNotReceive().LogAsync(
             AuditActions.AvatarRemove, userId: Arg.Any<Guid>(),
             targetEntityType: Arg.Any<string?>(), targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(), ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     #endregion
+    // @end
 
+    // @feature avatars
     #region RemoveAvatar
 
     [Fact]
@@ -473,10 +514,12 @@ public class UserServiceTests : IDisposable
             $"avatars/{_userId}.webp", Arg.Any<CancellationToken>());
         await _userManager.Received(1).UpdateAsync(user);
         await _hybridCache.Received().RemoveAsync(CacheKeys.User(_userId));
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.AvatarRemove, userId: _userId,
             targetEntityType: Arg.Any<string?>(), targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(), ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -522,7 +565,9 @@ public class UserServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature avatars
     #region GetAvatar
 
     [Fact]
@@ -578,7 +623,9 @@ public class UserServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature avatars
     #region DeleteAccount Avatar Cleanup
 
     [Fact]
@@ -619,4 +666,5 @@ public class UserServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 }

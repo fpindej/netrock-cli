@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Http;
 using MyProject.WebApi.Features.Authentication.Dtos.Login;
 using MyProject.WebApi.Features.Users.Dtos;
 using MyProject.WebApi.Features.Users.Dtos.DeleteAccount;
+// @feature avatars
 using MyProject.WebApi.Features.Users.Dtos.UploadAvatar;
+// @end
 
 namespace MyProject.Api.Tests.Validators;
 
@@ -95,6 +97,7 @@ public class UpdateUserRequestValidatorTests
             .ShouldHaveValidationErrorFor(x => x.Bio);
 }
 
+// @feature avatars
 public class UploadAvatarRequestValidatorTests
 {
     private readonly UploadAvatarRequestValidator _validator = new();
@@ -152,3 +155,4 @@ public class UploadAvatarRequestValidatorTests
             .ShouldNotHaveAnyValidationErrors();
     }
 }
+// @end

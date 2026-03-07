@@ -4,9 +4,13 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using MyProject.Api.Tests.Contracts;
 using MyProject.Api.Tests.Fixtures;
+// @feature audit
 using MyProject.Application.Features.Audit.Dtos;
+// @end
 using MyProject.Application.Features.Authentication.Dtos;
+// @feature file-storage
 using MyProject.Application.Features.FileStorage.Dtos;
+// @end
 using MyProject.Application.Identity.Dtos;
 using MyProject.Shared;
 
@@ -54,6 +58,7 @@ public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory>, 
         return msg;
     }
 
+    // @feature avatars
     private static MultipartFormDataContent CreateAvatarUpload(
         byte[]? data = null, string fileName = "photo.jpg", string contentType = "image/jpeg")
     {
@@ -64,6 +69,7 @@ public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory>, 
         content.Add(fileContent, "File", fileName);
         return content;
     }
+    // @end
 
     private static async Task AssertProblemDetailsAsync(
         HttpResponseMessage response, int expectedStatus, string? expectedDetail = null)
@@ -151,6 +157,7 @@ public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory>, 
 
     #endregion
 
+    // @feature avatars
     #region UploadAvatar
 
     [Fact]
@@ -272,6 +279,7 @@ public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory>, 
     }
 
     #endregion
+    // @end
 
     #region DeleteMe
 
@@ -313,6 +321,7 @@ public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory>, 
 
     #endregion
 
+    // @feature audit
     #region GetMyAuditLog
 
     [Fact]
@@ -362,4 +371,5 @@ public class UsersControllerTests : IClassFixture<CustomWebApplicationFactory>, 
     }
 
     #endregion
+    // @end
 }

@@ -10,7 +10,7 @@ export function registerCoreManifest(): void {
 			{ path: 'src/backend/MyProject.Domain/MyProject.Domain.csproj', templated: false },
 
 			// Shared
-			{ path: 'src/backend/MyProject.Shared/ErrorMessages.cs', templated: false },
+			{ path: 'src/backend/MyProject.Shared/ErrorMessages.cs', templated: true },
 			{ path: 'src/backend/MyProject.Shared/ErrorType.cs', templated: false },
 			{ path: 'src/backend/MyProject.Shared/MyProject.Shared.csproj', templated: false },
 			{ path: 'src/backend/MyProject.Shared/PhoneNumberHelper.cs', templated: false },
@@ -79,7 +79,7 @@ export function registerCoreManifest(): void {
 			{ path: 'src/backend/MyProject.WebApi/Properties/launchSettings.json', templated: false },
 			{ path: 'src/backend/MyProject.WebApi/appsettings.json', templated: false },
 			{ path: 'src/backend/MyProject.WebApi/appsettings.Development.json', templated: false },
-			{ path: 'src/backend/MyProject.WebApi/appsettings.Testing.json', templated: false },
+			{ path: 'src/backend/MyProject.WebApi/appsettings.Testing.json', templated: true },
 
 			// WebApi - Middlewares
 			{
@@ -180,7 +180,7 @@ export function registerCoreManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Unit.Tests/Shared/ErrorMessagesTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Unit.Tests/Shared/ErrorTypeTests.cs',

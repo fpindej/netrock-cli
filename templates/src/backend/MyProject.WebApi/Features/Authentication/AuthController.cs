@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyProject.Application.Cookies.Constants;
 using MyProject.Application.Features.Authentication;
+// @feature captcha
 using MyProject.Application.Features.Captcha;
+// @end
 using MyProject.Shared;
 using MyProject.WebApi.Features.Authentication.Dtos.Login;
 using MyProject.WebApi.Features.Authentication.Dtos.Register;
@@ -18,9 +20,15 @@ namespace MyProject.WebApi.Features.Authentication;
 [ApiController]
 [Route("api/auth")]
 [Tags("Auth")]
+// @feature captcha
 public class AuthController(
     IAuthenticationService authenticationService,
     ICaptchaService captchaService) : ControllerBase
+// @end
+// @feature !captcha
+public class AuthController(
+    IAuthenticationService authenticationService) : ControllerBase
+// @end
 {
     /// <summary>
     /// Authenticates a user and returns JWT tokens, or a 2FA challenge if two-factor is enabled.
@@ -107,11 +115,13 @@ public class AuthController(
     [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
     public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRequest request, CancellationToken cancellationToken)
     {
+        // @feature captcha
         if (!await captchaService.ValidateTokenAsync(request.CaptchaToken, cancellationToken))
         {
             return ProblemFactory.Create(ErrorMessages.Auth.CaptchaInvalid, ErrorType.Validation);
         }
 
+        // @end
         var result = await authenticationService.Register(request.ToRegisterInput(), cancellationToken);
 
         if (!result.IsSuccess)

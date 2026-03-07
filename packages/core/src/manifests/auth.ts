@@ -14,7 +14,7 @@ export function registerAuthManifest(): void {
 			},
 			{ path: 'src/backend/MyProject.Application/Identity/Dtos/DeleteAccountInput.cs', templated: false },
 			{ path: 'src/backend/MyProject.Application/Identity/IUserContext.cs', templated: false },
-			{ path: 'src/backend/MyProject.Application/Identity/IUserService.cs', templated: false },
+			{ path: 'src/backend/MyProject.Application/Identity/IUserService.cs', templated: true },
 
 			// Application - Caching
 			{ path: 'src/backend/MyProject.Application/Caching/Constants/CacheKeys.cs', templated: false },
@@ -23,13 +23,10 @@ export function registerAuthManifest(): void {
 			{ path: 'src/backend/MyProject.Application/Cookies/Constants/CookieNames.cs', templated: false },
 			{ path: 'src/backend/MyProject.Application/Cookies/ICookieService.cs', templated: false },
 
-			// Application - Cryptography
-			{ path: 'src/backend/MyProject.Application/Cryptography/ISecretEncryptionService.cs', templated: false },
-
 			// Application - Authentication DTOs and interfaces
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/IAuthenticationService.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/AuthenticationOutput.cs',
@@ -75,20 +72,20 @@ export function registerAuthManifest(): void {
 			},
 
 			// Infrastructure - Cryptography
-			{
-				path: 'src/backend/MyProject.Infrastructure/Cryptography/AesGcmEncryptionService.cs',
-				templated: false
-			},
 			{ path: 'src/backend/MyProject.Infrastructure/Cryptography/HashHelper.cs', templated: false },
 
 			// Infrastructure - Authentication
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs',
+				templated: false
+			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Configurations/RefreshTokenConfiguration.cs',
 				templated: false
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Extensions/ServiceCollectionExtensions.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Models/ApplicationRole.cs',
@@ -99,15 +96,27 @@ export function registerAuthManifest(): void {
 				templated: false
 			},
 			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Models/EmailToken.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs',
+				templated: false
+			},
+			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Models/RefreshToken.cs',
 				templated: false
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Options/AuthenticationOptions.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/AuthenticationService.cs',
+				templated: true
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/EmailTokenService.cs',
 				templated: false
 			},
 			{
@@ -128,7 +137,7 @@ export function registerAuthManifest(): void {
 				path: 'src/backend/MyProject.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Infrastructure/Identity/Services/UserService.cs', templated: false },
+			{ path: 'src/backend/MyProject.Infrastructure/Identity/Services/UserService.cs', templated: true },
 			{ path: 'src/backend/MyProject.Infrastructure/Identity/UserContext.cs', templated: false },
 
 			// Infrastructure - Persistence interceptors and seed
@@ -167,11 +176,17 @@ export function registerAuthManifest(): void {
 			// WebApi - Auth controller and mapper
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/AuthController.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/AuthMapper.cs',
-				templated: false
+				templated: true
+			},
+
+			// WebApi - Password controller (change password + password-reset methods)
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/PasswordController.cs',
+				templated: true
 			},
 
 			// WebApi - Auth DTOs: Login
@@ -242,7 +257,7 @@ export function registerAuthManifest(): void {
 				templated: false
 			},
 			{ path: 'src/backend/MyProject.WebApi/Features/Users/UserMapper.cs', templated: false },
-			{ path: 'src/backend/MyProject.WebApi/Features/Users/UsersController.cs', templated: false },
+			{ path: 'src/backend/MyProject.WebApi/Features/Users/UsersController.cs', templated: true },
 
 			// WebApi - Routing
 			{ path: 'src/backend/MyProject.WebApi/Routing/RoleNameRouteConstraint.cs', templated: false },
@@ -258,7 +273,7 @@ export function registerAuthManifest(): void {
 			{ path: 'src/backend/tests/MyProject.Api.Tests/GlobalUsings.cs', templated: false },
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Fixtures/CustomWebApplicationFactory.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Fixtures/TestAuthHandler.cs',
@@ -282,11 +297,11 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/AuthControllerTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/UsersControllerTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/LoginRequestValidatorTests.cs',
@@ -298,7 +313,7 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/UserValidatorTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs',
@@ -308,7 +323,7 @@ export function registerAuthManifest(): void {
 			// Tests - Component
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/MyProject.Component.Tests.csproj',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/GlobalUsings.cs',
@@ -336,18 +351,14 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/AuthenticationServiceTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/UserServiceTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/NoOpHybridCacheTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Cryptography/AesGcmEncryptionServiceTests.cs',
 				templated: false
 			},
 			{

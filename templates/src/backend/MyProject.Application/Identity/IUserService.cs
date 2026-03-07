@@ -1,5 +1,7 @@
 using MyProject.Application.Features.Authentication.Dtos;
+// @feature avatars
 using MyProject.Application.Features.FileStorage.Dtos;
+// @end
 using MyProject.Application.Identity.Dtos;
 using MyProject.Shared;
 
@@ -41,6 +43,7 @@ public interface IUserService
     /// <returns>A list of role names.</returns>
     Task<IList<string>> GetUserRolesAsync(Guid userId);
 
+    // @feature avatars
     /// <summary>
     /// Uploads and processes an avatar image for the current user.
     /// </summary>
@@ -64,4 +67,5 @@ public interface IUserService
     /// <param name="ct">A cancellation token.</param>
     /// <returns>A Result containing the file data and content type.</returns>
     Task<Result<FileDownloadOutput>> GetAvatarAsync(Guid userId, CancellationToken ct);
+    // @end
 }

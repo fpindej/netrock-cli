@@ -9,13 +9,17 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Caching.Hybrid;
 using MyProject.Application.Caching.Constants;
 using MyProject.Application.Cookies.Constants;
+// @feature oauth
 using MyProject.Application.Cryptography;
+// @end
 using MyProject.Application.Features.Authentication;
 using MyProject.Infrastructure.Cryptography;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
 using MyProject.Infrastructure.Features.Authentication.Services;
+// @feature oauth
 using MyProject.Infrastructure.Features.Authentication.Services.ExternalProviders;
+// @end
 
 namespace MyProject.Infrastructure.Features.Authentication.Extensions;
 
@@ -42,10 +46,14 @@ public static class ServiceCollectionExtensions
             services.AddScoped<ITokenSessionService, TokenSessionService>();
             services.AddScoped<EmailTokenService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+            // @feature 2fa
             services.AddScoped<ITwoFactorService, TwoFactorService>();
+            // @end
+            // @feature oauth
             services.AddScoped<IExternalAuthService, ExternalAuthService>();
 
             services.ConfigureExternalProviders(configuration);
+            // @end
 
             return services;
         }
@@ -145,6 +153,7 @@ public static class ServiceCollectionExtensions
             return services;
         }
 
+        // @feature oauth
         private void ConfigureExternalProviders(IConfiguration configuration)
         {
             services.AddOptions<ExternalAuthOptions>()
@@ -185,6 +194,7 @@ public static class ServiceCollectionExtensions
             services.AddSingleton<ISecretEncryptionService, AesGcmEncryptionService>();
             services.AddScoped<IProviderConfigService, ProviderConfigService>();
         }
+        // @end
     }
 
     /// <summary>

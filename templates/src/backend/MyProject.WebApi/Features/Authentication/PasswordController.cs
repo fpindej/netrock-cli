@@ -2,11 +2,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyProject.Application.Features.Authentication;
+// @feature captcha
 using MyProject.Application.Features.Captcha;
+// @end
 using MyProject.Shared;
 using MyProject.WebApi.Features.Authentication.Dtos.ChangePassword;
+// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.ForgotPassword;
 using MyProject.WebApi.Features.Authentication.Dtos.ResetPassword;
+// @end
 using MyProject.WebApi.Shared;
 
 namespace MyProject.WebApi.Features.Authentication;
@@ -17,10 +21,17 @@ namespace MyProject.WebApi.Features.Authentication;
 [ApiController]
 [Route("api/auth/password")]
 [Tags("Auth - Password")]
+// @feature captcha
 public class PasswordController(
     IAuthenticationService authenticationService,
     ICaptchaService captchaService) : ControllerBase
+// @end
+// @feature !captcha
+public class PasswordController(
+    IAuthenticationService authenticationService) : ControllerBase
+// @end
 {
+    // @feature password-reset
     /// <summary>
     /// Initiates a password reset flow by sending a reset link to the provided email address.
     /// Always returns 200 regardless of whether the email exists to prevent user enumeration.
@@ -32,11 +43,13 @@ public class PasswordController(
     [ProducesResponseType(StatusCodes.Status429TooManyRequests)]
     public async Task<ActionResult> Forgot([FromBody] ForgotPasswordRequest request, CancellationToken cancellationToken)
     {
+        // @feature captcha
         if (!await captchaService.ValidateTokenAsync(request.CaptchaToken, cancellationToken))
         {
             return ProblemFactory.Create(ErrorMessages.Auth.CaptchaInvalid, ErrorType.Validation);
         }
 
+        // @end
         await authenticationService.ForgotPasswordAsync(request.Email, cancellationToken);
         return Ok();
     }
@@ -61,6 +74,7 @@ public class PasswordController(
 
         return Ok();
     }
+    // @end
 
     /// <summary>
     /// Changes the current authenticated user's password.

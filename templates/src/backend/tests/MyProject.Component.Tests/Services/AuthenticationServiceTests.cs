@@ -7,17 +7,23 @@ using Microsoft.Extensions.Caching.Hybrid;
 using MyProject.Application.Caching.Constants;
 using MyProject.Application.Cookies;
 using MyProject.Application.Cookies.Constants;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Features.Authentication.Dtos;
+// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
+// @end
 using MyProject.Application.Identity;
 using MyProject.Component.Tests.Fixtures;
 using MyProject.Infrastructure.Cryptography;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
 using MyProject.Infrastructure.Features.Authentication.Services;
+// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
+// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Shared;
 
@@ -32,8 +38,12 @@ public class AuthenticationServiceTests : IDisposable
     private readonly ICookieService _cookieService;
     private readonly IUserContext _userContext;
     private readonly HybridCache _hybridCache;
+    // @feature email
     private readonly ITemplatedEmailSender _templatedEmailSender;
+    // @end
+    // @feature audit
     private readonly IAuditService _auditService;
+    // @end
     private readonly MyProjectDbContext _dbContext;
     private readonly ITokenSessionService _tokenSessionService;
     private readonly AuthenticationService _sut;
@@ -47,7 +57,9 @@ public class AuthenticationServiceTests : IDisposable
         _cookieService = Substitute.For<ICookieService>();
         _userContext = Substitute.For<IUserContext>();
         _hybridCache = Substitute.For<HybridCache>();
+        // @feature email
         _templatedEmailSender = Substitute.For<ITemplatedEmailSender>();
+        // @end
         _dbContext = TestDbContextFactory.Create();
 
         var authOptions = Options.Create(new AuthenticationOptions
@@ -66,15 +78,19 @@ public class AuthenticationServiceTests : IDisposable
             }
         });
 
+        // @feature email
         var emailOptions = Options.Create(new EmailOptions
         {
             FromAddress = "noreply@test.com",
             FromName = "Test",
             FrontendBaseUrl = "https://test.example.com"
         });
+        // @end
 
         var emailTokenService = new EmailTokenService(_dbContext, _timeProvider, authOptions);
+        // @feature audit
         _auditService = Substitute.For<IAuditService>();
+        // @end
 
         _tokenSessionService = new TokenSessionService(
             _tokenProvider, _timeProvider, _cookieService, _userManager, _hybridCache,
@@ -85,12 +101,18 @@ public class AuthenticationServiceTests : IDisposable
             _signInManager,
             _timeProvider,
             _userContext,
+            // @feature email
             _templatedEmailSender,
+            // @end
             emailTokenService,
+            // @feature audit
             _auditService,
+            // @end
             _tokenSessionService,
             authOptions,
+            // @feature email
             emailOptions,
+            // @end
             Substitute.For<ILogger<AuthenticationService>>(),
             _dbContext);
     }
@@ -116,6 +138,7 @@ public class AuthenticationServiceTests : IDisposable
         _tokenProvider.GenerateRefreshToken().Returns("refresh-token");
     }
 
+    // @feature 2fa
     private async Task<string> SeedTwoFactorChallengeAsync(
         Guid userId,
         bool isUsed = false,
@@ -140,6 +163,7 @@ public class AuthenticationServiceTests : IDisposable
         await _dbContext.SaveChangesAsync();
         return plainToken;
     }
+    // @end
 
     #region Login
 
@@ -156,6 +180,7 @@ public class AuthenticationServiceTests : IDisposable
         Assert.NotNull(result.Value.Tokens);
         Assert.Equal("access-token", result.Value.Tokens.AccessToken);
         Assert.Equal("refresh-token", result.Value.Tokens.RefreshToken);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.LoginSuccess,
             userId: user.Id,
@@ -163,6 +188,7 @@ public class AuthenticationServiceTests : IDisposable
             targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -243,6 +269,7 @@ public class AuthenticationServiceTests : IDisposable
         Assert.True(result.IsFailure);
         Assert.Equal(ErrorMessages.Auth.LoginInvalidCredentials, result.Error);
         Assert.Equal(ErrorType.Unauthorized, result.ErrorType);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.LoginFailure,
             userId: user.Id,
@@ -250,6 +277,7 @@ public class AuthenticationServiceTests : IDisposable
             targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -362,6 +390,7 @@ public class AuthenticationServiceTests : IDisposable
 
         Assert.True(result.IsSuccess);
         Assert.NotEqual(Guid.Empty, result.Value);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.Register,
             userId: result.Value,
@@ -369,6 +398,7 @@ public class AuthenticationServiceTests : IDisposable
             targetEntityId: Arg.Any<Guid?>(),
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -936,6 +966,7 @@ public class AuthenticationServiceTests : IDisposable
 
     #endregion
 
+    // @feature password-reset
     #region ForgotPassword
 
     [Fact]
@@ -1002,7 +1033,9 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature password-reset
     #region ResetPassword
 
     private async Task<string> SeedEmailTokenAsync(Guid userId, string identityToken, EmailTokenPurpose purpose, bool isUsed = false, int expiresInHours = 24)
@@ -1163,7 +1196,9 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature email-verification
     #region VerifyEmail
 
     [Fact]
@@ -1272,7 +1307,9 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature email-verification
     #region ResendVerification
 
     [Fact]
@@ -1337,7 +1374,9 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature 2fa
     #region Login_TwoFactor
 
     [Fact]
@@ -1398,6 +1437,7 @@ public class AuthenticationServiceTests : IDisposable
         Assert.True(challenge.IsRememberMe);
     }
 
+    // @feature audit
     [Fact]
     public async Task Login_TwoFactorEnabled_DoesNotLogLoginSuccess()
     {
@@ -1415,6 +1455,7 @@ public class AuthenticationServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     #endregion
 
@@ -1453,6 +1494,7 @@ public class AuthenticationServiceTests : IDisposable
         Assert.True(challenge.IsUsed);
     }
 
+    // @feature audit
     [Fact]
     public async Task CompleteTwoFactorLogin_ValidCode_LogsAuditSuccess()
     {
@@ -1473,6 +1515,7 @@ public class AuthenticationServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     [Fact]
     public async Task CompleteTwoFactorLogin_InvalidCode_ReturnsUnauthorized()
@@ -1565,6 +1608,7 @@ public class AuthenticationServiceTests : IDisposable
         Assert.Equal(ErrorType.Unauthorized, result.ErrorType);
     }
 
+    // @feature audit
     [Fact]
     public async Task CompleteTwoFactorLogin_InvalidCode_LogsAuditFailure()
     {
@@ -1584,6 +1628,7 @@ public class AuthenticationServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     [Fact]
     public async Task CompleteTwoFactorLogin_RememberMe_UsesCorrectLifetime()
@@ -1623,6 +1668,7 @@ public class AuthenticationServiceTests : IDisposable
         Assert.Equal("access-token", result.Value.AccessToken);
     }
 
+    // @feature audit
     [Fact]
     public async Task CompleteTwoFactorRecoveryLogin_ValidCode_LogsBothAuditEvents()
     {
@@ -1650,6 +1696,7 @@ public class AuthenticationServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     [Fact]
     public async Task CompleteTwoFactorRecoveryLogin_InvalidCode_ReturnsUnauthorized()
@@ -1775,7 +1822,9 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
+    // @feature email-verification
     #region Register_SendsVerificationEmail
 
     [Fact]
@@ -1803,4 +1852,5 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 }

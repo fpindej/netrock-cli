@@ -14,8 +14,10 @@
         <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
         <PackageReference Include="coverlet.collector" />
+        <!-- @feature avatars -->
         <PackageReference Include="SkiaSharp" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
+        <!-- @end -->
     </ItemGroup>
 
     <ItemGroup>

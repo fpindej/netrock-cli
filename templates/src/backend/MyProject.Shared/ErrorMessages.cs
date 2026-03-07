@@ -5,13 +5,14 @@ namespace MyProject.Shared;
 /// Constants are used in <c>Result.Failure()</c> calls so that messages remain consistent,
 /// greppable, and easy to extract into translation keys later.
 /// <para>
-/// All client-facing messages must be static constants — never interpolate runtime values
+/// All client-facing messages must be static constants - never interpolate runtime values
 /// (role names, user IDs, framework error descriptions) into error responses.
 /// Log runtime details server-side via <c>ILogger</c> instead.
 /// </para>
 /// </summary>
 public static class ErrorMessages
 {
+    // @feature auth
     /// <summary>
     /// Authentication error messages.
     /// </summary>
@@ -67,7 +68,9 @@ public static class ErrorMessages
         public const string DeleteFailed = "Failed to delete account.";
         public const string LastAdminCannotDelete = "Cannot delete your account while you are the last administrator.";
     }
+    // @end
 
+    // @feature admin
     /// <summary>
     /// Administrative operation error messages.
     /// </summary>
@@ -86,7 +89,7 @@ public static class ErrorMessages
         public const string RoleNotFound = "Role not found.";
         public const string RoleAlreadyAssigned = "User already has this role.";
         public const string RoleNotAssigned = "User does not have this role.";
-        public const string LastRoleHolder = "Cannot remove this role — this is the last user holding it.";
+        public const string LastRoleHolder = "Cannot remove this role - this is the last user holding it.";
         public const string RoleAssignFailed = "Failed to assign role.";
         public const string RoleRemoveFailed = "Failed to remove role.";
         public const string LockFailed = "Failed to lock user account.";
@@ -94,7 +97,7 @@ public static class ErrorMessages
         public const string DeleteFailed = "Failed to delete user account.";
         public const string EmailVerificationFailed = "Failed to verify email address.";
         public const string CreateUserFailed = "Failed to create user account.";
-        public const string LastAdminCannotDelete = "Cannot delete this user — they are the last user holding an administrative role.";
+        public const string LastAdminCannotDelete = "Cannot delete this user - they are the last user holding an administrative role.";
         public const string TwoFactorNotEnabled = "Two-factor authentication is not enabled for this user.";
         public const string DisableTwoFactorSelfAction = "You cannot disable your own two-factor authentication from the admin panel.";
         public const string DisableTwoFactorFailed = "Failed to disable two-factor authentication.";
@@ -118,6 +121,7 @@ public static class ErrorMessages
         public const string UpdateFailed = "Failed to update role.";
         public const string DeleteFailed = "Failed to delete role.";
     }
+    // @end
 
     /// <summary>
     /// Pagination error messages.
@@ -136,6 +140,7 @@ public static class ErrorMessages
         public const string InternalError = "An internal error occurred.";
     }
 
+    // @feature jobs
     /// <summary>
     /// Job scheduling error messages.
     /// </summary>
@@ -145,6 +150,7 @@ public static class ErrorMessages
         public const string TriggerFailed = "Failed to trigger job.";
         public const string RestoreFailed = "Failed to restore jobs.";
     }
+    // @end
 
     /// <summary>
     /// Security infrastructure error messages (CSRF, origin validation).
@@ -154,6 +160,7 @@ public static class ErrorMessages
         public const string CrossOriginRequestBlocked = "Cross-origin requests are not allowed.";
     }
 
+    // @feature avatars
     /// <summary>
     /// Avatar upload and processing error messages.
     /// </summary>
@@ -164,7 +171,9 @@ public static class ErrorMessages
         public const string ProcessingFailed = "Failed to process the avatar image.";
         public const string NotFound = "Avatar not found.";
     }
+    // @end
 
+    // @feature oauth
     /// <summary>
     /// External authentication (OAuth2) error messages.
     /// </summary>
@@ -188,6 +197,7 @@ public static class ErrorMessages
         public const string TestConnectionProviderUnreachable = "Could not reach the authentication provider. Please try again later.";
         public const string TestConnectionNotConfigured = "No credentials are configured for this provider.";
     }
+    // @end
 
     /// <summary>
     /// Generic entity operation error messages (repository layer).

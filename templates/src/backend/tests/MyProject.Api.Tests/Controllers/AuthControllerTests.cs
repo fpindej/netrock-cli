@@ -94,8 +94,10 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     [Fact]
     public async Task Register_ValidInput_Returns201()
     {
+        // @feature captcha
         _factory.CaptchaService.ValidateTokenAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true);
+        // @end
         _factory.AuthenticationService.Register(Arg.Any<RegisterInput>(), Arg.Any<CancellationToken>())
             .Returns(Result<Guid>.Success(Guid.NewGuid()));
 
@@ -129,8 +131,10 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     [Fact]
     public async Task Register_ServiceFailure_Returns400WithProblemDetails()
     {
+        // @feature captcha
         _factory.CaptchaService.ValidateTokenAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true);
+        // @end
         _factory.AuthenticationService.Register(Arg.Any<RegisterInput>(), Arg.Any<CancellationToken>())
             .Returns(Result<Guid>.Failure("Email already registered."));
 
@@ -141,6 +145,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
         await AssertProblemDetailsAsync(response, 400, "Email already registered.");
     }
 
+    // @feature captcha
     [Fact]
     public async Task Register_InvalidCaptcha_Returns400()
     {
@@ -162,6 +167,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+    // @end
 
     #endregion
 
@@ -329,13 +335,16 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
 
     #endregion
 
+    // @feature password-reset
     #region ForgotPassword
 
     [Fact]
     public async Task ForgotPassword_ValidEmail_Returns200()
     {
+        // @feature captcha
         _factory.CaptchaService.ValidateTokenAsync(Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(true);
+        // @end
         _factory.AuthenticationService.ForgotPasswordAsync(
                 Arg.Any<string>(), Arg.Any<CancellationToken>())
             .Returns(Result.Success());
@@ -364,6 +373,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
+    // @feature captcha
     [Fact]
     public async Task ForgotPassword_InvalidCaptcha_Returns400()
     {
@@ -385,6 +395,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
 
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
+    // @end
 
     #endregion
 
@@ -451,7 +462,9 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     }
 
     #endregion
+    // @end
 
+    // @feature email-verification
     #region VerifyEmail
 
     [Fact]
@@ -535,7 +548,9 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     }
 
     #endregion
+    // @end
 
+    // @feature 2fa
     #region Login_TwoFactor
 
     [Fact]
@@ -832,4 +847,5 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     }
 
     #endregion
+    // @end
 }
