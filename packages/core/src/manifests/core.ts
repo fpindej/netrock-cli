@@ -82,8 +82,8 @@ export function registerCoreManifest(): void {
 			{ path: 'src/backend/MyProject.WebApi/MyProject.WebApi.csproj', templated: true },
 			{ path: 'src/backend/MyProject.WebApi/Dockerfile', templated: false },
 			{ path: 'src/backend/MyProject.WebApi/Properties/launchSettings.json', templated: false },
-			{ path: 'src/backend/MyProject.WebApi/appsettings.json', templated: false },
-			{ path: 'src/backend/MyProject.WebApi/appsettings.Development.json', templated: false },
+			{ path: 'src/backend/MyProject.WebApi/appsettings.json', templated: true },
+			{ path: 'src/backend/MyProject.WebApi/appsettings.Development.json', templated: true },
 			{ path: 'src/backend/MyProject.WebApi/appsettings.Testing.json', templated: true },
 
 			// WebApi - Middlewares

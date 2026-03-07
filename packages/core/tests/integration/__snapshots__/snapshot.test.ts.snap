@@ -1478,7 +1478,7 @@ exports[`convergence file snapshots > appsettings.json > core-only 1`] = `
       "Window": "00:01:00",
       "QueueLimit": 0,
       "QueueProcessingOrder": "OldestFirst"
-    }
+    },
   },
   "Cors": {
     "AllowAllOrigins": false,
@@ -1517,13 +1517,97 @@ exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
   "ConnectionStrings": {
     "Database": "<DB_CONNECTION_STRING>"
   },
+  "Caching": {
+    "Enabled": true,
+    "DefaultExpiration": "00:10:00"
+  },
   "RateLimiting": {
     "Global": {
       "PermitLimit": 120,
       "Window": "00:01:00",
       "QueueLimit": 0,
       "QueueProcessingOrder": "OldestFirst"
+    },
+    "Registration": {
+      "PermitLimit": 10,
+      "Window": "00:01:00",
+      "QueueLimit": 0,
+      "QueueProcessingOrder": "OldestFirst"
+    },
+    "Auth": {
+      "PermitLimit": 10,
+      "Window": "00:01:00",
+      "QueueLimit": 0,
+      "QueueProcessingOrder": "OldestFirst"
+    },
+    "Sensitive": {
+      "PermitLimit": 5,
+      "Window": "00:05:00",
+      "QueueLimit": 0,
+      "QueueProcessingOrder": "OldestFirst"
+    },
+    "AdminMutations": {
+      "PermitLimit": 30,
+      "Window": "00:01:00",
+      "QueueLimit": 0,
+      "QueueProcessingOrder": "OldestFirst"
     }
+  },
+  "Authentication": {
+    "Jwt": {
+      "Key": "3+HBj9HwCE8IrZHTKG+ItVTrBllz1PMbzFKQVXRtbYkIYxl7HL31f6SDmgOJ+qagACAdNLpOfaM4j6sQczFazQ==",
+      "Issuer": "SnapshotAppIssuer",
+      "Audience": "SnapshotAppAudience",
+      "AccessTokenLifetime": "00:10:00",
+      "SecurityStampClaimType": "security_stamp",
+      "RefreshToken": {
+        "PersistentLifetime": "7.00:00:00",
+        "SessionLifetime": "1.00:00:00"
+      }
+    },
+    "EmailToken": {
+      "TokenLengthInBytes": 32,
+      "Lifetime": "1.00:00:00"
+    },
+    "TwoFactor": {
+      "ChallengeLifetime": "00:05:00",
+      "Issuer": "SnapshotApp",
+      "MaxChallengeAttempts": 5
+    },
+    "ExternalProviders": {
+      "AllowedRedirectUris": [
+        "https://your-production-domain.com/oauth/callback"
+      ],
+      "StateLifetime": "00:10:00",
+      "EncryptionKey": "SvdQ5GBgJwEsI92uy1sONhAY6aI5NDzxjuTUimgyl7w="
+    }
+  },
+  "Email": {
+    "Enabled": false,
+    "FromAddress": "noreply@example.com",
+    "FromName": "SnapshotApp",
+    "FrontendBaseUrl": "https://your-production-domain.com",
+    "Smtp": {
+      "Host": "",
+      "Port": 587,
+      "Username": "",
+      "Password": "",
+      "UseSsl": true
+    }
+  },
+  "JobScheduling": {
+    "Enabled": true,
+    "WorkerCount": 4
+  },
+  "FileStorage": {
+    "Endpoint": "<FILE_STORAGE_ENDPOINT>",
+    "AccessKey": "<FILE_STORAGE_ACCESS_KEY>",
+    "SecretKey": "<FILE_STORAGE_SECRET_KEY>",
+    "BucketName": "snapshot-app-files",
+    "UseSSL": true
+  },
+  "Captcha": {
+    "SecretKey": "<TURNSTILE_SECRET_KEY>"
   },
   "Cors": {
     "AllowAllOrigins": false,
