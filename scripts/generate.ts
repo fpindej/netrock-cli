@@ -5,12 +5,12 @@ import { writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import {
 	generateProject,
 	registerAllManifests,
-	createFsSource,
 	resolveFeatures,
 	featureDefinitions,
 	presets,
 	getManifests
 } from '@netrock/core';
+import { createFsSource } from '@netrock/core/node';
 import type { FeatureId, FeatureGroup } from '@netrock/core';
 
 const groupLabels: Record<FeatureGroup, string> = {

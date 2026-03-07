@@ -1,0 +1,8 @@
+node_modules
+.git
+*.md
+.github
+packages/core/dist
+packages/web/build
+packages/web/.svelte-kit
+packages/cli
