@@ -69,6 +69,36 @@
 		{/each}
 	</div>
 
+	<!-- Frontend (coming soon) -->
+	<div class="mt-6">
+		<h3 class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">Frontend</h3>
+		<div class="grid gap-2 sm:grid-cols-2">
+			<div
+				class="relative flex w-full items-start gap-4 rounded-xl border border-border-subtle bg-surface px-4 py-3.5 opacity-50"
+			>
+				<div class="mt-0.5 flex-shrink-0">
+					<div
+						class="flex size-5 items-center justify-center rounded-md border border-border-active bg-transparent"
+					></div>
+				</div>
+				<div class="min-w-0 flex-1">
+					<div class="flex items-center gap-2">
+						<span class="text-sm font-medium text-text-primary">SvelteKit frontend</span>
+						<span
+							class="rounded bg-accent-dim px-1.5 py-0.5 font-mono text-[10px] text-accent"
+						>
+							coming soon
+						</span>
+					</div>
+					<p class="mt-0.5 text-xs leading-relaxed text-text-secondary">
+						Full SvelteKit 5 reference client with all feature UIs, auth flows, admin panel, and
+						more.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Notes -->
 	{#if generator.notes.length > 0}
 		<div class="mt-6 space-y-2">
