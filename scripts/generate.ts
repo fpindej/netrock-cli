@@ -8,7 +8,8 @@ import {
 	createFsSource,
 	resolveFeatures,
 	featureDefinitions,
-	presets
+	presets,
+	getManifests
 } from '@netrock/core';
 import type { FeatureId, FeatureGroup } from '@netrock/core';
 
@@ -117,24 +118,34 @@ async function main(): Promise<void> {
 	}
 
 	// 6. Summary
+	const effectiveSet = new Set(result.summary.enabledFeatures);
+	const skipped = [...selectedFeatures].filter((f) => !effectiveSet.has(f));
 	const featureNames = featureDefinitions
-		.filter((f) => selectedFeatures.has(f.id))
+		.filter((f) => effectiveSet.has(f.id))
 		.map((f) => f.name);
 
 	console.log(`Project:    ${result.names.pascalCase}`);
 	console.log(`Output:     ${resolvedOutput}`);
 	console.log(`Files:      ${result.summary.totalFiles}`);
-	console.log(`Features:   ${featureNames.join(', ')}\n`);
+	console.log(`Features:   ${featureNames.join(', ')}`);
+
+	if (skipped.length > 0) {
+		const skippedNames = featureDefinitions
+			.filter((f) => skipped.includes(f.id))
+			.map((f) => f.name);
+		console.log(`\nSkipped (not yet implemented): ${skippedNames.join(', ')}`);
+	}
+	console.log();
 
 	console.log('Next steps:\n');
 	console.log(`  cd ${outputDir}`);
-	if (selectedFeatures.has('aspire')) {
+	if (effectiveSet.has('aspire')) {
 		console.log('  dotnet run --project src/backend/*.AppHost');
 	} else {
 		console.log(`  dotnet build src/backend/${result.names.pascalCase}.slnx`);
 		console.log(`  dotnet run --project src/backend/${result.names.pascalCase}.WebApi`);
 	}
-	if (selectedFeatures.has('frontend')) {
+	if (effectiveSet.has('frontend')) {
 		console.log('  cd src/frontend && pnpm install && pnpm dev');
 	}
 	console.log();
