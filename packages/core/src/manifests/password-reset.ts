@@ -17,10 +17,6 @@ export function registerPasswordResetManifest(): void {
 
 			// WebApi
 			{
-				path: 'src/backend/MyProject.WebApi/Features/Authentication/PasswordController.cs',
-				templated: false
-			},
-			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequest.cs',
 				templated: false
 			},

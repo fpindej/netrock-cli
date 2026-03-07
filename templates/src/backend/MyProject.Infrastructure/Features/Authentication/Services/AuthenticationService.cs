@@ -1,20 +1,28 @@
 using System.Security.Cryptography;
+// @feature 2fa
 using System.Text.Json;
+// @end
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Features.Authentication;
 using MyProject.Application.Features.Authentication.Dtos;
+// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
+// @end
 using MyProject.Application.Identity;
 using MyProject.Application.Identity.Constants;
 using MyProject.Infrastructure.Cryptography;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
+// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
+// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Shared;
 
@@ -28,18 +36,28 @@ internal class AuthenticationService(
     SignInManager<ApplicationUser> signInManager,
     TimeProvider timeProvider,
     IUserContext userContext,
+    // @feature email
     ITemplatedEmailSender templatedEmailSender,
+    // @end
     EmailTokenService emailTokenService,
+    // @feature audit
     IAuditService auditService,
+    // @end
     ITokenSessionService tokenSessionService,
     IOptions<AuthenticationOptions> authenticationOptions,
+    // @feature email
     IOptions<EmailOptions> emailOptions,
+    // @end
     ILogger<AuthenticationService> logger,
     MyProjectDbContext dbContext) : IAuthenticationService
 {
+    // @feature 2fa
     private readonly AuthenticationOptions.TwoFactorOptions _twoFactorOptions = authenticationOptions.Value.TwoFactor;
+    // @end
     private readonly AuthenticationOptions.EmailTokenOptions _emailTokenOptions = authenticationOptions.Value.EmailToken;
+    // @feature email
     private readonly EmailOptions _emailOptions = emailOptions.Value;
+    // @end
 
     /// <inheritdoc />
     public async Task<Result<LoginOutput>> Login(string username, string password, bool useCookies = false, bool rememberMe = false, CancellationToken cancellationToken = default)
@@ -48,25 +66,32 @@ internal class AuthenticationService(
 
         if (user is null)
         {
+            // @feature audit
             await auditService.LogAsync(AuditActions.LoginFailure,
                 metadata: JsonSerializer.Serialize(new { attemptedEmail = username }),
                 ct: cancellationToken);
+            // @end
             return Result<LoginOutput>.Failure(ErrorMessages.Auth.LoginInvalidCredentials, ErrorType.Unauthorized);
         }
 
         var signInResult = await signInManager.CheckPasswordSignInAsync(user, password, lockoutOnFailure: true);
         if (signInResult.IsLockedOut)
         {
+            // @feature audit
             await auditService.LogAsync(AuditActions.LoginFailure, userId: user.Id, ct: cancellationToken);
+            // @end
             return Result<LoginOutput>.Failure(ErrorMessages.Auth.LoginAccountLocked, ErrorType.Unauthorized);
         }
 
         if (!signInResult.Succeeded)
         {
+            // @feature audit
             await auditService.LogAsync(AuditActions.LoginFailure, userId: user.Id, ct: cancellationToken);
+            // @end
             return Result<LoginOutput>.Failure(ErrorMessages.Auth.LoginInvalidCredentials, ErrorType.Unauthorized);
         }
 
+        // @feature 2fa
         if (user.TwoFactorEnabled)
         {
             var challengeToken = GenerateChallengeToken();
@@ -92,8 +117,11 @@ internal class AuthenticationService(
                 RequiresTwoFactor: true));
         }
 
+        // @end
         var tokens = await tokenSessionService.GenerateTokensAsync(user, useCookies, rememberMe, cancellationToken);
+        // @feature audit
         await auditService.LogAsync(AuditActions.LoginSuccess, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result<LoginOutput>.Success(new LoginOutput(
             Tokens: tokens,
@@ -101,6 +129,7 @@ internal class AuthenticationService(
             RequiresTwoFactor: false));
     }
 
+    // @feature 2fa
     /// <inheritdoc />
     public async Task<Result<AuthenticationOutput>> CompleteTwoFactorLoginAsync(
         string challengeToken, string code, bool useCookies, CancellationToken cancellationToken = default)
@@ -125,7 +154,9 @@ internal class AuthenticationService(
         {
             challenge.FailedAttempts++;
             await dbContext.SaveChangesAsync(cancellationToken);
+            // @feature audit
             await auditService.LogAsync(AuditActions.TwoFactorLoginFailure, userId: user.Id, ct: cancellationToken);
+            // @end
             return Result<AuthenticationOutput>.Failure(ErrorMessages.TwoFactor.InvalidCode, ErrorType.Unauthorized);
         }
 
@@ -134,7 +165,9 @@ internal class AuthenticationService(
 
         var tokens = await tokenSessionService.GenerateTokensAsync(user, useCookies, challenge.IsRememberMe, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.TwoFactorLoginSuccess, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result<AuthenticationOutput>.Success(tokens);
     }
@@ -161,7 +194,9 @@ internal class AuthenticationService(
         {
             challenge.FailedAttempts++;
             await dbContext.SaveChangesAsync(cancellationToken);
+            // @feature audit
             await auditService.LogAsync(AuditActions.TwoFactorLoginFailure, userId: user.Id, ct: cancellationToken);
+            // @end
             return Result<AuthenticationOutput>.Failure(ErrorMessages.TwoFactor.RecoveryCodeInvalid, ErrorType.Unauthorized);
         }
 
@@ -170,11 +205,14 @@ internal class AuthenticationService(
 
         var tokens = await tokenSessionService.GenerateTokensAsync(user, useCookies, challenge.IsRememberMe, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.TwoFactorRecoveryCodeUsed, userId: user.Id, ct: cancellationToken);
         await auditService.LogAsync(AuditActions.TwoFactorLoginSuccess, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result<AuthenticationOutput>.Success(tokens);
     }
+    // @end
 
     /// <inheritdoc />
     public async Task<Result<Guid>> Register(RegisterInput input, CancellationToken cancellationToken = default)
@@ -210,9 +248,13 @@ internal class AuthenticationService(
             return Result<Guid>.Failure(ErrorMessages.Auth.RegisterRoleAssignFailed);
         }
 
+        // @feature email-verification
         await SendVerificationEmailAsync(user, cancellationToken);
+        // @end
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.Register, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result<Guid>.Success(user.Id);
     }
@@ -227,7 +269,9 @@ internal class AuthenticationService(
 
         if (userId.HasValue)
         {
+            // @feature audit
             await auditService.LogAsync(AuditActions.Logout, userId: userId.Value, ct: cancellationToken);
+            // @end
             await tokenSessionService.RevokeUserTokensAsync(userId.Value, cancellationToken);
         }
     }
@@ -271,11 +315,14 @@ internal class AuthenticationService(
 
         await tokenSessionService.RevokeUserTokensAsync(userId.Value, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.PasswordChange, userId: userId.Value, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
 
+    // @feature password-reset
     /// <inheritdoc />
     public async Task<Result> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -295,7 +342,9 @@ internal class AuthenticationService(
         var model = new ResetPasswordModel(resetUrl, _emailTokenOptions.Lifetime.ToHumanReadable());
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.ResetPassword, model, email, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.PasswordResetRequest, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -342,11 +391,15 @@ internal class AuthenticationService(
 
         await tokenSessionService.RevokeUserTokensAsync(user.Id, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.PasswordReset, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
+    // @end
 
+    // @feature email-verification
     /// <inheritdoc />
     public async Task<Result> VerifyEmailAsync(VerifyEmailInput input, CancellationToken cancellationToken = default)
     {
@@ -379,7 +432,9 @@ internal class AuthenticationService(
         emailToken.IsUsed = true;
         await dbContext.SaveChangesAsync(cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.EmailVerification, userId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -408,11 +463,15 @@ internal class AuthenticationService(
 
         await SendVerificationEmailAsync(user, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.ResendVerificationEmail, userId: userId.Value, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
+    // @end
 
+    // @feature 2fa
     /// <summary>
     /// Resolves a 2FA challenge token from plaintext, validating it is not expired, used, or locked.
     /// Returns a distinct error for each rejection reason.
@@ -435,12 +494,15 @@ internal class AuthenticationService(
 
         if (challenge.FailedAttempts >= _twoFactorOptions.MaxChallengeAttempts)
         {
+            // @feature audit
             await auditService.LogAsync(AuditActions.TwoFactorLoginFailure, userId: challenge.UserId, ct: cancellationToken);
+            // @end
             return Result<TwoFactorChallenge>.Failure(ErrorMessages.TwoFactor.ChallengeLocked, ErrorType.Unauthorized);
         }
 
         return Result<TwoFactorChallenge>.Success(challenge);
     }
+    // @end
 
     /// <summary>
     /// Generates a cryptographically random challenge token as a base64 string.
@@ -451,6 +513,7 @@ internal class AuthenticationService(
         return Convert.ToBase64String(bytes);
     }
 
+    // @feature email-verification
     /// <summary>
     /// Sends a verification email to the specified user with a confirmation link.
     /// </summary>
@@ -469,6 +532,7 @@ internal class AuthenticationService(
         var model = new VerifyEmailModel(verifyUrl);
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.VerifyEmail, model, user.Email, cancellationToken);
     }
+    // @end
 
     /// <summary>
     /// Checks whether any existing user already has the given normalized phone number.

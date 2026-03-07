@@ -5,11 +5,17 @@ using Microsoft.Extensions.Logging;
 using MyProject.Application.Caching.Constants;
 using MyProject.Application.Cookies;
 using MyProject.Application.Cookies.Constants;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
+// @feature avatars
 using MyProject.Application.Features.Avatar;
+// @end
 using MyProject.Application.Features.Authentication.Dtos;
+// @feature file-storage
 using MyProject.Application.Features.FileStorage;
 using MyProject.Application.Features.FileStorage.Dtos;
+// @end
 using MyProject.Application.Identity;
 using MyProject.Application.Identity.Constants;
 using MyProject.Application.Identity.Dtos;
@@ -29,9 +35,15 @@ internal sealed class UserService(
     HybridCache hybridCache,
     MyProjectDbContext dbContext,
     ICookieService cookieService,
+    // @feature audit
     IAuditService auditService,
+    // @end
+    // @feature file-storage
     IFileStorageService fileStorageService,
+    // @end
+    // @feature avatars
     IImageProcessingService imageProcessingService,
+    // @end
     ILogger<UserService> logger) : IUserService
 {
     private static readonly HybridCacheEntryOptions UserCacheOptions = new()
@@ -163,11 +175,14 @@ internal sealed class UserService(
             LinkedProviders: logins.Select(l => l.LoginProvider).ToList(),
             HasPassword: hasPassword);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.ProfileUpdate, userId: userId.Value, ct: cancellationToken);
+        // @end
 
         return Result<UserOutput>.Success(output);
     }
 
+    // @feature avatars
     /// <inheritdoc />
     public async Task<Result<UserOutput>> UploadAvatarAsync(byte[] imageData, string fileName, CancellationToken ct)
     {
@@ -211,7 +226,9 @@ internal sealed class UserService(
         }
 
         await InvalidateUserCache(userId.Value);
+        // @feature audit
         await auditService.LogAsync(AuditActions.AvatarUpload, userId: userId.Value, ct: ct);
+        // @end
 
         return await GetCurrentUserAsync(ct);
     }
@@ -253,7 +270,9 @@ internal sealed class UserService(
         }
 
         await InvalidateUserCache(userId.Value);
+        // @feature audit
         await auditService.LogAsync(AuditActions.AvatarRemove, userId: userId.Value, ct: ct);
+        // @end
 
         return await GetCurrentUserAsync(ct);
     }
@@ -271,6 +290,7 @@ internal sealed class UserService(
         var storageKey = $"avatars/{userId}.webp";
         return await fileStorageService.DownloadAsync(storageKey, ct);
     }
+    // @end
 
     /// <inheritdoc />
     public async Task<Result> DeleteAccountAsync(DeleteAccountInput input, CancellationToken cancellationToken = default)
@@ -302,9 +322,12 @@ internal sealed class UserService(
             return lastAdminResult;
         }
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AccountDeletion, userId: userId.Value, ct: cancellationToken);
+        // @end
 
-        // Clean up avatar from storage if present (best-effort — don't block account deletion)
+        // @feature avatars
+        // Clean up avatar from storage if present (best-effort - don't block account deletion)
         if (user.HasAvatar)
         {
             var avatarDeleteResult = await fileStorageService.DeleteAsync($"avatars/{userId.Value}.webp", cancellationToken);
@@ -314,6 +337,7 @@ internal sealed class UserService(
                     userId.Value, avatarDeleteResult.Error);
             }
         }
+        // @end
 
         await RevokeUserTokens(user, userId.Value, cancellationToken);
         await DeleteUser(user);

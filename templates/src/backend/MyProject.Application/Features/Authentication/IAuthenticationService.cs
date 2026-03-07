@@ -20,6 +20,7 @@ public interface IAuthenticationService
     /// <returns>A result containing authentication tokens or a 2FA challenge on success.</returns>
     Task<Result<LoginOutput>> Login(string username, string password, bool useCookies = false, bool rememberMe = false, CancellationToken cancellationToken = default);
 
+    // @feature 2fa
     /// <summary>
     /// Completes a two-factor authentication login by verifying a TOTP code against a challenge token.
     /// </summary>
@@ -39,6 +40,7 @@ public interface IAuthenticationService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A result containing authentication tokens on success.</returns>
     Task<Result<AuthenticationOutput>> CompleteTwoFactorRecoveryLoginAsync(string challengeToken, string recoveryCode, bool useCookies, CancellationToken cancellationToken = default);
+    // @end
 
     /// <summary>
     /// Registers a new user.
@@ -73,9 +75,10 @@ public interface IAuthenticationService
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> ChangePasswordAsync(ChangePasswordInput input, CancellationToken cancellationToken = default);
 
+    // @feature password-reset
     /// <summary>
     /// Initiates a password reset flow by generating a token and sending a reset email.
-    /// Always returns success to prevent user enumeration — if the user does not exist, no email is sent.
+    /// Always returns success to prevent user enumeration - if the user does not exist, no email is sent.
     /// </summary>
     /// <param name="email">The email address to send the reset link to.</param>
     /// <param name="cancellationToken">A cancellation token.</param>
@@ -90,7 +93,9 @@ public interface IAuthenticationService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> ResetPasswordAsync(ResetPasswordInput input, CancellationToken cancellationToken = default);
+    // @end
 
+    // @feature email-verification
     /// <summary>
     /// Verifies a user's email address using an opaque email token that maps to the Identity confirmation token and user.
     /// </summary>
@@ -106,4 +111,5 @@ public interface IAuthenticationService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> ResendVerificationEmailAsync(CancellationToken cancellationToken = default);
+    // @end
 }

@@ -11,23 +11,7 @@ export function registerEmailVerificationManifest(): void {
 				templated: false
 			},
 
-			// Infrastructure
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Models/EmailToken.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/EmailTokenService.cs',
-				templated: false
-			},
+			// EmailToken infrastructure moved to auth manifest (shared with password-reset)
 
 			// WebApi
 			{

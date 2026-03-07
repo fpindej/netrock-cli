@@ -1,13 +1,19 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Identity;
+// @feature audit
 using MyProject.WebApi.Features.Audit;
 using MyProject.WebApi.Features.Audit.Dtos.ListAuditEvents;
+// @end
 using MyProject.WebApi.Features.Users.Dtos;
 using MyProject.WebApi.Features.Users.Dtos.DeleteAccount;
+// @feature avatars
 using MyProject.WebApi.Features.Users.Dtos.UploadAvatar;
+// @end
 using MyProject.WebApi.Shared;
 
 namespace MyProject.WebApi.Features.Users;
@@ -19,7 +25,12 @@ namespace MyProject.WebApi.Features.Users;
 [Route("api/[controller]")]
 [Authorize]
 [Tags("Users")]
+// @feature audit
 public class UsersController(IUserService userService, IAuditService auditService, IUserContext userContext) : ControllerBase
+// @end
+// @feature !audit
+public class UsersController(IUserService userService) : ControllerBase
+// @end
 {
     /// <summary>
     /// Gets the current authenticated user's information
@@ -68,6 +79,7 @@ public class UsersController(IUserService userService, IAuditService auditServic
         return Ok(result.Value.ToResponse());
     }
 
+    // @feature avatars
     /// <summary>
     /// Uploads or replaces the current user's avatar image.
     /// The image is validated, resized to 512x512 max, and stored as WebP.
@@ -145,6 +157,7 @@ public class UsersController(IUserService userService, IAuditService auditServic
 
         return File(result.Value.Data, result.Value.ContentType);
     }
+    // @end
 
     /// <summary>
     /// Permanently deletes the current authenticated user's account.
@@ -174,6 +187,7 @@ public class UsersController(IUserService userService, IAuditService auditServic
         return NoContent();
     }
 
+    // @feature audit
     /// <summary>
     /// Gets the current authenticated user's audit activity log.
     /// </summary>
@@ -192,4 +206,5 @@ public class UsersController(IUserService userService, IAuditService auditServic
         var result = await auditService.GetUserAuditEventsAsync(userId, request.PageNumber, request.PageSize, cancellationToken);
         return Ok(result.ToResponse());
     }
+    // @end
 }

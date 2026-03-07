@@ -5,6 +5,15 @@ export function registerOAuthManifest(): void {
 	registerManifest({
 		featureId: 'oauth',
 		files: [
+			// Application - Cryptography
+			{ path: 'src/backend/MyProject.Application/Cryptography/ISecretEncryptionService.cs', templated: false },
+
+			// Infrastructure - Cryptography
+			{
+				path: 'src/backend/MyProject.Infrastructure/Cryptography/AesGcmEncryptionService.cs',
+				templated: false
+			},
+
 			// Application - DTOs
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/ExternalCallbackInput.cs',
@@ -252,6 +261,10 @@ export function registerOAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Cryptography/AesGcmEncryptionServiceTests.cs',
 				templated: false
 			}
 		]

@@ -29,11 +29,13 @@ public sealed class AuthenticationOptions
     [ValidateObjectMembers]
     public EmailTokenOptions EmailToken { get; init; } = new();
 
+    // @feature 2fa
     /// <summary>
     /// Gets or sets the two-factor authentication configuration.
     /// </summary>
     [ValidateObjectMembers]
     public TwoFactorOptions TwoFactor { get; init; } = new();
+    // @end
 
     /// <summary>
     /// Configuration options for JWT token generation and validation.
@@ -64,7 +66,7 @@ public sealed class AuthenticationOptions
 
         /// <summary>
         /// Gets or sets the JWT access token lifetime.
-        /// Defaults to 10 minutes. Valid range: 1 minute – 2 hours.
+        /// Defaults to 10 minutes. Valid range: 1 minute - 2 hours.
         /// </summary>
         public TimeSpan AccessTokenLifetime { get; [UsedImplicitly] init; } = TimeSpan.FromMinutes(10);
 
@@ -127,13 +129,13 @@ public sealed class AuthenticationOptions
         {
             /// <summary>
             /// Gets or sets the refresh token lifetime for persistent (remember-me) sessions.
-            /// Defaults to 7 days. Valid range: 1 day – 365 days.
+            /// Defaults to 7 days. Valid range: 1 day - 365 days.
             /// </summary>
             public TimeSpan PersistentLifetime { get; [UsedImplicitly] init; } = TimeSpan.FromDays(7);
 
             /// <summary>
             /// Gets or sets the refresh token lifetime for non-persistent (session) logins.
-            /// Defaults to 24 hours. Valid range: 10 minutes – 30 days. Must be ≤ PersistentLifetime.
+            /// Defaults to 24 hours. Valid range: 10 minutes - 30 days. Must be <= PersistentLifetime.
             /// </summary>
             public TimeSpan SessionLifetime { get; [UsedImplicitly] init; } = TimeSpan.FromHours(24);
 
@@ -164,6 +166,7 @@ public sealed class AuthenticationOptions
         }
     }
 
+    // @feature 2fa
     /// <summary>
     /// Configuration options for two-factor authentication.
     /// </summary>
@@ -171,7 +174,7 @@ public sealed class AuthenticationOptions
     {
         /// <summary>
         /// Gets or sets the lifetime of a two-factor challenge token.
-        /// Defaults to 5 minutes. Valid range: 1 minute – 15 minutes.
+        /// Defaults to 5 minutes. Valid range: 1 minute - 15 minutes.
         /// </summary>
         public TimeSpan ChallengeLifetime { get; [UsedImplicitly] init; } = TimeSpan.FromMinutes(5);
 
@@ -201,6 +204,7 @@ public sealed class AuthenticationOptions
             }
         }
     }
+    // @end
 
     /// <summary>
     /// Configuration options for opaque email tokens used in password-reset and email-verification links.
@@ -216,7 +220,7 @@ public sealed class AuthenticationOptions
 
         /// <summary>
         /// Gets or sets the email token lifetime.
-        /// Defaults to 24 hours. Valid range: 1 hour – 7 days.
+        /// Defaults to 24 hours. Valid range: 1 hour - 7 days.
         /// </summary>
         public TimeSpan Lifetime { get; [UsedImplicitly] init; } = TimeSpan.FromHours(24);
 
