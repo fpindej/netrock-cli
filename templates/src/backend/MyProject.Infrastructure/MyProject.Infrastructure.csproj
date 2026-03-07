@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="../MyProject.Application/MyProject.Application.csproj"/>
+        <ProjectReference Include="../MyProject.Domain/MyProject.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!-- @feature email -->
+        <PackageReference Include="Fluid.Core" />
+        <PackageReference Include="MailKit" />
+        <!-- @end -->
+        <PackageReference Include="Serilog" />
+        <PackageReference Include="Serilog.AspNetCore" />
+        <PackageReference Include="Serilog.Sinks.Async" />
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <!-- @feature auth -->
+        <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+        <!-- @end -->
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <!-- @feature auth -->
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+        <!-- @end -->
+        <!-- @feature jobs -->
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Hangfire.AspNetCore" />
+        <PackageReference Include="Hangfire.Core" />
+        <PackageReference Include="Hangfire.PostgreSql" />
+        <!-- @end -->
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <!-- @feature file-storage -->
+        <PackageReference Include="AWSSDK.S3" />
+        <!-- @end -->
+        <!-- @feature avatars -->
+        <PackageReference Include="SkiaSharp" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
+        <!-- @end -->
+    </ItemGroup>
+
+    <!-- @feature email -->
+    <ItemGroup>
+        <EmbeddedResource Include="Features\Email\Templates\*.liquid" />
+    </ItemGroup>
+    <!-- @end -->
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="MyProject.Api.Tests"/>
+        <InternalsVisibleTo Include="MyProject.Component.Tests"/>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+    </ItemGroup>
+
+</Project>

@@ -27,8 +27,16 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 		encryptionKey: generateEncryptionKey()
 	};
 
+	// Only treat features as enabled if they have a registered manifest.
+	// This prevents template markers from referencing unimplemented features
+	// (e.g. @feature auth keeping lines when auth files don't exist).
+	const manifests = getManifests();
+	const effectiveFeatures = new Set(
+		[...config.features].filter((f) => manifests.has(f))
+	);
+
 	// Collect all file paths to include from feature manifests
-	const filesToInclude = collectFiles(config.features);
+	const filesToInclude = collectFiles(effectiveFeatures);
 
 	// Process each file
 	const files: GeneratedFile[] = [];
@@ -38,7 +46,7 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 		if (rawContent === undefined) continue;
 
 		// Process conditional markers if this is a templated file
-		let content = templated ? processTemplate(rawContent, config.features) : rawContent;
+		let content = templated ? processTemplate(rawContent, effectiveFeatures) : rawContent;
 
 		// Substitute namespace placeholders
 		content = substituteNamespace(content, names);
@@ -60,7 +68,7 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 		secrets,
 		summary: {
 			totalFiles: files.length,
-			enabledFeatures: [...config.features]
+			enabledFeatures: [...effectiveFeatures]
 		}
 	};
 }

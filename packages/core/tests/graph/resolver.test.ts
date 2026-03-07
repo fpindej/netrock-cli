@@ -5,7 +5,6 @@ describe('resolveFeatures', () => {
 	it('always includes required features', () => {
 		const result = resolveFeatures(new Set());
 		expect(result.has('core')).toBe(true);
-		expect(result.has('auth')).toBe(true);
 	});
 
 	it('resolves dependencies automatically', () => {
@@ -39,14 +38,13 @@ describe('resolveFeatures', () => {
 
 	it('handles empty selection (only required features)', () => {
 		const result = resolveFeatures(new Set());
-		expect(result.size).toBe(2); // core + auth
+		expect(result.size).toBe(1); // core only
 	});
 
 	it('ignores unknown feature IDs', () => {
 		// @ts-expect-error Testing invalid input
 		const result = resolveFeatures(new Set(['nonexistent']));
 		expect(result.has('core')).toBe(true);
-		expect(result.has('auth')).toBe(true);
 	});
 });
 

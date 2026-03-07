@@ -16,7 +16,7 @@ export const featureDefinitions: Feature[] = [
 		name: 'Authentication',
 		description: 'Local login, registration, token refresh, user profile',
 		dependencies: ['core'],
-		required: true,
+		required: false,
 		defaultEnabled: true,
 		group: 'core'
 	},
