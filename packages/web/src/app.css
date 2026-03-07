@@ -41,6 +41,37 @@ body {
 	background-color: #06b6d459;
 }
 
+/* Typewriter animation */
+@keyframes typewriter {
+	from {
+		max-width: 0;
+	}
+	to {
+		max-width: 100%;
+	}
+}
+
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+}
+
+.typewriter {
+	display: inline-flex;
+	overflow: hidden;
+	white-space: nowrap;
+	animation: typewriter 1s steps(7) 0.3s both;
+}
+
+.cursor-blink {
+	animation: blink 1s step-end infinite;
+}
+
 /* Scrollbar - Webkit only, Firefox uses default */
 ::-webkit-scrollbar {
 	width: 6px;
