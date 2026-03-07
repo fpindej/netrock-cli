@@ -5,18 +5,12 @@ using MyProject.WebApi.Features.Authentication.Dtos.External;
 // @end
 using MyProject.WebApi.Features.Authentication.Dtos.Login;
 using MyProject.WebApi.Features.Authentication.Dtos.Register;
-// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.ResetPassword;
-// @end
-// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.SetPassword;
-// @end
 // @feature 2fa
 using MyProject.WebApi.Features.Authentication.Dtos.TwoFactor;
 // @end
-// @feature email-verification
 using MyProject.WebApi.Features.Authentication.Dtos.VerifyEmail;
-// @end
 
 namespace MyProject.WebApi.Features.Authentication;
 
@@ -73,7 +67,6 @@ internal static class AuthMapper
             NewPassword: request.NewPassword
         );
 
-    // @feature password-reset
     /// <summary>
     /// Maps a <see cref="ResetPasswordRequest"/> to a <see cref="ResetPasswordInput"/>.
     /// </summary>
@@ -82,9 +75,7 @@ internal static class AuthMapper
             Token: request.Token,
             NewPassword: request.NewPassword
         );
-    // @end
 
-    // @feature email-verification
     /// <summary>
     /// Maps a <see cref="VerifyEmailRequest"/> to a <see cref="VerifyEmailInput"/>.
     /// </summary>
@@ -92,7 +83,6 @@ internal static class AuthMapper
         new(
             Token: request.Token
         );
-    // @end
 
     // @feature 2fa
     /// <summary>
@@ -151,12 +141,10 @@ internal static class AuthMapper
             DisplayName = info.DisplayName
         };
 
-    // @feature password-reset
     /// <summary>
     /// Maps a <see cref="SetPasswordRequest"/> to a <see cref="SetPasswordInput"/>.
     /// </summary>
     public static SetPasswordInput ToSetPasswordInput(this SetPasswordRequest request) =>
         new(NewPassword: request.NewPassword);
-    // @end
     // @end
 }

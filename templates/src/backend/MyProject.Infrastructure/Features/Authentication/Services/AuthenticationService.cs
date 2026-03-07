@@ -11,18 +11,14 @@ using MyProject.Application.Features.Audit;
 // @end
 using MyProject.Application.Features.Authentication;
 using MyProject.Application.Features.Authentication.Dtos;
-// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
-// @end
 using MyProject.Application.Identity;
 using MyProject.Application.Identity.Constants;
 using MyProject.Infrastructure.Cryptography;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
-// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
-// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Shared;
 
@@ -36,18 +32,14 @@ internal class AuthenticationService(
     SignInManager<ApplicationUser> signInManager,
     TimeProvider timeProvider,
     IUserContext userContext,
-    // @feature email
     ITemplatedEmailSender templatedEmailSender,
-    // @end
     EmailTokenService emailTokenService,
     // @feature audit
     IAuditService auditService,
     // @end
     ITokenSessionService tokenSessionService,
     IOptions<AuthenticationOptions> authenticationOptions,
-    // @feature email
     IOptions<EmailOptions> emailOptions,
-    // @end
     ILogger<AuthenticationService> logger,
     MyProjectDbContext dbContext) : IAuthenticationService
 {
@@ -55,9 +47,7 @@ internal class AuthenticationService(
     private readonly AuthenticationOptions.TwoFactorOptions _twoFactorOptions = authenticationOptions.Value.TwoFactor;
     // @end
     private readonly AuthenticationOptions.EmailTokenOptions _emailTokenOptions = authenticationOptions.Value.EmailToken;
-    // @feature email
     private readonly EmailOptions _emailOptions = emailOptions.Value;
-    // @end
 
     /// <inheritdoc />
     public async Task<Result<LoginOutput>> Login(string username, string password, bool useCookies = false, bool rememberMe = false, CancellationToken cancellationToken = default)
@@ -248,9 +238,7 @@ internal class AuthenticationService(
             return Result<Guid>.Failure(ErrorMessages.Auth.RegisterRoleAssignFailed);
         }
 
-        // @feature email-verification
         await SendVerificationEmailAsync(user, cancellationToken);
-        // @end
 
         // @feature audit
         await auditService.LogAsync(AuditActions.Register, userId: user.Id, ct: cancellationToken);
@@ -322,7 +310,6 @@ internal class AuthenticationService(
         return Result.Success();
     }
 
-    // @feature password-reset
     /// <inheritdoc />
     public async Task<Result> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default)
     {
@@ -397,9 +384,7 @@ internal class AuthenticationService(
 
         return Result.Success();
     }
-    // @end
 
-    // @feature email-verification
     /// <inheritdoc />
     public async Task<Result> VerifyEmailAsync(VerifyEmailInput input, CancellationToken cancellationToken = default)
     {
@@ -469,7 +454,6 @@ internal class AuthenticationService(
 
         return Result.Success();
     }
-    // @end
 
     // @feature 2fa
     /// <summary>
@@ -513,7 +497,6 @@ internal class AuthenticationService(
         return Convert.ToBase64String(bytes);
     }
 
-    // @feature email-verification
     /// <summary>
     /// Sends a verification email to the specified user with a confirmation link.
     /// </summary>
@@ -532,7 +515,6 @@ internal class AuthenticationService(
         var model = new VerifyEmailModel(verifyUrl);
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.VerifyEmail, model, user.Email, cancellationToken);
     }
-    // @end
 
     /// <summary>
     /// Checks whether any existing user already has the given normalized phone number.

@@ -17,9 +17,7 @@ using MyProject.Application.Features.Audit;
 // @feature captcha
 using MyProject.Application.Features.Captcha;
 // @end
-// @feature email
 using MyProject.Application.Features.Email;
-// @end
 // @feature jobs
 using MyProject.Application.Features.Jobs;
 // @end
@@ -46,9 +44,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
     // @feature jobs
     public IJobManagementService JobManagementService { get; } = Substitute.For<IJobManagementService>();
     // @end
-    // @feature email
     public IEmailService EmailService { get; } = Substitute.For<IEmailService>();
-    // @end
     public HybridCache HybridCache { get; } = Substitute.For<HybridCache>();
     // @feature captcha
     public ICaptchaService CaptchaService { get; } = Substitute.For<ICaptchaService>();
@@ -125,10 +121,8 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             services.AddSingleton(JobManagementService);
             // @end
 
-            // @feature email
             services.RemoveAll<IEmailService>();
             services.AddSingleton(EmailService);
-            // @end
 
             services.RemoveAll<HybridCache>();
             services.AddSingleton(HybridCache);
@@ -190,9 +184,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         // @feature jobs
         JobManagementService.ClearSubstitute(ClearOptions.All);
         // @end
-        // @feature email
         EmailService.ClearSubstitute(ClearOptions.All);
-        // @end
         HybridCache.ClearSubstitute(ClearOptions.All);
         // @feature captcha
         CaptchaService.ClearSubstitute(ClearOptions.All);

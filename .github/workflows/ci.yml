@@ -39,8 +39,6 @@ jobs:
             features: core
           - name: minimal (core + auth)
             features: core,auth
-          - name: core + auth + email stack
-            features: core,auth,email,email-verification,password-reset
           - name: core + auth + 2fa
             features: core,auth,2fa
           - name: core + auth + oauth
@@ -56,9 +54,9 @@ jobs:
           - name: core + auth + captcha
             features: core,auth,captcha
           - name: api-only (full backend)
-            features: core,auth,email,email-verification,password-reset,2fa,oauth,captcha,jobs,file-storage,avatars,audit,admin,aspire
+            features: core,auth,2fa,oauth,captcha,jobs,file-storage,avatars,audit,admin,aspire
           - name: full (all features)
-            features: core,auth,email,email-verification,password-reset,2fa,oauth,captcha,jobs,file-storage,avatars,audit,admin,aspire,frontend
+            features: core,auth,2fa,oauth,captcha,jobs,file-storage,avatars,audit,admin,aspire,frontend
 
     steps:
       - uses: actions/checkout@v4

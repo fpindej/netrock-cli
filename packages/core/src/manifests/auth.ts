@@ -1,6 +1,6 @@
 import { registerManifest } from '../features/manifest.js';
 
-/** Registers the auth feature manifest - core authentication, authorization, user profile, and identity. */
+/** Registers the auth feature manifest - authentication, email, email verification, password reset, and identity. */
 export function registerAuthManifest(): void {
 	registerManifest({
 		featureId: 'auth',
@@ -50,6 +50,42 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/UserOutput.cs',
+				templated: false
+			},
+
+			// Application - Email verification DTOs
+			{
+				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/VerifyEmailInput.cs',
+				templated: false
+			},
+
+			// Application - Password reset DTOs
+			{
+				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/ResetPasswordInput.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/SetPasswordInput.cs',
+				templated: false
+			},
+
+			// Application - Email
+			{ path: 'src/backend/MyProject.Application/Features/Email/EmailMessage.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Features/Email/EmailTemplateNames.cs',
+				templated: false
+			},
+			{ path: 'src/backend/MyProject.Application/Features/Email/IEmailService.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Features/Email/IEmailTemplateRenderer.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Application/Features/Email/ITemplatedEmailSender.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Application/Features/Email/Models/EmailTemplateModels.cs',
 				templated: false
 			},
 
@@ -132,6 +168,98 @@ export function registerAuthManifest(): void {
 				templated: false
 			},
 
+			// Infrastructure - Email
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Options/EmailOptions.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/NoOpEmailService.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/SmtpEmailService.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs',
+				templated: false
+			},
+
+			// Infrastructure - Email Templates
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/_base.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/verify-email.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/verify-email.subject.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/verify-email.text.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/reset-password.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/reset-password.subject.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/reset-password.text.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/invitation.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/invitation.subject.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/invitation.text.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/admin-reset-password.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/admin-reset-password.subject.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/admin-reset-password.text.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid',
+				templated: false
+			},
+
 			// Infrastructure - Identity
 			{
 				path: 'src/backend/MyProject.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs',
@@ -183,10 +311,16 @@ export function registerAuthManifest(): void {
 				templated: true
 			},
 
-			// WebApi - Password controller (change password + password-reset methods)
+			// WebApi - Password controller
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/PasswordController.cs',
 				templated: true
+			},
+
+			// WebApi - Email verification controller
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/EmailVerificationController.cs',
+				templated: false
 			},
 
 			// WebApi - Auth DTOs: Login
@@ -232,6 +366,46 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequestValidator.cs',
+				templated: false
+			},
+
+			// WebApi - Auth DTOs: VerifyEmail
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequest.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequestValidator.cs',
+				templated: false
+			},
+
+			// WebApi - Auth DTOs: ForgotPassword
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequest.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequestValidator.cs',
+				templated: false
+			},
+
+			// WebApi - Auth DTOs: ResetPassword
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequest.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequestValidator.cs',
+				templated: false
+			},
+
+			// WebApi - Auth DTOs: SetPassword
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequest.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequestValidator.cs',
 				templated: false
 			},
 
@@ -319,6 +493,18 @@ export function registerAuthManifest(): void {
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs',
 				templated: false
 			},
+			{
+				path: 'src/backend/tests/MyProject.Api.Tests/Validators/VerifyEmailRequestValidatorTests.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Api.Tests/Validators/ForgotPasswordRequestValidatorTests.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Api.Tests/Validators/ResetPasswordRequestValidatorTests.cs',
+				templated: false
+			},
 
 			// Tests - Component
 			{
@@ -367,6 +553,24 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Validation/CachingOptionsValidationTests.cs',
+				templated: false
+			},
+
+			// Tests - Component: Email
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/FluidEmailTemplateRendererTests.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/SmtpEmailServiceTests.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/TemplatedEmailSenderTests.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Validation/EmailOptionsValidationTests.cs',
 				templated: false
 			},
 

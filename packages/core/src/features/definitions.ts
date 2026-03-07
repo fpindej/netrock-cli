@@ -14,38 +14,12 @@ export const featureDefinitions: Feature[] = [
 	{
 		id: 'auth',
 		name: 'Authentication',
-		description: 'Local login, registration, token refresh, user profile',
+		description:
+			'Local login, registration, token refresh, user profile, email (SMTP + templates), email verification, password reset',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
 		group: 'core'
-	},
-	{
-		id: 'email',
-		name: 'Email',
-		description: 'SMTP service with Fluid templates',
-		dependencies: ['core'],
-		required: false,
-		defaultEnabled: true,
-		group: 'infrastructure'
-	},
-	{
-		id: 'email-verification',
-		name: 'Email verification',
-		description: 'Verify email flow with confirmation tokens',
-		dependencies: ['auth', 'email'],
-		required: false,
-		defaultEnabled: true,
-		group: 'authentication'
-	},
-	{
-		id: 'password-reset',
-		name: 'Password reset',
-		description: 'Forgot/reset password flow via email',
-		dependencies: ['auth', 'email'],
-		required: false,
-		defaultEnabled: true,
-		group: 'authentication'
 	},
 	{
 		id: '2fa',

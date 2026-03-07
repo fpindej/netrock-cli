@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyProject.Application.Features.Authentication;
 using MyProject.WebApi.Features.Authentication.Dtos.External;
-// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.SetPassword;
-// @end
 using MyProject.WebApi.Shared;
 
 namespace MyProject.WebApi.Features.Authentication;
@@ -107,7 +105,6 @@ public class ExternalAuthController(
         return NoContent();
     }
 
-    // @feature password-reset
     /// <summary>
     /// Sets an initial password for a passwordless OAuth-created account.
     /// Only available when the user has no password set.
@@ -132,5 +129,4 @@ public class ExternalAuthController(
 
         return NoContent();
     }
-    // @end
 }

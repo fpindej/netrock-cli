@@ -49,17 +49,6 @@ describe('file list snapshots', () => {
 		expect(files).toMatchSnapshot();
 	});
 
-	it('core + auth + email + email-verification + password-reset file list', () => {
-		const files = generateFileList([
-			'core',
-			'auth',
-			'email',
-			'email-verification',
-			'password-reset'
-		]);
-		expect(files).toMatchSnapshot();
-	});
-
 	it('core + auth + 2fa + oauth file list', () => {
 		const files = generateFileList(['core', 'auth', '2fa', 'oauth']);
 		expect(files).toMatchSnapshot();
@@ -226,10 +215,6 @@ describe('no residual markers', () => {
 	const combinations: { name: string; features: FeatureId[] }[] = [
 		{ name: 'core-only', features: ['core'] },
 		{ name: 'minimal', features: ['core', 'auth'] },
-		{
-			name: 'core + auth + email stack',
-			features: ['core', 'auth', 'email', 'email-verification', 'password-reset']
-		},
 		{ name: 'core + auth + 2fa + oauth', features: ['core', 'auth', '2fa', 'oauth'] },
 		{ name: 'core + jobs', features: ['core', 'jobs'] },
 		{

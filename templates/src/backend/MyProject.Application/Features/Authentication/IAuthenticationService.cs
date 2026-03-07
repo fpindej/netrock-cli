@@ -75,7 +75,6 @@ public interface IAuthenticationService
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> ChangePasswordAsync(ChangePasswordInput input, CancellationToken cancellationToken = default);
 
-    // @feature password-reset
     /// <summary>
     /// Initiates a password reset flow by generating a token and sending a reset email.
     /// Always returns success to prevent user enumeration - if the user does not exist, no email is sent.
@@ -93,9 +92,7 @@ public interface IAuthenticationService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> ResetPasswordAsync(ResetPasswordInput input, CancellationToken cancellationToken = default);
-    // @end
 
-    // @feature email-verification
     /// <summary>
     /// Verifies a user's email address using an opaque email token that maps to the Identity confirmation token and user.
     /// </summary>
@@ -111,5 +108,4 @@ public interface IAuthenticationService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> ResendVerificationEmailAsync(CancellationToken cancellationToken = default);
-    // @end
 }

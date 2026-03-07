@@ -1,8 +1,6 @@
 using FluentValidation.TestHelper;
 using MyProject.WebApi.Features.Authentication.Dtos.External;
-// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.SetPassword;
-// @end
 
 namespace MyProject.Api.Tests.Validators;
 
@@ -205,7 +203,6 @@ public class ExternalUnlinkRequestValidatorTests
     }
 }
 
-// @feature password-reset
 public class SetPasswordRequestValidatorTests
 {
     private readonly SetPasswordRequestValidator _validator = new();
@@ -283,4 +280,3 @@ public class SetPasswordRequestValidatorTests
             .WithErrorMessage("Password must contain at least one digit.");
     }
 }
-// @end

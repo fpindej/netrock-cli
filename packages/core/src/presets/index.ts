@@ -11,18 +11,7 @@ export const presets: Preset[] = [
 		id: 'standard',
 		name: 'Standard',
 		description: 'Recommended setup for most projects',
-		features: [
-			'core',
-			'auth',
-			'email',
-			'email-verification',
-			'password-reset',
-			'jobs',
-			'audit',
-			'admin',
-			'aspire',
-			'frontend'
-		]
+		features: ['core', 'auth', 'jobs', 'audit', 'admin', 'aspire', 'frontend']
 	},
 	{
 		id: 'full',
@@ -31,9 +20,6 @@ export const presets: Preset[] = [
 		features: [
 			'core',
 			'auth',
-			'email',
-			'email-verification',
-			'password-reset',
 			'2fa',
 			'oauth',
 			'captcha',
@@ -53,9 +39,6 @@ export const presets: Preset[] = [
 		features: [
 			'core',
 			'auth',
-			'email',
-			'email-verification',
-			'password-reset',
 			'2fa',
 			'oauth',
 			'captcha',

@@ -6,10 +6,8 @@ using Microsoft.Extensions.Time.Testing;
 using Microsoft.Extensions.Caching.Hybrid;
 using MyProject.Application.Features.Admin.Dtos;
 using MyProject.Application.Features.Audit;
-// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
-// @end
 // @feature file-storage
 using MyProject.Application.Features.FileStorage;
 // @end
@@ -19,9 +17,7 @@ using MyProject.Infrastructure.Features.Admin.Services;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
 using MyProject.Infrastructure.Features.Authentication.Services;
-// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
-// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Shared;
 
@@ -32,9 +28,7 @@ public class AdminServiceTests : IDisposable
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<ApplicationRole> _roleManager;
     private readonly HybridCache _hybridCache;
-    // @feature email
     private readonly ITemplatedEmailSender _templatedEmailSender;
-    // @end
     private readonly IAuditService _auditService;
     private readonly FakeTimeProvider _timeProvider;
     private readonly MyProjectDbContext _dbContext;
@@ -48,9 +42,7 @@ public class AdminServiceTests : IDisposable
         _userManager = IdentityMockHelpers.CreateMockUserManager();
         _roleManager = IdentityMockHelpers.CreateMockRoleManager();
         _hybridCache = Substitute.For<HybridCache>();
-        // @feature email
         _templatedEmailSender = Substitute.For<ITemplatedEmailSender>();
-        // @end
         _timeProvider = new FakeTimeProvider(new DateTimeOffset(2025, 1, 15, 12, 0, 0, TimeSpan.Zero));
         _dbContext = TestDbContextFactory.Create();
         var logger = Substitute.For<ILogger<AdminService>>();
@@ -63,9 +55,7 @@ public class AdminServiceTests : IDisposable
                 Audience = "test-audience"
             }
         });
-        // @feature email
         var emailOptions = Options.Create(new EmailOptions { FrontendBaseUrl = "https://example.com" });
-        // @end
         var emailTokenService = new EmailTokenService(_dbContext, _timeProvider, authOptions);
         _auditService = Substitute.For<IAuditService>();
 
@@ -73,7 +63,6 @@ public class AdminServiceTests : IDisposable
         var fileStorageService = Substitute.For<IFileStorageService>();
         // @end
 
-        // @feature email
         // @feature file-storage
         _sut = new AdminService(
             _userManager, _roleManager, _dbContext, _hybridCache, _timeProvider,
@@ -85,21 +74,6 @@ public class AdminServiceTests : IDisposable
             _userManager, _roleManager, _dbContext, _hybridCache, _timeProvider,
             _templatedEmailSender, emailTokenService, _auditService,
             authOptions, emailOptions, logger);
-        // @end
-        // @end
-        // @feature !email
-        // @feature file-storage
-        _sut = new AdminService(
-            _userManager, _roleManager, _dbContext, _hybridCache, _timeProvider,
-            emailTokenService, _auditService,
-            fileStorageService, authOptions, logger);
-        // @end
-        // @feature !file-storage
-        _sut = new AdminService(
-            _userManager, _roleManager, _dbContext, _hybridCache, _timeProvider,
-            emailTokenService, _auditService,
-            authOptions, logger);
-        // @end
         // @end
     }
 
@@ -874,7 +848,6 @@ public class AdminServiceTests : IDisposable
 
     #endregion
 
-    // @feature email
     #region SendPasswordReset
 
     [Fact]
@@ -951,7 +924,6 @@ public class AdminServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 
     #region CreateUser
 
@@ -982,13 +954,11 @@ public class AdminServiceTests : IDisposable
             targetEntityId: newUserId,
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
-        // @feature email
         await _templatedEmailSender.Received(1).SendSafeAsync(
             "invitation",
             Arg.Any<InvitationModel>(),
             "new@test.com",
             Arg.Any<CancellationToken>());
-        // @end
     }
 
     [Fact]
@@ -1003,7 +973,6 @@ public class AdminServiceTests : IDisposable
         Assert.Equal(ErrorMessages.Admin.EmailAlreadyRegistered, result.Error);
     }
 
-    // @feature email
     [Fact]
     public async Task CreateUser_SendsInvitationEmail_WithOpaqueToken()
     {
@@ -1030,7 +999,6 @@ public class AdminServiceTests : IDisposable
         Assert.Equal(EmailTokenPurpose.PasswordReset, emailToken.Purpose);
         Assert.Equal("reset-token", emailToken.IdentityToken);
     }
-    // @end
 
     #endregion
 
