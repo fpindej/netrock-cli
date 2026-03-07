@@ -30,19 +30,17 @@
 	</a>
 
 	<nav class="flex items-center gap-1">
-		{#if isHome && activeSection}
-			{#each steps as step}
-				<a
-					href="#{step.id}"
-					class="hidden rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:block
-						{activeSection === step.id
-						? 'bg-accent-dim text-accent-light'
-						: 'text-text-muted hover:text-text-secondary'}"
-				>
-					{step.label}
-				</a>
-			{/each}
-		{/if}
+		{#each steps as step}
+			<a
+				href="{isHome ? '' : '/'}#{step.id}"
+				class="hidden rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:block
+					{isHome && activeSection === step.id
+					? 'bg-accent-dim text-accent-light'
+					: 'text-text-muted hover:text-text-secondary'}"
+			>
+				{step.label}
+			</a>
+		{/each}
 		<a
 			href="/why"
 			class="rounded-md px-3 py-1.5 font-mono text-xs transition-colors
