@@ -8,3 +8,17 @@ build/
 *.tsbuildinfo
 .turbo/
 coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Generated project output (pnpm generate defaults to output/)
+/output/
+/test-app/
