@@ -11,7 +11,7 @@ export const presets: Preset[] = [
 		id: 'standard',
 		name: 'Standard',
 		description: 'Recommended setup for most projects',
-		features: ['core', 'auth', 'jobs', 'audit', 'admin', 'aspire']
+		features: ['core', 'auth', 'jobs', 'audit', 'admin', 'aspire', 'claude', 'claude-skills']
 	},
 	{
 		id: 'full',
@@ -28,7 +28,9 @@ export const presets: Preset[] = [
 			'avatars',
 			'audit',
 			'admin',
-			'aspire'
+			'aspire',
+			'claude',
+			'claude-skills'
 		]
 	}
 ];

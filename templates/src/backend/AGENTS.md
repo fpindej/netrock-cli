@@ -14,8 +14,10 @@ src/backend/
 ├── MyProject.Infrastructure/      # Implementations (all internal)
 │   ├── Features/{Feature}/Services/, Configurations/, Extensions/
 │   └── Persistence/MyProjectDbContext.cs
+# @feature aspire
 ├── MyProject.ServiceDefaults/     # Aspire shared: OTEL, service discovery, resilience
 ├── MyProject.AppHost/             # Aspire orchestrator (local dev only)
+# @end
 └── MyProject.WebApi/              # Entry point
     ├── Features/{Feature}/{Feature}Controller.cs, {Feature}Mapper.cs
     ├── Features/{Feature}/Dtos/{Operation}/{Operation}Request.cs + Validator
@@ -51,6 +53,7 @@ Rules:
 - Boolean naming: `Is*`/`Has*` in C#, prefix-free column names via `HasColumnName`
 - Soft delete via `entity.SoftDelete()` / `entity.Restore()` - never set `IsDeleted` directly
 
+# @feature audit
 ## Audit Trail
 
 `AuditEvent` is append-only, does NOT extend `BaseEntity`. No FK on `UserId` (users are hard-deleted). Fire-and-forget logging - failures never break operations.
@@ -63,6 +66,7 @@ await auditService.LogAsync(AuditActions.AdminAssignRole, userId: callerId,
 ```
 
 Always serialize metadata with `JsonSerializer.Serialize` - never string interpolation (JSON injection risk).
+# @end
 
 ## EF Core
 
@@ -129,8 +133,8 @@ WebApi response DTOs: classes with `init` properties and `[UsedImplicitly]` from
 - Include `/// <summary>`, `[ProducesResponseType]` per status code, and `CancellationToken` as last param for complete OpenAPI docs and graceful cancellation
 - Never `/// <param name="cancellationToken">` - it leaks into OAS `requestBody.description`
 - File uploads: `[FromForm]` with `IFormFile`, `[Consumes("multipart/form-data")]`, `[RequestSizeLimit(bytes)]`
-- Error responses: use `ProblemFactory.Create()` to ensure consistent RFC 9457 ProblemDetails format - avoid `NotFound()`, `BadRequest()`, or anonymous objects which produce inconsistent shapes
-- Success responses: `Ok(response)`, `Created(string.Empty, response)` - `CreatedAtAction` is avoided since the Location header isn't used by the SvelteKit frontend
+- Error responses: use `ProblemFactory.Create()` to ensure consistent RFC 9457 ProblemDetails format
+- Success responses: `Ok(response)`, `Created(string.Empty, response)`
 - `[ProducesResponseType]` without `typeof(...)` on error codes (400, 401, 403, 404, 429) - ASP.NET auto-types as ProblemDetails
 
 ## Validation
@@ -147,12 +151,12 @@ FluentValidation auto-discovered from WebApi assembly. Co-locate validators with
 
 ## Error Messages
 
-- Client-facing messages are centralized as `const string` in `ErrorMessages.cs` nested classes - reference constants rather than inline strings for consistency and single-source-of-truth
+- Client-facing messages are centralized as `const string` in `ErrorMessages.cs` nested classes
 - Runtime values (role names, user IDs, framework errors): log server-side via `ILogger`, never in `Result.Failure()`
 - Identity errors: log `.Description` server-side, return a static `ErrorMessages` constant to the client
-- Exception: password validation errors (registration, change, reset) are forwarded as-is - they describe password policy, not internals
-- To add: create `const string` in `ErrorMessages.cs` nested class. Use: `Result.Failure(ErrorMessages.Orders.NotFound)`. Dynamic values go in logs, not in Result.
+- To add: create `const string` in `ErrorMessages.cs` nested class. Dynamic values go in logs, not in Result.
 
+# @feature auth
 ## Authorization
 
 ### Permission System
@@ -160,9 +164,9 @@ FluentValidation auto-discovered from WebApi assembly. Co-locate validators with
 Atomic permissions via `[RequirePermission("permission.name")]` on controller actions. Permissions stored as role claims, embedded in JWT as `"permission"` claims.
 
 - `AppPermissions.cs`: constants discovered via reflection (`AppPermissions.All`)
-- `PermissionAuthorizationHandler`: SuperAdmin bypass → claim match → deny
+- `PermissionAuthorizationHandler`: SuperAdmin bypass - claim match - deny
 - Never class-level `[Authorize(Roles)]` on controllers using permissions
-- To add a role: add `public const string` to `AppRoles.cs` - reflection discovers it, seeding picks it up automatically. Optionally seed permissions in `SeedRolePermissionsAsync()`.
+- To add a role: add `public const string` to `AppRoles.cs` - reflection discovers it, seeding picks it up automatically.
 
 ### Role Hierarchy
 
@@ -171,62 +175,53 @@ Atomic permissions via `[RequirePermission("permission.name")]` on controller ac
 - Cannot assign/remove roles at/above your rank
 - Cannot modify your own roles, lock yourself, or delete yourself
 
-Permission changes on a role → invalidate refresh tokens + rotate security stamps + clear cache for all affected users.
+Permission changes on a role - invalidate refresh tokens + rotate security stamps + clear cache for all affected users.
+# @end
 
 ## Repository Pattern
 
 `IBaseEntityRepository<T>` provides CRUD with automatic soft-delete filtering (global query filter). Open generic registration covers basic entities.
 
-Custom repositories: extend `IBaseEntityRepository<T>` in Application, implement in Infrastructure with `BaseEntityRepository<T>`. Avoid exposing `IQueryable` across layer boundaries - it couples consumers to the EF Core query provider and makes testing harder.
+Custom repositories: extend `IBaseEntityRepository<T>` in Application, implement in Infrastructure with `BaseEntityRepository<T>`. Avoid exposing `IQueryable` across layer boundaries.
 
-Pagination: `Paginate(int pageNumber, int pageSize)` extension on `IQueryable<T>` returns `IQueryable<T>` (applies `Skip`/`Take`). Use in custom repository methods for list endpoints.
+Pagination: `Paginate(int pageNumber, int pageSize)` extension on `IQueryable<T>` returns `IQueryable<T>` (applies `Skip`/`Take`).
 
 ## Caching
 
 `HybridCache` (.NET built-in) provides L1 in-process caching with stampede protection. Keys defined in `CacheKeys` constants. `UserCacheInvalidationInterceptor` auto-clears user cache on entity changes. `NoOpHybridCache` is registered when caching is disabled.
 
+# @feature file-storage
 ## File Storage
 
 `IFileStorageService` - generic S3-compatible interface (`Upload`, `Download`, `Delete`, `Exists`). Implementation: `S3FileStorageService` (works with MinIO locally, any S3-compatible provider in production).
 
-**Configuration:** `FileStorageOptions` in `appsettings.json` / env vars (`FileStorage__Endpoint`, `FileStorage__AccessKey`, etc.). `ForcePathStyle = true` for MinIO compatibility.
+**Configuration:** `FileStorageOptions` in `appsettings.json` / env vars. `ForcePathStyle = true` for MinIO compatibility.
 
 **Uploading files from a controller:**
 1. Accept `IFormFile` via `[FromForm]` + `[Consumes("multipart/form-data")]` + `[RequestSizeLimit]`
-2. Read to `byte[]` in the controller: `using var ms = new MemoryStream(); await file.CopyToAsync(ms); var data = ms.ToArray();`
-3. Pass to the service for validation/processing (e.g., `IImageProcessingService` for avatar images)
-4. Store via `fileStorageService.UploadAsync(key, data, contentType, ct)` - returns `Result`
+2. Read to `byte[]` in the controller
+3. Pass to the service for validation/processing
+4. Store via `fileStorageService.UploadAsync(key, data, contentType, ct)`
 
-**Storage keys:** Use `{feature}/{id}.{ext}` pattern (e.g., `avatars/{userId}.webp`). Overwrite replaces the old file.
+**Storage keys:** Use `{feature}/{id}.{ext}` pattern (e.g., `avatars/{userId}.webp`).
+# @end
 
-**Avatar pattern:** `ApplicationUser.HasAvatar` boolean flag. Frontend constructs URL: `/api/users/{id}/avatar`. Backend serves via `File(data, contentType)` with `[ResponseCache(Duration = 300, Location = Client)]`.
-
-**Swapping S3 provider:** Only `FileStorageOptions` changes - `S3FileStorageService` is provider-agnostic. Cloudflare R2, DigitalOcean Spaces, Backblaze B2 all work with path-style S3 API. Update `FileStorage__Endpoint`, credentials, and `UseSSL` in production env.
-
-**Removing file storage:** Delete the `storage` Docker service, `FileStorage*` options/services/extensions, avatar endpoints, `HasAvatar` from `ApplicationUser`, and frontend avatar components. Remove `AWSSDK.S3` and `SkiaSharp` from `Directory.Packages.props`.
-
+# @feature auth
 ## Email Templates
 
-Transactional emails use [Fluid](https://github.com/sebastienros/fluid) (Liquid) templates rendered by `IEmailTemplateRenderer`. Templates are embedded resources compiled once and cached for the application lifetime.
-
-**Architecture:** `IEmailTemplateRenderer.Render<TModel>(templateName, model)` returns a `RenderedEmail` (subject, HTML body, optional plain text). Services inject `ITemplatedEmailSender` which wraps render + send in a try/catch (failures are logged but never propagated).
+Transactional emails use [Fluid](https://github.com/sebastienros/fluid) (Liquid) templates rendered by `IEmailTemplateRenderer`. Templates are embedded resources compiled once and cached.
 
 **3-file pattern** per email in `Infrastructure/Features/Email/Templates/`:
-- `{name}.liquid` - HTML body fragment (inline styles, injected into `_base.liquid`)
+- `{name}.liquid` - HTML body fragment (injected into `_base.liquid`)
 - `{name}.subject.liquid` - Subject line (plain text)
 - `{name}.text.liquid` - Plain text alternative (optional but recommended)
 
-**Model records** in `Application/Features/Email/Models/EmailTemplateModels.cs` - one record per template. Properties auto-map to snake_case Liquid variables (e.g. `ResetUrl` becomes `reset_url`).
-
-**Shared layout:** `_base.liquid` wraps all HTML emails with header (`{{ app_name }}`), card container, and footer. Fragments provide inner content only - the layout handles the outer HTML document.
-
-**Security:** HTML body is rendered with `HtmlEncoder.Default` preventing XSS. Subject and plain text are unencoded. The `{{ body | raw }}` filter in `_base.liquid` safely injects pre-encoded child HTML.
-
-**Adding a new template:** Use the `/add-email-template` skill.
+**Model records** in `Application/Features/Email/Models/EmailTemplateModels.cs` - properties auto-map to snake_case Liquid variables.
+# @end
 
 ## OpenAPI
 
-- `/// <summary>` on every controller action and DTO property → generates OAS descriptions
+- `/// <summary>` on every controller action and DTO property
 - `[ProducesResponseType]` declares all possible status codes per action
 - `EnumSchemaTransformer` auto-documents enum values
 - Scalar UI at `/scalar/v1` (development only)
@@ -246,8 +241,6 @@ public sealed class {Name}Options
 
 Register with `BindConfiguration`, `ValidateDataAnnotations`, `ValidateOnStart`.
 
-Production build hygiene: `appsettings.Development.json` and `appsettings.Testing.json` excluded from publish via `StripDevConfig` (MSBuild + Dockerfile defense-in-depth).
-
 ## Testing
 
 | Project | Tests | Dependencies |
@@ -257,56 +250,26 @@ Production build hygiene: `appsettings.Development.json` and `appsettings.Testin
 | `Api.Tests` | Full HTTP pipeline (routes, auth, status codes) | `CustomWebApplicationFactory`, `TestAuthHandler` |
 | `Architecture.Tests` | Layer deps, naming, visibility | NetArchTest |
 
-API test auth: `"Authorization", "Test"` (basic user), `TestAuth.WithPermissions(...)` (specific perms), `TestAuth.SuperAdmin()`.
-
-Response contracts: frozen records in `Contracts/ResponseContracts.cs` - deserialize and assert key fields for 200/201 responses.
-
 ## Hosting
 
 `HostingOptions` controls `ForceHttps` (default true - required behind TLS proxy) and `ReverseProxy` trust (trusted networks/proxies for `X-Forwarded-For`).
 
-Docker local: `172.16.0.0/12` pre-configured. Set `XFF_DEPTH=1` on frontend container.
-
+# @feature aspire
 ## Aspire (Local Development Orchestration)
 
-**Two new projects** support .NET Aspire for local development:
+**Two projects** support .NET Aspire for local development:
 
 ### ServiceDefaults (`MyProject.ServiceDefaults`)
 
-Shared Aspire project (`IsAspireSharedProject=true`) providing:
-- **OpenTelemetry**: logging (formatted messages, scopes), metrics (ASP.NET Core, HTTP, Runtime), tracing (ASP.NET Core, HTTP with health-check filtering, EF Core), OTLP export
-- **Service discovery**: automatic for `HttpClient` instances
-- **HTTP resilience**: standard resilience handler on all `HttpClient` instances
-
-Called via `builder.AddServiceDefaults()` in `Program.cs`. Degrades gracefully when not running under Aspire - OTLP export only activates when `OTEL_EXPORTER_OTLP_ENDPOINT` is set.
-
-Health check endpoint mapping is **not** included - the application's existing `MapHealthCheckEndpoints()` handles `/health`, `/health/ready`, and `/health/live`.
+Shared Aspire project providing OpenTelemetry (logging, metrics, tracing, OTLP export), service discovery, and HTTP resilience. Called via `builder.AddServiceDefaults()` in `Program.cs`. Degrades gracefully when not running under Aspire.
 
 ### AppHost (`MyProject.AppHost`)
 
-Aspire orchestrator for local development. Launches all infrastructure as containers:
-
-| Resource | Aspire method | Connection mapping |
-|---|---|---|
-| PostgreSQL + PgAdmin | `AddPostgres().WithPgAdmin().AddDatabase("Database")` | Auto → `ConnectionStrings:Database` |
-| MinIO | `AddMinioContainer("storage").WithDataVolume()` | Via `WithEnvironment("FileStorage__*", ...)` |
-| MailPit | `AddMailPit("mailpit", httpPort, smtpPort)` | Via `WithEnvironment("Email__Smtp__*", ...)` |
-| API | `AddProject<Projects.MyProject_WebApi>("api")` | References all above, port pinned by init |
-| Frontend | `AddViteApp("frontend", ...).WithPnpm()` | Port pinned by init |
+Aspire orchestrator for local development. Launches all infrastructure as containers.
 
 **Run**: `dotnet run --project src/backend/MyProject.AppHost`
 
-### Aspire vs Docker Compose
+### Logging: Serilog - OpenTelemetry
 
-| | Aspire (AppHost) | Docker Compose |
-|---|---|---|
-| Purpose | Local development | Production deployment |
-| Dashboard | Built-in (OTEL traces, logs, metrics) | N/A (stdout logs, external collector) |
-| Config | `WithEnvironment` in `Program.cs` | env files in `deploy/envs/` |
-| Frontend | Hot reload via Vite dev server | Built static bundle |
-
-### Logging: Serilog → OpenTelemetry
-
-Serilog bridges to OpenTelemetry via the ServiceDefaults `AddOpenTelemetry()` logger provider. With `writeToProviders: true`, Serilog forwards logs to all registered `ILoggerProvider` instances including the OTEL one - no separate Serilog OTEL sink needed. When `OTEL_EXPORTER_OTLP_ENDPOINT` is set (by Aspire or production infrastructure), logs flow to the OTLP collector. The console sink always remains active.
-
-**Adding a new dependency:** Use the `/add-aspire-dep` skill.
+Serilog bridges to OpenTelemetry via the ServiceDefaults `AddOpenTelemetry()` logger provider. With `writeToProviders: true`, Serilog forwards logs to all registered `ILoggerProvider` instances including the OTEL one - no separate Serilog OTEL sink needed.
+# @end

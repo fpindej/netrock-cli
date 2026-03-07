@@ -11,6 +11,8 @@ export type FeatureId =
 	| 'audit'
 	| 'admin'
 	| 'aspire'
+	| 'claude'
+	| 'claude-skills'
 	| 'frontend';
 
 /** Definition of a single generator feature. */
@@ -42,6 +44,7 @@ export type FeatureGroup =
 	| 'core'
 	| 'authentication'
 	| 'infrastructure'
+	| 'tooling'
 	| 'frontend';
 
 /** The complete feature dependency graph. */

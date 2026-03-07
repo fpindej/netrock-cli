@@ -1,0 +1,45 @@
+<!-- @feature frontend -->
+---
+disable-model-invocation: true
+---
+
+Creates a new frontend page with routing, i18n, and navigation.
+
+Infers route, route group, components needed, and data requirements from context. Defaults to `(app)` (authenticated). Asks only if genuinely ambiguous.
+
+## Conventions
+
+- **Button layout**: All action/submit buttons use `w-full sm:w-auto` with wrapper `flex flex-col gap-2 sm:flex-row sm:justify-end`. Default size only (no `size="sm"` or `size="lg"`).
+
+## Steps
+
+**Components (if needed):**
+
+1. Create feature folder: `src/frontend/src/lib/components/{feature}/`
+2. Create components with `interface Props` + `$props()`
+3. Create barrel `index.ts` exporting all components
+
+**Page:**
+
+4. Create route directory: `src/frontend/src/routes/(app)/{feature}/`
+   - Or `(public)/{feature}/` for unauthenticated pages
+5. Create `+page.svelte` with `<svelte:head>` using i18n title
+6. If server data needed: create `+page.server.ts` using `createApiClient(fetch, url.origin)`
+7. If permission-guarded: add check in `+page.server.ts`:
+   ```typescript
+   if (!hasPermission(user, Permissions.Feature.View)) throw redirect(303, '/');
+   ```
+
+**Integration:**
+
+8. Add i18n keys to both `en.json` and `cs.json`
+9. Add navigation entry in `AppSidebar.svelte` (with `permission` field if guarded)
+10. Add matching entry in `CommandPalette.svelte` (with `permission` field if admin-guarded)
+
+**Verify and commit:**
+
+11. `cd src/frontend && pnpm run format && pnpm run lint && pnpm run check` - fix errors, loop until green
+12. Commit: `feat({feature}): add {feature} page`
+
+Paraglide module errors (~32) are expected at check time - ignore those. Fix everything else.
+<!-- @end -->

@@ -103,6 +103,24 @@ export const featureDefinitions: Feature[] = [
 		group: 'infrastructure'
 	},
 	{
+		id: 'claude',
+		name: 'Claude docs',
+		description: 'CLAUDE.md, AGENTS.md, and FILEMAP.md for AI-assisted development',
+		dependencies: ['core'],
+		required: false,
+		defaultEnabled: true,
+		group: 'tooling'
+	},
+	{
+		id: 'claude-skills',
+		name: 'Claude skills',
+		description: 'Step-by-step Claude Code skills and environment hooks',
+		dependencies: ['claude'],
+		required: false,
+		defaultEnabled: true,
+		group: 'tooling'
+	},
+	{
 		id: 'frontend',
 		name: 'SvelteKit frontend',
 		description: 'Full SvelteKit reference frontend with all feature UIs',
