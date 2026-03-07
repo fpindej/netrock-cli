@@ -77,9 +77,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Build core
+        run: pnpm --filter @netrock/core build
+
       - name: Generate project
         run: |
-          node --loader ts-node/esm scripts/generate-ci.ts \
+          pnpm tsx scripts/generate-ci.ts \
             --name ci-test \
             --features "${{ matrix.features }}" \
             --output /tmp/ci-output
