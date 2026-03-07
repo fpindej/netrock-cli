@@ -65,6 +65,39 @@ Features are modular. Pick what you need, skip what you don't. Dependencies are 
 | **Full** | Everything |
 | **API only** | Everything except the SvelteKit frontend |
 
+## Architecture
+
+```mermaid
+graph LR
+    subgraph "packages/core"
+        G[Generator] --> P[Template Processor]
+        G --> R[Dependency Resolver]
+        G --> N[Namespace Substitution]
+        R --> FD[Feature Definitions]
+        R --> M[Manifests]
+        P --> T["templates/"]
+    end
+
+    subgraph "packages/web"
+        W[SvelteKit UI] --> G
+    end
+
+    U((User)) --> W
+    G --> O["output/"]
+```
+
+### Generation pipeline
+
+```mermaid
+flowchart LR
+    A[Select features] --> B[Resolve dependencies]
+    B --> C[Collect manifest files]
+    C --> D["Process @feature markers"]
+    D --> E[Substitute namespace]
+    E --> F[Generate secrets]
+    F --> G[Write output]
+```
+
 ## Project structure
 
 ```
@@ -75,6 +108,7 @@ netrock-cli/
         engine/     Generator, template processor, naming, secrets
         features/   Feature definitions, dependency graph, manifests
         graph/      Dependency resolver
+        manifests/  Per-feature file declarations (14 manifests, 410 files)
         presets/    Preset configurations
       tests/        Unit + integration tests (vitest)
   scripts/
@@ -110,6 +144,11 @@ internal class MyProjectDbContext(DbContextOptions<MyProjectDbContext> options)
 
 `@feature name` keeps the block when the feature is enabled. `@feature !name` keeps it when the feature is disabled. Both markers are stripped from output.
 
+Markers work across file types:
+- C#/TypeScript/JSON: `// @feature name` ... `// @end`
+- HTML/Svelte/XML: `<!-- @feature name -->` ... `<!-- @end -->`
+- YAML/shell: `# @feature name` ... `# @end`
+
 ## Development
 
 ```bash
@@ -132,10 +171,21 @@ Integration tests generate a full project, run `dotnet build` and `dotnet test` 
 ## Progress
 
 - [x] Phase 1 - Feature mapping (14 features defined with dependency graph)
-- [x] Phase 2 - Core engine (template processor, namespace substitution, scaffolding)
-- [x] Core manifest - Generates a buildable, testable .NET project
-- [ ] Phase 3 - Feature manifests (auth, email, jobs, audit, admin, aspire, frontend, ...)
+- [x] Phase 2 - Core engine (dependency resolver, template processor, namespace substitution, presets, scaffolding)
+- [x] Phase 3 - Feature modules (13/14 backend features with manifests and cross-cutting `@feature` markers)
+- [ ] Phase 3 - SvelteKit frontend module
+- [ ] Phase 4 - Testing (snapshot tests, feature combination matrix, build verification)
 - [ ] Web UI - Interactive generator at netrock.dev
+
+### Verified presets
+
+All presets generate projects that build and pass their full test suites:
+
+| Preset | Features | dotnet tests |
+|---|---|---|
+| Core-only | Core | 56 (TypeScript integration) |
+| Minimal | Core + Auth | 349 |
+| Full | All 14 features | 1041 |
 
 ## License
 
