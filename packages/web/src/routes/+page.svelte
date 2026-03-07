@@ -26,7 +26,7 @@
 </script>
 
 <svelte:head>
-	<title>netrock - Generate production-ready .NET + SvelteKit projects</title>
+	<title>netrock - Generate production-ready .NET API projects</title>
 	{#if plausibleDomain}
 		<script defer data-domain={plausibleDomain} src={plausibleSrc}></script>
 	{/if}
@@ -43,16 +43,16 @@
 			<span class="text-accent-light">net</span><span class="text-text-primary">rock</span>
 		</h1>
 		<p class="mt-4 max-w-md text-base text-text-secondary sm:text-lg">
-			Production-ready .NET + SvelteKit in seconds.
+			Production-ready .NET APIs in seconds.
 			<br class="hidden sm:block" />
 			Pick features, preview, download.
 		</p>
-		<div class="mt-6 flex items-center gap-2 font-mono text-xs text-text-muted">
+		<div class="mt-6 flex flex-wrap items-center justify-center gap-2 font-mono text-xs text-text-muted">
 			<span class="rounded bg-surface px-2 py-1">.NET 10</span>
 			<span class="text-border-active">+</span>
 			<span class="rounded bg-surface px-2 py-1">Clean Architecture</span>
 			<span class="text-border-active">+</span>
-			<span class="rounded bg-surface px-2 py-1">SvelteKit</span>
+			<span class="rounded bg-surface px-2 py-1">PostgreSQL</span>
 		</div>
 	</div>
 
@@ -71,6 +71,9 @@
 			More frontends coming soon
 		</h2>
 		<div class="flex flex-wrap justify-center gap-3">
+			<span class="rounded-lg border border-accent/30 bg-accent-dim px-4 py-2 font-mono text-xs text-accent-light">
+				SvelteKit
+			</span>
 			<span class="rounded-lg border border-border-subtle bg-surface px-4 py-2 font-mono text-xs text-text-muted">
 				Angular
 			</span>

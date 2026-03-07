@@ -22,9 +22,11 @@ const source: TemplateSource = {
 const GROUP_LABELS: Record<string, string> = {
 	core: 'Foundation',
 	authentication: 'Auth add-ons',
-	infrastructure: 'Infrastructure',
-	frontend: 'Frontend'
+	infrastructure: 'Infrastructure'
 };
+
+/** Features hidden from the UI (no templates yet). */
+const HIDDEN_FEATURES: Set<FeatureId> = new Set(['frontend']);
 
 interface FeatureNote {
 	title: string;
@@ -74,26 +76,19 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 		});
 	}
 
-	if (features.has('frontend') && !features.has('admin') && features.has('audit')) {
-		notes.push({
-			title: 'Frontend without admin',
-			message:
-				'The SvelteKit app includes auth and settings pages. Add Admin Panel for user management UI.'
-		});
-	}
-
 	return notes;
 }
 
 function groupFeatures(): { group: string; label: string; features: Feature[] }[] {
 	const groups = new Map<string, Feature[]>();
 	for (const f of featureDefinitions) {
+		if (HIDDEN_FEATURES.has(f.id)) continue;
 		const existing = groups.get(f.group) ?? [];
 		existing.push(f);
 		groups.set(f.group, existing);
 	}
 
-	const order = ['core', 'authentication', 'infrastructure', 'frontend'];
+	const order = ['core', 'authentication', 'infrastructure'];
 	return order
 		.filter((g) => groups.has(g))
 		.map((g) => ({
