@@ -7,7 +7,7 @@ export function registerAspireManifest(): void {
 		files: [
 			// AppHost
 			{ path: 'src/backend/MyProject.AppHost/MyProject.AppHost.csproj', templated: false },
-			{ path: 'src/backend/MyProject.AppHost/Program.cs', templated: false },
+			{ path: 'src/backend/MyProject.AppHost/Program.cs', templated: true },
 			{
 				path: 'src/backend/MyProject.AppHost/Properties/launchSettings.json',
 				templated: false

@@ -57,6 +57,7 @@ var api = builder.AddProject<Projects.MyProject_WebApi>("api")
     .WithEnvironment("FileStorage__BucketName", "{INIT_PROJECT_SLUG}-files")
     .WithEnvironment("FileStorage__UseSSL", "false");
 
+// @feature frontend
 // ── Frontend (SvelteKit) ────────────────────────────────────────────────────
 
 builder.AddViteApp("frontend", "../../../src/frontend")
@@ -68,5 +69,6 @@ builder.AddViteApp("frontend", "../../../src/frontend")
     })
     .WithEnvironment("API_URL", "http://127.0.0.1:" + apiPort)
     .WaitFor(api);
+// @end
 
 builder.Build().Run();
