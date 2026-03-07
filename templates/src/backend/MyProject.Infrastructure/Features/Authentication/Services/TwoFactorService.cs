@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Features.Authentication;
 using MyProject.Application.Features.Authentication.Dtos;
 using MyProject.Application.Identity;
@@ -14,12 +16,21 @@ namespace MyProject.Infrastructure.Features.Authentication.Services;
 /// <summary>
 /// Identity-backed implementation of <see cref="ITwoFactorService"/> for TOTP two-factor authentication management.
 /// </summary>
+// @feature audit
 internal class TwoFactorService(
     UserManager<ApplicationUser> userManager,
     IUserContext userContext,
     IAuditService auditService,
     IOptions<AuthenticationOptions> authenticationOptions,
     ILogger<TwoFactorService> logger) : ITwoFactorService
+// @end
+// @feature !audit
+internal class TwoFactorService(
+    UserManager<ApplicationUser> userManager,
+    IUserContext userContext,
+    IOptions<AuthenticationOptions> authenticationOptions,
+    ILogger<TwoFactorService> logger) : ITwoFactorService
+// @end
 {
     private const int RecoveryCodeCount = 10;
     private readonly AuthenticationOptions.TwoFactorOptions _twoFactorOptions = authenticationOptions.Value.TwoFactor;
@@ -87,7 +98,9 @@ internal class TwoFactorService(
 
         var codes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, RecoveryCodeCount);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.TwoFactorEnabled, userId: user.Id, ct: ct);
+        // @end
 
         return Result<TwoFactorVerifySetupOutput>.Success(
             new TwoFactorVerifySetupOutput(codes?.ToList() ?? []));
@@ -122,7 +135,9 @@ internal class TwoFactorService(
 
         await userManager.ResetAuthenticatorKeyAsync(user);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.TwoFactorDisabled, userId: user.Id, ct: ct);
+        // @end
 
         return Result.Success();
     }
@@ -148,7 +163,9 @@ internal class TwoFactorService(
 
         var codes = await userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, RecoveryCodeCount);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.TwoFactorRecoveryCodesRegenerated, userId: user.Id, ct: ct);
+        // @end
 
         return Result<TwoFactorVerifySetupOutput>.Success(
             new TwoFactorVerifySetupOutput(codes?.ToList() ?? []));

@@ -8,7 +8,7 @@ using MyProject.WebApi.Features.Authentication.Dtos.Register;
 // @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.ResetPassword;
 // @end
-// @feature oauth
+// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.SetPassword;
 // @end
 // @feature 2fa
@@ -151,10 +151,12 @@ internal static class AuthMapper
             DisplayName = info.DisplayName
         };
 
+    // @feature password-reset
     /// <summary>
     /// Maps a <see cref="SetPasswordRequest"/> to a <see cref="SetPasswordInput"/>.
     /// </summary>
     public static SetPasswordInput ToSetPasswordInput(this SetPasswordRequest request) =>
         new(NewPassword: request.NewPassword);
+    // @end
     // @end
 }

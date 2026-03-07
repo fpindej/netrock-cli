@@ -30,7 +30,7 @@ export function registerTwoFactorManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/TwoFactorService.cs',
-				templated: false
+				templated: true
 			},
 
 			// WebApi
@@ -90,7 +90,7 @@ export function registerTwoFactorManifest(): void {
 			// Tests
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/TwoFactorServiceTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/TwoFactorValidatorTests.cs',

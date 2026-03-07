@@ -284,6 +284,7 @@ public class ExternalAuthControllerTests : IClassFixture<CustomWebApplicationFac
 
     #endregion
 
+    // @feature password-reset
     #region SetPassword
 
     [Fact]
@@ -340,4 +341,5 @@ public class ExternalAuthControllerTests : IClassFixture<CustomWebApplicationFac
     }
 
     #endregion
+    // @end
 }

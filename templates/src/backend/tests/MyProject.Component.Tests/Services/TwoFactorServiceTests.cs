@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Identity;
 using MyProject.Component.Tests.Fixtures;
 using MyProject.Infrastructure.Features.Authentication.Models;
@@ -15,7 +17,9 @@ public class TwoFactorServiceTests : IDisposable
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserContext _userContext;
+    // @feature audit
     private readonly IAuditService _auditService;
+    // @end
     private readonly TwoFactorService _sut;
 
     private readonly Guid _userId = Guid.NewGuid();
@@ -24,7 +28,9 @@ public class TwoFactorServiceTests : IDisposable
     {
         _userManager = IdentityMockHelpers.CreateMockUserManager();
         _userContext = Substitute.For<IUserContext>();
+        // @feature audit
         _auditService = Substitute.For<IAuditService>();
+        // @end
 
         var authOptions = Options.Create(new AuthenticationOptions
         {
@@ -40,12 +46,21 @@ public class TwoFactorServiceTests : IDisposable
             }
         });
 
+        // @feature audit
         _sut = new TwoFactorService(
             _userManager,
             _userContext,
             _auditService,
             authOptions,
             Substitute.For<ILogger<TwoFactorService>>());
+        // @end
+        // @feature !audit
+        _sut = new TwoFactorService(
+            _userManager,
+            _userContext,
+            authOptions,
+            Substitute.For<ILogger<TwoFactorService>>());
+        // @end
     }
 
     public void Dispose() => _userManager.Dispose();
@@ -174,6 +189,7 @@ public class TwoFactorServiceTests : IDisposable
         await _userManager.Received(1).SetTwoFactorEnabledAsync(user, true);
     }
 
+    // @feature audit
     [Fact]
     public async Task VerifySetup_ValidCode_LogsAuditEvent()
     {
@@ -195,6 +211,7 @@ public class TwoFactorServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     [Fact]
     public async Task VerifySetup_InvalidCode_ReturnsVerificationFailed()
@@ -280,6 +297,7 @@ public class TwoFactorServiceTests : IDisposable
         await _userManager.Received(1).ResetAuthenticatorKeyAsync(user);
     }
 
+    // @feature audit
     [Fact]
     public async Task Disable_ValidPassword_LogsAuditEvent()
     {
@@ -298,6 +316,7 @@ public class TwoFactorServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     [Fact]
     public async Task Disable_WrongPassword_ReturnsPasswordIncorrect()
@@ -381,6 +400,7 @@ public class TwoFactorServiceTests : IDisposable
         Assert.Equal(10, result.Value.RecoveryCodes.Count);
     }
 
+    // @feature audit
     [Fact]
     public async Task RegenerateRecoveryCodes_ValidPassword_LogsAuditEvent()
     {
@@ -400,6 +420,7 @@ public class TwoFactorServiceTests : IDisposable
             metadata: Arg.Any<string?>(),
             ct: Arg.Any<CancellationToken>());
     }
+    // @end
 
     [Fact]
     public async Task RegenerateRecoveryCodes_WrongPassword_ReturnsPasswordIncorrect()

@@ -6,7 +6,9 @@ using Microsoft.Extensions.Caching.Hybrid;
 using MyProject.Application.Caching.Constants;
 using MyProject.Application.Features.Admin;
 using MyProject.Application.Features.Admin.Dtos;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Identity.Constants;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Persistence;
@@ -22,7 +24,9 @@ internal class RoleManagementService(
     UserManager<ApplicationUser> userManager,
     MyProjectDbContext dbContext,
     HybridCache hybridCache,
+    // @feature audit
     IAuditService auditService,
+    // @end
     ILogger<RoleManagementService> logger) : IRoleManagementService
 {
     /// <inheritdoc />
@@ -86,9 +90,11 @@ internal class RoleManagementService(
 
         logger.LogInformation("Custom role '{RoleName}' created with ID '{RoleId}'", input.Name, role.Id);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminCreateRole,
             targetEntityType: "Role", targetEntityId: role.Id,
             metadata: JsonSerializer.Serialize(new { roleName = input.Name }), ct: cancellationToken);
+        // @end
 
         return Result<Guid>.Success(role.Id);
     }
@@ -141,8 +147,10 @@ internal class RoleManagementService(
 
         logger.LogInformation("Role '{RoleId}' updated", roleId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminUpdateRole,
             targetEntityType: "Role", targetEntityId: roleId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -180,8 +188,10 @@ internal class RoleManagementService(
 
         logger.LogWarning("Custom role '{RoleName}' (ID '{RoleId}') deleted", role.Name, roleId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminDeleteRole,
             targetEntityType: "Role", targetEntityId: roleId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -243,8 +253,10 @@ internal class RoleManagementService(
         logger.LogInformation("Permissions updated for role '{RoleName}' (ID '{RoleId}'): [{Permissions}]",
             role.Name, roleId, string.Join(", ", input.Permissions));
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminSetRolePermissions,
             targetEntityType: "Role", targetEntityId: roleId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }

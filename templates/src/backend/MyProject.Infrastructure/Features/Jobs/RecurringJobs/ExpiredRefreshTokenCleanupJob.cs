@@ -1,3 +1,4 @@
+// @feature auth
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -22,7 +23,7 @@ internal sealed class ExpiredRefreshTokenCleanupJob(
 
     /// <summary>
     /// Grace period before deleting expired tokens. Avoids a race condition where a token
-    /// expires at the exact moment it is being refreshed — the auth service has loaded the
+    /// expires at the exact moment it is being refreshed - the auth service has loaded the
     /// token (still valid) but hasn't called SaveChangesAsync yet, while the cleanup job
     /// deletes the now-expired row, causing a DbUpdateConcurrencyException.
     /// </summary>
@@ -40,3 +41,4 @@ internal sealed class ExpiredRefreshTokenCleanupJob(
         logger.LogInformation("Deleted {Count} expired refresh tokens", deletedCount);
     }
 }
+// @end

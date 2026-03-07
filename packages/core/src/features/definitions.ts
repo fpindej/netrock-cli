@@ -78,7 +78,7 @@ export const featureDefinitions: Feature[] = [
 		id: 'jobs',
 		name: 'Background jobs',
 		description: 'Hangfire job scheduling with PostgreSQL storage',
-		dependencies: ['core'],
+		dependencies: ['auth'],
 		required: false,
 		defaultEnabled: true,
 		group: 'infrastructure'
@@ -114,7 +114,7 @@ export const featureDefinitions: Feature[] = [
 		id: 'admin',
 		name: 'Admin panel',
 		description: 'User management, role management, system administration',
-		dependencies: ['auth'],
+		dependencies: ['auth', 'audit'],
 		required: false,
 		defaultEnabled: true,
 		group: 'core'

@@ -8,15 +8,23 @@ using Microsoft.Extensions.Caching.Hybrid;
 using MyProject.Application.Caching.Constants;
 using MyProject.Application.Features.Admin;
 using MyProject.Application.Features.Admin.Dtos;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
+// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
+// @end
+// @feature file-storage
 using MyProject.Application.Features.FileStorage;
+// @end
 using MyProject.Application.Identity.Constants;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
 using MyProject.Infrastructure.Features.Authentication.Services;
+// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
+// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Infrastructure.Persistence.Extensions;
 using MyProject.Shared;
@@ -41,15 +49,25 @@ internal class AdminService(
     MyProjectDbContext dbContext,
     HybridCache hybridCache,
     TimeProvider timeProvider,
+    // @feature email
     ITemplatedEmailSender templatedEmailSender,
+    // @end
     EmailTokenService emailTokenService,
+    // @feature audit
     IAuditService auditService,
+    // @end
+    // @feature file-storage
     IFileStorageService fileStorageService,
+    // @end
     IOptions<AuthenticationOptions> authenticationOptions,
+    // @feature email
     IOptions<EmailOptions> emailOptions,
+    // @end
     ILogger<AdminService> logger) : IAdminService
 {
+    // @feature email
     private readonly EmailOptions _emailOptions = emailOptions.Value;
+    // @end
     private readonly AuthenticationOptions.EmailTokenOptions _emailTokenOptions = authenticationOptions.Value.EmailToken;
 
     /// <inheritdoc />
@@ -158,9 +176,11 @@ internal class AdminService(
         logger.LogInformation("Role '{Role}' assigned to user '{UserId}' by admin '{CallerUserId}'",
             input.Role, userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminAssignRole, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId,
             metadata: JsonSerializer.Serialize(new { role = input.Role }), ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -226,9 +246,11 @@ internal class AdminService(
         logger.LogInformation("Role '{Role}' removed from user '{UserId}' by admin '{CallerUserId}'",
             role, userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminRemoveRole, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId,
             metadata: JsonSerializer.Serialize(new { role }), ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -271,8 +293,10 @@ internal class AdminService(
         logger.LogWarning("User '{UserId}' has been locked out by admin '{CallerUserId}'",
             userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminLockUser, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -310,8 +334,10 @@ internal class AdminService(
         logger.LogInformation("User '{UserId}' has been unlocked by admin '{CallerUserId}'",
             userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminUnlockUser, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -348,7 +374,8 @@ internal class AdminService(
 
         await RevokeUserSessionsAsync(user, userId, cancellationToken);
 
-        // Clean up avatar from storage if present (best-effort — don't block account deletion)
+        // @feature file-storage
+        // Clean up avatar from storage if present (best-effort - don't block account deletion)
         if (user.HasAvatar)
         {
             var avatarDeleteResult = await fileStorageService.DeleteAsync($"avatars/{userId}.webp", cancellationToken);
@@ -358,6 +385,7 @@ internal class AdminService(
                     userId, avatarDeleteResult.Error);
             }
         }
+        // @end
 
         var result = await userManager.DeleteAsync(user);
 
@@ -372,8 +400,10 @@ internal class AdminService(
         logger.LogWarning("User '{UserId}' has been deleted by admin '{CallerUserId}'",
             userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminDeleteUser, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -445,12 +475,15 @@ internal class AdminService(
         logger.LogInformation("Email for user '{UserId}' manually verified by admin '{CallerUserId}'",
             userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminVerifyEmail, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
 
+    // @feature password-reset
     /// <inheritdoc />
     public async Task<Result> SendPasswordResetAsync(Guid callerUserId, Guid userId,
         CancellationToken cancellationToken = default)
@@ -479,12 +512,16 @@ internal class AdminService(
         logger.LogInformation("Password reset email sent for user '{UserId}' by admin '{CallerUserId}'",
             userId, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminSendPasswordReset, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId, ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
+    // @end
 
+    // @feature 2fa
     /// <inheritdoc />
     public async Task<Result> DisableTwoFactorAsync(Guid callerUserId, Guid userId, string? reason,
         CancellationToken cancellationToken = default)
@@ -526,6 +563,7 @@ internal class AdminService(
         logger.LogWarning("Two-factor authentication disabled for user '{UserId}' by admin '{CallerUserId}'",
             userId, callerUserId);
 
+        // @feature audit
         var metadata = reason is not null
             ? JsonSerializer.Serialize(new { reason })
             : null;
@@ -533,13 +571,17 @@ internal class AdminService(
         await auditService.LogAsync(AuditActions.AdminDisableTwoFactor, userId: callerUserId,
             targetEntityType: "User", targetEntityId: userId,
             metadata: metadata, ct: cancellationToken);
+        // @end
 
+        // @feature email
         var email = user.Email ?? user.UserName ?? string.Empty;
         var model = new AdminDisableTwoFactorModel(user.UserName ?? email, reason);
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.AdminDisableTwoFactor, model, email, cancellationToken);
+        // @end
 
         return Result.Success();
     }
+    // @end
 
     /// <inheritdoc />
     public async Task<Result<Guid>> CreateUserAsync(Guid callerUserId, CreateUserInput input,
@@ -577,6 +619,7 @@ internal class AdminService(
             logger.LogWarning("User '{UserId}' created but default role assignment failed", user.Id);
         }
 
+        // @feature email
         // Send invitation email with password reset link
         var identityToken = await userManager.GeneratePasswordResetTokenAsync(user);
         var opaqueToken = await emailTokenService.CreateAsync(user.Id, identityToken, EmailTokenPurpose.PasswordReset, cancellationToken);
@@ -584,12 +627,15 @@ internal class AdminService(
 
         var invitationModel = new InvitationModel(setPasswordUrl, _emailTokenOptions.Lifetime.ToHumanReadable());
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.Invitation, invitationModel, input.Email, cancellationToken);
+        // @end
 
         logger.LogInformation("User '{UserId}' created via admin invitation for email '{Email}' by admin '{CallerUserId}'",
             user.Id, input.Email, callerUserId);
 
+        // @feature audit
         await auditService.LogAsync(AuditActions.AdminCreateUser, userId: callerUserId,
             targetEntityType: "User", targetEntityId: user.Id, ct: cancellationToken);
+        // @end
 
         return Result<Guid>.Success(user.Id);
     }

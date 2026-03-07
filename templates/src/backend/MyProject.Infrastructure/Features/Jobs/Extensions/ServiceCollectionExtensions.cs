@@ -5,7 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using MyProject.Application.Features.Jobs;
 using MyProject.Infrastructure.Features.Jobs.Examples;
 using MyProject.Infrastructure.Features.Jobs.Options;
+// @feature auth
 using MyProject.Infrastructure.Features.Jobs.RecurringJobs;
+// @end
 using MyProject.Infrastructure.Features.Jobs.Services;
 
 namespace MyProject.Infrastructure.Features.Jobs.Extensions;
@@ -62,7 +64,8 @@ public static class ServiceCollectionExtensions
                 serverOptions.ShutdownTimeout = TimeSpan.FromSeconds(30);
             });
 
-            // Register recurring job definitions — add new jobs here.
+            // Register recurring job definitions - add new jobs here.
+            // @feature auth
             services.AddScoped<ExpiredRefreshTokenCleanupJob>();
             services.AddScoped<IRecurringJobDefinition>(sp =>
                 sp.GetRequiredService<ExpiredRefreshTokenCleanupJob>());
@@ -70,12 +73,15 @@ public static class ServiceCollectionExtensions
             services.AddScoped<ExpiredEmailTokenCleanupJob>();
             services.AddScoped<IRecurringJobDefinition>(sp =>
                 sp.GetRequiredService<ExpiredEmailTokenCleanupJob>());
+            // @end
 
+            // @feature 2fa
             services.AddScoped<ExpiredTwoFactorChallengeCleanupJob>();
             services.AddScoped<IRecurringJobDefinition>(sp =>
                 sp.GetRequiredService<ExpiredTwoFactorChallengeCleanupJob>());
+            // @end
 
-            // Register fire-and-forget job classes — Hangfire resolves them from DI when executed.
+            // Register fire-and-forget job classes - Hangfire resolves them from DI when executed.
             // Example: backgroundJobClient.Enqueue<ExampleFireAndForgetJob>(job => job.ExecuteAsync("hello"));
             services.AddScoped<ExampleFireAndForgetJob>();
 

@@ -5,7 +5,9 @@ using Microsoft.Extensions.Caching.Hybrid;
 using Microsoft.Extensions.Logging;
 using MyProject.Application.Caching.Constants;
 using MyProject.Application.Cryptography;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Features.Authentication;
 using MyProject.Application.Features.Authentication.Dtos;
 using MyProject.Infrastructure.Features.Authentication.Models;
@@ -19,6 +21,7 @@ namespace MyProject.Infrastructure.Features.Authentication.Services;
 /// Manages OAuth provider configuration with DB storage as the single source of truth.
 /// Uses <see cref="HybridCache"/> with 5-minute TTL per provider.
 /// </summary>
+// @feature audit
 internal sealed class ProviderConfigService(
     MyProjectDbContext dbContext,
     ISecretEncryptionService encryptionService,
@@ -27,6 +30,16 @@ internal sealed class ProviderConfigService(
     IAuditService auditService,
     TimeProvider timeProvider,
     ILogger<ProviderConfigService> logger) : IProviderConfigService
+// @end
+// @feature !audit
+internal sealed class ProviderConfigService(
+    MyProjectDbContext dbContext,
+    ISecretEncryptionService encryptionService,
+    IEnumerable<IExternalAuthProvider> providers,
+    HybridCache hybridCache,
+    TimeProvider timeProvider,
+    ILogger<ProviderConfigService> logger) : IProviderConfigService
+// @end
 {
     private static readonly HybridCacheEntryOptions CacheOptions = new()
     {
@@ -146,11 +159,13 @@ internal sealed class ProviderConfigService(
         await dbContext.SaveChangesAsync(cancellationToken);
         await hybridCache.RemoveAsync(CacheKeys.ProviderConfig(canonicalName), cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(
             AuditActions.AdminUpdateOAuthProvider,
             userId: callerUserId,
             metadata: JsonSerializer.Serialize(new { provider = canonicalName, enabled = input.IsEnabled }),
             ct: cancellationToken);
+        // @end
 
         return Result.Success();
     }
@@ -185,11 +200,13 @@ internal sealed class ProviderConfigService(
 
         var result = await knownProvider.TestConnectionAsync(credentials, cancellationToken);
 
+        // @feature audit
         await auditService.LogAsync(
             AuditActions.AdminTestOAuthProvider,
             userId: callerUserId,
             metadata: JsonSerializer.Serialize(new { provider = canonicalName, success = result.IsSuccess }),
             ct: cancellationToken);
+        // @end
 
         return result;
     }
