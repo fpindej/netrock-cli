@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+
+@theme {
+	--font-sans: 'Inter', system-ui, sans-serif;
+	--font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+	--color-bg: #08080d;
+	--color-surface: #111118;
+	--color-surface-raised: #191922;
+	--color-border-subtle: #222233;
+	--color-border-active: #334155;
+
+	--color-text-primary: #ececf1;
+	--color-text-secondary: #8e8ea0;
+	--color-text-muted: #555566;
+
+	--color-accent: #06b6d4;
+	--color-accent-light: #22d3ee;
+	--color-accent-dim: #06b6d415;
+
+	--color-emerald: #10b981;
+	--color-emerald-dim: #10b98115;
+
+	--color-amber: #f59e0b;
+	--color-amber-dim: #f59e0b14;
+}
+
+html {
+	background-color: var(--color-bg);
+	color: var(--color-text-primary);
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+	background-color: #06b6d459;
+}
+
+/* Scrollbar - Webkit only, Firefox uses default */
+::-webkit-scrollbar {
+	width: 6px;
+}
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+::-webkit-scrollbar-thumb {
+	background: var(--color-border-subtle);
+	border-radius: 3px;
+}

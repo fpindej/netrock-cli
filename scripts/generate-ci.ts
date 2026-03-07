@@ -5,9 +5,9 @@ import { parseArgs } from 'node:util';
 import {
 	generateProject,
 	registerAllManifests,
-	createFsSource,
 	resolveFeatures
 } from '@netrock/core';
+import { createFsSource } from '@netrock/core/node';
 import type { FeatureId } from '@netrock/core';
 
 const { values } = parseArgs({

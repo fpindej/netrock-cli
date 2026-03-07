@@ -11,7 +11,9 @@
     "lint": "pnpm -r run lint",
     "check": "pnpm -r run check",
     "format": "prettier --write .",
-    "generate": "pnpm --filter @netrock/core build && tsx scripts/generate.ts"
+    "generate": "pnpm --filter @netrock/core build && tsx scripts/generate.ts",
+    "dev": "pnpm --filter @netrock/core build && pnpm --filter @netrock/web dev",
+    "preview": "pnpm --filter @netrock/web preview"
   },
   "devDependencies": {
     "@inquirer/prompts": "^8.3.0",
