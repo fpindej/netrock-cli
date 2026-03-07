@@ -51,10 +51,13 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 		// Substitute namespace placeholders
 		content = substituteNamespace(content, names);
 
-		// Substitute secret placeholders
+		// Substitute secret and config placeholders
 		content = content
 			.replaceAll('{INIT_JWT_SECRET}', secrets.jwtSecret)
-			.replaceAll('{INIT_ENCRYPTION_KEY}', secrets.encryptionKey);
+			.replaceAll('{INIT_ENCRYPTION_KEY}', secrets.encryptionKey)
+			.replaceAll('{INIT_PROJECT_SLUG}', names.kebabCase)
+			.replaceAll('{INIT_FRONTEND_PORT}', '5173')
+			.replaceAll('{INIT_API_PORT}', '8080');
 
 		// Substitute path namespace
 		const outputPath = substitutePathNamespace(path, names);
