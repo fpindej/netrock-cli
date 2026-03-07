@@ -80,7 +80,7 @@ async function main(): Promise<void> {
 	}
 
 	// 3. Output directory
-	const defaultDir = resolve(projectName);
+	const defaultDir = resolve('output', projectName);
 	const outputDir = await input({
 		message: 'Output directory',
 		default: defaultDir
