@@ -36,16 +36,6 @@ try {
     Write-Fail "Docker not found - install from https://docs.docker.com/get-docker/"
     $errors++
 }
-
-# Aspire workload
-$workloads = dotnet workload list 2>$null
-if ($workloads -match "aspire") {
-    Write-Ok "Aspire workload"
-} else {
-    Write-Warn "Aspire workload not installed - installing..."
-    dotnet workload install aspire
-    Write-Ok "Aspire workload installed"
-}
 // @end
 
 // @feature !aspire

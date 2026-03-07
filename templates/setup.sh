@@ -40,15 +40,6 @@ else
   fail "Docker not found - install from https://docs.docker.com/get-docker/"
   errors=$((errors + 1))
 fi
-
-# Aspire workload
-if dotnet workload list 2>/dev/null | grep -q aspire; then
-  ok "Aspire workload"
-else
-  warn "Aspire workload not installed - installing..."
-  dotnet workload install aspire
-  ok "Aspire workload installed"
-fi
 // @end
 
 // @feature !aspire
