@@ -5,6 +5,11 @@ export function registerCoreManifest(): void {
 	registerManifest({
 		featureId: 'core',
 		files: [
+			// Root
+			{ path: 'README.md', templated: true },
+			{ path: 'setup.sh', templated: true },
+			{ path: 'setup.ps1', templated: true },
+
 			// Domain
 			{ path: 'src/backend/MyProject.Domain/Entities/BaseEntity.cs', templated: false },
 			{ path: 'src/backend/MyProject.Domain/MyProject.Domain.csproj', templated: false },
