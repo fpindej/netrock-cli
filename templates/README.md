@@ -14,27 +14,7 @@ Generated with [netrock](https://netrock.dev) - a .NET API project generator.
 
 ## Quick start
 
-// @feature aspire
-The easiest way to run this project is with .NET Aspire, which starts PostgreSQL, MinIO, Mailpit, and the API for you:
-
-```bash
-dotnet run --project src/backend/MyProject.AppHost
-```
-
-The Aspire dashboard opens automatically. From there you can access the API, pgAdmin, Mailpit, and MinIO console.
-
-// @end
-// @feature !aspire
-```bash
-# Make sure PostgreSQL is running, then update the connection string in
-# src/backend/MyProject.WebApi/appsettings.Development.json
-
-dotnet build src/backend/MyProject.slnx
-dotnet run --project src/backend/MyProject.WebApi
-```
-
-// @end
-Alternatively, run the setup script which checks prerequisites and starts the project:
+Run the setup script to configure ports, initialize git, and verify your environment:
 
 ```bash
 # macOS / Linux
@@ -44,6 +24,41 @@ chmod +x setup.sh && ./setup.sh
 .\setup.ps1
 ```
 
+The setup script will:
+// @feature aspire
+- Check prerequisites (.NET SDK, Docker)
+- Let you choose a base port for the service stack
+// @end
+// @feature !aspire
+- Check prerequisites (.NET SDK, PostgreSQL)
+// @end
+- Optionally initialize a git repository with an initial commit
+- Build the solution and run tests
+
+// @feature aspire
+### Manual start
+
+If you prefer to skip the setup script:
+
+```bash
+dotnet run --project src/backend/MyProject.AppHost
+```
+
+The Aspire dashboard opens automatically. From there you can access the API, pgAdmin, Mailpit, and MinIO console.
+
+// @end
+// @feature !aspire
+### Manual start
+
+```bash
+# Make sure PostgreSQL is running, then update the connection string in
+# src/backend/MyProject.WebApi/appsettings.Development.json
+
+dotnet build src/backend/MyProject.slnx
+dotnet run --project src/backend/MyProject.WebApi
+```
+
+// @end
 ## Run tests
 
 ```bash
@@ -103,10 +118,16 @@ src/backend/
 
 Key settings are in `src/backend/MyProject.WebApi/appsettings.json`. Development overrides are in `appsettings.Development.json`.
 
+// @feature aspire
+### Port allocation
+
+Ports are configured in `src/backend/MyProject.AppHost/appsettings.json`. The setup script can change these for you. All infrastructure ports (pgAdmin, PostgreSQL, MinIO, Mailpit) are derived from the base port automatically.
+
+// @end
 // @feature auth
 ### Seed users
 
-Configure initial users via environment variables or `appsettings.json`:
+Development seed users are configured in `appsettings.Development.json`:
 
 ```json
 {

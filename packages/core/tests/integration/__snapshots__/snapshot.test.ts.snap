@@ -1555,7 +1555,7 @@ exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
   },
   "Authentication": {
     "Jwt": {
-      "Key": "3+HBj9HwCE8IrZHTKG+ItVTrBllz1PMbzFKQVXRtbYkIYxl7HL31f6SDmgOJ+qagACAdNLpOfaM4j6sQczFazQ==",
+      "Key": "cQIsLlH+e4KsHq4jiT9DLvDOVbxFPao7AC/0UiRll/Hj1nsGoOo/UNhSmttQc2o7tF6Utei+VBgdc62jqQR4Ag==",
       "Issuer": "SnapshotAppIssuer",
       "Audience": "SnapshotAppAudience",
       "AccessTokenLifetime": "00:10:00",
@@ -1579,7 +1579,7 @@ exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
         "https://your-production-domain.com/oauth/callback"
       ],
       "StateLifetime": "00:10:00",
-      "EncryptionKey": "SvdQ5GBgJwEsI92uy1sONhAY6aI5NDzxjuTUimgyl7w="
+      "EncryptionKey": "OE3zKLt8FIpTG2Ds5UrBPtBFtBiDss6Ip1dkIBaBFwc="
     }
   },
   "Email": {
