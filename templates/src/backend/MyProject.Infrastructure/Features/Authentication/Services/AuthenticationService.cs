@@ -30,7 +30,9 @@ namespace MyProject.Infrastructure.Features.Authentication.Services;
 internal class AuthenticationService(
     UserManager<ApplicationUser> userManager,
     SignInManager<ApplicationUser> signInManager,
+    // @feature 2fa
     TimeProvider timeProvider,
+    // @end
     IUserContext userContext,
     ITemplatedEmailSender templatedEmailSender,
     EmailTokenService emailTokenService,

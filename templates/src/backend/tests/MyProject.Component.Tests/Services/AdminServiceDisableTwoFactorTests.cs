@@ -7,7 +7,9 @@ using Microsoft.Extensions.Caching.Hybrid;
 using MyProject.Application.Features.Audit;
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
+// @feature file-storage
 using MyProject.Application.Features.FileStorage;
+// @end
 using MyProject.Application.Identity.Constants;
 using MyProject.Component.Tests.Fixtures;
 using MyProject.Infrastructure.Features.Admin.Services;
@@ -56,12 +58,22 @@ public class AdminServiceDisableTwoFactorTests : IDisposable
         var emailTokenService = new EmailTokenService(_dbContext, _timeProvider, authOptions);
         _auditService = Substitute.For<IAuditService>();
 
+        // @feature file-storage
         var fileStorageService = Substitute.For<IFileStorageService>();
+        // @end
 
+        // @feature file-storage
         _sut = new AdminService(
             _userManager, _roleManager, _dbContext, _hybridCache, _timeProvider,
             _templatedEmailSender, emailTokenService, _auditService,
             fileStorageService, authOptions, emailOptions, logger);
+        // @end
+        // @feature !file-storage
+        _sut = new AdminService(
+            _userManager, _roleManager, _dbContext, _hybridCache, _timeProvider,
+            _templatedEmailSender, emailTokenService, _auditService,
+            authOptions, emailOptions, logger);
+        // @end
     }
 
     public void Dispose()
