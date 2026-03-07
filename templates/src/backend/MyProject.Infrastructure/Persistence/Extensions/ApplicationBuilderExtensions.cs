@@ -49,7 +49,18 @@ public static class ApplicationBuilderExtensions
     private static void ApplyMigrations(IServiceProvider serviceProvider)
     {
         var dbContext = serviceProvider.GetRequiredService<MyProjectDbContext>();
-        dbContext.Database.Migrate();
+        var pending = dbContext.Database.GetPendingMigrations();
+
+        if (pending.Any())
+        {
+            dbContext.Database.Migrate();
+        }
+        else
+        {
+            // No migrations yet - create schema from model.
+            // Replace with Migrate() once you add: dotnet ef migrations add Initial
+            dbContext.Database.EnsureCreated();
+        }
     }
 
     // @feature auth
