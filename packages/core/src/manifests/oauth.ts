@@ -51,7 +51,7 @@ export function registerOAuthManifest(): void {
 			// Application - Interfaces
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/IExternalAuthService.cs',
-				templated: true
+				templated: false
 			},
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/IProviderConfigService.cs',
@@ -151,7 +151,7 @@ export function registerOAuthManifest(): void {
 			// WebApi - External auth controller
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/ExternalAuthController.cs',
-				templated: true
+				templated: false
 			},
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequest.cs',
@@ -221,7 +221,7 @@ export function registerOAuthManifest(): void {
 			// Tests
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/ExternalAuthControllerTests.cs',
-				templated: true
+				templated: false
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/OAuthProvidersControllerTests.cs',
@@ -229,7 +229,7 @@ export function registerOAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/ExternalAuthValidatorTests.cs',
-				templated: true
+				templated: false
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalAuthServiceTests.cs',

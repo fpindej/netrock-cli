@@ -7,10 +7,8 @@ using MyProject.Application.Features.Captcha;
 // @end
 using MyProject.Shared;
 using MyProject.WebApi.Features.Authentication.Dtos.ChangePassword;
-// @feature password-reset
 using MyProject.WebApi.Features.Authentication.Dtos.ForgotPassword;
 using MyProject.WebApi.Features.Authentication.Dtos.ResetPassword;
-// @end
 using MyProject.WebApi.Shared;
 
 namespace MyProject.WebApi.Features.Authentication;
@@ -31,7 +29,6 @@ public class PasswordController(
     IAuthenticationService authenticationService) : ControllerBase
 // @end
 {
-    // @feature password-reset
     /// <summary>
     /// Initiates a password reset flow by sending a reset link to the provided email address.
     /// Always returns 200 regardless of whether the email exists to prevent user enumeration.
@@ -74,7 +71,6 @@ public class PasswordController(
 
         return Ok();
     }
-    // @end
 
     /// <summary>
     /// Changes the current authenticated user's password.

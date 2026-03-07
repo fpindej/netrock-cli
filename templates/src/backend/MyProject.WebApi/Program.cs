@@ -24,7 +24,7 @@ using MyProject.Infrastructure.Features.Captcha.Extensions;
 // @feature file-storage
 using MyProject.Infrastructure.Features.FileStorage.Extensions;
 // @end
-// @feature email
+// @feature auth
 using MyProject.Infrastructure.Features.Email.Extensions;
 // @end
 // @feature jobs
@@ -93,7 +93,7 @@ try
         builder.Services.AddAuditServices();
         // @end
 
-        // @feature email
+        // @feature auth
         Log.Debug("Adding email services");
         builder.Services.AddEmailServices(builder.Configuration);
         // @end

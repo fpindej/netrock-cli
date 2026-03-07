@@ -11,19 +11,15 @@ using MyProject.Application.Cookies.Constants;
 using MyProject.Application.Features.Audit;
 // @end
 using MyProject.Application.Features.Authentication.Dtos;
-// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
-// @end
 using MyProject.Application.Identity;
 using MyProject.Component.Tests.Fixtures;
 using MyProject.Infrastructure.Cryptography;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
 using MyProject.Infrastructure.Features.Authentication.Services;
-// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
-// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Shared;
 
@@ -38,9 +34,7 @@ public class AuthenticationServiceTests : IDisposable
     private readonly ICookieService _cookieService;
     private readonly IUserContext _userContext;
     private readonly HybridCache _hybridCache;
-    // @feature email
     private readonly ITemplatedEmailSender _templatedEmailSender;
-    // @end
     // @feature audit
     private readonly IAuditService _auditService;
     // @end
@@ -57,9 +51,7 @@ public class AuthenticationServiceTests : IDisposable
         _cookieService = Substitute.For<ICookieService>();
         _userContext = Substitute.For<IUserContext>();
         _hybridCache = Substitute.For<HybridCache>();
-        // @feature email
         _templatedEmailSender = Substitute.For<ITemplatedEmailSender>();
-        // @end
         _dbContext = TestDbContextFactory.Create();
 
         var authOptions = Options.Create(new AuthenticationOptions
@@ -78,14 +70,12 @@ public class AuthenticationServiceTests : IDisposable
             }
         });
 
-        // @feature email
         var emailOptions = Options.Create(new EmailOptions
         {
             FromAddress = "noreply@test.com",
             FromName = "Test",
             FrontendBaseUrl = "https://test.example.com"
         });
-        // @end
 
         var emailTokenService = new EmailTokenService(_dbContext, _timeProvider, authOptions);
         // @feature audit
@@ -101,18 +91,14 @@ public class AuthenticationServiceTests : IDisposable
             _signInManager,
             _timeProvider,
             _userContext,
-            // @feature email
             _templatedEmailSender,
-            // @end
             emailTokenService,
             // @feature audit
             _auditService,
             // @end
             _tokenSessionService,
             authOptions,
-            // @feature email
             emailOptions,
-            // @end
             Substitute.For<ILogger<AuthenticationService>>(),
             _dbContext);
     }
@@ -966,7 +952,6 @@ public class AuthenticationServiceTests : IDisposable
 
     #endregion
 
-    // @feature password-reset
     #region ForgotPassword
 
     [Fact]
@@ -1033,9 +1018,7 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 
-    // @feature password-reset
     #region ResetPassword
 
     private async Task<string> SeedEmailTokenAsync(Guid userId, string identityToken, EmailTokenPurpose purpose, bool isUsed = false, int expiresInHours = 24)
@@ -1196,9 +1179,7 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 
-    // @feature email-verification
     #region VerifyEmail
 
     [Fact]
@@ -1307,9 +1288,7 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 
-    // @feature email-verification
     #region ResendVerification
 
     [Fact]
@@ -1374,7 +1353,6 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 
     // @feature 2fa
     #region Login_TwoFactor
@@ -1824,7 +1802,6 @@ public class AuthenticationServiceTests : IDisposable
     #endregion
     // @end
 
-    // @feature email-verification
     #region Register_SendsVerificationEmail
 
     [Fact]
@@ -1852,5 +1829,4 @@ public class AuthenticationServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 }

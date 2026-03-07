@@ -335,7 +335,6 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
 
     #endregion
 
-    // @feature password-reset
     #region ForgotPassword
 
     [Fact]
@@ -462,9 +461,7 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     }
 
     #endregion
-    // @end
 
-    // @feature email-verification
     #region VerifyEmail
 
     [Fact]
@@ -548,7 +545,6 @@ public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>, I
     }
 
     #endregion
-    // @end
 
     // @feature 2fa
     #region Login_TwoFactor

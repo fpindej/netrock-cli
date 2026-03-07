@@ -639,7 +639,6 @@ public class ExternalAuthServiceTests : IDisposable
 
     #endregion
 
-    // @feature password-reset
     // ────────── SetPasswordAsync ──────────
 
     #region SetPassword
@@ -714,7 +713,6 @@ public class ExternalAuthServiceTests : IDisposable
     }
 
     #endregion
-    // @end
 
     // ────────── GetAvailableProviders ──────────
 

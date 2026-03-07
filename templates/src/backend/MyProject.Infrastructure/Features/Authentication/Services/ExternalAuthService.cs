@@ -242,7 +242,6 @@ internal class ExternalAuthService(
         return logins.Select(l => l.LoginProvider).ToList();
     }
 
-    // @feature password-reset
     /// <inheritdoc />
     public async Task<Result> SetPasswordAsync(SetPasswordInput input, CancellationToken cancellationToken)
     {
@@ -279,7 +278,6 @@ internal class ExternalAuthService(
 
         return Result.Success();
     }
-    // @end
 
     private async Task<Result<ExternalAuthState>> ResolveStateAsync(
         string plainToken, CancellationToken cancellationToken)

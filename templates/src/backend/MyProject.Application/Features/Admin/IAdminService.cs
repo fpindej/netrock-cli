@@ -97,7 +97,6 @@ public interface IAdminService
     /// <returns>Success or failure with an error message.</returns>
     Task<Result> VerifyEmailAsync(Guid callerUserId, Guid userId, CancellationToken cancellationToken = default);
 
-    // @feature password-reset
     /// <summary>
     /// Sends a password reset email to a user on behalf of an admin. The caller must have a strictly
     /// higher role rank than the target user.
@@ -107,7 +106,6 @@ public interface IAdminService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>Success or failure with an error message.</returns>
     Task<Result> SendPasswordResetAsync(Guid callerUserId, Guid userId, CancellationToken cancellationToken = default);
-    // @end
 
     // @feature 2fa
     /// <summary>

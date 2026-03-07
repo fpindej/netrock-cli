@@ -15,20 +15,6 @@ describe('resolveFeatures', () => {
 		expect(result.has('core')).toBe(true);
 	});
 
-	it('resolves email-verification dependencies', () => {
-		const result = resolveFeatures(new Set(['email-verification']));
-		expect(result.has('email-verification')).toBe(true);
-		expect(result.has('email')).toBe(true);
-		expect(result.has('auth')).toBe(true);
-	});
-
-	it('resolves password-reset dependencies', () => {
-		const result = resolveFeatures(new Set(['password-reset']));
-		expect(result.has('password-reset')).toBe(true);
-		expect(result.has('email')).toBe(true);
-		expect(result.has('auth')).toBe(true);
-	});
-
 	it('does not include unrelated features', () => {
 		const result = resolveFeatures(new Set(['jobs']));
 		expect(result.has('jobs')).toBe(true);
@@ -50,18 +36,15 @@ describe('resolveFeatures', () => {
 
 describe('getCascadeRemovals', () => {
 	it('cascades removal of dependent features', () => {
-		const current = new Set(resolveFeatures(new Set(['email-verification', 'password-reset'])));
-		const removals = getCascadeRemovals('email', current);
-		expect(removals.has('email-verification')).toBe(true);
-		expect(removals.has('password-reset')).toBe(true);
+		const current = new Set(resolveFeatures(new Set(['admin'])));
+		const removals = getCascadeRemovals('audit', current);
+		expect(removals.has('admin')).toBe(true);
 	});
 
 	it('does not cascade to features with satisfied dependencies', () => {
-		const current = new Set(
-			resolveFeatures(new Set(['email-verification', 'jobs']))
-		);
+		const current = new Set(resolveFeatures(new Set(['jobs', '2fa'])));
 		const removals = getCascadeRemovals('jobs', current);
-		expect(removals.has('email-verification')).toBe(false);
+		expect(removals.has('2fa')).toBe(false);
 	});
 
 	it('cascades through multiple levels', () => {
@@ -71,9 +54,8 @@ describe('getCascadeRemovals', () => {
 	});
 
 	it('never removes required features', () => {
-		const current = new Set(resolveFeatures(new Set(['email'])));
-		const removals = getCascadeRemovals('email', current);
+		const current = new Set(resolveFeatures(new Set(['auth'])));
+		const removals = getCascadeRemovals('auth', current);
 		expect(removals.has('core')).toBe(false);
-		expect(removals.has('auth')).toBe(false);
 	});
 });

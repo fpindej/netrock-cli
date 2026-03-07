@@ -5,22 +5,16 @@ import { registerAuthManifest } from './auth.js';
 import { registerAvatarsManifest } from './avatars.js';
 import { registerCaptchaManifest } from './captcha.js';
 import { registerCoreManifest } from './core.js';
-import { registerEmailManifest } from './email.js';
-import { registerEmailVerificationManifest } from './email-verification.js';
 import { registerFileStorageManifest } from './file-storage.js';
 import { registerFrontendManifest } from './frontend.js';
 import { registerJobsManifest } from './jobs.js';
 import { registerOAuthManifest } from './oauth.js';
-import { registerPasswordResetManifest } from './password-reset.js';
 import { registerTwoFactorManifest } from './two-factor.js';
 
 /** Registers all feature manifests. Call once before generating a project. */
 export function registerAllManifests(): void {
 	registerCoreManifest();
 	registerAuthManifest();
-	registerEmailManifest();
-	registerEmailVerificationManifest();
-	registerPasswordResetManifest();
 	registerTwoFactorManifest();
 	registerOAuthManifest();
 	registerCaptchaManifest();

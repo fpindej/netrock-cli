@@ -11,10 +11,8 @@ using MyProject.Application.Features.Admin.Dtos;
 // @feature audit
 using MyProject.Application.Features.Audit;
 // @end
-// @feature email
 using MyProject.Application.Features.Email;
 using MyProject.Application.Features.Email.Models;
-// @end
 // @feature file-storage
 using MyProject.Application.Features.FileStorage;
 // @end
@@ -22,9 +20,7 @@ using MyProject.Application.Identity.Constants;
 using MyProject.Infrastructure.Features.Authentication.Models;
 using MyProject.Infrastructure.Features.Authentication.Options;
 using MyProject.Infrastructure.Features.Authentication.Services;
-// @feature email
 using MyProject.Infrastructure.Features.Email.Options;
-// @end
 using MyProject.Infrastructure.Persistence;
 using MyProject.Infrastructure.Persistence.Extensions;
 using MyProject.Shared;
@@ -49,9 +45,7 @@ internal class AdminService(
     MyProjectDbContext dbContext,
     HybridCache hybridCache,
     TimeProvider timeProvider,
-    // @feature email
     ITemplatedEmailSender templatedEmailSender,
-    // @end
     EmailTokenService emailTokenService,
     // @feature audit
     IAuditService auditService,
@@ -60,14 +54,10 @@ internal class AdminService(
     IFileStorageService fileStorageService,
     // @end
     IOptions<AuthenticationOptions> authenticationOptions,
-    // @feature email
     IOptions<EmailOptions> emailOptions,
-    // @end
     ILogger<AdminService> logger) : IAdminService
 {
-    // @feature email
     private readonly EmailOptions _emailOptions = emailOptions.Value;
-    // @end
     private readonly AuthenticationOptions.EmailTokenOptions _emailTokenOptions = authenticationOptions.Value.EmailToken;
 
     /// <inheritdoc />
@@ -483,7 +473,6 @@ internal class AdminService(
         return Result.Success();
     }
 
-    // @feature password-reset
     /// <inheritdoc />
     public async Task<Result> SendPasswordResetAsync(Guid callerUserId, Guid userId,
         CancellationToken cancellationToken = default)
@@ -519,7 +508,6 @@ internal class AdminService(
 
         return Result.Success();
     }
-    // @end
 
     // @feature 2fa
     /// <inheritdoc />
@@ -573,11 +561,9 @@ internal class AdminService(
             metadata: metadata, ct: cancellationToken);
         // @end
 
-        // @feature email
         var email = user.Email ?? user.UserName ?? string.Empty;
         var model = new AdminDisableTwoFactorModel(user.UserName ?? email, reason);
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.AdminDisableTwoFactor, model, email, cancellationToken);
-        // @end
 
         return Result.Success();
     }
@@ -619,7 +605,6 @@ internal class AdminService(
             logger.LogWarning("User '{UserId}' created but default role assignment failed", user.Id);
         }
 
-        // @feature email
         // Send invitation email with password reset link
         var identityToken = await userManager.GeneratePasswordResetTokenAsync(user);
         var opaqueToken = await emailTokenService.CreateAsync(user.Id, identityToken, EmailTokenPurpose.PasswordReset, cancellationToken);
@@ -627,7 +612,6 @@ internal class AdminService(
 
         var invitationModel = new InvitationModel(setPasswordUrl, _emailTokenOptions.Lifetime.ToHumanReadable());
         await templatedEmailSender.SendSafeAsync(EmailTemplateNames.Invitation, invitationModel, input.Email, cancellationToken);
-        // @end
 
         logger.LogInformation("User '{UserId}' created via admin invitation for email '{Email}' by admin '{CallerUserId}'",
             user.Id, input.Email, callerUserId);

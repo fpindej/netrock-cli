@@ -296,7 +296,6 @@ public class AdminController(IAdminService adminService, IRoleManagementService 
         return NoContent();
     }
 
-    // @feature password-reset
     /// <summary>
     /// Sends a password reset email to a user on behalf of an admin.
     /// The caller must outrank the target user.
@@ -329,7 +328,6 @@ public class AdminController(IAdminService adminService, IRoleManagementService 
 
         return NoContent();
     }
-    // @end
 
     // @feature 2fa
     /// <summary>

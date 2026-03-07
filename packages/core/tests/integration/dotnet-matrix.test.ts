@@ -27,10 +27,6 @@ const combinations: Combination[] = [
 		features: ['core', 'auth']
 	},
 	{
-		name: 'core + auth + email stack',
-		features: ['core', 'auth', 'email', 'email-verification', 'password-reset']
-	},
-	{
 		name: 'core + auth + 2fa',
 		features: ['core', 'auth', '2fa']
 	},
@@ -63,9 +59,6 @@ const combinations: Combination[] = [
 		features: [
 			'core',
 			'auth',
-			'email',
-			'email-verification',
-			'password-reset',
 			'2fa',
 			'oauth',
 			'captcha',

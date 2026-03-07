@@ -2,9 +2,6 @@
 export type FeatureId =
 	| 'core'
 	| 'auth'
-	| 'email'
-	| 'email-verification'
-	| 'password-reset'
 	| '2fa'
 	| 'oauth'
 	| 'captcha'

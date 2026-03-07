@@ -165,7 +165,7 @@ export function registerAdminManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/AdminControllerTests.cs',
-				templated: true
+				templated: false
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/AdminControllerDisableTwoFactorTests.cs',
