@@ -4,7 +4,7 @@
 
 **[Try the generator](https://netrock.dev)** (alpha) | [Main repo (netrock)](https://github.com/fpindej/netrock) | [Buy me a coffee](https://buymeacoffee.com/fpindej)
 
-> This generator is in alpha - built 99% with [Claude](https://claude.ai) based on the original [netrock](https://github.com/fpindej/netrock) repository. Expect rough edges. Issues and PRs are very welcome at both repos.
+> This generator is in alpha - built 99% with [Claude](https://claude.ai). The original [netrock](https://github.com/fpindej/netrock) repository is also heavily Claude-assisted, built from patterns and learnings across personal projects. Expect rough edges. Issues and PRs are very welcome at both repos.
 
 ## What it does
 

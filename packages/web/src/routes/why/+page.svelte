@@ -67,17 +67,22 @@
 		<p>
 			Full transparency: this generator was built 99% with
 			<a href="https://claude.ai" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">Claude</a>.
-			The original netrock repository is human-written - hundreds of hours of .NET and SvelteKit code
-			refined over real projects. The generator that extracts and reassembles it is where Claude came in.
 			The template engine, dependency resolver, feature manifests, web UI, and the
 			page you're reading right now.
 		</p>
 
 		<p>
+			The original
+			<a href="https://github.com/fpindej/netrock" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">netrock</a>
+			repository is also heavily Claude-assisted. It grew out of patterns and learnings
+			from my own projects and explorations over the years, and Claude helped me
+			organize, structure, and refine everything into a clean, cohesive template.
+		</p>
+
+		<p>
 			I think that's worth mentioning. Not as a gimmick, but because it's honest. AI is
-			good at this kind of work - taking a well-defined codebase and building tooling around it.
-			The source material matters, and the source material here is production code
-			that I've been shipping for a while.
+			genuinely good at this kind of work - organizing patterns, keeping things consistent,
+			and building tooling around well-understood codebases.
 		</p>
 
 		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Alpha, but real</h2>
