@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { generator } from '$lib/stores/generator.svelte';
-	import { zipSync, strToU8 } from 'fflate';
+	import { zipSync, strToU8, type Zippable } from 'fflate';
 	import FileTree from './FileTree.svelte';
 
 	let isDownloading = $state(false);
@@ -12,10 +12,13 @@
 		isDownloading = true;
 
 		try {
-			const files: Record<string, Uint8Array> = {};
+			const files: Zippable = {};
 			const rootDir = project.names.kebabCase;
+			const executableAttr = 0o755 << 16;
 			for (const file of project.files) {
-				files[`${rootDir}/${file.path}`] = strToU8(file.content);
+				const data = strToU8(file.content);
+				const isExecutable = file.path.endsWith('.sh');
+				files[`${rootDir}/${file.path}`] = isExecutable ? [data, { attrs: executableAttr }] : data;
 			}
 
 			const zipped = zipSync(files);

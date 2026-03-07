@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 import { input, select, checkbox, confirm } from '@inquirer/prompts';
 import { resolve, join, dirname } from 'node:path';
-import { writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readdirSync, chmodSync } from 'node:fs';
 import {
 	generateProject,
 	registerAllManifests,
@@ -115,6 +115,9 @@ async function main(): Promise<void> {
 		const fullPath = join(resolvedOutput, file.path);
 		mkdirSync(dirname(fullPath), { recursive: true });
 		writeFileSync(fullPath, file.content, 'utf-8');
+		if (file.path.endsWith('.sh')) {
+			chmodSync(fullPath, 0o755);
+		}
 	}
 
 	// 6. Summary
