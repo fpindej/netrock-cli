@@ -1,0 +1,67 @@
+# CLAUDE.md
+
+MyProject - .NET 10 API (Clean Architecture), fully dockerized.
+
+**The backend API is the core of the project.** It is a public-facing API designed to serve any client - multiple frontends, mobile apps, other backends, third-party integrations. Treat every API change as if unknown consumers depend on it. Breaking changes require careful migration strategy (see AGENTS.md).
+
+```
+Backend layers: WebApi → Application ← Infrastructure → Domain + Shared
+```
+
+## Hard Rules
+
+### Backend
+
+- `Result`/`Result<T>` for all fallible operations - never throw for business logic
+- `TimeProvider` (injected) - never `DateTime.UtcNow` or `DateTimeOffset.UtcNow`
+- C# 13 `extension(T)` syntax for new extension methods
+- Never `null!` - fix the design instead
+- `ProblemDetails` (RFC 9457) for all error responses - never anonymous objects or raw strings
+- `internal` on all Infrastructure service implementations
+- `/// <summary>` XML docs on all public and internal API surface
+- `System.Text.Json` only - never `Newtonsoft.Json`
+- NuGet versions in `Directory.Packages.props` only - never in `.csproj`
+
+### Cross-Cutting
+
+- Security first - when convenience and security conflict, choose security. Deny by default, open selectively. Full PII compliance (`users.view_pii` permission, server-side masking, no PII in logs/URLs/errors).
+- Atomic commits: `type(scope): imperative description` (Conventional Commits). No `Co-Authored-By` lines.
+- No dead code - remove unused imports, variables, functions, files, and stale references in the same commit
+- No em dashes - never use `---` anywhere (code, comments, docs, UI). Use `-` or rewrite the sentence.
+
+## Verification
+
+Run before every commit. Fix all errors before committing. **Loop until green - never commit with failures.**
+
+```bash
+# Backend (run when src/backend/ changed)
+dotnet build src/backend/MyProject.slnx && dotnet test src/backend/MyProject.slnx -c Release
+# @feature aspire
+
+# Aspire (run to verify local orchestration - requires Docker)
+dotnet run --project src/backend/MyProject.AppHost
+# @end
+```
+
+## Autonomous Behaviors
+
+Do these automatically - never wait to be asked:
+
+| Trigger | Action |
+|---|---|
+| **Any code change** | Run relevant verification. Fix failures. Loop until green. |
+| **Modifying existing files** | Check FILEMAP.md for downstream impact before editing. Update all affected files in the same commit. |
+| **Logically complete unit of work** | Commit immediately with Conventional Commit message. Don't batch, don't ask. |
+| **Creating a PR** (`/create-pr`) | Auto-generate session doc in `docs/sessions/` for non-trivial PRs (3+ commits or 5+ files). |
+| **Adding any feature** | Write tests alongside the implementation - component, API integration, validator as applicable. |
+| **Build/test failure** | Read the error, fix it, re-run. Repeat until green. Don't stop and report the error unless stuck after 3 attempts. |
+| **Unclear requirement** | Infer from context and existing patterns first. Ask the user only when genuinely ambiguous (multiple valid approaches with different tradeoffs). |
+
+## File Roles
+
+| File | Contains |
+|---|---|
+| `AGENTS.md` | Architecture, security, code quality, git workflow |
+| `src/backend/AGENTS.md` | Backend conventions: entities, Result, EF Core, controllers, auth, testing |
+| `.claude/skills/` | Step-by-step procedures for all operations (type `/` to list available skills) |
+| `FILEMAP.md` | "When you change X, also update Y" - change impact tables |

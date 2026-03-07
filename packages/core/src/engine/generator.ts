@@ -59,6 +59,9 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 			.replaceAll('{INIT_FRONTEND_PORT}', '5173')
 			.replaceAll('{INIT_API_PORT}', '8080');
 
+		// Skip files that become empty after template processing
+		if (templated && content.trim() === '') continue;
+
 		// Substitute path namespace
 		const outputPath = substitutePathNamespace(path, names);
 

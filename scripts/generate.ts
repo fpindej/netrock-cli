@@ -17,10 +17,11 @@ const groupLabels: Record<FeatureGroup, string> = {
 	core: 'Core',
 	authentication: 'Authentication',
 	infrastructure: 'Infrastructure',
+	tooling: 'Tooling',
 	frontend: 'Frontend'
 };
 
-const groupOrder: FeatureGroup[] = ['core', 'authentication', 'infrastructure', 'frontend'];
+const groupOrder: FeatureGroup[] = ['core', 'authentication', 'infrastructure', 'tooling', 'frontend'];
 
 async function main(): Promise<void> {
 	console.log('\nNetrock Project Generator\n');

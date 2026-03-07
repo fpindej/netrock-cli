@@ -436,9 +436,6 @@ export function registerAuthManifest(): void {
 			// WebApi - Routing
 			{ path: 'src/backend/MyProject.WebApi/Routing/RoleNameRouteConstraint.cs', templated: false },
 
-			// Documentation
-			{ path: 'src/backend/AGENTS.md', templated: false },
-
 			// Tests - Api
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/MyProject.Api.Tests.csproj',

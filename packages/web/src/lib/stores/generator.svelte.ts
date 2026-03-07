@@ -22,7 +22,8 @@ const source: TemplateSource = {
 const GROUP_LABELS: Record<string, string> = {
 	core: 'Foundation',
 	authentication: 'Auth add-ons',
-	infrastructure: 'Infrastructure'
+	infrastructure: 'Infrastructure',
+	tooling: 'Tooling'
 };
 
 /** Features hidden from the UI (no templates yet). */
@@ -88,7 +89,7 @@ function groupFeatures(): { group: string; label: string; features: Feature[] }[
 		groups.set(f.group, existing);
 	}
 
-	const order = ['core', 'authentication', 'infrastructure'];
+	const order = ['core', 'authentication', 'infrastructure', 'tooling'];
 	return order
 		.filter((g) => groups.has(g))
 		.map((g) => ({

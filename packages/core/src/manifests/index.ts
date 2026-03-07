@@ -4,6 +4,8 @@ import { registerAuditManifest } from './audit.js';
 import { registerAuthManifest } from './auth.js';
 import { registerAvatarsManifest } from './avatars.js';
 import { registerCaptchaManifest } from './captcha.js';
+import { registerClaudeManifest } from './claude.js';
+import { registerClaudeSkillsManifest } from './claude-skills.js';
 import { registerCoreManifest } from './core.js';
 import { registerFileStorageManifest } from './file-storage.js';
 import { registerFrontendManifest } from './frontend.js';
@@ -24,5 +26,7 @@ export function registerAllManifests(): void {
 	registerAuditManifest();
 	registerAdminManifest();
 	registerAspireManifest();
+	registerClaudeManifest();
+	registerClaudeSkillsManifest();
 	registerFrontendManifest();
 }
