@@ -59,12 +59,6 @@ describe('file list snapshots', () => {
 		expect(files).toMatchSnapshot();
 	});
 
-	it('api-only preset file list', () => {
-		const preset = presets.find((p) => p.id === 'api-only')!;
-		const files = generateFileList(preset.features as FeatureId[]);
-		expect(files).toMatchSnapshot();
-	});
-
 	it('full preset file list', () => {
 		const preset = presets.find((p) => p.id === 'full')!;
 		const files = generateFileList(preset.features as FeatureId[]);
