@@ -1,0 +1,3230 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`convergence file snapshots > DbContext > core-only 1`] = `
+"using Microsoft.EntityFrameworkCore;
+using SnapshotApp.Infrastructure.Persistence.Extensions;
+
+namespace SnapshotApp.Infrastructure.Persistence;
+
+/// <summary>
+/// Application database context.
+/// </summary>
+internal class SnapshotAppDbContext(DbContextOptions<SnapshotAppDbContext> options) : DbContext(options)
+{
+
+
+
+
+
+
+    /// <summary>
+    /// Configures the model by applying all entity configurations from this assembly
+    /// and fuzzy search extensions.
+    /// </summary>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SnapshotAppDbContext).Assembly);
+        modelBuilder.ApplyFuzzySearch();
+    }
+}
+"
+`;
+
+exports[`convergence file snapshots > DbContext > full preset 1`] = `
+"using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using SnapshotApp.Infrastructure.Features.Audit.Models;
+using SnapshotApp.Infrastructure.Features.Authentication.Models;
+using SnapshotApp.Infrastructure.Features.Jobs.Models;
+using SnapshotApp.Infrastructure.Persistence.Extensions;
+
+namespace SnapshotApp.Infrastructure.Persistence;
+
+/// <summary>
+/// Application database context.
+/// </summary>
+internal class SnapshotAppDbContext(DbContextOptions<SnapshotAppDbContext> options)
+    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
+{
+    /// <summary>
+    /// Gets or sets the refresh tokens table for JWT token rotation.
+    /// </summary>
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    /// <summary>
+    /// Gets or sets the email tokens table for opaque password-reset and email-verification links.
+    /// </summary>
+    public DbSet<EmailToken> EmailTokens { get; set; }
+
+    /// <summary>
+    /// Gets or sets the paused jobs table for persisting pause state across restarts.
+    /// </summary>
+    public DbSet<PausedJob> PausedJobs { get; set; }
+
+    /// <summary>
+    /// Gets or sets the two-factor authentication challenge tokens for pending 2FA logins.
+    /// </summary>
+    public DbSet<TwoFactorChallenge> TwoFactorChallenges { get; set; }
+
+    /// <summary>
+    /// Gets or sets the external OAuth2 authorization state tokens for pending OAuth flows.
+    /// </summary>
+    public DbSet<ExternalAuthState> ExternalAuthStates { get; set; }
+
+    /// <summary>
+    /// Gets or sets the audit events table for the append-only audit log.
+    /// </summary>
+    public DbSet<AuditEvent> AuditEvents { get; set; }
+
+    /// <summary>
+    /// Gets or sets the external provider configurations for admin-managed OAuth credentials.
+    /// </summary>
+    public DbSet<ExternalProviderConfig> ExternalProviderConfigs { get; set; }
+
+    /// <summary>
+    /// Configures the model by applying all entity configurations from this assembly
+    /// and fuzzy search extensions.
+    /// </summary>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SnapshotAppDbContext).Assembly);
+        modelBuilder.ApplyAuthSchema();
+        modelBuilder.ApplyFuzzySearch();
+    }
+}
+"
+`;
+
+exports[`convergence file snapshots > DbContext > minimal (core + auth) 1`] = `
+"using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using SnapshotApp.Infrastructure.Features.Authentication.Models;
+using SnapshotApp.Infrastructure.Persistence.Extensions;
+
+namespace SnapshotApp.Infrastructure.Persistence;
+
+/// <summary>
+/// Application database context.
+/// </summary>
+internal class SnapshotAppDbContext(DbContextOptions<SnapshotAppDbContext> options)
+    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options)
+{
+    /// <summary>
+    /// Gets or sets the refresh tokens table for JWT token rotation.
+    /// </summary>
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    /// <summary>
+    /// Gets or sets the email tokens table for opaque password-reset and email-verification links.
+    /// </summary>
+    public DbSet<EmailToken> EmailTokens { get; set; }
+
+
+
+
+
+
+    /// <summary>
+    /// Configures the model by applying all entity configurations from this assembly
+    /// and fuzzy search extensions.
+    /// </summary>
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(SnapshotAppDbContext).Assembly);
+        modelBuilder.ApplyAuthSchema();
+        modelBuilder.ApplyFuzzySearch();
+    }
+}
+"
+`;
+
+exports[`convergence file snapshots > ErrorMessages.cs > core-only 1`] = `
+"namespace SnapshotApp.Shared;
+
+/// <summary>
+/// User-facing error messages organized by domain area.
+/// Constants are used in <c>Result.Failure()</c> calls so that messages remain consistent,
+/// greppable, and easy to extract into translation keys later.
+/// <para>
+/// All client-facing messages must be static constants - never interpolate runtime values
+/// (role names, user IDs, framework error descriptions) into error responses.
+/// Log runtime details server-side via <c>ILogger</c> instead.
+/// </para>
+/// </summary>
+public static class ErrorMessages
+{
+
+
+    /// <summary>
+    /// Pagination error messages.
+    /// </summary>
+    public static class Pagination
+    {
+        public const string InvalidPage = "Page number must be positive.";
+        public const string InvalidPageSize = "Page size must be positive.";
+    }
+
+    /// <summary>
+    /// Server-level error messages.
+    /// </summary>
+    public static class Server
+    {
+        public const string InternalError = "An internal error occurred.";
+    }
+
+
+    /// <summary>
+    /// Security infrastructure error messages (CSRF, origin validation).
+    /// </summary>
+    public static class Security
+    {
+        public const string CrossOriginRequestBlocked = "Cross-origin requests are not allowed.";
+    }
+
+
+
+    /// <summary>
+    /// Generic entity operation error messages (repository layer).
+    /// </summary>
+    public static class Entity
+    {
+        public const string AddFailed = "Failed to add entity.";
+        public const string NotFound = "Entity not found.";
+        public const string NotDeleted = "Entity could not be deleted.";
+    }
+}
+"
+`;
+
+exports[`convergence file snapshots > ErrorMessages.cs > full preset 1`] = `
+"namespace SnapshotApp.Shared;
+
+/// <summary>
+/// User-facing error messages organized by domain area.
+/// Constants are used in <c>Result.Failure()</c> calls so that messages remain consistent,
+/// greppable, and easy to extract into translation keys later.
+/// <para>
+/// All client-facing messages must be static constants - never interpolate runtime values
+/// (role names, user IDs, framework error descriptions) into error responses.
+/// Log runtime details server-side via <c>ILogger</c> instead.
+/// </para>
+/// </summary>
+public static class ErrorMessages
+{
+    /// <summary>
+    /// Authentication error messages.
+    /// </summary>
+    public static class Auth
+    {
+        public const string LoginInvalidCredentials = "Invalid username or password.";
+        public const string LoginAccountLocked = "Account is temporarily locked. Please try again later or contact an administrator.";
+        public const string RegisterRoleAssignFailed = "Account was created but role assignment failed. Please contact an administrator.";
+        public const string TokenMissing = "Refresh token is missing.";
+        public const string TokenNotFound = "Refresh token not found.";
+        public const string TokenInvalidated = "Refresh token has been invalidated.";
+        public const string TokenReused = "Invalid refresh token.";
+        public const string TokenExpired = "Refresh token has expired.";
+        public const string TokenUserNotFound = "Token owner not found.";
+        public const string NotAuthenticated = "User is not authenticated.";
+        public const string InsufficientPermissions = "You do not have the required permissions for this action.";
+        public const string UserNotFound = "User not found.";
+        public const string PasswordIncorrect = "Current password is incorrect.";
+        public const string ResetPasswordFailed = "Password reset failed. The link may have expired or already been used.";
+        public const string ResetPasswordTokenInvalid = "Invalid or expired password reset token.";
+        public const string EmailVerificationFailed = "Email verification failed. The link may have expired or already been used.";
+        public const string EmailAlreadyVerified = "Email address is already verified.";
+        public const string PasswordSameAsCurrent = "New password must be different from your current password.";
+        public const string CaptchaInvalid = "CAPTCHA verification failed. Please try again.";
+    }
+
+    /// <summary>
+    /// Two-factor authentication error messages.
+    /// </summary>
+    public static class TwoFactor
+    {
+        public const string SetupFailed = "Failed to set up two-factor authentication.";
+        public const string VerificationFailed = "The verification code is invalid. Please try again.";
+        public const string AlreadyEnabled = "Two-factor authentication is already enabled.";
+        public const string NotEnabled = "Two-factor authentication is not enabled.";
+        public const string DisableFailed = "Failed to disable two-factor authentication.";
+        public const string ChallengeNotFound = "Two-factor challenge not found or expired.";
+        public const string ChallengeLocked = "Too many failed attempts. Please log in again.";
+        public const string RecoveryCodeInvalid = "The recovery code is invalid.";
+        public const string InvalidCode = "The two-factor code is invalid.";
+    }
+
+    /// <summary>
+    /// User self-service error messages.
+    /// </summary>
+    public static class User
+    {
+        public const string NotAuthenticated = "User is not authenticated.";
+        public const string NotFound = "User not found.";
+        public const string DeleteInvalidPassword = "Invalid password.";
+        public const string PhoneNumberTaken = "This phone number is already in use.";
+        public const string UpdateFailed = "Failed to update profile.";
+        public const string DeleteFailed = "Failed to delete account.";
+        public const string LastAdminCannotDelete = "Cannot delete your account while you are the last administrator.";
+    }
+
+    /// <summary>
+    /// Administrative operation error messages.
+    /// </summary>
+    public static class Admin
+    {
+        public const string UserNotFound = "User not found.";
+        public const string HierarchyInsufficient = "You do not have sufficient privileges to manage this user.";
+        public const string RoleAssignAboveRank = "Cannot assign a role at or above your own rank.";
+        public const string RoleRemoveAboveRank = "Cannot remove a role at or above your own rank.";
+        public const string RoleSelfRemove = "Cannot remove a role from your own account.";
+        public const string LockSelfAction = "Cannot lock your own account.";
+        public const string DeleteSelfAction = "Cannot delete your own account.";
+        public const string EmailVerificationRequired = "User must have a verified email address before being assigned this role.";
+        public const string EmailAlreadyRegistered = "A user with this email address already exists.";
+        public const string RoleAssignEscalation = "Cannot assign a role that grants permissions you do not hold.";
+        public const string RoleNotFound = "Role not found.";
+        public const string RoleAlreadyAssigned = "User already has this role.";
+        public const string RoleNotAssigned = "User does not have this role.";
+        public const string LastRoleHolder = "Cannot remove this role - this is the last user holding it.";
+        public const string RoleAssignFailed = "Failed to assign role.";
+        public const string RoleRemoveFailed = "Failed to remove role.";
+        public const string LockFailed = "Failed to lock user account.";
+        public const string UnlockFailed = "Failed to unlock user account.";
+        public const string DeleteFailed = "Failed to delete user account.";
+        public const string EmailVerificationFailed = "Failed to verify email address.";
+        public const string CreateUserFailed = "Failed to create user account.";
+        public const string LastAdminCannotDelete = "Cannot delete this user - they are the last user holding an administrative role.";
+        public const string TwoFactorNotEnabled = "Two-factor authentication is not enabled for this user.";
+        public const string DisableTwoFactorSelfAction = "You cannot disable your own two-factor authentication from the admin panel.";
+        public const string DisableTwoFactorFailed = "Failed to disable two-factor authentication.";
+    }
+
+    /// <summary>
+    /// Role management error messages.
+    /// </summary>
+    public static class Roles
+    {
+        public const string SystemRoleCannotBeDeleted = "System roles cannot be deleted.";
+        public const string SystemRoleCannotBeRenamed = "System roles cannot be renamed.";
+        public const string RoleNotFound = "Role not found.";
+        public const string RoleNameTaken = "A role with this name already exists.";
+        public const string RoleHasUsers = "Cannot delete a role that has users assigned to it.";
+        public const string InvalidPermission = "One or more permission values are invalid.";
+        public const string SystemRoleNameReserved = "This name is reserved for a system role.";
+        public const string SuperAdminPermissionsFixed = "SuperAdmin permissions cannot be modified.";
+        public const string CannotGrantUnheldPermission = "Cannot grant permissions that you do not hold.";
+        public const string CreateFailed = "Failed to create role.";
+        public const string UpdateFailed = "Failed to update role.";
+        public const string DeleteFailed = "Failed to delete role.";
+    }
+
+    /// <summary>
+    /// Pagination error messages.
+    /// </summary>
+    public static class Pagination
+    {
+        public const string InvalidPage = "Page number must be positive.";
+        public const string InvalidPageSize = "Page size must be positive.";
+    }
+
+    /// <summary>
+    /// Server-level error messages.
+    /// </summary>
+    public static class Server
+    {
+        public const string InternalError = "An internal error occurred.";
+    }
+
+    /// <summary>
+    /// Job scheduling error messages.
+    /// </summary>
+    public static class Jobs
+    {
+        public const string NotFound = "Job not found.";
+        public const string TriggerFailed = "Failed to trigger job.";
+        public const string RestoreFailed = "Failed to restore jobs.";
+    }
+
+    /// <summary>
+    /// Security infrastructure error messages (CSRF, origin validation).
+    /// </summary>
+    public static class Security
+    {
+        public const string CrossOriginRequestBlocked = "Cross-origin requests are not allowed.";
+    }
+
+    /// <summary>
+    /// Avatar upload and processing error messages.
+    /// </summary>
+    public static class Avatar
+    {
+        public const string FileTooLarge = "The file exceeds the maximum allowed size of 5 MB.";
+        public const string UnsupportedFormat = "Unsupported image format. Allowed formats: JPEG, PNG, WebP, GIF.";
+        public const string ProcessingFailed = "Failed to process the avatar image.";
+        public const string NotFound = "Avatar not found.";
+    }
+
+    /// <summary>
+    /// External authentication (OAuth2) error messages.
+    /// </summary>
+    public static class ExternalAuth
+    {
+        public const string ProviderNotConfigured = "The requested authentication provider is not configured.";
+        public const string InvalidState = "Invalid or missing OAuth state token.";
+        public const string StateExpired = "OAuth state token has expired. Please try again.";
+        public const string EmailNotVerified = "Your email address must be verified before linking an external account. Please verify your email first.";
+        public const string AlreadyLinkedToOtherUser = "This external account is already linked to another user.";
+        public const string ProviderNotLinked = "This provider is not linked to your account.";
+        public const string CannotUnlinkLastMethod = "Cannot unlink this provider because it is your only sign-in method. Set a password first.";
+        public const string CodeExchangeFailed = "Failed to exchange the authorization code with the provider.";
+        public const string ProviderError = "The external authentication provider returned an error.";
+        public const string InvalidRedirectUri = "The provided redirect URI is not allowed.";
+        public const string PasswordAlreadySet = "A password is already set for this account.";
+        public const string PasswordSetFailed = "Failed to set the password. Please try again.";
+        public const string UnknownProvider = "The specified authentication provider is not recognized.";
+        public const string ClientSecretRequired = "A client secret is required when enabling a provider that has no existing secret.";
+        public const string TestConnectionInvalidCredentials = "The provider rejected the credentials. Verify the client ID and secret are correct.";
+        public const string TestConnectionProviderUnreachable = "Could not reach the authentication provider. Please try again later.";
+        public const string TestConnectionNotConfigured = "No credentials are configured for this provider.";
+    }
+
+    /// <summary>
+    /// Generic entity operation error messages (repository layer).
+    /// </summary>
+    public static class Entity
+    {
+        public const string AddFailed = "Failed to add entity.";
+        public const string NotFound = "Entity not found.";
+        public const string NotDeleted = "Entity could not be deleted.";
+    }
+}
+"
+`;
+
+exports[`convergence file snapshots > ErrorMessages.cs > minimal (core + auth) 1`] = `
+"namespace SnapshotApp.Shared;
+
+/// <summary>
+/// User-facing error messages organized by domain area.
+/// Constants are used in <c>Result.Failure()</c> calls so that messages remain consistent,
+/// greppable, and easy to extract into translation keys later.
+/// <para>
+/// All client-facing messages must be static constants - never interpolate runtime values
+/// (role names, user IDs, framework error descriptions) into error responses.
+/// Log runtime details server-side via <c>ILogger</c> instead.
+/// </para>
+/// </summary>
+public static class ErrorMessages
+{
+    /// <summary>
+    /// Authentication error messages.
+    /// </summary>
+    public static class Auth
+    {
+        public const string LoginInvalidCredentials = "Invalid username or password.";
+        public const string LoginAccountLocked = "Account is temporarily locked. Please try again later or contact an administrator.";
+        public const string RegisterRoleAssignFailed = "Account was created but role assignment failed. Please contact an administrator.";
+        public const string TokenMissing = "Refresh token is missing.";
+        public const string TokenNotFound = "Refresh token not found.";
+        public const string TokenInvalidated = "Refresh token has been invalidated.";
+        public const string TokenReused = "Invalid refresh token.";
+        public const string TokenExpired = "Refresh token has expired.";
+        public const string TokenUserNotFound = "Token owner not found.";
+        public const string NotAuthenticated = "User is not authenticated.";
+        public const string InsufficientPermissions = "You do not have the required permissions for this action.";
+        public const string UserNotFound = "User not found.";
+        public const string PasswordIncorrect = "Current password is incorrect.";
+        public const string ResetPasswordFailed = "Password reset failed. The link may have expired or already been used.";
+        public const string ResetPasswordTokenInvalid = "Invalid or expired password reset token.";
+        public const string EmailVerificationFailed = "Email verification failed. The link may have expired or already been used.";
+        public const string EmailAlreadyVerified = "Email address is already verified.";
+        public const string PasswordSameAsCurrent = "New password must be different from your current password.";
+        public const string CaptchaInvalid = "CAPTCHA verification failed. Please try again.";
+    }
+
+    /// <summary>
+    /// Two-factor authentication error messages.
+    /// </summary>
+    public static class TwoFactor
+    {
+        public const string SetupFailed = "Failed to set up two-factor authentication.";
+        public const string VerificationFailed = "The verification code is invalid. Please try again.";
+        public const string AlreadyEnabled = "Two-factor authentication is already enabled.";
+        public const string NotEnabled = "Two-factor authentication is not enabled.";
+        public const string DisableFailed = "Failed to disable two-factor authentication.";
+        public const string ChallengeNotFound = "Two-factor challenge not found or expired.";
+        public const string ChallengeLocked = "Too many failed attempts. Please log in again.";
+        public const string RecoveryCodeInvalid = "The recovery code is invalid.";
+        public const string InvalidCode = "The two-factor code is invalid.";
+    }
+
+    /// <summary>
+    /// User self-service error messages.
+    /// </summary>
+    public static class User
+    {
+        public const string NotAuthenticated = "User is not authenticated.";
+        public const string NotFound = "User not found.";
+        public const string DeleteInvalidPassword = "Invalid password.";
+        public const string PhoneNumberTaken = "This phone number is already in use.";
+        public const string UpdateFailed = "Failed to update profile.";
+        public const string DeleteFailed = "Failed to delete account.";
+        public const string LastAdminCannotDelete = "Cannot delete your account while you are the last administrator.";
+    }
+
+
+    /// <summary>
+    /// Pagination error messages.
+    /// </summary>
+    public static class Pagination
+    {
+        public const string InvalidPage = "Page number must be positive.";
+        public const string InvalidPageSize = "Page size must be positive.";
+    }
+
+    /// <summary>
+    /// Server-level error messages.
+    /// </summary>
+    public static class Server
+    {
+        public const string InternalError = "An internal error occurred.";
+    }
+
+
+    /// <summary>
+    /// Security infrastructure error messages (CSRF, origin validation).
+    /// </summary>
+    public static class Security
+    {
+        public const string CrossOriginRequestBlocked = "Cross-origin requests are not allowed.";
+    }
+
+
+
+    /// <summary>
+    /// Generic entity operation error messages (repository layer).
+    /// </summary>
+    public static class Entity
+    {
+        public const string AddFailed = "Failed to add entity.";
+        public const string NotFound = "Entity not found.";
+        public const string NotDeleted = "Entity could not be deleted.";
+    }
+}
+"
+`;
+
+exports[`convergence file snapshots > Infrastructure.csproj > core-only 1`] = `
+"<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="../SnapshotApp.Application/SnapshotApp.Application.csproj"/>
+        <ProjectReference Include="../SnapshotApp.Domain/SnapshotApp.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog" />
+        <PackageReference Include="Serilog.AspNetCore" />
+        <PackageReference Include="Serilog.Sinks.Async" />
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="SnapshotApp.Api.Tests"/>
+        <InternalsVisibleTo Include="SnapshotApp.Component.Tests"/>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+    </ItemGroup>
+
+</Project>
+"
+`;
+
+exports[`convergence file snapshots > Infrastructure.csproj > full preset 1`] = `
+"<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="../SnapshotApp.Application/SnapshotApp.Application.csproj"/>
+        <ProjectReference Include="../SnapshotApp.Domain/SnapshotApp.Domain.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Fluid.Core" />
+        <PackageReference Include="MailKit" />
+        <PackageReference Include="Serilog" />
+        <PackageReference Include="Serilog.AspNetCore" />
+        <PackageReference Include="Serilog.Sinks.Async" />
+        <PackageReference Include="JetBrains.Annotations" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+        <PackageReference Include="Newtonsoft.Json" />
+        <PackageReference Include="Hangfire.AspNetCore" />
+        <PackageReference Include="Hangfire.Core" />
+        <PackageReference Include="Hangfire.PostgreSql" />
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="AWSSDK.S3" />
+        <PackageReference Include="SkiaSharp" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Features\\Email\\Templates\\*.liquid" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InternalsVisibleTo Include="SnapshotApp.Api.Tests"/>
+        <InternalsVisibleTo Include="SnapshotApp.Component.Tests"/>
+        <InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+    </ItemGroup>
+
+</Project>
+"
+`;
+
+exports[`convergence file snapshots > Program.cs > core-only 1`] = `
+"using System.Text.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using SnapshotApp.Infrastructure.Persistence.Extensions;
+using SnapshotApp.WebApi.Extensions;
+using SnapshotApp.WebApi.Features.OpenApi.Extensions;
+using SnapshotApp.WebApi.Middlewares;
+using Serilog;
+using LoggerConfigurationExtensions = SnapshotApp.Infrastructure.Logging.Extensions.LoggerConfigurationExtensions;
+
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Production;
+
+Log.Logger = LoggerConfigurationExtensions.ConfigureMinimalLogging(environmentName);
+
+try
+{
+    Log.Information("Starting web host");
+    var builder = WebApplication.CreateBuilder(args);
+
+    Log.Debug("Use Serilog");
+    builder.Host.UseSerilog((context, _, loggerConfiguration) =>
+    {
+        LoggerConfigurationExtensions.SetupLogger(context.Configuration, loggerConfiguration);
+    }, preserveStaticLogger: true, writeToProviders: true);
+
+    Log.Debug("Adding Aspire service defaults (OpenTelemetry, service discovery, resilience)");
+    builder.AddServiceDefaults();
+
+    try
+    {
+        Log.Debug("Adding TimeProvider");
+        builder.Services.AddSingleton(TimeProvider.System);
+
+        Log.Debug("Adding persistence services");
+        builder.Services.AddPersistence(builder.Configuration);
+
+
+
+
+
+
+
+
+
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Failed to configure essential services or dependencies.");
+        throw;
+    }
+
+    Log.Debug("Adding Cors Feature");
+    builder.Services.AddCors(builder.Configuration, builder.Environment);
+
+    Log.Debug("Adding Routing => LowercaseUrls, Custom Constraints");
+    builder.Services.AddRouting(options =>
+    {
+        options.LowercaseUrls = true;
+    });
+
+    Log.Debug("Adding ProblemDetails");
+    builder.Services.AddProblemDetails(options =>
+    {
+        options.CustomizeProblemDetails = context =>
+        {
+            context.ProblemDetails.Instance = context.HttpContext.Request.Path;
+        };
+    });
+
+    Log.Debug("Adding Controllers");
+    builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
+
+    Log.Debug("Adding FluentValidation");
+    builder.Services.AddFluentValidationAutoValidation();
+    builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+    Log.Debug("Adding hosting options");
+    builder.Services.AddHostingOptions(builder.Configuration);
+
+    Log.Debug("Adding rate limiting");
+    builder.Services.AddRateLimiting(builder.Configuration);
+
+    Log.Debug("ConfigureServices => Setting AddHealthChecks");
+    builder.Services.AddApplicationHealthChecks(builder.Configuration);
+
+    Log.Debug("ConfigureServices => Setting AddApiDefinition");
+    builder.AddOpenApiSpecification();
+
+    var app = builder.Build();
+
+    Log.Debug("Setting hosting middleware (forwarded headers, HTTPS)");
+    app.UseHostingMiddleware();
+
+    if (!app.Environment.IsProduction())
+    {
+        Log.Debug("Setting Scalar OpenApi Documentation");
+        app.UseOpenApiDocumentation();
+    }
+
+    Log.Debug("Setting security headers");
+    app.UseSecurityHeaders();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        Log.Debug("Setting HSTS");
+        app.UseHsts();
+    }
+
+    Log.Debug("Initializing database");
+    await app.InitializeDatabaseAsync();
+
+    Log.Debug("Setting UseCors");
+    CorsExtensions.UseCors(app);
+
+    Log.Debug("Setting UseMiddleware => OriginValidationMiddleware");
+    app.UseMiddleware<OriginValidationMiddleware>();
+
+    Log.Debug("Setting UseSerilogRequestLogging");
+    app.UseSerilogRequestLogging();
+
+    Log.Debug("Setting UseMiddleware => ExceptionHandlingMiddleware");
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+    Log.Debug("Setting UseStatusCodePages");
+    app.UseStatusCodePages();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        Log.Debug("Setting UseHttpsRedirection");
+        app.UseHttpsRedirection();
+    }
+
+    Log.Debug("Setting UseRouting");
+    app.UseRouting();
+
+
+    Log.Debug("Setting UseRateLimiter");
+    app.UseRateLimiter();
+
+
+
+    Log.Debug("Setting \\"security\\" measure => Redirect to YouTube video to confuse enemies");
+    app.Use(async (context, next) =>
+    {
+        if (context.Request.Path.Value is "/")
+        {
+            context.Response.Redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ", permanent: false);
+            return;
+        }
+
+        await next();
+    });
+
+    Log.Debug("Setting endpoints => MapControllers");
+    app.MapControllers();
+
+    Log.Debug("Setting endpoints => MapHealthChecks");
+    app.MapHealthCheckEndpoints();
+
+    await app.RunAsync();
+}
+catch (Exception ex) when (ex is not HostAbortedException)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.Information("Shutting down application");
+    await Log.CloseAndFlushAsync();
+}
+"
+`;
+
+exports[`convergence file snapshots > Program.cs > full preset 1`] = `
+"using System.Text.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
+using SnapshotApp.Infrastructure.Caching.Extensions;
+using SnapshotApp.Infrastructure.Cookies.Extensions;
+using SnapshotApp.Infrastructure.Identity.Extensions;
+using SnapshotApp.Infrastructure.Features.Admin.Extensions;
+using SnapshotApp.Infrastructure.Features.Audit.Extensions;
+using SnapshotApp.Infrastructure.Features.Avatar.Extensions;
+using SnapshotApp.Infrastructure.Features.Captcha.Extensions;
+using SnapshotApp.Infrastructure.Features.FileStorage.Extensions;
+using SnapshotApp.Infrastructure.Features.Email.Extensions;
+using SnapshotApp.Infrastructure.Features.Jobs.Extensions;
+using SnapshotApp.Infrastructure.Persistence.Extensions;
+using SnapshotApp.WebApi.Authorization;
+using SnapshotApp.WebApi.Extensions;
+using SnapshotApp.WebApi.Features.OpenApi.Extensions;
+using SnapshotApp.WebApi.Middlewares;
+using SnapshotApp.WebApi.Routing;
+using Serilog;
+using LoggerConfigurationExtensions = SnapshotApp.Infrastructure.Logging.Extensions.LoggerConfigurationExtensions;
+
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Production;
+
+Log.Logger = LoggerConfigurationExtensions.ConfigureMinimalLogging(environmentName);
+
+try
+{
+    Log.Information("Starting web host");
+    var builder = WebApplication.CreateBuilder(args);
+
+    Log.Debug("Use Serilog");
+    builder.Host.UseSerilog((context, _, loggerConfiguration) =>
+    {
+        LoggerConfigurationExtensions.SetupLogger(context.Configuration, loggerConfiguration);
+    }, preserveStaticLogger: true, writeToProviders: true);
+
+    Log.Debug("Adding Aspire service defaults (OpenTelemetry, service discovery, resilience)");
+    builder.AddServiceDefaults();
+
+    try
+    {
+        Log.Debug("Adding TimeProvider");
+        builder.Services.AddSingleton(TimeProvider.System);
+
+        Log.Debug("Adding persistence services");
+        builder.Services.AddPersistence(builder.Configuration);
+
+        Log.Debug("Adding identity services");
+        builder.Services.AddIdentityServices(builder.Configuration);
+
+        Log.Debug("Adding user context");
+        builder.Services.AddUserContext();
+
+        Log.Debug("Adding caching");
+        builder.Services.AddCaching(builder.Configuration);
+
+        Log.Debug("Adding cookie services");
+        builder.Services.AddCookieServices();
+
+        Log.Debug("Adding admin services");
+        builder.Services.AddAdminServices();
+
+        Log.Debug("Adding audit services");
+        builder.Services.AddAuditServices();
+
+        Log.Debug("Adding email services");
+        builder.Services.AddEmailServices(builder.Configuration);
+
+        Log.Debug("Adding file storage services");
+        builder.Services.AddFileStorageServices(builder.Configuration);
+
+        Log.Debug("Adding avatar services");
+        builder.Services.AddAvatarServices();
+
+        Log.Debug("Adding captcha services");
+        builder.Services.AddCaptchaServices();
+
+        Log.Debug("Adding job scheduling");
+        builder.Services.AddJobScheduling(builder.Configuration);
+
+        Log.Debug("Adding permission-based authorization");
+        builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, ProblemDetailsAuthorizationHandler>();
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Failed to configure essential services or dependencies.");
+        throw;
+    }
+
+    Log.Debug("Adding Cors Feature");
+    builder.Services.AddCors(builder.Configuration, builder.Environment);
+
+    Log.Debug("Adding Routing => LowercaseUrls, Custom Constraints");
+    builder.Services.AddRouting(options =>
+    {
+        options.LowercaseUrls = true;
+        options.ConstraintMap.Add("roleName", typeof(RoleNameRouteConstraint));
+        options.ConstraintMap.Add("jobId", typeof(JobIdRouteConstraint));
+        options.ConstraintMap.Add("providerName", typeof(ProviderNameRouteConstraint));
+    });
+
+    Log.Debug("Adding ProblemDetails");
+    builder.Services.AddProblemDetails(options =>
+    {
+        options.CustomizeProblemDetails = context =>
+        {
+            context.ProblemDetails.Instance = context.HttpContext.Request.Path;
+        };
+    });
+
+    Log.Debug("Adding Controllers");
+    builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
+
+    Log.Debug("Adding FluentValidation");
+    builder.Services.AddFluentValidationAutoValidation();
+    builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+    Log.Debug("Adding hosting options");
+    builder.Services.AddHostingOptions(builder.Configuration);
+
+    Log.Debug("Adding rate limiting");
+    builder.Services.AddRateLimiting(builder.Configuration);
+
+    Log.Debug("ConfigureServices => Setting AddHealthChecks");
+    builder.Services.AddApplicationHealthChecks(builder.Configuration);
+
+    Log.Debug("ConfigureServices => Setting AddApiDefinition");
+    builder.AddOpenApiSpecification();
+
+    var app = builder.Build();
+
+    Log.Debug("Setting hosting middleware (forwarded headers, HTTPS)");
+    app.UseHostingMiddleware();
+
+    if (!app.Environment.IsProduction())
+    {
+        Log.Debug("Setting Scalar OpenApi Documentation");
+        app.UseOpenApiDocumentation();
+    }
+
+    Log.Debug("Setting security headers");
+    app.UseSecurityHeaders();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        Log.Debug("Setting HSTS");
+        app.UseHsts();
+    }
+
+    Log.Debug("Initializing database");
+    await app.InitializeDatabaseAsync();
+
+    Log.Debug("Setting UseCors");
+    CorsExtensions.UseCors(app);
+
+    Log.Debug("Setting UseMiddleware => OriginValidationMiddleware");
+    app.UseMiddleware<OriginValidationMiddleware>();
+
+    Log.Debug("Setting UseSerilogRequestLogging");
+    app.UseSerilogRequestLogging();
+
+    Log.Debug("Setting UseMiddleware => ExceptionHandlingMiddleware");
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+    Log.Debug("Setting UseStatusCodePages");
+    app.UseStatusCodePages();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        Log.Debug("Setting UseHttpsRedirection");
+        app.UseHttpsRedirection();
+    }
+
+    Log.Debug("Setting UseRouting");
+    app.UseRouting();
+
+    Log.Debug("Setting UseAuthentication");
+    app.UseAuthentication();
+
+    Log.Debug("Setting UseRateLimiter");
+    app.UseRateLimiter();
+
+    Log.Debug("Setting UseAuthorization");
+    app.UseAuthorization();
+
+    Log.Debug("Setting up job scheduling");
+    app.UseJobScheduling();
+
+    Log.Debug("Setting \\"security\\" measure => Redirect to YouTube video to confuse enemies");
+    app.Use(async (context, next) =>
+    {
+        if (context.Request.Path.Value is "/")
+        {
+            context.Response.Redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ", permanent: false);
+            return;
+        }
+
+        await next();
+    });
+
+    Log.Debug("Setting endpoints => MapControllers");
+    app.MapControllers();
+
+    Log.Debug("Setting endpoints => MapHealthChecks");
+    app.MapHealthCheckEndpoints();
+
+    await app.RunAsync();
+}
+catch (Exception ex) when (ex is not HostAbortedException)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.Information("Shutting down application");
+    await Log.CloseAndFlushAsync();
+}
+"
+`;
+
+exports[`convergence file snapshots > Program.cs > minimal (core + auth) 1`] = `
+"using System.Text.Json.Serialization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
+using SnapshotApp.Infrastructure.Caching.Extensions;
+using SnapshotApp.Infrastructure.Cookies.Extensions;
+using SnapshotApp.Infrastructure.Identity.Extensions;
+using SnapshotApp.Infrastructure.Persistence.Extensions;
+using SnapshotApp.WebApi.Authorization;
+using SnapshotApp.WebApi.Extensions;
+using SnapshotApp.WebApi.Features.OpenApi.Extensions;
+using SnapshotApp.WebApi.Middlewares;
+using SnapshotApp.WebApi.Routing;
+using Serilog;
+using LoggerConfigurationExtensions = SnapshotApp.Infrastructure.Logging.Extensions.LoggerConfigurationExtensions;
+
+var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? Environments.Production;
+
+Log.Logger = LoggerConfigurationExtensions.ConfigureMinimalLogging(environmentName);
+
+try
+{
+    Log.Information("Starting web host");
+    var builder = WebApplication.CreateBuilder(args);
+
+    Log.Debug("Use Serilog");
+    builder.Host.UseSerilog((context, _, loggerConfiguration) =>
+    {
+        LoggerConfigurationExtensions.SetupLogger(context.Configuration, loggerConfiguration);
+    }, preserveStaticLogger: true, writeToProviders: true);
+
+    Log.Debug("Adding Aspire service defaults (OpenTelemetry, service discovery, resilience)");
+    builder.AddServiceDefaults();
+
+    try
+    {
+        Log.Debug("Adding TimeProvider");
+        builder.Services.AddSingleton(TimeProvider.System);
+
+        Log.Debug("Adding persistence services");
+        builder.Services.AddPersistence(builder.Configuration);
+
+        Log.Debug("Adding identity services");
+        builder.Services.AddIdentityServices(builder.Configuration);
+
+        Log.Debug("Adding user context");
+        builder.Services.AddUserContext();
+
+        Log.Debug("Adding caching");
+        builder.Services.AddCaching(builder.Configuration);
+
+        Log.Debug("Adding cookie services");
+        builder.Services.AddCookieServices();
+
+
+
+
+
+
+
+
+        Log.Debug("Adding permission-based authorization");
+        builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, ProblemDetailsAuthorizationHandler>();
+    }
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Failed to configure essential services or dependencies.");
+        throw;
+    }
+
+    Log.Debug("Adding Cors Feature");
+    builder.Services.AddCors(builder.Configuration, builder.Environment);
+
+    Log.Debug("Adding Routing => LowercaseUrls, Custom Constraints");
+    builder.Services.AddRouting(options =>
+    {
+        options.LowercaseUrls = true;
+    });
+
+    Log.Debug("Adding ProblemDetails");
+    builder.Services.AddProblemDetails(options =>
+    {
+        options.CustomizeProblemDetails = context =>
+        {
+            context.ProblemDetails.Instance = context.HttpContext.Request.Path;
+        };
+    });
+
+    Log.Debug("Adding Controllers");
+    builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
+
+    Log.Debug("Adding FluentValidation");
+    builder.Services.AddFluentValidationAutoValidation();
+    builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+    Log.Debug("Adding hosting options");
+    builder.Services.AddHostingOptions(builder.Configuration);
+
+    Log.Debug("Adding rate limiting");
+    builder.Services.AddRateLimiting(builder.Configuration);
+
+    Log.Debug("ConfigureServices => Setting AddHealthChecks");
+    builder.Services.AddApplicationHealthChecks(builder.Configuration);
+
+    Log.Debug("ConfigureServices => Setting AddApiDefinition");
+    builder.AddOpenApiSpecification();
+
+    var app = builder.Build();
+
+    Log.Debug("Setting hosting middleware (forwarded headers, HTTPS)");
+    app.UseHostingMiddleware();
+
+    if (!app.Environment.IsProduction())
+    {
+        Log.Debug("Setting Scalar OpenApi Documentation");
+        app.UseOpenApiDocumentation();
+    }
+
+    Log.Debug("Setting security headers");
+    app.UseSecurityHeaders();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        Log.Debug("Setting HSTS");
+        app.UseHsts();
+    }
+
+    Log.Debug("Initializing database");
+    await app.InitializeDatabaseAsync();
+
+    Log.Debug("Setting UseCors");
+    CorsExtensions.UseCors(app);
+
+    Log.Debug("Setting UseMiddleware => OriginValidationMiddleware");
+    app.UseMiddleware<OriginValidationMiddleware>();
+
+    Log.Debug("Setting UseSerilogRequestLogging");
+    app.UseSerilogRequestLogging();
+
+    Log.Debug("Setting UseMiddleware => ExceptionHandlingMiddleware");
+    app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+    Log.Debug("Setting UseStatusCodePages");
+    app.UseStatusCodePages();
+
+    if (!app.Environment.IsDevelopment())
+    {
+        Log.Debug("Setting UseHttpsRedirection");
+        app.UseHttpsRedirection();
+    }
+
+    Log.Debug("Setting UseRouting");
+    app.UseRouting();
+
+    Log.Debug("Setting UseAuthentication");
+    app.UseAuthentication();
+
+    Log.Debug("Setting UseRateLimiter");
+    app.UseRateLimiter();
+
+    Log.Debug("Setting UseAuthorization");
+    app.UseAuthorization();
+
+
+    Log.Debug("Setting \\"security\\" measure => Redirect to YouTube video to confuse enemies");
+    app.Use(async (context, next) =>
+    {
+        if (context.Request.Path.Value is "/")
+        {
+            context.Response.Redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ", permanent: false);
+            return;
+        }
+
+        await next();
+    });
+
+    Log.Debug("Setting endpoints => MapControllers");
+    app.MapControllers();
+
+    Log.Debug("Setting endpoints => MapHealthChecks");
+    app.MapHealthCheckEndpoints();
+
+    await app.RunAsync();
+}
+catch (Exception ex) when (ex is not HostAbortedException)
+{
+    Log.Fatal(ex, "Host terminated unexpectedly");
+}
+finally
+{
+    Log.Information("Shutting down application");
+    await Log.CloseAndFlushAsync();
+}
+"
+`;
+
+exports[`convergence file snapshots > Solution file > core-only 1`] = `
+"<Solution>
+  <Folder Name="/solution items/">
+    <File Path="../../deploy/docker-compose.yml" />
+    <File Path="../../deploy/docker-compose.production.yml" />
+    <File Path="../../.config/dotnet-tools.json" />
+    <File Path="../../global.json" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="SnapshotApp.WebApi/Dockerfile" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Project Path="SnapshotApp.Application/SnapshotApp.Application.csproj" />
+  <Project Path="SnapshotApp.Domain/SnapshotApp.Domain.csproj" />
+  <Project Path="SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj" />
+  <Project Path="SnapshotApp.Shared/SnapshotApp.Shared.csproj" />
+  <Project Path="SnapshotApp.WebApi/SnapshotApp.WebApi.csproj" />
+  <Project Path="SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj" />
+  <Folder Name="/tests/">
+    <Project Path="tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj" />
+  </Folder>
+</Solution>
+"
+`;
+
+exports[`convergence file snapshots > Solution file > full preset 1`] = `
+"<Solution>
+  <Folder Name="/solution items/">
+    <File Path="../../deploy/docker-compose.yml" />
+    <File Path="../../deploy/docker-compose.production.yml" />
+    <File Path="../../.config/dotnet-tools.json" />
+    <File Path="../../global.json" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="SnapshotApp.WebApi/Dockerfile" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Project Path="SnapshotApp.Application/SnapshotApp.Application.csproj" />
+  <Project Path="SnapshotApp.Domain/SnapshotApp.Domain.csproj" />
+  <Project Path="SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj" />
+  <Project Path="SnapshotApp.Shared/SnapshotApp.Shared.csproj" />
+  <Project Path="SnapshotApp.WebApi/SnapshotApp.WebApi.csproj" />
+  <Project Path="SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj" />
+  <Project Path="SnapshotApp.AppHost/SnapshotApp.AppHost.csproj" />
+  <Folder Name="/deploy/">
+    <Project Path="HealthProbe/HealthProbe.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj" />
+  </Folder>
+</Solution>
+"
+`;
+
+exports[`convergence file snapshots > Solution file > minimal (core + auth) 1`] = `
+"<Solution>
+  <Folder Name="/solution items/">
+    <File Path="../../deploy/docker-compose.yml" />
+    <File Path="../../deploy/docker-compose.production.yml" />
+    <File Path="../../.config/dotnet-tools.json" />
+    <File Path="../../global.json" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="SnapshotApp.WebApi/Dockerfile" />
+    <File Path="nuget.config" />
+  </Folder>
+  <Project Path="SnapshotApp.Application/SnapshotApp.Application.csproj" />
+  <Project Path="SnapshotApp.Domain/SnapshotApp.Domain.csproj" />
+  <Project Path="SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj" />
+  <Project Path="SnapshotApp.Shared/SnapshotApp.Shared.csproj" />
+  <Project Path="SnapshotApp.WebApi/SnapshotApp.WebApi.csproj" />
+  <Project Path="SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj" />
+  <Folder Name="/tests/">
+    <Project Path="tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj" />
+    <Project Path="tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj" />
+  </Folder>
+</Solution>
+"
+`;
+
+exports[`convergence file snapshots > appsettings.Testing.json > core-only 1`] = `
+"{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "Database": "Host=localhost;Database=test_db;Username=test;Password=test"
+  },
+  "RateLimiting": {
+    "Global": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+  },
+  "Hosting": {
+    "ForceHttps": false
+  },
+  "Cors": {
+    "AllowAllOrigins": false,
+    "AllowedOrigins": [
+      "https://test.example.com"
+    ],
+    "PolicyName": "DefaultCorsPolicy"
+  }
+}
+"
+`;
+
+exports[`convergence file snapshots > appsettings.Testing.json > full preset 1`] = `
+"{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "Database": "Host=localhost;Database=test_db;Username=test;Password=test"
+  },
+  "Authentication": {
+    "Jwt": {
+      "Key": "ThisIsATestOnlyJwtSigningKeyThatIsAtLeast64CharactersLongForTests!",
+      "Issuer": "test-issuer",
+      "Audience": "test-audience"
+    },
+    "ExternalProviders": {
+      "AllowedRedirectUris": [
+        "https://test.example.com/oauth/callback"
+      ],
+      "EncryptionKey": "ThisIsATestOnlyEncryptionKeyThatMustBeAtLeast32CharactersLong!!"
+    }
+  },
+  "Caching": {
+    "Enabled": false
+  },
+  "JobScheduling": {
+    "Enabled": false
+  },
+  "Email": {
+    "Enabled": false,
+    "FrontendBaseUrl": "https://test.example.com"
+  },
+  "Captcha": {
+    "SecretKey": "1x0000000000000000000000000000000AA"
+  },
+  "FileStorage": {
+    "Endpoint": "http://localhost:9000",
+    "AccessKey": "testaccess",
+    "SecretKey": "testsecret",
+    "BucketName": "test-files",
+    "UseSSL": false
+  },
+  "RateLimiting": {
+    "Global": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "Registration": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "Auth": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "Sensitive": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "AdminMutations": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    }
+  },
+  "Hosting": {
+    "ForceHttps": false
+  },
+  "Cors": {
+    "AllowAllOrigins": false,
+    "AllowedOrigins": [
+      "https://test.example.com"
+    ],
+    "PolicyName": "DefaultCorsPolicy"
+  }
+}
+"
+`;
+
+exports[`convergence file snapshots > appsettings.Testing.json > minimal (core + auth) 1`] = `
+"{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Warning"
+    }
+  },
+  "ConnectionStrings": {
+    "Database": "Host=localhost;Database=test_db;Username=test;Password=test"
+  },
+  "Authentication": {
+    "Jwt": {
+      "Key": "ThisIsATestOnlyJwtSigningKeyThatIsAtLeast64CharactersLongForTests!",
+      "Issuer": "test-issuer",
+      "Audience": "test-audience"
+    },
+  },
+  "Caching": {
+    "Enabled": false
+  },
+  "RateLimiting": {
+    "Global": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "Registration": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "Auth": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+    "Sensitive": {
+      "PermitLimit": 10000,
+      "Window": "00:00:10"
+    },
+  },
+  "Hosting": {
+    "ForceHttps": false
+  },
+  "Cors": {
+    "AllowAllOrigins": false,
+    "AllowedOrigins": [
+      "https://test.example.com"
+    ],
+    "PolicyName": "DefaultCorsPolicy"
+  }
+}
+"
+`;
+
+exports[`convergence file snapshots > appsettings.json > core-only 1`] = `
+"{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Information",
+        "Microsoft.AspNetCore": "Error",
+        "Microsoft.EntityFrameworkCore": "Warning"
+      }
+    },
+    "Enrich": [
+      "FromLogContext"
+    ]
+  },
+  "ConnectionStrings": {
+    "Database": "<DB_CONNECTION_STRING>"
+  },
+  "RateLimiting": {
+    "Global": {
+      "PermitLimit": 120,
+      "Window": "00:01:00",
+      "QueueLimit": 0,
+      "QueueProcessingOrder": "OldestFirst"
+    }
+  },
+  "Cors": {
+    "AllowAllOrigins": false,
+    "AllowedOrigins": [
+      "https://your-production-domain.com"
+    ],
+    "PolicyName": "DefaultCorsPolicy"
+  },
+  "Hosting": {
+    "ForceHttps": true,
+    "ReverseProxy": {
+      "TrustedNetworks": [],
+      "TrustedProxies": []
+    }
+  },
+  "AllowedHosts": "*"
+}
+"
+`;
+
+exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
+"{
+  "Serilog": {
+    "MinimumLevel": {
+      "Default": "Information",
+      "Override": {
+        "Microsoft": "Information",
+        "Microsoft.AspNetCore": "Error",
+        "Microsoft.EntityFrameworkCore": "Warning"
+      }
+    },
+    "Enrich": [
+      "FromLogContext"
+    ]
+  },
+  "ConnectionStrings": {
+    "Database": "<DB_CONNECTION_STRING>"
+  },
+  "RateLimiting": {
+    "Global": {
+      "PermitLimit": 120,
+      "Window": "00:01:00",
+      "QueueLimit": 0,
+      "QueueProcessingOrder": "OldestFirst"
+    }
+  },
+  "Cors": {
+    "AllowAllOrigins": false,
+    "AllowedOrigins": [
+      "https://your-production-domain.com"
+    ],
+    "PolicyName": "DefaultCorsPolicy"
+  },
+  "Hosting": {
+    "ForceHttps": true,
+    "ReverseProxy": {
+      "TrustedNetworks": [],
+      "TrustedProxies": []
+    }
+  },
+  "AllowedHosts": "*"
+}
+"
+`;
+
+exports[`file list snapshots > api-only preset file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/AGENTS.md",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/HealthProbe/HealthProbe.csproj",
+  "src/backend/HealthProbe/Program.cs",
+  "src/backend/SnapshotApp.AppHost/Program.cs",
+  "src/backend/SnapshotApp.AppHost/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.AppHost/SnapshotApp.AppHost.csproj",
+  "src/backend/SnapshotApp.AppHost/appsettings.json",
+  "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",
+  "src/backend/SnapshotApp.Application/Cookies/Constants/CookieNames.cs",
+  "src/backend/SnapshotApp.Application/Cookies/ICookieService.cs",
+  "src/backend/SnapshotApp.Application/Cryptography/ISecretEncryptionService.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AdminRoleOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AdminUserListOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AdminUserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AssignRoleInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/CreateRoleInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/CreateUserInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/PermissionGroupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/RoleDetailOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/SetRolePermissionsInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/UpdateRoleInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/IAdminService.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/IRoleManagementService.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/AuditActions.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/Dtos/AuditEventListOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/Dtos/AuditEventOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/IAuditService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/AuthenticationOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ChangePasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalCallbackInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalCallbackOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalChallengeInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalChallengeOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalProviderInfo.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/LoginOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ProviderConfigOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ProviderCredentialsOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/RegisterInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ResetPasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/SetPasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/TwoFactorSetupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/TwoFactorVerifySetupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpdateProfileInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpsertProviderConfigInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/VerifyEmailInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IExternalAuthService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IProviderConfigService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/ITwoFactorService.cs",
+  "src/backend/SnapshotApp.Application/Features/Avatar/Dtos/ProcessedImageOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Avatar/IImageProcessingService.cs",
+  "src/backend/SnapshotApp.Application/Features/Captcha/ICaptchaService.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
+  "src/backend/SnapshotApp.Application/Features/FileStorage/Dtos/FileDownloadOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/FileStorage/IFileStorageService.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/JobExecutionOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/RecurringJobDetailOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/RecurringJobOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/IJobManagementService.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/PermissionDefinition.cs",
+  "src/backend/SnapshotApp.Application/Identity/Dtos/DeleteAccountInput.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserContext.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserService.cs",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Options/CachingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Services/NoOpHybridCache.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/CookieService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/AesGcmEncryptionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/HashHelper.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Admin/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Admin/Services/AdminService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Admin/Services/RoleManagementService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Configurations/AuditEventConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Models/AuditEvent.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Services/AuditService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/ExternalAuthStateConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/ExternalProviderConfigConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/RefreshTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/TwoFactorChallengeConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationRole.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationUser.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ExternalAuthState.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ExternalProviderConfig.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/RefreshToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/TwoFactorChallenge.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/AuthenticationOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/ExternalAuthOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/AuthenticationService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/EmailTokenService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalAuthService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/AppleAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/DiscordAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/ExternalUserInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/FacebookAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GitHubAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GitLabAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GoogleAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/IExternalAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/LinkedInAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/MicrosoftAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/ProviderCredentials.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/SlackAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/TwitchAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ProviderConfigService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TwoFactorService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Avatar/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Avatar/Services/ImageProcessingService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Options/CaptchaOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Services/TurnstileCaptchaService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/FileStorage/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/FileStorage/Options/FileStorageOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/FileStorage/Services/S3FileStorageService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Configurations/PausedJobConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Examples/ExampleFireAndForgetJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/IRecurringJobDefinition.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Models/PausedJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Options/JobSchedulingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredEmailTokenCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredRefreshTokenCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredTwoFactorChallengeCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Services/JobManagementService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Services/UserService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/UserContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/AuditingInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/UserCacheInvalidationInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Options/SeedOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionPolicyProvider.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionRequirement.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/ProblemDetailsAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/RequirePermissionAttribute.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/AdminController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/AdminMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AdminRoleResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AdminUserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AssignRole/AssignRoleRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AssignRole/AssignRoleRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateRole/CreateRoleRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateRole/CreateRoleRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateUser/CreateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateUser/CreateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/DisableTwoFactor/DisableTwoFactorRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/DisableTwoFactor/DisableTwoFactorRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/JobExecutionResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/RecurringJobDetailResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/RecurringJobResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/ListUsers/ListUsersRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/ListUsers/ListUsersRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/ListUsers/ListUsersResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/OAuthProviderConfigResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/UpdateOAuthProviderRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/UpdateOAuthProviderRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/PermissionGroupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/RoleDetailResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/SetPermissions/SetPermissionsRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/SetPermissions/SetPermissionsRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/UpdateRole/UpdateRoleRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/UpdateRole/UpdateRoleRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/JobsController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/JobsMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/OAuthProvidersController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/OAuthProvidersMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/PiiMasker.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/AuditMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/Dtos/AuditEventResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/Dtos/ListAuditEvents/ListAuditEventsRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/Dtos/ListAuditEvents/ListAuditEventsResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalProviderResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalUnlinkRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalUnlinkRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/AuthenticationResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorDisableRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorDisableRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorLoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorLoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRecoveryLoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRecoveryLoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRegenerateCodesRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRegenerateCodesRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorSetupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/EmailVerificationController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/ExternalAuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/PasswordController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/TwoFactorController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UploadAvatar/UploadAvatarRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UploadAvatar/UploadAvatarRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UserMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UsersController.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Routing/JobIdRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Routing/ProviderNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Routing/RoleNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Api.Tests/Contracts/ResponseContracts.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AdminControllerDisableTwoFactorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AdminControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/ExternalAuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/JobsControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/OAuthProvidersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/UsersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Features/Admin/AdminMapperPiiTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Features/Admin/PiiMaskerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/CustomWebApplicationFactory.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/TestAuthHandler.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Middlewares/OriginValidationMiddlewareTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/CorsOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/RateLimitingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/AdminValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/DisableTwoFactorRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ExternalAuthValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ForgotPasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/LoginRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/RegisterRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ResetPasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/TwoFactorValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/UserValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/VerifyEmailRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Cryptography/AesGcmEncryptionServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/IdentityMockHelpers.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpClientFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpMessageHandler.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/TestDbContextFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AdminServiceDisableTwoFactorTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AdminServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuditServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalAuthServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/FacebookAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/GitLabAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/LinkedInAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/SlackAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/TwitchAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ImageProcessingServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/RoleManagementServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/TwoFactorServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CaptchaOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/FileStorageOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/JobSchedulingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;
+
+exports[`file list snapshots > core + auth + 2fa + oauth file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/AGENTS.md",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",
+  "src/backend/SnapshotApp.Application/Cookies/Constants/CookieNames.cs",
+  "src/backend/SnapshotApp.Application/Cookies/ICookieService.cs",
+  "src/backend/SnapshotApp.Application/Cryptography/ISecretEncryptionService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/AuthenticationOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ChangePasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalCallbackInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalCallbackOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalChallengeInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalChallengeOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalProviderInfo.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/LoginOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ProviderConfigOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ProviderCredentialsOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/RegisterInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/TwoFactorSetupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/TwoFactorVerifySetupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpdateProfileInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpsertProviderConfigInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IExternalAuthService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IProviderConfigService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/ITwoFactorService.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/PermissionDefinition.cs",
+  "src/backend/SnapshotApp.Application/Identity/Dtos/DeleteAccountInput.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserContext.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserService.cs",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Options/CachingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Services/NoOpHybridCache.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/CookieService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/AesGcmEncryptionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/HashHelper.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/ExternalAuthStateConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/ExternalProviderConfigConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/RefreshTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/TwoFactorChallengeConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationRole.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationUser.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ExternalAuthState.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ExternalProviderConfig.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/RefreshToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/TwoFactorChallenge.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/AuthenticationOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/ExternalAuthOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/AuthenticationService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/EmailTokenService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalAuthService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/AppleAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/DiscordAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/ExternalUserInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/FacebookAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GitHubAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GitLabAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GoogleAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/IExternalAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/LinkedInAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/MicrosoftAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/ProviderCredentials.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/SlackAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/TwitchAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ProviderConfigService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TwoFactorService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Services/UserService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/UserContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/AuditingInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/UserCacheInvalidationInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Options/SeedOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionPolicyProvider.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionRequirement.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/ProblemDetailsAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/RequirePermissionAttribute.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/OAuthProviderConfigResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/UpdateOAuthProviderRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/UpdateOAuthProviderRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/OAuthProvidersController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/OAuthProvidersMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalProviderResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalUnlinkRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalUnlinkRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/AuthenticationResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorDisableRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorDisableRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorLoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorLoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRecoveryLoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRecoveryLoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRegenerateCodesRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRegenerateCodesRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorSetupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/ExternalAuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/PasswordController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/TwoFactorController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UserMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UsersController.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Routing/ProviderNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Routing/RoleNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Api.Tests/Contracts/ResponseContracts.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/ExternalAuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/OAuthProvidersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/UsersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/CustomWebApplicationFactory.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/TestAuthHandler.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Middlewares/OriginValidationMiddlewareTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/CorsOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/RateLimitingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ExternalAuthValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/LoginRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/RegisterRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/TwoFactorValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/UserValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Cryptography/AesGcmEncryptionServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/IdentityMockHelpers.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpClientFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpMessageHandler.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/TestDbContextFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalAuthServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/FacebookAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/GitLabAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/LinkedInAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/SlackAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/TwitchAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/TwoFactorServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;
+
+exports[`file list snapshots > core + auth + email + email-verification + password-reset file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/AGENTS.md",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",
+  "src/backend/SnapshotApp.Application/Cookies/Constants/CookieNames.cs",
+  "src/backend/SnapshotApp.Application/Cookies/ICookieService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/AuthenticationOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ChangePasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/LoginOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/RegisterInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ResetPasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/SetPasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpdateProfileInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/VerifyEmailInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/PermissionDefinition.cs",
+  "src/backend/SnapshotApp.Application/Identity/Dtos/DeleteAccountInput.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserContext.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserService.cs",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Options/CachingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Services/NoOpHybridCache.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/CookieService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/HashHelper.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/RefreshTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationRole.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationUser.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/RefreshToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/AuthenticationOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/AuthenticationService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/EmailTokenService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Services/UserService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/UserContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/AuditingInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/UserCacheInvalidationInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Options/SeedOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionPolicyProvider.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionRequirement.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/ProblemDetailsAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/RequirePermissionAttribute.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/AuthenticationResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/EmailVerificationController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/PasswordController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UserMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UsersController.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Routing/RoleNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Api.Tests/Contracts/ResponseContracts.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/UsersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/CustomWebApplicationFactory.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/TestAuthHandler.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Middlewares/OriginValidationMiddlewareTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/CorsOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/RateLimitingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ForgotPasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/LoginRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/RegisterRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ResetPasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/UserValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/VerifyEmailRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/IdentityMockHelpers.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpClientFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpMessageHandler.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/TestDbContextFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;
+
+exports[`file list snapshots > core + jobs file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/JobExecutionOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/RecurringJobDetailOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/RecurringJobOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/IJobManagementService.cs",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Configurations/PausedJobConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Examples/ExampleFireAndForgetJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/IRecurringJobDefinition.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Models/PausedJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Options/JobSchedulingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredEmailTokenCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredRefreshTokenCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredTwoFactorChallengeCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Services/JobManagementService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/JobExecutionResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/RecurringJobDetailResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/RecurringJobResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/JobsController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/JobsMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Routing/JobIdRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/JobsControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/JobSchedulingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;
+
+exports[`file list snapshots > core-only file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;
+
+exports[`file list snapshots > full preset file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/AGENTS.md",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/HealthProbe/HealthProbe.csproj",
+  "src/backend/HealthProbe/Program.cs",
+  "src/backend/SnapshotApp.AppHost/Program.cs",
+  "src/backend/SnapshotApp.AppHost/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.AppHost/SnapshotApp.AppHost.csproj",
+  "src/backend/SnapshotApp.AppHost/appsettings.json",
+  "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",
+  "src/backend/SnapshotApp.Application/Cookies/Constants/CookieNames.cs",
+  "src/backend/SnapshotApp.Application/Cookies/ICookieService.cs",
+  "src/backend/SnapshotApp.Application/Cryptography/ISecretEncryptionService.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AdminRoleOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AdminUserListOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AdminUserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/AssignRoleInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/CreateRoleInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/CreateUserInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/PermissionGroupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/RoleDetailOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/SetRolePermissionsInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/Dtos/UpdateRoleInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/IAdminService.cs",
+  "src/backend/SnapshotApp.Application/Features/Admin/IRoleManagementService.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/AuditActions.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/Dtos/AuditEventListOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/Dtos/AuditEventOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Audit/IAuditService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/AuthenticationOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ChangePasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalCallbackInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalCallbackOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalChallengeInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalChallengeOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ExternalProviderInfo.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/LoginOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ProviderConfigOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ProviderCredentialsOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/RegisterInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ResetPasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/SetPasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/TwoFactorSetupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/TwoFactorVerifySetupOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpdateProfileInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpsertProviderConfigInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/VerifyEmailInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IExternalAuthService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IProviderConfigService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/ITwoFactorService.cs",
+  "src/backend/SnapshotApp.Application/Features/Avatar/Dtos/ProcessedImageOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Avatar/IImageProcessingService.cs",
+  "src/backend/SnapshotApp.Application/Features/Captcha/ICaptchaService.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
+  "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
+  "src/backend/SnapshotApp.Application/Features/FileStorage/Dtos/FileDownloadOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/FileStorage/IFileStorageService.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/JobExecutionOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/RecurringJobDetailOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/Dtos/RecurringJobOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Jobs/IJobManagementService.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/PermissionDefinition.cs",
+  "src/backend/SnapshotApp.Application/Identity/Dtos/DeleteAccountInput.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserContext.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserService.cs",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Options/CachingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Services/NoOpHybridCache.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/CookieService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/AesGcmEncryptionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/HashHelper.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Admin/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Admin/Services/AdminService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Admin/Services/RoleManagementService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Configurations/AuditEventConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Models/AuditEvent.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Audit/Services/AuditService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/ExternalAuthStateConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/ExternalProviderConfigConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/RefreshTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/TwoFactorChallengeConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationRole.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationUser.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ExternalAuthState.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ExternalProviderConfig.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/RefreshToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/TwoFactorChallenge.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/AuthenticationOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/ExternalAuthOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/AuthenticationService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/EmailTokenService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalAuthService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/AppleAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/DiscordAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/ExternalUserInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/FacebookAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GitHubAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GitLabAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/GoogleAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/IExternalAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/LinkedInAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/MicrosoftAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/ProviderCredentials.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/SlackAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ExternalProviders/TwitchAuthProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ProviderConfigService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TwoFactorService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Avatar/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Avatar/Services/ImageProcessingService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Options/CaptchaOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Services/TurnstileCaptchaService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-reset-password.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/invitation.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/reset-password.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.subject.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/verify-email.text.liquid",
+  "src/backend/SnapshotApp.Infrastructure/Features/FileStorage/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/FileStorage/Options/FileStorageOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/FileStorage/Services/S3FileStorageService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Configurations/PausedJobConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Examples/ExampleFireAndForgetJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/IRecurringJobDefinition.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Models/PausedJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Options/JobSchedulingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredEmailTokenCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredRefreshTokenCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredTwoFactorChallengeCleanupJob.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Services/JobManagementService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Services/UserService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/UserContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/AuditingInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/UserCacheInvalidationInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Options/SeedOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionPolicyProvider.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionRequirement.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/ProblemDetailsAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/RequirePermissionAttribute.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/AdminController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/AdminMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AdminRoleResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AdminUserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AssignRole/AssignRoleRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/AssignRole/AssignRoleRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateRole/CreateRoleRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateRole/CreateRoleRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateUser/CreateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/CreateUser/CreateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/DisableTwoFactor/DisableTwoFactorRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/DisableTwoFactor/DisableTwoFactorRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/JobExecutionResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/RecurringJobDetailResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/Jobs/RecurringJobResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/ListUsers/ListUsersRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/ListUsers/ListUsersRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/ListUsers/ListUsersResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/OAuthProviderConfigResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/UpdateOAuthProviderRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/OAuthProviders/UpdateOAuthProviderRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/PermissionGroupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/RoleDetailResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/SetPermissions/SetPermissionsRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/SetPermissions/SetPermissionsRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/UpdateRole/UpdateRoleRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/Dtos/UpdateRole/UpdateRoleRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/JobsController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/JobsMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/OAuthProvidersController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/OAuthProvidersMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Admin/PiiMasker.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/AuditMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/Dtos/AuditEventResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/Dtos/ListAuditEvents/ListAuditEventsRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Audit/Dtos/ListAuditEvents/ListAuditEventsResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalCallbackResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalChallengeResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalProviderResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalUnlinkRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/External/ExternalUnlinkRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ForgotPassword/ForgotPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/AuthenticationResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ResetPassword/ResetPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/SetPassword/SetPasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorDisableRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorDisableRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorLoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorLoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRecoveryLoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRecoveryLoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRegenerateCodesRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorRegenerateCodesRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorSetupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/TwoFactor/TwoFactorVerifySetupResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/VerifyEmail/VerifyEmailRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/EmailVerificationController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/ExternalAuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/PasswordController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/TwoFactorController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UploadAvatar/UploadAvatarRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UploadAvatar/UploadAvatarRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UserMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UsersController.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Routing/JobIdRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Routing/ProviderNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Routing/RoleNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Api.Tests/Contracts/ResponseContracts.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AdminControllerDisableTwoFactorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AdminControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/ExternalAuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/JobsControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/OAuthProvidersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/UsersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Features/Admin/AdminMapperPiiTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Features/Admin/PiiMaskerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/CustomWebApplicationFactory.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/TestAuthHandler.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Middlewares/OriginValidationMiddlewareTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/CorsOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/RateLimitingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/AdminValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/DisableTwoFactorRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ExternalAuthValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ForgotPasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/LoginRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/RegisterRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ResetPasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/TwoFactorValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/UserValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/VerifyEmailRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Cryptography/AesGcmEncryptionServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/IdentityMockHelpers.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpClientFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpMessageHandler.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/TestDbContextFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AdminServiceDisableTwoFactorTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AdminServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuditServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalAuthServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/FacebookAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/GitLabAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/LinkedInAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/SlackAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/TwitchAuthProviderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/ImageProcessingServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/RoleManagementServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/TwoFactorServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CaptchaOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/FileStorageOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/JobSchedulingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;
+
+exports[`file list snapshots > minimal preset (core + auth) file list 1`] = `
+[
+  ".config/dotnet-tools.json",
+  ".gitignore",
+  "global.json",
+  "src/backend/.dockerignore",
+  "src/backend/.editorconfig",
+  "src/backend/AGENTS.md",
+  "src/backend/Directory.Build.props",
+  "src/backend/Directory.Packages.props",
+  "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",
+  "src/backend/SnapshotApp.Application/Cookies/Constants/CookieNames.cs",
+  "src/backend/SnapshotApp.Application/Cookies/ICookieService.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/AuthenticationOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/ChangePasswordInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/LoginOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/RegisterInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UpdateProfileInput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
+  "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
+  "src/backend/SnapshotApp.Application/Identity/Constants/PermissionDefinition.cs",
+  "src/backend/SnapshotApp.Application/Identity/Dtos/DeleteAccountInput.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserContext.cs",
+  "src/backend/SnapshotApp.Application/Identity/IUserService.cs",
+  "src/backend/SnapshotApp.Application/Persistence/IBaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Application/SnapshotApp.Application.csproj",
+  "src/backend/SnapshotApp.Domain/Entities/BaseEntity.cs",
+  "src/backend/SnapshotApp.Domain/SnapshotApp.Domain.csproj",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Options/CachingOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Caching/Services/NoOpHybridCache.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/CookieService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cookies/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Cryptography/HashHelper.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/EmailTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Configurations/RefreshTokenConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationRole.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/ApplicationUser.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/EmailTokenPurpose.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Models/RefreshToken.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Options/AuthenticationOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/AuthenticationService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/EmailTokenService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
+  "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/Services/UserService.cs",
+  "src/backend/SnapshotApp.Infrastructure/Identity/UserContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
+  "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/BaseEntityRepository.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Configurations/BaseEntityConfiguration.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Exceptions/PaginationException.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ModelBuilderExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/PaginationExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/QueryableExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/ServiceCollectionExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Extensions/StringExtensions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/AuditingInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Interceptors/UserCacheInvalidationInterceptor.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/Options/SeedOptions.cs",
+  "src/backend/SnapshotApp.Infrastructure/Persistence/SnapshotAppDbContext.cs",
+  "src/backend/SnapshotApp.Infrastructure/Properties/AssemblyInfo.cs",
+  "src/backend/SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj",
+  "src/backend/SnapshotApp.ServiceDefaults/Extensions.cs",
+  "src/backend/SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj",
+  "src/backend/SnapshotApp.Shared/ErrorMessages.cs",
+  "src/backend/SnapshotApp.Shared/ErrorType.cs",
+  "src/backend/SnapshotApp.Shared/PhoneNumberHelper.cs",
+  "src/backend/SnapshotApp.Shared/Result.cs",
+  "src/backend/SnapshotApp.Shared/SnapshotApp.Shared.csproj",
+  "src/backend/SnapshotApp.Shared/TimeSpanExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionPolicyProvider.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/PermissionRequirement.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/ProblemDetailsAuthorizationHandler.cs",
+  "src/backend/SnapshotApp.WebApi/Authorization/RequirePermissionAttribute.cs",
+  "src/backend/SnapshotApp.WebApi/Dockerfile",
+  "src/backend/SnapshotApp.WebApi/Extensions/CorsExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HealthCheckExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/HostingExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/RateLimiterExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Extensions/SecurityHeaderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/AuthMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/ChangePassword/ChangePasswordRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/AuthenticationResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/LoginRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Login/RefreshRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/Dtos/Register/RegisterResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Authentication/PasswordController.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Extensions/WebApplicationBuilderExtensions.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/BearerSecurityOperationTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CamelCaseQueryParameterTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/CleanupDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/NumericSchemaTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/OpenApi/Transformers/ProjectDocumentTransformer.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/DeleteAccount/DeleteAccountRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UpdateUserRequestValidator.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/Dtos/UserResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UserMapper.cs",
+  "src/backend/SnapshotApp.WebApi/Features/Users/UsersController.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/ExceptionHandlingMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Middlewares/OriginValidationMiddleware.cs",
+  "src/backend/SnapshotApp.WebApi/Options/CorsOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/HostingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Options/RateLimitingOptions.cs",
+  "src/backend/SnapshotApp.WebApi/Program.cs",
+  "src/backend/SnapshotApp.WebApi/Properties/launchSettings.json",
+  "src/backend/SnapshotApp.WebApi/Routing/RoleNameRouteConstraint.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ApiController.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedRequest.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/PaginatedResponse.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ProblemFactory.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/RateLimitPolicies.cs",
+  "src/backend/SnapshotApp.WebApi/Shared/ValidationConstants.cs",
+  "src/backend/SnapshotApp.WebApi/SnapshotApp.WebApi.csproj",
+  "src/backend/SnapshotApp.WebApi/appsettings.Development.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.Testing.json",
+  "src/backend/SnapshotApp.WebApi/appsettings.json",
+  "src/backend/SnapshotApp.slnx",
+  "src/backend/nuget.config",
+  "src/backend/tests/SnapshotApp.Api.Tests/Contracts/ResponseContracts.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/AuthControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Controllers/UsersControllerTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/CustomWebApplicationFactory.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Fixtures/TestAuthHandler.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Middlewares/OriginValidationMiddlewareTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/SnapshotApp.Api.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/CorsOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validation/RateLimitingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/ChangePasswordRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/LoginRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/RegisterRequestValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Api.Tests/Validators/UserValidatorTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/AccessModifierTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/DependencyTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/NamingConventionTests.cs",
+  "src/backend/tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/IdentityMockHelpers.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpClientFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/MockHttpMessageHandler.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Fixtures/TestDbContextFactory.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/GlobalUsings.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorMessagesTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ErrorTypeTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/PhoneNumberHelperTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultGenericTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
+  "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
+]
+`;

@@ -16,6 +16,7 @@
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
+    "test:matrix": "vitest run --config vitest.matrix.config.ts",
     "test:watch": "vitest",
     "lint": "tsc --noEmit",
     "check": "tsc --noEmit"
