@@ -8,9 +8,6 @@ using MyProject.Infrastructure.Features.Jobs.Options;
 // @feature auth
 using MyProject.Infrastructure.Features.Jobs.RecurringJobs;
 // @end
-// @feature 2fa
-using MyProject.Infrastructure.Features.Jobs.RecurringJobs;
-// @end
 using MyProject.Infrastructure.Features.Jobs.Services;
 
 namespace MyProject.Infrastructure.Features.Jobs.Extensions;
