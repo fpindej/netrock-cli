@@ -214,7 +214,7 @@ if [ "$DO_GIT" = "1" ]; then
     ok "Git repository initialized"
   fi
   git add -A >/dev/null 2>&1
-  git commit -q -m "chore: initial project setup"
+  git commit -q --no-gpg-sign -m "chore: initial project setup"
   ok "Initial commit created"
 fi
 

@@ -122,7 +122,7 @@ if ($doGit.ToLower() -eq "y") {
         Write-Ok "Git repository initialized"
     }
     git add -A 2>$null
-    git commit -q -m "chore: initial project setup" 2>$null
+    git commit -q --no-gpg-sign -m "chore: initial project setup" 2>$null
     Write-Ok "Initial commit created"
 }
 
