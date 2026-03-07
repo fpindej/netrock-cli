@@ -15,7 +15,10 @@
 <header
 	class="fixed top-0 z-50 flex w-full items-center justify-between border-b border-border-subtle bg-bg/80 px-4 py-3 backdrop-blur-xl sm:px-6"
 >
-	<a href="#top" class="font-mono text-lg font-bold tracking-tight text-accent-light">netrock</a>
+	<a href="#top" class="flex items-center gap-2 font-mono text-lg font-bold tracking-tight text-accent-light">
+		netrock
+		<span class="rounded bg-accent-dim px-1.5 py-0.5 text-[10px] font-medium text-accent">alpha</span>
+	</a>
 
 	<nav class="hidden items-center gap-1 sm:flex">
 		{#each steps as step}

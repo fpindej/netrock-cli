@@ -1,10 +1,22 @@
-# Netrock
+# netrock-cli
 
-Project generator for production-grade .NET + SvelteKit web applications.
+**.NET API project generator.** Pick features, preview, download - entirely in the browser.
 
-Pick your features, name your project, get a complete repository - builds, tests pass, ready to deploy.
+**[Try the generator](https://netrock.dev)** (alpha) | [Main repo (netrock)](https://github.com/fpindej/netrock) | [Buy me a coffee](https://buymeacoffee.com/fpindej)
 
-## Quick start
+> This generator is in alpha - built 99% with [Claude](https://claude.ai) based on the original [netrock](https://github.com/fpindej/netrock) repository. Expect rough edges. Issues and PRs are very welcome at both repos.
+
+## What it does
+
+You pick a project name, choose features, and get a complete .NET 10 API project as a zip - builds, tests pass, ready to deploy. No server needed, everything runs client-side.
+
+## Try it
+
+### Web (recommended)
+
+Visit **[netrock.dev](https://netrock.dev)** - pick features, preview the file tree, download a zip.
+
+### CLI (local)
 
 ```bash
 git clone https://github.com/fpindej/netrock-cli.git
@@ -13,9 +25,9 @@ pnpm install
 pnpm generate
 ```
 
-The interactive generator asks for a project name, lets you pick a preset or choose features individually, and writes the project to `output/<project-name>/`.
+The interactive CLI asks for a project name and lets you pick a preset or choose features individually. Output goes to `output/<project-name>/`.
 
-```
+```bash
 cd output/your-project
 dotnet build src/backend/YourProject.slnx
 dotnet test src/backend/YourProject.slnx
@@ -31,7 +43,7 @@ A generated project includes:
 - **OpenAPI** - Auto-generated API documentation
 - **Serilog** - Structured logging with OpenTelemetry support
 - **Security** - CORS, rate limiting, security headers, exception handling middleware
-- **Tests** - Architecture tests (NetArchTest) and unit tests (xUnit)
+- **Tests** - Architecture tests (NetArchTest), unit tests, API integration tests (xUnit)
 - **Docker** - Dockerfile and build configuration
 
 ## Features
@@ -41,29 +53,25 @@ Features are modular. Pick what you need, skip what you don't. Dependencies are 
 | Feature | Description | Dependencies |
 |---|---|---|
 | **Core** | Clean Architecture skeleton, PostgreSQL, health checks | (always included) |
-| **Authentication** | Local login, registration, token refresh, user profile | Core |
-| **Email** | SMTP service with Fluid templates | Core |
-| **Email verification** | Confirmation token flow | Auth, Email |
-| **Password reset** | Forgot/reset password via email | Auth, Email |
+| **Authentication** | Local login, registration, JWT + refresh tokens, email (SMTP + templates), email verification, password reset | Core |
 | **Two-factor auth** | TOTP-based 2FA with recovery codes | Auth |
 | **External OAuth** | Google, GitHub, Microsoft, and more | Auth |
 | **Captcha** | Cloudflare Turnstile on register and forgot password | Auth |
-| **Background jobs** | Hangfire job scheduling with PostgreSQL storage | Core |
+| **Background jobs** | Hangfire job scheduling with PostgreSQL storage | Auth |
 | **File storage** | S3/MinIO file storage abstraction | Core |
 | **Avatar uploads** | User avatar upload with image processing | Auth, File storage |
 | **Audit trail** | Event logging for security-sensitive actions | Core |
-| **Admin panel** | User management, role management, system admin | Auth |
+| **Admin panel** | User management, role management, system admin | Auth, Audit |
 | **Aspire** | .NET Aspire for local dev orchestration with OTEL | Core |
-| **SvelteKit frontend** | Full reference frontend with all feature UIs | Auth |
+| **SvelteKit frontend** | Full reference frontend with all feature UIs | Auth (coming soon) |
 
 ### Presets
 
 | Preset | What's included |
 |---|---|
 | **Minimal** | Core + Auth |
-| **Standard** | Core, Auth, Email, Email verification, Password reset, Jobs, Audit, Admin, Aspire, Frontend |
-| **Full** | Everything |
-| **API only** | Everything except the SvelteKit frontend |
+| **Standard** | Core, Auth, Jobs, Audit, Admin, Aspire |
+| **Full** | All 11 backend features |
 
 ## Architecture
 
@@ -106,13 +114,18 @@ netrock-cli/
     core/           Pure TypeScript engine (no framework dependencies)
       src/
         engine/     Generator, template processor, naming, secrets
-        features/   Feature definitions, dependency graph, manifests
+        features/   Feature definitions, dependency graph
         graph/      Dependency resolver
-        manifests/  Per-feature file declarations (14 manifests, 410 files)
+        manifests/  Per-feature file declarations (11 manifests, 410 files)
         presets/    Preset configurations
       tests/        Unit + integration tests (vitest)
+    web/            SvelteKit static site (the generator UI)
+      src/
+        lib/        Components, stores, utilities
+        routes/     Single-page app with scroll-based navigation
   scripts/
     generate.ts     Interactive CLI script
+    deploy.sh       Docker build + push to Docker Hub
   templates/        Source template files (valid .NET code with @feature markers)
 ```
 
@@ -155,37 +168,53 @@ Markers work across file types:
 pnpm install
 pnpm test          # Run all tests
 pnpm build         # Build all packages
-pnpm generate      # Try the generator
+pnpm generate      # Try the CLI generator
+pnpm dev           # Run the web UI locally
 ```
 
 ### Tests
 
 ```bash
-cd packages/core
-pnpm test              # All 56 tests
-pnpm test:watch        # Watch mode
+pnpm --filter @netrock/core test    # Unit + integration tests
+pnpm --filter @netrock/web build    # Verify web build
 ```
 
-Integration tests generate a full project, run `dotnet build` and `dotnet test` on it, and verify the output compiles and passes.
+Integration tests generate full projects and verify the output compiles and passes `dotnet build` + `dotnet test`.
+
+### Deploy
+
+```bash
+./scripts/deploy.sh         # Build + push to Docker Hub (linux/amd64)
+./scripts/deploy.sh v0.1.0  # With version tag
+```
 
 ## Progress
 
-- [x] Phase 1 - Feature mapping (14 features defined with dependency graph)
-- [x] Phase 2 - Core engine (dependency resolver, template processor, namespace substitution, presets, scaffolding)
-- [x] Phase 3 - Feature modules (13/14 backend features with manifests and cross-cutting `@feature` markers)
-- [ ] Phase 3 - SvelteKit frontend module
-- [ ] Phase 4 - Testing (snapshot tests, feature combination matrix, build verification)
-- [ ] Web UI - Interactive generator at netrock.dev
+- [x] Phase 1 - Feature mapping (12 features defined with dependency graph)
+- [x] Phase 2 - Core engine (dependency resolver, template processor, namespace substitution, presets)
+- [x] Phase 3 - Feature modules (11 backend features with manifests and cross-cutting markers)
+- [ ] Phase 3 - SvelteKit frontend templates (#79)
+- [x] Phase 4 - Testing (snapshot tests, feature combination matrix, build verification)
+- [x] Web UI - Interactive generator (alpha, live)
+- [ ] Phase 5 - Launch (domain, analytics, docs, releases)
 
-### Verified presets
+### Verified combinations
 
-All presets generate projects that build and pass their full test suites:
+All feature combinations generate projects that build and pass their full test suites:
 
-| Preset | Features | dotnet tests |
-|---|---|---|
-| Core-only | Core | 56 (TypeScript integration) |
-| Minimal | Core + Auth | 349 |
-| Full | All 14 features | 1041 |
+| Combination | dotnet tests |
+|---|---|
+| Core-only | 10 |
+| Minimal (Core + Auth) | 349 |
+| Standard (6 features) | 916 |
+| Full (11 features) | 1,041 |
+
+9 feature combinations tested in CI across the full matrix.
+
+## Related
+
+- **[netrock](https://github.com/fpindej/netrock)** - The original .NET + SvelteKit production template this generator is based on
+- **[netrock.dev](https://netrock.dev)** - Live generator (alpha)
 
 ## License
 
