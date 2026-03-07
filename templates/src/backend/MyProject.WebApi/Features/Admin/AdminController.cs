@@ -9,7 +9,9 @@ using MyProject.WebApi.Features.Admin.Dtos;
 using MyProject.WebApi.Features.Admin.Dtos.AssignRole;
 using MyProject.WebApi.Features.Admin.Dtos.CreateRole;
 using MyProject.WebApi.Features.Admin.Dtos.CreateUser;
+// @feature 2fa
 using MyProject.WebApi.Features.Admin.Dtos.DisableTwoFactor;
+// @end
 using MyProject.WebApi.Features.Admin.Dtos.ListUsers;
 using MyProject.WebApi.Features.Admin.Dtos.SetPermissions;
 using MyProject.WebApi.Features.Admin.Dtos.UpdateRole;
@@ -294,6 +296,7 @@ public class AdminController(IAdminService adminService, IRoleManagementService 
         return NoContent();
     }
 
+    // @feature password-reset
     /// <summary>
     /// Sends a password reset email to a user on behalf of an admin.
     /// The caller must outrank the target user.
@@ -326,7 +329,9 @@ public class AdminController(IAdminService adminService, IRoleManagementService 
 
         return NoContent();
     }
+    // @end
 
+    // @feature 2fa
     /// <summary>
     /// Disables two-factor authentication for a user. The caller must outrank the target user
     /// and cannot disable their own 2FA from the admin panel.
@@ -363,6 +368,7 @@ public class AdminController(IAdminService adminService, IRoleManagementService 
 
         return NoContent();
     }
+    // @end
 
     /// <summary>
     /// Creates a new user account and sends an invitation email with a password reset link.

@@ -1,3 +1,4 @@
+// @feature 2fa
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -167,3 +168,4 @@ public class AdminControllerDisableTwoFactorTests : IClassFixture<CustomWebAppli
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
     }
 }
+// @end

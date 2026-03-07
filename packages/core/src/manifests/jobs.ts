@@ -38,7 +38,7 @@ export function registerJobsManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/Extensions/ServiceCollectionExtensions.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/IRecurringJobDefinition.cs',
@@ -51,15 +51,15 @@ export function registerJobsManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/RecurringJobs/ExpiredEmailTokenCleanupJob.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/RecurringJobs/ExpiredRefreshTokenCleanupJob.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/RecurringJobs/ExpiredTwoFactorChallengeCleanupJob.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/Services/JobManagementService.cs',

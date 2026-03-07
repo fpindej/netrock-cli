@@ -535,6 +535,7 @@ public class AdminControllerTests : IClassFixture<CustomWebApplicationFactory>, 
 
     #endregion
 
+    // @feature password-reset
     #region SendPasswordReset
 
     [Fact]
@@ -574,6 +575,7 @@ public class AdminControllerTests : IClassFixture<CustomWebApplicationFactory>, 
     }
 
     #endregion
+    // @end
 
     #region CreateUser
 

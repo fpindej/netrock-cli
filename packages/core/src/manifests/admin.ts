@@ -48,7 +48,7 @@ export function registerAdminManifest(): void {
 			},
 
 			// Application - Interfaces
-			{ path: 'src/backend/MyProject.Application/Features/Admin/IAdminService.cs', templated: false },
+			{ path: 'src/backend/MyProject.Application/Features/Admin/IAdminService.cs', templated: true },
 			{
 				path: 'src/backend/MyProject.Application/Features/Admin/IRoleManagementService.cs',
 				templated: false
@@ -61,17 +61,17 @@ export function registerAdminManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Admin/Services/AdminService.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Admin/Services/RoleManagementService.cs',
-				templated: false
+				templated: true
 			},
 
 			// WebApi - Controller and mappers
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Admin/AdminController.cs',
-				templated: false
+				templated: true
 			},
 			{ path: 'src/backend/MyProject.WebApi/Features/Admin/AdminMapper.cs', templated: false },
 			{ path: 'src/backend/MyProject.WebApi/Features/Admin/PiiMasker.cs', templated: false },
@@ -165,11 +165,11 @@ export function registerAdminManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/AdminControllerTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/AdminControllerDisableTwoFactorTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validators/AdminValidatorTests.cs',
@@ -181,11 +181,11 @@ export function registerAdminManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/AdminServiceTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/AdminServiceDisableTwoFactorTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/RoleManagementServiceTests.cs',

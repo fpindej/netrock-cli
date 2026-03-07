@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Time.Testing;
 using MyProject.Application.Caching.Constants;
+// @feature audit
 using MyProject.Application.Features.Audit;
+// @end
 using MyProject.Application.Features.Authentication;
 using MyProject.Application.Features.Authentication.Dtos;
 using MyProject.Application.Identity;
@@ -26,7 +28,9 @@ public class ExternalAuthServiceTests : IDisposable
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly FakeTimeProvider _timeProvider;
     private readonly IUserContext _userContext;
+    // @feature audit
     private readonly IAuditService _auditService;
+    // @end
     private readonly HybridCache _hybridCache;
     private readonly MyProjectDbContext _dbContext;
     private readonly IExternalAuthProvider _googleProvider;
@@ -40,7 +44,9 @@ public class ExternalAuthServiceTests : IDisposable
         _userManager = IdentityMockHelpers.CreateMockUserManager();
         _timeProvider = new FakeTimeProvider(FixedTime);
         _userContext = Substitute.For<IUserContext>();
+        // @feature audit
         _auditService = Substitute.For<IAuditService>();
+        // @end
         _hybridCache = Substitute.For<HybridCache>();
         _dbContext = TestDbContextFactory.Create();
 
@@ -64,6 +70,7 @@ public class ExternalAuthServiceTests : IDisposable
                 Arg.Any<CancellationToken>())
             .Returns(new AuthenticationOutput("test-access-token", "test-refresh-token"));
 
+        // @feature audit
         _sut = new ExternalAuthService(
             _userManager,
             _timeProvider,
@@ -76,6 +83,20 @@ public class ExternalAuthServiceTests : IDisposable
             _providerConfigService,
             Substitute.For<ILogger<ExternalAuthService>>(),
             _dbContext);
+        // @end
+        // @feature !audit
+        _sut = new ExternalAuthService(
+            _userManager,
+            _timeProvider,
+            _userContext,
+            _hybridCache,
+            tokenSessionService,
+            externalOptions,
+            [_googleProvider],
+            _providerConfigService,
+            Substitute.For<ILogger<ExternalAuthService>>(),
+            _dbContext);
+        // @end
     }
 
     public void Dispose()
@@ -352,6 +373,7 @@ public class ExternalAuthServiceTests : IDisposable
 
         Assert.True(result.IsSuccess);
         Assert.True(result.Value.IsLinkOnly);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.ExternalAccountLinked,
             user.Id,
@@ -359,6 +381,7 @@ public class ExternalAuthServiceTests : IDisposable
             Arg.Any<Guid?>(),
             Arg.Any<string?>(),
             Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -490,6 +513,7 @@ public class ExternalAuthServiceTests : IDisposable
         Assert.True(result.IsSuccess);
         Assert.True(result.Value.IsNewUser);
         Assert.NotNull(result.Value.Tokens);
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.ExternalAccountCreated,
             Arg.Any<Guid?>(),
@@ -497,6 +521,7 @@ public class ExternalAuthServiceTests : IDisposable
             Arg.Any<Guid?>(),
             Arg.Any<string?>(),
             Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -541,6 +566,7 @@ public class ExternalAuthServiceTests : IDisposable
 
         Assert.True(result.IsSuccess);
         await _hybridCache.Received(1).RemoveAsync(CacheKeys.User(user.Id), Arg.Any<CancellationToken>());
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.ExternalAccountUnlinked,
             user.Id,
@@ -548,6 +574,7 @@ public class ExternalAuthServiceTests : IDisposable
             Arg.Any<Guid?>(),
             Arg.Any<string?>(),
             Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -612,6 +639,7 @@ public class ExternalAuthServiceTests : IDisposable
 
     #endregion
 
+    // @feature password-reset
     // ────────── SetPasswordAsync ──────────
 
     #region SetPassword
@@ -630,6 +658,7 @@ public class ExternalAuthServiceTests : IDisposable
 
         Assert.True(result.IsSuccess);
         await _hybridCache.Received(1).RemoveAsync(CacheKeys.User(user.Id), Arg.Any<CancellationToken>());
+        // @feature audit
         await _auditService.Received(1).LogAsync(
             AuditActions.PasswordSet,
             user.Id,
@@ -637,6 +666,7 @@ public class ExternalAuthServiceTests : IDisposable
             Arg.Any<Guid?>(),
             Arg.Any<string?>(),
             Arg.Any<CancellationToken>());
+        // @end
     }
 
     [Fact]
@@ -684,6 +714,7 @@ public class ExternalAuthServiceTests : IDisposable
     }
 
     #endregion
+    // @end
 
     // ────────── GetAvailableProviders ──────────
 

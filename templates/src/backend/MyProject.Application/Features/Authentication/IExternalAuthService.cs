@@ -52,6 +52,7 @@ public interface IExternalAuthService
     /// <returns>A list of linked provider names.</returns>
     Task<IReadOnlyList<string>> GetLinkedProvidersAsync(Guid userId, CancellationToken cancellationToken);
 
+    // @feature password-reset
     /// <summary>
     /// Sets an initial password for a passwordless OAuth-created account.
     /// </summary>
@@ -59,4 +60,5 @@ public interface IExternalAuthService
     /// <param name="cancellationToken">A cancellation token.</param>
     /// <returns>A result indicating success or failure.</returns>
     Task<Result> SetPasswordAsync(SetPasswordInput input, CancellationToken cancellationToken);
+    // @end
 }

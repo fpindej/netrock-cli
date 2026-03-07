@@ -1,3 +1,4 @@
+// @feature 2fa
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -38,3 +39,4 @@ internal sealed class ExpiredTwoFactorChallengeCleanupJob(
         logger.LogInformation("Deleted {Count} expired two-factor challenges", deletedCount);
     }
 }
+// @end
