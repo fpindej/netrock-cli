@@ -68,7 +68,7 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 			.replaceAll('{INIT_ENCRYPTION_KEY}', secrets.encryptionKey)
 			.replaceAll('{INIT_PROJECT_SLUG}', names.kebabCase)
 			.replaceAll('{INIT_FRONTEND_PORT}', '5173')
-			.replaceAll('{INIT_API_PORT}', '8080');
+			.replaceAll('{INIT_API_PORT}', '5175');
 
 		// Skip files that become empty after template processing
 		if (templated && content.trim() === '') continue;

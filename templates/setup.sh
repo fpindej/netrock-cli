@@ -149,18 +149,16 @@ print_success "All prerequisites met"
 print_step "Port configuration"
 
 echo ""
-echo -e "  ${BOLD}Default port allocation${NC}"
-echo -e "  ────────────────────────────────────"
-echo -e "  Frontend:       ${CYAN}5173${NC}"
-echo -e "  API:            ${CYAN}8080${NC}"
-echo -e "  ${DIM}pgAdmin:        5176   Postgres: 5177${NC}"
+echo -e "  All ports are derived from a single base port:"
+echo ""
+echo -e "  ${DIM}Frontend:       BASE${NC}         ${DIM}pgAdmin:      BASE + 3${NC}"
+echo -e "  ${DIM}API:            BASE + 2${NC}     ${DIM}Postgres:     BASE + 4${NC}"
 # // @feature file-storage
-echo -e "  ${DIM}MinIO:          5178   Console:  5179${NC}"
+echo -e "  ${DIM}MinIO:          BASE + 5${NC}     ${DIM}Console:      BASE + 6${NC}"
 # // @end
 # // @feature auth
-echo -e "  ${DIM}MailPit SMTP:   5180   HTTP:     5181${NC}"
+echo -e "  ${DIM}MailPit SMTP:   BASE + 7${NC}     ${DIM}HTTP:         BASE + 8${NC}"
 # // @end
-echo -e "  ${DIM}Infrastructure ports are derived from the base port.${NC}"
 echo ""
 
 read -p "$(echo -e "${BOLD}Base port${NC} [5173]: ")" BASE_PORT
@@ -303,17 +301,17 @@ if [ "$BASE_PORT" != "5173" ]; then
 
     OS=$(uname)
     if [ "$OS" = "Darwin" ]; then
-        grep -rIl --null "5173\|8080" src/backend/ 2>/dev/null | xargs -0 sed -i '' \
+        grep -rIl --null "5173\|5175" src/backend/ 2>/dev/null | xargs -0 sed -i '' \
             -e "s/\"Frontend\": 5173/\"Frontend\": $FRONTEND_PORT/g" \
-            -e "s/\"Api\": 8080/\"Api\": $API_PORT/g" \
+            -e "s/\"Api\": 5175/\"Api\": $API_PORT/g" \
             -e "s|localhost:5173|localhost:$FRONTEND_PORT|g" \
-            -e "s|localhost:8080|localhost:$API_PORT|g" 2>/dev/null || true
+            -e "s|localhost:5175|localhost:$API_PORT|g" 2>/dev/null || true
     else
-        grep -rIl --null "5173\|8080" src/backend/ 2>/dev/null | xargs -0 sed -i \
+        grep -rIl --null "5173\|5175" src/backend/ 2>/dev/null | xargs -0 sed -i \
             -e "s/\"Frontend\": 5173/\"Frontend\": $FRONTEND_PORT/g" \
-            -e "s/\"Api\": 8080/\"Api\": $API_PORT/g" \
+            -e "s/\"Api\": 5175/\"Api\": $API_PORT/g" \
             -e "s|localhost:5173|localhost:$FRONTEND_PORT|g" \
-            -e "s|localhost:8080|localhost:$API_PORT|g" 2>/dev/null || true
+            -e "s|localhost:5175|localhost:$API_PORT|g" 2>/dev/null || true
     fi
 
     print_success "Ports updated (base: $BASE_PORT)"

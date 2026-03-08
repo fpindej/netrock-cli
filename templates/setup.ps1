@@ -135,18 +135,16 @@ Write-Ok "All prerequisites met"
 Write-Step "Port configuration"
 
 Write-Host ""
-Write-Host "  Default port allocation" -ForegroundColor White
-Write-Host "  ────────────────────────────────────"
-Write-Host "  Frontend:       " -NoNewline; Write-Host "5173" -ForegroundColor Cyan
-Write-Host "  API:            " -NoNewline; Write-Host "8080" -ForegroundColor Cyan
-Write-Host "  pgAdmin:        5176   Postgres: 5177" -ForegroundColor DarkGray
+Write-Host "  All ports are derived from a single base port:" -ForegroundColor White
+Write-Host ""
+Write-Host "  Frontend:       BASE         pgAdmin:      BASE + 3" -ForegroundColor DarkGray
+Write-Host "  API:            BASE + 2     Postgres:     BASE + 4" -ForegroundColor DarkGray
 # // @feature file-storage
-Write-Host "  MinIO:          5178   Console:  5179" -ForegroundColor DarkGray
+Write-Host "  MinIO:          BASE + 5     Console:      BASE + 6" -ForegroundColor DarkGray
 # // @end
 # // @feature auth
-Write-Host "  MailPit SMTP:   5180   HTTP:     5181" -ForegroundColor DarkGray
+Write-Host "  MailPit SMTP:   BASE + 7     HTTP:         BASE + 8" -ForegroundColor DarkGray
 # // @end
-Write-Host "  Infrastructure ports are derived from the base port." -ForegroundColor DarkGray
 Write-Host ""
 
 $portInput = Read-Host "  Base port [5173]"
@@ -275,11 +273,11 @@ if ($basePort -ne 5173) {
 
     Get-ChildItem -Path "src/backend" -Recurse -Include "*.json","*.cs" | ForEach-Object {
         $content = Get-Content $_.FullName -Raw
-        if ($content -match "5173|8080") {
+        if ($content -match "5173|5175") {
             $content = $content -replace '"Frontend": 5173', "`"Frontend`": $frontendPort"
-            $content = $content -replace '"Api": 8080', "`"Api`": $apiPort"
+            $content = $content -replace '"Api": 5175', "`"Api`": $apiPort"
             $content = $content -replace 'localhost:5173', "localhost:$frontendPort"
-            $content = $content -replace 'localhost:8080', "localhost:$apiPort"
+            $content = $content -replace 'localhost:5175', "localhost:$apiPort"
             Set-Content $_.FullName -Value $content -NoNewline
         }
     }
