@@ -11,7 +11,10 @@
 	let isOn = $derived(generator.resolvedFeatures.has(feature.id));
 	let isRequired = $derived(feature.required);
 	let isAutoEnabled = $derived(generator.isAutoEnabled(feature.id));
-	let isExplicit = $derived(generator.isEnabled(feature.id));
+	let hasOptions = $derived(!!feature.options?.length);
+	let showOptions = $derived(isOn && hasOptions);
+	let selectedOptions = $derived(generator.getSelectedOptions(feature.id));
+	let selectedCount = $derived(selectedOptions?.size ?? 0);
 </script>
 
 <button
@@ -43,7 +46,7 @@
 	<!-- Content -->
 	<div class="min-w-0 flex-1">
 		<div class="flex items-center gap-2">
-			<span class="font-medium text-sm text-text-primary">{feature.name}</span>
+			<span class="text-sm font-medium text-text-primary">{feature.name}</span>
 			{#if isRequired}
 				<span class="rounded bg-border-subtle px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
 					required
@@ -52,6 +55,11 @@
 			{#if isAutoEnabled && !isRequired}
 				<span class="rounded bg-accent-dim px-1.5 py-0.5 font-mono text-[10px] text-accent">
 					auto
+				</span>
+			{/if}
+			{#if showOptions}
+				<span class="rounded bg-surface px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
+					{selectedCount}/{feature.options!.length}
 				</span>
 			{/if}
 		</div>

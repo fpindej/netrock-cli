@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { generator } from '$lib/stores/generator.svelte';
 	import FeatureCard from './FeatureCard.svelte';
+	import FeatureOptions from './FeatureOptions.svelte';
 
 	const presetMeta: Record<string, { badge?: string; icon: string }> = {
 		minimal: { icon: '>' },
@@ -80,6 +81,13 @@
 						<FeatureCard {feature} />
 					{/each}
 				</div>
+
+				<!-- Feature options panels (render below the grid, full width) -->
+				{#each group.features as feature}
+					{#if feature.options && generator.resolvedFeatures.has(feature.id)}
+						<FeatureOptions {feature} />
+					{/if}
+				{/each}
 			</div>
 		{/each}
 	</div>
