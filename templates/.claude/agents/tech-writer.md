@@ -45,7 +45,7 @@ You are a technical writer for a production web application. You write clear, ac
 - Architecture overview (brief, link to `.claude/agents/` for details)
 - Project structure (key directories only)
 - Development workflow (local dev with Aspire)
-- Deployment (link to deploy/ docs)
+- Deployment (link to before-you-ship.md)
 - Contributing guidelines (link to CLAUDE.md for conventions)
 
 ### Session Docs (`docs/sessions/`)

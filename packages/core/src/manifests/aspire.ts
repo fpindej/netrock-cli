@@ -12,7 +12,7 @@ export function registerAspireManifest(): void {
 				path: 'src/backend/MyProject.AppHost/Properties/launchSettings.json',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.AppHost/appsettings.json', templated: false },
+			{ path: 'src/backend/MyProject.AppHost/appsettings.json', templated: true },
 
 			// HealthProbe
 			{ path: 'src/backend/HealthProbe/HealthProbe.csproj', templated: false },

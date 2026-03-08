@@ -35,7 +35,7 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 | **Infrastructure EF config** (change mapping) | Run new migration |
 | **`MyProjectDbContext`** (add DbSet) | Run new migration |
 | **Infrastructure service** (change behavior) | Verify controller still maps correctly, verify error messages still apply |
-| **Infrastructure Options class** | `appsettings.json`, `appsettings.Development.json`, `deploy/envs/production-example/api.env`, DI registration |
+| **Infrastructure Options class** | `appsettings.json`, `appsettings.Development.json` (excluded from production publish - see `StripDevConfig`), DI registration |
 | **DI extension** (new service registration) | `Program.cs` must call the extension |
 | **WebApi controller** (change route/method) | API consumers |
 | **WebApi request DTO** (add/rename/remove property) | Validator, mapper |
@@ -49,10 +49,10 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 | **`CustomWebApplicationFactory.cs`** (change mock setup) | All API integration tests that depend on factory mocks |
 | **`appsettings.Testing.json`** (change test config) | `CustomWebApplicationFactory` behavior; all API integration tests |
 # @feature file-storage
-| **`FileStorageOptions`** (change S3/MinIO config) | `appsettings.json`, `deploy/envs/production-example/compose.env`, `deploy/docker-compose.yml`, `appsettings.Testing.json` |
+| **`FileStorageOptions`** (change S3/MinIO config) | `appsettings.json`, `MyProject.AppHost/Program.cs` (`.WithEnvironment()`), `appsettings.Testing.json` |
 # @end
 # @feature auth
-| **`EmailOptions`** (change config shape) | `appsettings.json`, `appsettings.Development.json`, `appsettings.Testing.json`, `deploy/envs/production-example/api.env`, `ServiceCollectionExtensions` (email DI), `EmailOptionsValidationTests` |
+| **`EmailOptions`** (change config shape) | `appsettings.json`, `appsettings.Development.json`, `appsettings.Testing.json`, `ServiceCollectionExtensions` (email DI), `EmailOptionsValidationTests` |
 | **`IEmailService`** (change sending contract) | `NoOpEmailService`, `SmtpEmailService`, `CustomWebApplicationFactory` |
 | **`IEmailTemplateRenderer`** (change rendering contract) | `FluidEmailTemplateRenderer`, `TemplatedEmailSender`, `FluidEmailTemplateRendererTests` |
 | **`ITemplatedEmailSender`** (change send-safe contract) | `TemplatedEmailSender`, all services calling `SendSafeAsync()`, `TemplatedEmailSenderTests` |
@@ -76,7 +76,7 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 # @end
 | **`HybridCache`** (change caching usage) | `NoOpHybridCache`, `UserCacheInvalidationInterceptor`, all services using `HybridCache`, `CustomWebApplicationFactory` mock |
 | **`CacheKeys.cs`** (Application - rename/remove key) | All services referencing the changed key, `UserCacheInvalidationInterceptor` |
-| **`CachingOptions`** (Infrastructure - change config shape) | `appsettings.json`, `appsettings.Development.json`, `deploy/envs/production-example/api.env` |
+| **`CachingOptions`** (Infrastructure - change config shape) | `appsettings.json`, `appsettings.Development.json` |
 # @feature auth
 | **`ICookieService`** (Application - change cookie contract) | `CookieService`, `AuthenticationService`, `UserService` |
 | **`CookieNames`** (Application - rename/remove cookie name) | `AuthController`, `AuthenticationService`, `UserService` |
@@ -99,15 +99,15 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 | **`RateLimitPolicies.cs`** (add/rename constant) | `RateLimiterExtensions.cs` policy registration, `RateLimitingOptions.cs` config class, `appsettings.json` section, `[EnableRateLimiting]` attribute on controllers |
 | **`RateLimitingOptions.cs`** (add/rename option class) | `RateLimiterExtensions.cs`, `appsettings.json`, `appsettings.Development.json` |
 | **`RateLimiterExtensions.cs`** (add policy) | Requires matching constant in `RateLimitPolicies.cs` and config in `RateLimitingOptions.cs` |
-| **`HostingOptions.cs`** (change hosting config shape) | `HostingExtensions.cs`, `appsettings.json`, `appsettings.Development.json`, `deploy/docker-compose.yml` |
+| **`HostingOptions.cs`** (change hosting config shape) | `HostingExtensions.cs`, `appsettings.json`, `appsettings.Development.json` |
 | **`HostingExtensions.cs`** (change middleware behavior) | `Program.cs` |
 | **`Dockerfile`** (backend - change build/publish steps) | `.dockerignore`, verify published files don't include dev/test config |
 | **`MyProject.WebApi.csproj`** (add appsettings file) | If non-production: add `CopyToPublishDirectory="Never"` and matching `rm -f` in `Dockerfile` |
 | **Route constraint** (add/modify in `Routing/`) | `Program.cs` constraint registration, route templates using that constraint |
-| **`HealthCheckExtensions.cs`** (change endpoints/checks) | `deploy/docker-compose.yml` healthcheck URLs |
+| **`HealthCheckExtensions.cs`** (change endpoints/checks) | Frontend health proxy `+server.ts`, Dockerfile healthcheck command |
 # @feature aspire
-| **New infrastructure dependency** (DB, cache, storage, etc.) | `MyProject.AppHost/Program.cs` (add resource + `.WithReference()`/`.WithEnvironment()`), `deploy/docker-compose.yml` (add service), `deploy/envs/` (add env vars) |
-| **Connection string config** (change format/name) | Verify `MyProject.AppHost/Program.cs` environment variable mapping still works, `deploy/envs/` env files |
+| **New infrastructure dependency** (DB, cache, storage, etc.) | `MyProject.AppHost/Program.cs` (add resource + `.WithReference()`/`.WithEnvironment()`) |
+| **Connection string config** (change format/name) | Verify `MyProject.AppHost/Program.cs` environment variable mapping still works |
 | **`MyProject.ServiceDefaults/Extensions.cs`** | All projects referencing ServiceDefaults, `Program.cs` `AddServiceDefaults()` call |
 | **`MyProject.AppHost/Program.cs`** | Verify resource names match `ConnectionStrings:*` and `WithEnvironment` keys match `appsettings.json` option paths |
 # @end
@@ -247,12 +247,9 @@ src/backend/tests/
 # @end
 | `src/backend/MyProject.WebApi/Shared/RateLimitPolicies.cs` | Rate limit policy name constants |
 | `src/backend/Directory.Packages.props` | NuGet versions (never in .csproj) |
-| `deploy/envs/production-example/` | Production env template - `cp -r` to `deploy/envs/production/` |
-| `deploy/docker-compose.yml` | Base service definitions (production only) |
-| `deploy/docker-compose.production.yml` | Production overlay |
 # @feature aspire
 | `src/backend/MyProject.ServiceDefaults/Extensions.cs` | Aspire shared: OTEL, service discovery, HTTP resilience defaults |
-| `src/backend/MyProject.AppHost/Program.cs` | Aspire orchestrator: local dev infrastructure |
+| `src/backend/MyProject.AppHost/Program.cs` | Aspire orchestrator: local dev (PostgreSQL, MinIO, MailPit, API, Frontend) |
 # @end
 | `src/backend/MyProject.WebApi/appsettings.Testing.json` | Test environment config |
 | `src/backend/tests/MyProject.Api.Tests/Fixtures/CustomWebApplicationFactory.cs` | Test host configuration for API tests |

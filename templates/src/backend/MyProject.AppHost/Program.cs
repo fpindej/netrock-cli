@@ -4,7 +4,7 @@ var frontendPort = int.TryParse(builder.Configuration["Ports:Frontend"], out var
 var apiPort = int.TryParse(builder.Configuration["Ports:Api"], out var ap) ? ap : 13002;
 
 // Derive infrastructure ports from the base (frontend) port so the entire
-// stack lives in one predictable range — no collisions between projects.
+// stack lives in one predictable range - no collisions between projects.
 var pgAdminPort = frontendPort + 3;
 var postgresPort = frontendPort + 4;
 var minioPort = frontendPort + 5;
@@ -13,26 +13,38 @@ var mailpitSmtpPort = frontendPort + 7;
 var mailpitHttpPort = frontendPort + 8;
 
 // ── Infrastructure ──────────────────────────────────────────────────────────
-// Container resources use session lifetime (default) — containers stop on
+// Container resources use session lifetime (default) - containers stop on
 // Ctrl+C and restart on next run. Named data volumes persist across restarts,
 // so database and file data survive. Explicit passwords ensure new containers
 // can mount existing volumes without credential mismatch.
 
 var pgPassword = builder.AddParameter("postgres-password", secret: true);
+// @feature file-storage
+var storageUser = builder.AddParameter("storage-user");
 var storagePassword = builder.AddParameter("storage-password", secret: true);
+// @end
+// @feature auth
+var jwtSecret = builder.AddParameter("jwt-secret", secret: true);
+// @end
 
-var db = builder.AddPostgres("postgres", password: pgPassword)
+var postgres = builder.AddPostgres("db", password: pgPassword)
     .WithEndpoint("tcp", e => e.Port = postgresPort)
-    .WithDataVolume("{INIT_PROJECT_SLUG}-postgres-data")
-    .WithPgAdmin(pgAdmin => pgAdmin.WithEndpoint("http", e => e.Port = pgAdminPort))
-    .AddDatabase("Database");
+    .WithDataVolume("{INIT_PROJECT_SLUG}-db-data");
 
-var storage = builder.AddMinioContainer("storage", rootPassword: storagePassword)
+// pgAdmin only for local development
+if (builder.ExecutionContext.IsRunMode)
+{
+    postgres.WithPgAdmin(pgAdmin => pgAdmin.WithEndpoint("http", e => e.Port = pgAdminPort));
+}
+
+var db = postgres.AddDatabase("Database");
+
+// @feature file-storage
+var storage = builder.AddMinioContainer("storage", rootUser: storageUser, rootPassword: storagePassword)
     .WithEndpoint("http", e => e.Port = minioPort)
     .WithEndpoint("console", e => e.Port = minioConsolePort)
     .WithDataVolume("{INIT_PROJECT_SLUG}-storage-data");
-
-var mailpit = builder.AddMailPit("mailpit", httpPort: mailpitHttpPort, smtpPort: mailpitSmtpPort);
+// @end
 
 // ── API ─────────────────────────────────────────────────────────────────────
 // Migrations and seeding are handled by the API on startup (development only).
@@ -46,16 +58,31 @@ var api = builder.AddProject<Projects.MyProject_WebApi>("api")
     })
     .WithReference(db)
     .WaitFor(db)
+    // @feature file-storage
     .WaitFor(storage)
-    .WaitFor(mailpit)
-    .WithEnvironment("Email__Smtp__Host", mailpit.Resource.Host)
-    .WithEnvironment("Email__Smtp__Port", () => mailpitSmtpPort.ToString())
-    .WithEnvironment("Email__Smtp__UseSsl", "false")
+    // @end
+    // @feature auth
+    .WithEnvironment("Authentication__Jwt__Key", jwtSecret)
+    // @end
+    // @feature file-storage
     .WithEnvironment("FileStorage__Endpoint", storage.GetEndpoint("http"))
     .WithEnvironment("FileStorage__AccessKey", storage.Resource.RootUser)
     .WithEnvironment("FileStorage__SecretKey", storage.Resource.PasswordParameter)
     .WithEnvironment("FileStorage__BucketName", "{INIT_PROJECT_SLUG}-files")
     .WithEnvironment("FileStorage__UseSSL", "false");
+    // @end
+
+// @feature auth
+// Mailpit only for local development - production uses real SMTP (configured via environment variables)
+if (builder.ExecutionContext.IsRunMode)
+{
+    var mailpit = builder.AddMailPit("mailpit", httpPort: mailpitHttpPort, smtpPort: mailpitSmtpPort);
+    api.WaitFor(mailpit)
+        .WithEnvironment("Email__Smtp__Host", mailpit.Resource.Host)
+        .WithEnvironment("Email__Smtp__Port", () => mailpitSmtpPort.ToString())
+        .WithEnvironment("Email__Smtp__UseSsl", "false");
+}
+// @end
 
 // @feature frontend
 // ── Frontend (SvelteKit) ────────────────────────────────────────────────────

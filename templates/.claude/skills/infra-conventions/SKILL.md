@@ -11,13 +11,11 @@ user-invocable: false
 # @feature aspire
 Local dev:  Aspire AppHost -> PostgreSQL, MinIO, MailPit (containers) + API (process)
 # @end
-Production: docker-compose.yml (base) + docker-compose.production.yml (overlay) + envs/production/
+Production: User's choice - Docker Compose, Coolify, Railway, Kubernetes, etc.
 ```
 
 - **Backend Dockerfile**: Multi-stage .NET build at `src/backend/MyProject.WebApi/Dockerfile`
-- **Build script**: `deploy/build.sh` - builds, tags, pushes images with version management
-- **Launch script**: `deploy/up.sh <env>` - thin wrapper around `docker compose` with env overlays
-- **Production hardening**: read-only root, no-new-privileges, all caps dropped, resource limits, log rotation
+- **Production config**: `appsettings.json` defines the full config structure; `docs/before-you-ship.md` lists what to configure
 
 ## Deployment Checklist
 
@@ -30,21 +28,11 @@ Production: docker-compose.yml (base) + docker-compose.production.yml (overlay) 
 - [ ] No secrets baked into image (build args, env vars at build time)
 - [ ] `.dockerignore` excludes unnecessary files (bin, obj, node_modules, .git)
 
-### Docker Compose
-- [ ] All services have health checks with appropriate intervals and retries
-- [ ] Service dependencies use `condition: service_healthy`
-- [ ] Volumes for persistent data (db_data, storage_data)
-- [ ] Production overlay applies hardening (x-hardened anchor)
-- [ ] Resource limits set for all services in production
-- [ ] Log rotation configured (json-file driver with max-size/max-file)
-- [ ] No host ports exposed for internal services (db, storage) in production
-
 ### Environment Variables
-- [ ] All required env vars documented in `deploy/envs/production-example/`
-- [ ] Sensitive values (passwords, keys, tokens) not committed - only examples/placeholders
-- [ ] `JWT_SECRET_KEY` placeholder is clearly marked as must-change
+- [ ] All configurable options have sensible defaults in `appsettings.json`
+- [ ] Sensitive values use placeholders in base config (not real secrets)
 - [ ] Connection strings use env var substitution, not hardcoded values
-- [ ] `ASPNETCORE_ENVIRONMENT` set to `Production` in production overlay
+- [ ] `ASPNETCORE_ENVIRONMENT` set to `Production`
 
 # @feature aspire
 ### Aspire (Local Dev)
@@ -61,24 +49,15 @@ Production: docker-compose.yml (base) + docker-compose.production.yml (overlay) 
 - [ ] Health probe binary used in Docker (not curl/wget which add attack surface)
 - [ ] Start periods appropriate for cold starts (API: 60s, DB: 15s)
 
-### Build & Release
-- [ ] `deploy/config.json` has correct registry, image names, platform
-- [ ] Version bumping works (patch/minor/major)
-- [ ] Build script finds WebApi directory and Dockerfile dynamically
-- [ ] Images tagged with both version and `:latest`
-- [ ] Build context is minimal (only src/backend)
-
 ### Reproducibility
 # @feature aspire
 - [ ] Can clone and run with `dotnet run --project src/backend/MyProject.AppHost` (local dev)
 # @end
-- [ ] Can deploy with `cp -r deploy/envs/production-example deploy/envs/production` + fill values + `./deploy/up.sh production up -d`
 - [ ] No machine-specific paths or assumptions
 - [ ] NuGet versions pinned in `Directory.Packages.props`
 
 ### Security (Infrastructure)
-- [ ] Production containers: read-only root filesystem where possible
-- [ ] `no-new-privileges:true` and `cap_drop: ALL`
-- [ ] PID limits set
+- [ ] Production containers should use read-only root filesystem where possible
+- [ ] `no-new-privileges:true` and `cap_drop: ALL` recommended
 - [ ] tmpfs for writable directories (.NET needs /tmp and /home/app)
 - [ ] Database not exposed on host network in production

@@ -30,6 +30,6 @@ Adds an infrastructure dependency to Aspire AppHost.
    ```csharp
    .WaitFor(myResource)
    ```
-6. Also add the service to `deploy/docker-compose.yml` for production.
+6. Add standalone defaults to `appsettings.Development.json` so the API can run without Aspire.
 7. Verify: `dotnet build src/backend/MyProject.slnx`
 <!-- @end -->

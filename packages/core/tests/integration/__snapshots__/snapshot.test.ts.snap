@@ -1206,8 +1206,6 @@ finally
 exports[`convergence file snapshots > Solution file > core-only 1`] = `
 "<Solution>
   <Folder Name="/solution items/">
-    <File Path="../../deploy/docker-compose.yml" />
-    <File Path="../../deploy/docker-compose.production.yml" />
     <File Path="../../.config/dotnet-tools.json" />
     <File Path="../../global.json" />
     <File Path="Directory.Build.props" />
@@ -1232,8 +1230,6 @@ exports[`convergence file snapshots > Solution file > core-only 1`] = `
 exports[`convergence file snapshots > Solution file > full preset 1`] = `
 "<Solution>
   <Folder Name="/solution items/">
-    <File Path="../../deploy/docker-compose.yml" />
-    <File Path="../../deploy/docker-compose.production.yml" />
     <File Path="../../.config/dotnet-tools.json" />
     <File Path="../../global.json" />
     <File Path="Directory.Build.props" />
@@ -1264,8 +1260,6 @@ exports[`convergence file snapshots > Solution file > full preset 1`] = `
 exports[`convergence file snapshots > Solution file > minimal (core + auth) 1`] = `
 "<Solution>
   <Folder Name="/solution items/">
-    <File Path="../../deploy/docker-compose.yml" />
-    <File Path="../../deploy/docker-compose.production.yml" />
     <File Path="../../.config/dotnet-tools.json" />
     <File Path="../../global.json" />
     <File Path="Directory.Build.props" />
@@ -1555,7 +1549,7 @@ exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
   },
   "Authentication": {
     "Jwt": {
-      "Key": "cQIsLlH+e4KsHq4jiT9DLvDOVbxFPao7AC/0UiRll/Hj1nsGoOo/UNhSmttQc2o7tF6Utei+VBgdc62jqQR4Ag==",
+      "Key": "<GENERATED_JWT_SECRET>",
       "Issuer": "SnapshotAppIssuer",
       "Audience": "SnapshotAppAudience",
       "AccessTokenLifetime": "00:10:00",
@@ -1579,7 +1573,7 @@ exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
         "https://your-production-domain.com/oauth/callback"
       ],
       "StateLifetime": "00:10:00",
-      "EncryptionKey": "OE3zKLt8FIpTG2Ds5UrBPtBFtBiDss6Ip1dkIBaBFwc="
+      "EncryptionKey": "<GENERATED_ENCRYPTION_KEY>"
     }
   },
   "Email": {
@@ -1638,7 +1632,6 @@ exports[`file list snapshots > core + auth + 2fa + oauth file list 1`] = `
   "setup.sh",
   "src/backend/.dockerignore",
   "src/backend/.editorconfig",
-  "src/backend/AGENTS.md",
   "src/backend/Directory.Build.props",
   "src/backend/Directory.Packages.props",
   "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",
@@ -1967,9 +1960,6 @@ exports[`file list snapshots > core + jobs file list 1`] = `
   "src/backend/SnapshotApp.Infrastructure/Features/Jobs/IRecurringJobDefinition.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Models/PausedJob.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Options/JobSchedulingOptions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredEmailTokenCleanupJob.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredRefreshTokenCleanupJob.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Jobs/RecurringJobs/ExpiredTwoFactorChallengeCleanupJob.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Jobs/Services/JobManagementService.cs",
   "src/backend/SnapshotApp.Infrastructure/Logging/Environments.cs",
   "src/backend/SnapshotApp.Infrastructure/Logging/Extensions/LoggerConfigurationExtensions.cs",
@@ -2139,15 +2129,57 @@ exports[`file list snapshots > core-only file list 1`] = `
 
 exports[`file list snapshots > full preset file list 1`] = `
 [
+  ".claude/agents/backend-engineer.md",
+  ".claude/agents/backend-reviewer.md",
+  ".claude/agents/devops-reviewer.md",
+  ".claude/agents/filemap-checker.md",
+  ".claude/agents/product-owner.md",
+  ".claude/agents/security-reviewer.md",
+  ".claude/agents/tech-writer.md",
+  ".claude/agents/test-writer.md",
+  ".claude/hooks/auto-format.mjs",
+  ".claude/hooks/session-start.mjs",
+  ".claude/hooks/stop-quality-gate.mjs",
+  ".claude/hooks/validate-bash.mjs",
+  ".claude/settings.json",
+  ".claude/skills/add-aspire-dep/SKILL.md",
+  ".claude/skills/add-background-job/SKILL.md",
+  ".claude/skills/add-ci-area/SKILL.md",
+  ".claude/skills/add-email-template/SKILL.md",
+  ".claude/skills/add-env-var/SKILL.md",
+  ".claude/skills/add-options-class/SKILL.md",
+  ".claude/skills/add-permission/SKILL.md",
+  ".claude/skills/add-rate-limit/SKILL.md",
+  ".claude/skills/add-route-constraint/SKILL.md",
+  ".claude/skills/add-test/SKILL.md",
+  ".claude/skills/backend-conventions/SKILL.md",
+  ".claude/skills/create-issue/SKILL.md",
+  ".claude/skills/create-pr/SKILL.md",
+  ".claude/skills/create-pr/assets/pr-body.md",
+  ".claude/skills/create-release/SKILL.md",
+  ".claude/skills/infra-conventions/SKILL.md",
+  ".claude/skills/manage-file-storage/SKILL.md",
+  ".claude/skills/new-endpoint/SKILL.md",
+  ".claude/skills/new-endpoint/assets/controller-action.cs.md",
+  ".claude/skills/new-endpoint/assets/validator.cs.md",
+  ".claude/skills/new-entity/SKILL.md",
+  ".claude/skills/new-entity/assets/configuration.cs.md",
+  ".claude/skills/new-entity/assets/entity.cs.md",
+  ".claude/skills/new-feature/SKILL.md",
+  ".claude/skills/review-dependabot/SKILL.md",
+  ".claude/skills/review-pr/SKILL.md",
+  ".claude/skills/review-pr/references/conventions-summary.md",
+  ".claude/skills/security-conventions/SKILL.md",
   ".config/dotnet-tools.json",
   ".gitignore",
+  "CLAUDE.md",
+  "FILEMAP.md",
   "README.md",
   "global.json",
   "setup.ps1",
   "setup.sh",
   "src/backend/.dockerignore",
   "src/backend/.editorconfig",
-  "src/backend/AGENTS.md",
   "src/backend/Directory.Build.props",
   "src/backend/Directory.Packages.props",
   "src/backend/HealthProbe/HealthProbe.csproj",
@@ -2565,7 +2597,6 @@ exports[`file list snapshots > minimal preset (core + auth) file list 1`] = `
   "setup.sh",
   "src/backend/.dockerignore",
   "src/backend/.editorconfig",
-  "src/backend/AGENTS.md",
   "src/backend/Directory.Build.props",
   "src/backend/Directory.Packages.props",
   "src/backend/SnapshotApp.Application/Caching/Constants/CacheKeys.cs",

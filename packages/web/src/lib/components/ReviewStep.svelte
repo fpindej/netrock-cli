@@ -100,6 +100,84 @@
 		<!-- File tree -->
 		<FileTree paths={generator.filePaths} />
 
+		<!-- Before You Ship -->
+		<details class="group mt-8 rounded-xl border border-amber/30 bg-amber-dim">
+			<summary
+				class="flex cursor-pointer items-center gap-2 px-5 py-3.5 font-mono text-sm font-medium text-amber select-none"
+			>
+				<svg
+					class="size-4 shrink-0 transition-transform group-open:rotate-90"
+					viewBox="0 0 20 20"
+					fill="currentColor"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				Before you ship - what you'll configure
+			</summary>
+			<div class="border-t border-amber/15 px-5 py-4 text-sm leading-relaxed text-text-secondary">
+				<p class="mb-3 text-xs text-text-muted">
+					The generated project works locally out of the box. These items need your input before
+					production.
+				</p>
+				<ul class="space-y-1.5">
+					<li>
+						<span class="font-mono text-xs text-amber">DB</span> - Point
+						<code class="text-xs">ConnectionStrings__Database</code> to your PostgreSQL instance
+					</li>
+					<li>
+						<span class="font-mono text-xs text-amber">CORS</span> - Set
+						<code class="text-xs">Cors__AllowedOrigins__0</code> to your domain (app crashes on
+						purpose if left open)
+					</li>
+					{#if generator.resolvedFeatures.has('auth')}
+						<li>
+							<span class="font-mono text-xs text-amber">JWT</span> - Set
+							<code class="text-xs">Authentication__Jwt__Key</code> (64+ chars, cryptographically
+							random)
+						</li>
+						<li>
+							<span class="font-mono text-xs text-amber">Email</span> - Replace NoOpEmailService
+							with a real SMTP provider
+						</li>
+						<li>
+							<span class="font-mono text-xs text-amber">Admin</span> - Set
+							<code class="text-xs">Seed__Users__0__*</code> env vars for bootstrap SuperAdmin
+						</li>
+					{/if}
+					{#if generator.resolvedFeatures.has('captcha')}
+						<li>
+							<span class="font-mono text-xs text-amber">CAPTCHA</span> - Replace Turnstile dev
+							keys with production keys
+						</li>
+					{/if}
+					{#if generator.resolvedFeatures.has('oauth')}
+						<li>
+							<span class="font-mono text-xs text-amber">OAuth</span> - Set encryption key +
+							configure providers from admin UI
+						</li>
+					{/if}
+					{#if generator.resolvedFeatures.has('file-storage')}
+						<li>
+							<span class="font-mono text-xs text-amber">Storage</span> - Configure
+							<code class="text-xs">FileStorage__*</code> for your S3 provider
+						</li>
+					{/if}
+					<li>
+						<span class="font-mono text-xs text-amber">TLS</span> - Put a reverse proxy in front
+						for HTTPS termination
+					</li>
+				</ul>
+				<p class="mt-3 text-xs text-text-muted">
+					Full checklist in <code class="text-xs">docs/before-you-ship.md</code> in the generated
+					project.
+				</p>
+			</div>
+		</details>
+
 		<!-- Download button -->
 		<div class="mt-8 flex flex-col items-center gap-3">
 			<button

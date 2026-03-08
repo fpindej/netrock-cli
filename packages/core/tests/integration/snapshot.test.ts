@@ -34,7 +34,13 @@ function generateFileContent(features: FeatureId[], filePathSuffix: string): str
 	if (!file) {
 		throw new Error(`File ending with '${filePathSuffix}' not found in generated output`);
 	}
-	return file.content;
+	// Normalize generated secrets so snapshots are deterministic across runs
+	return file.content
+		.replace(/"Key":\s*"[A-Za-z0-9+/=]{40,}"/, '"Key": "<GENERATED_JWT_SECRET>"')
+		.replace(
+			/"EncryptionKey":\s*"[A-Za-z0-9+/=]{40,}"/,
+			'"EncryptionKey": "<GENERATED_ENCRYPTION_KEY>"'
+		);
 }
 
 describe('file list snapshots', () => {
@@ -175,10 +181,7 @@ describe('convergence file snapshots', () => {
 
 		it('full preset', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
-			const content = generateFileContent(
-				preset.features as FeatureId[],
-				'SnapshotApp.slnx'
-			);
+			const content = generateFileContent(preset.features as FeatureId[], 'SnapshotApp.slnx');
 			expect(content).toMatchSnapshot();
 		});
 	});
@@ -196,10 +199,7 @@ describe('convergence file snapshots', () => {
 
 		it('full preset', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
-			const content = generateFileContent(
-				preset.features as FeatureId[],
-				'ErrorMessages.cs'
-			);
+			const content = generateFileContent(preset.features as FeatureId[], 'ErrorMessages.cs');
 			expect(content).toMatchSnapshot();
 		});
 	});
@@ -228,9 +228,7 @@ describe('no residual markers', () => {
 				expect(file.content, `Residual marker in ${file.path}`).not.toMatch(
 					/^\s*\/\/\s*@feature\s/m
 				);
-				expect(file.content, `Residual @end in ${file.path}`).not.toMatch(
-					/^\s*\/\/\s*@end\s*$/m
-				);
+				expect(file.content, `Residual @end in ${file.path}`).not.toMatch(/^\s*\/\/\s*@end\s*$/m);
 				expect(file.content, `Residual HTML marker in ${file.path}`).not.toMatch(
 					/<!--\s*@feature\s/m
 				);

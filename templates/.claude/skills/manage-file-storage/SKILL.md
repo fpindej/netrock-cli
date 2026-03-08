@@ -10,7 +10,7 @@ Swaps S3 provider or removes file storage entirely.
 
 No code changes needed - `S3FileStorageService` uses the standard S3 API. Only configuration:
 
-**Update `deploy/envs/production-example/compose.env`:**
+Set the `FileStorage__*` environment variables on your API container:
 
 ```env
 # Cloudflare R2
@@ -34,13 +34,13 @@ Pre-create the bucket in your provider's console. Restart - no rebuild needed.
 
 ## Remove File Storage Entirely
 
-1. **Docker:** Remove `storage` service from `docker-compose.yml` and `docker-compose.production.yml`. Remove MinIO resource from `MyProject.AppHost/Program.cs`
+1. **Infrastructure:** Remove the MinIO resource from `MyProject.AppHost/Program.cs`
 2. **Backend:** Remove `Application/Features/FileStorage/`, `Application/Features/Avatar/`, `Infrastructure/Features/FileStorage/`, `Infrastructure/Features/Avatar/`
 3. **Entity:** Remove `HasAvatar` from `ApplicationUser`
 4. **Endpoints:** Remove avatar endpoints from `UsersController`, `UploadAvatar/` DTOs
 5. **DTOs:** Remove `HasAvatar` from `UserOutput`, `AdminUserOutput`, `UserResponse`, `AdminUserResponse`, mappers
 6. **DI:** Remove `AddFileStorageServices()` and `AddAvatarServices()` from `Program.cs`
 7. **NuGet:** Remove `AWSSDK.S3`, `SkiaSharp`, `SkiaSharp.NativeAssets.Linux.NoDependencies` from `Directory.Packages.props`
-8. **Config:** Remove `FileStorage` section from all `appsettings*.json` and env files
+8. **Config:** Remove `FileStorage` section from all `appsettings*.json`
 9. **Health check:** Remove S3 health check from `HealthCheckExtensions.cs`
 <!-- @end -->
