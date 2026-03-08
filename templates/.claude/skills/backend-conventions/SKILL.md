@@ -1,3 +1,8 @@
+---
+description: "Backend convention reference (.NET 10 / C# 13). Auto-injected into backend-aware agents - not user-invocable."
+user-invocable: false
+---
+
 # Backend Conventions (.NET 10 / C# 13)
 
 ## Project Structure
@@ -9,8 +14,10 @@ src/backend/
 ├── MyProject.Application/         # Interfaces, DTOs, service contracts
 │   ├── Features/{Feature}/I{Feature}Service.cs
 │   ├── Features/{Feature}/Dtos/{Operation}Input.cs, {Entity}Output.cs
+# @feature auth
 │   ├── Identity/IUserService.cs, IUserContext.cs
 │   └── Identity/Constants/AppRoles.cs, AppPermissions.cs
+# @end
 ├── MyProject.Infrastructure/      # Implementations (all internal)
 │   ├── Features/{Feature}/Services/, Configurations/, Extensions/
 │   └── Persistence/MyProjectDbContext.cs
@@ -21,7 +28,9 @@ src/backend/
 └── MyProject.WebApi/              # Entry point
     ├── Features/{Feature}/{Feature}Controller.cs, {Feature}Mapper.cs
     ├── Features/{Feature}/Dtos/{Operation}/{Operation}Request.cs + Validator
+# @feature auth
     ├── Authorization/             # RequirePermission, PermissionPolicyProvider
+# @end
     └── Shared/                    # ApiController, ProblemFactory, ValidationConstants
 ```
 
@@ -44,7 +53,7 @@ src/backend/
 
 ## Entity Definition
 
-New entities should extend `BaseEntity` (provides `Id`, `CreatedAt/By`, `UpdatedAt/By`, `IsDeleted`, `DeletedAt/By` - all set by `AuditingInterceptor` automatically) and use `BaseEntityRepository<T>` for data access. Aggregate roots can layer on top of `BaseEntity`.
+New entities should extend `BaseEntity` (provides `Id`, `CreatedAt/By`, `UpdatedAt/By`, `IsDeleted`, `DeletedAt/By` - all set by `AuditingInterceptor` automatically) and use `BaseEntityRepository<T>` for data access.
 
 Rules:
 - Private setters, enforce invariants through methods
@@ -59,7 +68,6 @@ Rules:
 `AuditEvent` is append-only, does NOT extend `BaseEntity`. No FK on `UserId` (users are hard-deleted). Fire-and-forget logging - failures never break operations.
 
 ```csharp
-// Prefer AuditActions constants over raw strings for consistency and refactorability
 await auditService.LogAsync(AuditActions.AdminAssignRole, userId: callerId,
     targetEntityType: "User", targetEntityId: targetId,
     metadata: JsonSerializer.Serialize(new { role = input.Role }), ct: cancellationToken);
@@ -74,7 +82,9 @@ Configurations inherit `BaseEntityConfiguration<T>` (`public abstract`), overrid
 
 - Default `public` schema. Named schemas only for existing grouped features (e.g., `"auth"`).
 - `.HasComment()` on all enum columns documenting values.
+# @feature auth
 - Seeding: roles via `AppRoles.All` (reflection), permissions via `SeedRolePermissionsAsync()`.
+# @end
 
 Migration command:
 ```bash
@@ -90,7 +100,7 @@ dotnet ef migrations add {Name} \
 // Success
 return Result<Guid>.Success(entity.Id);
 
-// Static message - prefer ErrorMessages constants for consistency and reuse
+// Static message - prefer ErrorMessages constants
 return Result.Failure(ErrorMessages.Admin.UserNotFound, ErrorType.NotFound);
 
 // Runtime values go in server-side logs, never in client responses
@@ -130,12 +140,12 @@ WebApi response DTOs: classes with `init` properties and `[UsedImplicitly]` from
 
 - Authenticated endpoints extend `ApiController` (`[Authorize]`, route `api/v1/[controller]`)
 - Public endpoints use `ControllerBase` directly (route `api/[controller]`)
-- Include `/// <summary>`, `[ProducesResponseType]` per status code, and `CancellationToken` as last param for complete OpenAPI docs and graceful cancellation
+- Include `/// <summary>`, `[ProducesResponseType]` per status code, and `CancellationToken` as last param
 - Never `/// <param name="cancellationToken">` - it leaks into OAS `requestBody.description`
 - File uploads: `[FromForm]` with `IFormFile`, `[Consumes("multipart/form-data")]`, `[RequestSizeLimit(bytes)]`
-- Error responses: use `ProblemFactory.Create()` to ensure consistent RFC 9457 ProblemDetails format
+- Error responses: use `ProblemFactory.Create()` - avoid `NotFound()`, `BadRequest()`, or anonymous objects
 - Success responses: `Ok(response)`, `Created(string.Empty, response)`
-- `[ProducesResponseType]` without `typeof(...)` on error codes (400, 401, 403, 404, 429) - ASP.NET auto-types as ProblemDetails
+- `[ProducesResponseType]` without `typeof(...)` on error codes (400, 401, 403, 404, 429)
 
 ## Validation
 
@@ -154,6 +164,7 @@ FluentValidation auto-discovered from WebApi assembly. Co-locate validators with
 - Client-facing messages are centralized as `const string` in `ErrorMessages.cs` nested classes
 - Runtime values (role names, user IDs, framework errors): log server-side via `ILogger`, never in `Result.Failure()`
 - Identity errors: log `.Description` server-side, return a static `ErrorMessages` constant to the client
+- Exception: password validation errors (registration, change, reset) are forwarded as-is
 - To add: create `const string` in `ErrorMessages.cs` nested class. Dynamic values go in logs, not in Result.
 
 # @feature auth
@@ -164,7 +175,7 @@ FluentValidation auto-discovered from WebApi assembly. Co-locate validators with
 Atomic permissions via `[RequirePermission("permission.name")]` on controller actions. Permissions stored as role claims, embedded in JWT as `"permission"` claims.
 
 - `AppPermissions.cs`: constants discovered via reflection (`AppPermissions.All`)
-- `PermissionAuthorizationHandler`: SuperAdmin bypass - claim match - deny
+- `PermissionAuthorizationHandler`: SuperAdmin bypass -> claim match -> deny
 - Never class-level `[Authorize(Roles)]` on controllers using permissions
 - To add a role: add `public const string` to `AppRoles.cs` - reflection discovers it, seeding picks it up automatically.
 
@@ -175,7 +186,7 @@ Atomic permissions via `[RequirePermission("permission.name")]` on controller ac
 - Cannot assign/remove roles at/above your rank
 - Cannot modify your own roles, lock yourself, or delete yourself
 
-Permission changes on a role - invalidate refresh tokens + rotate security stamps + clear cache for all affected users.
+Permission changes on a role -> invalidate refresh tokens + rotate security stamps + clear cache for all affected users.
 # @end
 
 ## Repository Pattern
@@ -188,20 +199,18 @@ Pagination: `Paginate(int pageNumber, int pageSize)` extension on `IQueryable<T>
 
 ## Caching
 
-`HybridCache` (.NET built-in) provides L1 in-process caching with stampede protection. Keys defined in `CacheKeys` constants. `UserCacheInvalidationInterceptor` auto-clears user cache on entity changes. `NoOpHybridCache` is registered when caching is disabled.
+`HybridCache` (.NET built-in) provides L1 in-process caching with stampede protection. Keys defined in `CacheKeys` constants. `UserCacheInvalidationInterceptor` auto-clears user cache on entity changes.
 
 # @feature file-storage
 ## File Storage
 
 `IFileStorageService` - generic S3-compatible interface (`Upload`, `Download`, `Delete`, `Exists`). Implementation: `S3FileStorageService` (works with MinIO locally, any S3-compatible provider in production).
 
-**Configuration:** `FileStorageOptions` in `appsettings.json` / env vars. `ForcePathStyle = true` for MinIO compatibility.
-
 **Uploading files from a controller:**
 1. Accept `IFormFile` via `[FromForm]` + `[Consumes("multipart/form-data")]` + `[RequestSizeLimit]`
-2. Read to `byte[]` in the controller
+2. Read to `byte[]` in the controller: `using var ms = new MemoryStream(); await file.CopyToAsync(ms); var data = ms.ToArray();`
 3. Pass to the service for validation/processing
-4. Store via `fileStorageService.UploadAsync(key, data, contentType, ct)`
+4. Store via `fileStorageService.UploadAsync(key, data, contentType, ct)` - returns `Result`
 
 **Storage keys:** Use `{feature}/{id}.{ext}` pattern (e.g., `avatars/{userId}.webp`).
 # @end
@@ -209,19 +218,12 @@ Pagination: `Paginate(int pageNumber, int pageSize)` extension on `IQueryable<T>
 # @feature auth
 ## Email Templates
 
-Transactional emails use [Fluid](https://github.com/sebastienros/fluid) (Liquid) templates rendered by `IEmailTemplateRenderer`. Templates are embedded resources compiled once and cached.
-
-**3-file pattern** per email in `Infrastructure/Features/Email/Templates/`:
-- `{name}.liquid` - HTML body fragment (injected into `_base.liquid`)
-- `{name}.subject.liquid` - Subject line (plain text)
-- `{name}.text.liquid` - Plain text alternative (optional but recommended)
-
-**Model records** in `Application/Features/Email/Models/EmailTemplateModels.cs` - properties auto-map to snake_case Liquid variables.
+Fluid (Liquid) templates with 3-file pattern (`{name}.liquid`, `{name}.subject.liquid`, `{name}.text.liquid`). See the `/add-email-template` skill for full template patterns and model records.
 # @end
 
 ## OpenAPI
 
-- `/// <summary>` on every controller action and DTO property
+- `/// <summary>` on every controller action and DTO property -> generates OAS descriptions
 - `[ProducesResponseType]` declares all possible status codes per action
 - `EnumSchemaTransformer` auto-documents enum values
 - Scalar UI at `/scalar/v1` (development only)
@@ -250,26 +252,14 @@ Register with `BindConfiguration`, `ValidateDataAnnotations`, `ValidateOnStart`.
 | `Api.Tests` | Full HTTP pipeline (routes, auth, status codes) | `CustomWebApplicationFactory`, `TestAuthHandler` |
 | `Architecture.Tests` | Layer deps, naming, visibility | NetArchTest |
 
-## Hosting
+API test auth: `"Authorization", "Test"` (basic user), `TestAuth.WithPermissions(...)` (specific perms), `TestAuth.SuperAdmin()`.
 
-`HostingOptions` controls `ForceHttps` (default true - required behind TLS proxy) and `ReverseProxy` trust (trusted networks/proxies for `X-Forwarded-For`).
+Response contracts: frozen records in `Contracts/ResponseContracts.cs` - deserialize and assert key fields.
 
 # @feature aspire
-## Aspire (Local Development Orchestration)
+## Aspire (Local Development)
 
-**Two projects** support .NET Aspire for local development:
+Run: `dotnet run --project src/backend/MyProject.AppHost` - launches PostgreSQL, MinIO, MailPit, API. See `/add-aspire-dep` skill for adding dependencies.
 
-### ServiceDefaults (`MyProject.ServiceDefaults`)
-
-Shared Aspire project providing OpenTelemetry (logging, metrics, tracing, OTLP export), service discovery, and HTTP resilience. Called via `builder.AddServiceDefaults()` in `Program.cs`. Degrades gracefully when not running under Aspire.
-
-### AppHost (`MyProject.AppHost`)
-
-Aspire orchestrator for local development. Launches all infrastructure as containers.
-
-**Run**: `dotnet run --project src/backend/MyProject.AppHost`
-
-### Logging: Serilog - OpenTelemetry
-
-Serilog bridges to OpenTelemetry via the ServiceDefaults `AddOpenTelemetry()` logger provider. With `writeToProviders: true`, Serilog forwards logs to all registered `ILoggerProvider` instances including the OTEL one - no separate Serilog OTEL sink needed.
+**Logging gotcha**: Serilog bridges to OTEL via `writeToProviders: true` - do NOT add `Serilog.Sinks.OpenTelemetry` (causes duplicate logs).
 # @end

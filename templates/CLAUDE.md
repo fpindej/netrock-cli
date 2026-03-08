@@ -2,10 +2,10 @@
 
 MyProject - .NET 10 API (Clean Architecture), fully dockerized.
 
-**The backend API is the core of the project.** It is a public-facing API designed to serve any client - multiple frontends, mobile apps, other backends, third-party integrations. Treat every API change as if unknown consumers depend on it. Breaking changes require careful migration strategy (see AGENTS.md).
+**The backend API is the core of the project.** It is a public-facing API designed to serve any client - multiple frontends, mobile apps, other backends, third-party integrations. Treat every API change as if unknown consumers depend on it.
 
 ```
-Backend layers: WebApi → Application ← Infrastructure → Domain + Shared
+Backend layers: WebApi -> Application <- Infrastructure -> Domain + Shared
 ```
 
 ## Hard Rules
@@ -24,10 +24,22 @@ Backend layers: WebApi → Application ← Infrastructure → Domain + Shared
 
 ### Cross-Cutting
 
-- Security first - when convenience and security conflict, choose security. Deny by default, open selectively. Full PII compliance (`users.view_pii` permission, server-side masking, no PII in logs/URLs/errors).
+- Security first - when convenience and security conflict, choose security. Deny by default, open selectively.
 - Atomic commits: `type(scope): imperative description` (Conventional Commits). No `Co-Authored-By` lines.
 - No dead code - remove unused imports, variables, functions, files, and stale references in the same commit
 - No em dashes - never use `---` anywhere (code, comments, docs, UI). Use `-` or rewrite the sentence.
+
+## Breaking Changes
+
+The backend API is public-facing. Treat every contract change with the same care as a published library.
+
+| Layer | Breaking change |
+|---|---|
+| **Domain entity** | Renaming/removing a property, changing a type |
+| **Application interface/DTO** | Changing a method signature, renaming/removing a field, changing nullability |
+| **WebApi endpoint** | Changing route, method, request/response shape, status codes |
+
+**Pre-modification checklist:** (1) Check FILEMAP.md for impact, (2) Search all usages, (3) Document in commit body. Prefer additive changes. If breaking, update all consumers in the same PR.
 
 ## Verification
 
@@ -57,11 +69,37 @@ Do these automatically - never wait to be asked:
 | **Build/test failure** | Read the error, fix it, re-run. Repeat until green. Don't stop and report the error unless stuck after 3 attempts. |
 | **Unclear requirement** | Infer from context and existing patterns first. Ask the user only when genuinely ambiguous (multiple valid approaches with different tradeoffs). |
 
+## Agent Team
+
+Delegate to the right agent for the task. Run reviewers in parallel when reviewing.
+
+| Agent | Role | When to use |
+|---|---|---|
+| `backend-engineer` | Implements .NET features | Task stays within `src/backend/` |
+| `backend-reviewer` | Audits C# code (read-only) | Reviewing backend changes |
+# @feature auth
+| `security-reviewer` | Audits for vulnerabilities (read-only) | Auth, permissions, PII, tokens, middleware changes |
+# @end
+| `devops-reviewer` | Audits infra/deployment (read-only) | Dockerfiles, compose, Aspire, CI/CD changes |
+| `test-writer` | Writes tests | Tests needed alongside implementation |
+| `filemap-checker` | Verifies downstream updates (read-only) | After modifying files with known consumers |
+| `tech-writer` | Writes documentation | READMEs, session docs, guides |
+| `product-owner` | Proposes prioritized work items (read-only) | Deciding what to work on next, backlog review |
+
+**Delegation patterns:**
+- **New backend feature**: `backend-engineer` implements, then `backend-reviewer` audits
+# @feature auth
+- **Security-sensitive change**: `backend-engineer` implements, then `backend-reviewer` + `security-reviewer` audit in parallel
+# @end
+- **Pre-release check**: `devops-reviewer` validates deployment readiness
+- **What to work on next**: `product-owner` analyzes codebase, issues, and TODOs
+- **After modifying shared files**: `filemap-checker` verifies all consumers updated
+
 ## File Roles
 
 | File | Contains |
 |---|---|
-| `AGENTS.md` | Architecture, security, code quality, git workflow |
-| `src/backend/AGENTS.md` | Backend conventions: entities, Result, EF Core, controllers, auth, testing |
-| `.claude/skills/` | Step-by-step procedures for all operations (type `/` to list available skills) |
+| `.claude/agents/` | Specialized agents for delegation (engineers, reviewers, writers) |
+| `.claude/skills/` | Step-by-step procedures and convention references (type `/` to list user-invocable skills) |
+| `.claude/hooks/` | Lifecycle hooks: safety gates, auto-format, quality checks |
 | `FILEMAP.md` | "When you change X, also update Y" - change impact tables |
