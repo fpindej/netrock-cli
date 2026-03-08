@@ -104,8 +104,9 @@ export const featureDefinitions: Feature[] = [
 	},
 	{
 		id: 'claude',
-		name: 'Claude docs',
-		description: 'CLAUDE.md, AGENTS.md, and FILEMAP.md for AI-assisted development',
+		name: 'Claude agent team',
+		description:
+			'CLAUDE.md, FILEMAP.md, 8 specialized agents, and 4 lifecycle hooks for AI-assisted development',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
@@ -113,8 +114,9 @@ export const featureDefinitions: Feature[] = [
 	},
 	{
 		id: 'claude-skills',
-		name: 'Claude skills',
-		description: 'Step-by-step Claude Code skills and environment hooks',
+		name: 'Claude skills & conventions',
+		description:
+			'22 Claude Code skills, 3 convention references, and skill assets for code generation',
 		dependencies: ['claude'],
 		required: false,
 		defaultEnabled: true,
