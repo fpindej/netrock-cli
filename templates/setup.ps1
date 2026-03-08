@@ -287,6 +287,67 @@ if ($basePort -ne 5173) {
 }
 // @end
 
+// @feature auth
+# ── Seed Users ──────────────────────────────────────────────────────────────
+Write-Step "Development seed users"
+Write-Host ""
+Write-Host "  These accounts are created on first startup (Development only)."
+Write-Host ""
+Write-Host "  #   Email                     Password          Role" -ForegroundColor White
+Write-Host "  ────────────────────────────────────────────────────────────────"
+
+$saEmail = "superadmin@test.com"
+$saPass = "SuperAdmin123!"
+$admEmail = "admin@test.com"
+$admPass = "AdminUser123!"
+$usrEmail = "testuser@test.com"
+$usrPass = "TestUser123!"
+
+Write-Host "  1   " -NoNewline; Write-Host "$saEmail" -ForegroundColor Cyan -NoNewline; Write-Host "     $saPass    SuperAdmin"
+Write-Host "  2   " -NoNewline; Write-Host "$admEmail" -ForegroundColor Cyan -NoNewline; Write-Host "          $admPass      Admin"
+Write-Host "  3   " -NoNewline; Write-Host "$usrEmail" -ForegroundColor Cyan -NoNewline; Write-Host "       $usrPass       User"
+Write-Host ""
+
+$customizeUsers = Read-Host "  Customize? [y/N]"
+if ($customizeUsers.ToLower() -eq "y") {
+    Write-Host ""
+    Write-Host "  SuperAdmin" -ForegroundColor White -NoNewline; Write-Host " (full system access)"
+    $input = Read-Host "    Email [$saEmail]"
+    if ($input) { $saEmail = $input }
+    $input = Read-Host "    Password [$saPass]"
+    if ($input) { $saPass = $input }
+
+    Write-Host ""
+    Write-Host "  Admin" -ForegroundColor White -NoNewline; Write-Host " (user and role management)"
+    $input = Read-Host "    Email [$admEmail]"
+    if ($input) { $admEmail = $input }
+    $input = Read-Host "    Password [$admPass]"
+    if ($input) { $admPass = $input }
+
+    Write-Host ""
+    Write-Host "  User" -ForegroundColor White -NoNewline; Write-Host " (standard account)"
+    $input = Read-Host "    Email [$usrEmail]"
+    if ($input) { $usrEmail = $input }
+    $input = Read-Host "    Password [$usrPass]"
+    if ($input) { $usrPass = $input }
+
+    $devSettings = "src/backend/MyProject.WebApi/appsettings.Development.json"
+    $content = Get-Content $devSettings -Raw
+    $content = $content -replace 'superadmin@test\.com', $saEmail
+    $content = $content -replace 'SuperAdmin123!', $saPass
+    $content = $content -replace 'admin@test\.com', $admEmail
+    $content = $content -replace 'AdminUser123!', $admPass
+    $content = $content -replace 'testuser@test\.com', $usrEmail
+    $content = $content -replace 'TestUser123!', $usrPass
+    Set-Content $devSettings -Value $content -NoNewline
+
+    Write-Ok "Seed users updated"
+    Git-Commit "chore: configure development seed users"
+} else {
+    Write-Ok "Keeping default seed users"
+}
+// @end
+
 # ── Database Migration ──────────────────────────────────────────────────────
 if ($doMigration) {
     Write-Step "Creating initial database migration..."

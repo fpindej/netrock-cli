@@ -319,6 +319,83 @@ if [ "$BASE_PORT" != "5173" ]; then
 fi
 // @end
 
+// @feature auth
+# ── Seed Users ──────────────────────────────────────────────────────────────
+print_step "Development seed users"
+echo ""
+echo -e "  These accounts are created on first startup (Development only)."
+echo ""
+echo -e "  ${BOLD}#   Email                     Password          Role${NC}"
+echo -e "  ────────────────────────────────────────────────────────────────"
+
+# Defaults
+SA_EMAIL="superadmin@test.com"
+SA_PASS="SuperAdmin123!"
+ADM_EMAIL="admin@test.com"
+ADM_PASS="AdminUser123!"
+USR_EMAIL="testuser@test.com"
+USR_PASS="TestUser123!"
+
+echo -e "  1   ${CYAN}$SA_EMAIL${NC}     $SA_PASS    SuperAdmin"
+echo -e "  2   ${CYAN}$ADM_EMAIL${NC}          $ADM_PASS      Admin"
+echo -e "  3   ${CYAN}$USR_EMAIL${NC}       $USR_PASS       User"
+echo ""
+
+read -p "$(echo -e "  ${BOLD}Customize?${NC} [y/N]: ")" CUSTOMIZE_USERS
+CUSTOMIZE_USERS=${CUSTOMIZE_USERS:-n}
+
+if [[ "$(echo "$CUSTOMIZE_USERS" | tr '[:upper:]' '[:lower:]')" == "y" ]]; then
+    echo ""
+    echo -e "  ${BOLD}SuperAdmin${NC} (full system access)"
+    read -p "$(echo -e "    Email [$SA_EMAIL]: ")" input
+    [ -n "$input" ] && SA_EMAIL="$input"
+    read -p "$(echo -e "    Password [$SA_PASS]: ")" input
+    [ -n "$input" ] && SA_PASS="$input"
+
+    echo ""
+    echo -e "  ${BOLD}Admin${NC} (user and role management)"
+    read -p "$(echo -e "    Email [$ADM_EMAIL]: ")" input
+    [ -n "$input" ] && ADM_EMAIL="$input"
+    read -p "$(echo -e "    Password [$ADM_PASS]: ")" input
+    [ -n "$input" ] && ADM_PASS="$input"
+
+    echo ""
+    echo -e "  ${BOLD}User${NC} (standard account)"
+    read -p "$(echo -e "    Email [$USR_EMAIL]: ")" input
+    [ -n "$input" ] && USR_EMAIL="$input"
+    read -p "$(echo -e "    Password [$USR_PASS]: ")" input
+    [ -n "$input" ] && USR_PASS="$input"
+
+    # Apply changes to appsettings.Development.json
+    DEV_SETTINGS="src/backend/MyProject.WebApi/appsettings.Development.json"
+    OS=$(uname)
+    if [ "$OS" = "Darwin" ]; then
+        sed -i '' \
+            -e "s/superadmin@test.com/$SA_EMAIL/g" \
+            -e "s/SuperAdmin123!/$SA_PASS/g" \
+            -e "s/admin@test.com/$ADM_EMAIL/g" \
+            -e "s/AdminUser123!/$ADM_PASS/g" \
+            -e "s/testuser@test.com/$USR_EMAIL/g" \
+            -e "s/TestUser123!/$USR_PASS/g" \
+            "$DEV_SETTINGS"
+    else
+        sed -i \
+            -e "s/superadmin@test.com/$SA_EMAIL/g" \
+            -e "s/SuperAdmin123!/$SA_PASS/g" \
+            -e "s/admin@test.com/$ADM_EMAIL/g" \
+            -e "s/AdminUser123!/$ADM_PASS/g" \
+            -e "s/testuser@test.com/$USR_EMAIL/g" \
+            -e "s/TestUser123!/$USR_PASS/g" \
+            "$DEV_SETTINGS"
+    fi
+
+    print_success "Seed users updated"
+    git_commit "chore: configure development seed users"
+else
+    print_success "Keeping default seed users"
+fi
+// @end
+
 # ── Database Migration ──────────────────────────────────────────────────────
 if [ "$DO_MIGRATION" = "1" ]; then
     print_step "Creating initial database migration..."
