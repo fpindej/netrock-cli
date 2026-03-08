@@ -227,7 +227,6 @@ DO_ASPIRE="0"
 print_step "Superuser account"
 echo ""
 echo -e "  The first user is a ${BOLD}Superuser${NC} with full system access."
-echo -e "  Two additional dev accounts (Admin, User) are created automatically."
 echo ""
 
 SA_EMAIL="superuser@test.com"

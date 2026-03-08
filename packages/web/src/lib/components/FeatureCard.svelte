@@ -11,8 +11,9 @@
 	let isOn = $derived(generator.resolvedFeatures.has(feature.id));
 	let isRequired = $derived(feature.required);
 	let isAutoEnabled = $derived(generator.isAutoEnabled(feature.id));
+	let isLocked = $derived(generator.isLockedByFrontend(feature.id));
 	let hasOptions = $derived(!!feature.options?.length);
-	let showOptions = $derived(isOn && hasOptions);
+	let showOptions = $derived(isOn && hasOptions && !isLocked);
 	let selectedOptions = $derived(generator.getSelectedOptions(feature.id));
 	let selectedCount = $derived(selectedOptions?.size ?? 0);
 	let allSelected = $derived(selectedOptions?.size === feature.options?.length);
@@ -29,9 +30,9 @@
 	<button
 		type="button"
 		onclick={() => generator.toggle(feature.id)}
-		disabled={isRequired}
+		disabled={isRequired || isLocked}
 		class="group relative flex w-full items-start gap-4 px-4 py-3.5 text-start
-			{isRequired ? 'cursor-default' : 'cursor-pointer'}"
+			{isRequired || isLocked ? 'cursor-default' : 'cursor-pointer'}"
 	>
 		<!-- Toggle indicator -->
 		<div class="mt-0.5 flex-shrink-0">
@@ -69,6 +70,11 @@
 				{#if isAutoEnabled && !isRequired}
 					<span class="rounded bg-accent-dim px-1.5 py-0.5 font-mono text-[10px] text-accent">
 						auto
+					</span>
+				{/if}
+				{#if isLocked && !isRequired}
+					<span class="rounded bg-amber-dim px-1.5 py-0.5 font-mono text-[10px] text-amber">
+						locked
 					</span>
 				{/if}
 				{#if showOptions}

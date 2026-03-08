@@ -207,7 +207,6 @@ Write-Host ""
 Write-Host "  The first user is a " -NoNewline
 Write-Host "Superuser" -ForegroundColor White -NoNewline
 Write-Host " with full system access."
-Write-Host "  Two additional dev accounts (Admin, User) are created automatically."
 Write-Host ""
 
 $saEmail = "superuser@test.com"

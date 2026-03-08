@@ -77,6 +77,14 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 		});
 	}
 
+	if (features.has('frontend')) {
+		notes.push({
+			title: 'Frontend feature split in progress',
+			message:
+				'The SvelteKit frontend currently requires all backend features to be enabled. Individual feature selection for the frontend is a work in progress. All features have been locked.'
+		});
+	}
+
 	return notes;
 }
 
@@ -145,6 +153,7 @@ class GeneratorState {
 
 	featureCount = $derived(this.resolvedFeatures.size);
 	fileCount = $derived(this.project?.summary.totalFiles ?? 0);
+	isFrontendEnabled = $derived(this.resolvedFeatures.has('frontend'));
 
 	groups = groupFeatures();
 	presets = presets;
@@ -162,6 +171,10 @@ class GeneratorState {
 		return this.resolvedFeatures.has(id) && !this.selectedIds.includes(id);
 	}
 
+	isLockedByFrontend(id: FeatureId): boolean {
+		return id !== 'frontend' && this.isFrontendEnabled;
+	}
+
 	/** Returns selected options for a feature, or undefined if it has no options. */
 	getSelectedOptions(featureId: FeatureId): Set<string> | undefined {
 		const feature = featureDefinitions.find((f) => f.id === featureId);
@@ -171,6 +184,7 @@ class GeneratorState {
 
 	/** Toggles a single option within a feature. */
 	toggleOption(featureId: FeatureId, optionId: string) {
+		if (this.isFrontendEnabled) return;
 		const feature = featureDefinitions.find((f) => f.id === featureId);
 		if (!feature?.options) return;
 
@@ -190,6 +204,7 @@ class GeneratorState {
 
 	/** Selects or deselects all options for a feature. */
 	setAllOptions(featureId: FeatureId, selectAll: boolean) {
+		if (this.isFrontendEnabled) return;
 		const feature = featureDefinitions.find((f) => f.id === featureId);
 		if (!feature?.options) return;
 
@@ -203,6 +218,11 @@ class GeneratorState {
 		const feature = featureDefinitions.find((f) => f.id === id);
 		if (!feature || feature.required) return;
 
+		// Block toggling off any feature while frontend is enabled
+		if (id !== 'frontend' && this.selectedIds.includes(id) && this.isFrontendEnabled) {
+			return;
+		}
+
 		const isEnabled = this.selectedIds.includes(id);
 		if (isEnabled) {
 			const cascaded = getCascadeRemovals(id, new Set(this.selectedIds));
@@ -213,13 +233,24 @@ class GeneratorState {
 			for (const removed of cascaded) next.delete(removed);
 			this.featureOptions = next;
 		} else {
-			const withDeps = resolveFeatures(new Set([...this.selectedIds, id]));
-			this.selectedIds = [...withDeps];
-			// Initialize default options for features that have them
-			if (feature.options) {
-				const next = new Map(this.featureOptions);
-				next.set(id, getDefaultOptions(feature));
+			if (id === 'frontend') {
+				// Frontend requires all features - enable everything
+				const allIds = featureDefinitions.map((f) => f.id);
+				this.selectedIds = [...resolveFeatures(new Set(allIds))];
+				const next = new Map<FeatureId, Set<string>>();
+				for (const f of featureDefinitions) {
+					if (f.options) next.set(f.id, getAllOptions(f));
+				}
 				this.featureOptions = next;
+			} else {
+				const withDeps = resolveFeatures(new Set([...this.selectedIds, id]));
+				this.selectedIds = [...withDeps];
+				// Initialize default options for features that have them
+				if (feature.options) {
+					const next = new Map(this.featureOptions);
+					next.set(id, getDefaultOptions(feature));
+					this.featureOptions = next;
+				}
 			}
 		}
 		this.activePresetId = this.findMatchingPreset();

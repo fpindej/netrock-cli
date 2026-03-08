@@ -5,8 +5,7 @@
 	const presetMeta: Record<string, { badge?: string; icon: string }> = {
 		minimal: { icon: '>' },
 		standard: { badge: 'Popular', icon: '>>' },
-		full: { icon: '>>>' },
-		'api-only': { icon: 'api' }
+		full: { icon: '>>>' }
 	};
 </script>
 
@@ -43,20 +42,25 @@
 			</button>
 		{/each}
 
-		<!-- Frontend preset - coming soon -->
-		<div
-			class="pointer-events-none relative flex flex-col items-center rounded-xl border border-border-subtle bg-surface px-3 py-4 opacity-40"
+		<!-- Frontend toggle -->
+		<button
+			type="button"
+			onclick={() => generator.toggle('frontend')}
+			class="relative flex flex-col items-center rounded-xl border px-3 py-4 transition-all
+				{generator.isFrontendEnabled
+				? 'border-accent bg-accent-dim'
+				: 'border-border-subtle bg-surface hover:border-border-active hover:bg-surface-raised'}"
 		>
 			<span
-				class="absolute -top-2 rounded-full border border-border-subtle bg-surface-raised px-2 py-0.5 text-[10px] font-medium text-text-muted"
+				class="absolute -top-2 rounded-full border border-amber/30 bg-amber-dim px-2 py-0.5 text-[10px] font-medium text-amber"
 			>
-				Coming soon
+				WIP
 			</span>
 			<span class="mb-1 font-mono text-xs text-text-muted">&lt;/&gt;</span>
-			<span class="text-sm font-medium text-text-primary">Frontend</span>
-			<span class="mt-0.5 text-center text-xs text-text-secondary">SvelteKit client</span>
-			<span class="mt-2 font-mono text-xs text-text-muted">&nbsp;</span>
-		</div>
+			<span class="text-sm font-medium text-text-primary">Full Stack</span>
+			<span class="mt-0.5 text-center text-xs text-text-secondary">SvelteKit frontend</span>
+			<span class="mt-2 font-mono text-xs text-text-muted">all features</span>
+		</button>
 	</div>
 
 	<!-- Custom label -->
