@@ -69,8 +69,9 @@ var api = builder.AddProject<Projects.MyProject_WebApi>("api")
     .WithEnvironment("FileStorage__AccessKey", storage.Resource.RootUser)
     .WithEnvironment("FileStorage__SecretKey", storage.Resource.PasswordParameter)
     .WithEnvironment("FileStorage__BucketName", "{INIT_PROJECT_SLUG}-files")
-    .WithEnvironment("FileStorage__UseSSL", "false");
+    .WithEnvironment("FileStorage__UseSSL", "false")
     // @end
+    ;
 
 // @feature auth
 // Mailpit only for local development - production uses real SMTP (configured via environment variables)
