@@ -216,10 +216,10 @@ internal class AdminService(
             return Result.Failure(ErrorMessages.Admin.RoleNotAssigned);
         }
 
-        var lastAdminResult = await EnforceLastAdminProtectionAsync(userId, role, cancellationToken);
-        if (!lastAdminResult.IsSuccess)
+        var lastSuperuserResult = await EnforceLastSuperuserProtectionAsync(userId, role, cancellationToken);
+        if (!lastSuperuserResult.IsSuccess)
         {
-            return lastAdminResult;
+            return lastSuperuserResult;
         }
 
         var result = await userManager.RemoveFromRoleAsync(user, role);
@@ -355,11 +355,11 @@ internal class AdminService(
         }
 
         var targetRoles = await userManager.GetRolesAsync(user);
-        var lastAdminCheckResult = await EnforceLastAdminProtectionForDeletionAsync(
+        var lastSuperuserCheckResult = await EnforceLastSuperuserProtectionForDeletionAsync(
             targetRoles, cancellationToken);
-        if (!lastAdminCheckResult.IsSuccess)
+        if (!lastSuperuserCheckResult.IsSuccess)
         {
-            return lastAdminCheckResult;
+            return lastSuperuserCheckResult;
         }
 
         await RevokeUserSessionsAsync(user, userId, cancellationToken);
@@ -647,7 +647,7 @@ internal class AdminService(
     /// <summary>
     /// Prevents removal of the Superuser role if the target user is the last Superuser.
     /// </summary>
-    private async Task<Result> EnforceLastAdminProtectionAsync(Guid userId, string role,
+    private async Task<Result> EnforceLastSuperuserProtectionAsync(Guid userId, string role,
         CancellationToken cancellationToken)
     {
         if (role is not AppRoles.Superuser)
@@ -675,7 +675,7 @@ internal class AdminService(
     /// <summary>
     /// Prevents deletion of a user if they are the last Superuser.
     /// </summary>
-    private async Task<Result> EnforceLastAdminProtectionForDeletionAsync(
+    private async Task<Result> EnforceLastSuperuserProtectionForDeletionAsync(
         IList<string> targetRoles, CancellationToken cancellationToken)
     {
         foreach (var role in targetRoles.Where(r => r is AppRoles.Superuser))
@@ -688,7 +688,7 @@ internal class AdminService(
 
             if (usersInRoleCount <= 1)
             {
-                return Result.Failure(ErrorMessages.Admin.LastAdminCannotDelete);
+                return Result.Failure(ErrorMessages.Admin.LastSuperuserCannotDelete);
             }
         }
 
