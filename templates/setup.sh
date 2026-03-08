@@ -253,7 +253,7 @@ echo -e "
 
 read -p "$(echo -e "${BOLD}Proceed?${NC} [Y/n]: ")" PROCEED
 PROCEED=${PROCEED:-y}
-if [[ "${PROCEED,,}" != "y" ]]; then
+if [[ "$(echo "$PROCEED" | tr '[:upper:]' '[:lower:]')" != "y" ]]; then
     print_warning "Aborted by user"
     exit 0
 fi
