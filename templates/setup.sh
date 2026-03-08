@@ -267,6 +267,35 @@ echo -e "\n${CYAN}${BOLD}=======================================================
 echo -e "${CYAN}${BOLD}  Executing${NC}"
 echo -e "${CYAN}${BOLD}============================================================${NC}"
 
+# Helper: commit if git is enabled
+git_commit() {
+    if [ "$DO_GIT" = "1" ]; then
+        git add -A >/dev/null 2>&1
+        git commit -q --no-gpg-sign -m "$1"
+        print_success "Committed: $1"
+    fi
+}
+
+# ── Git Init ────────────────────────────────────────────────────────────────
+if [ "$DO_GIT" = "1" ]; then
+    print_step "Initializing git repository..."
+
+    if [ -d ".git" ]; then
+        print_success "Git repository already initialized"
+    else
+        git init -q
+        print_success "Git repository initialized"
+    fi
+
+    # Clean up setup scripts and create initial commit
+    rm -f setup.sh setup.ps1
+    print_substep "Removed setup scripts"
+
+    git add -A >/dev/null 2>&1
+    git commit -q --no-gpg-sign -m "chore: initial project setup"
+    print_success "Committed: chore: initial project setup"
+fi
+
 // @feature aspire
 # ── Port Configuration ──────────────────────────────────────────────────────
 if [ "$BASE_PORT" != "5173" ]; then
@@ -288,6 +317,7 @@ if [ "$BASE_PORT" != "5173" ]; then
     fi
 
     print_success "Ports updated (base: $BASE_PORT)"
+    git_commit "chore: configure ports (base: $BASE_PORT)"
 fi
 // @end
 
@@ -325,6 +355,7 @@ if [ "$DO_MIGRATION" = "1" ]; then
             --output-dir Persistence/Migrations \
             --no-build >/dev/null 2>&1; then
             print_success "Migration 'Initial' created"
+            git_commit "chore: add initial database migration"
         else
             print_error "Migration creation failed"
             print_warning "Run manually after fixing any issues:"
@@ -334,26 +365,6 @@ if [ "$DO_MIGRATION" = "1" ]; then
             echo -e "  ${DIM}  --output-dir Persistence/Migrations${NC}"
         fi
     fi
-fi
-
-# ── Git Init ────────────────────────────────────────────────────────────────
-if [ "$DO_GIT" = "1" ]; then
-    print_step "Initializing git repository..."
-
-    if [ -d ".git" ]; then
-        print_success "Git repository already initialized"
-    else
-        git init -q
-        print_success "Git repository initialized"
-    fi
-
-    # Clean up setup scripts before committing
-    rm -f setup.sh setup.ps1
-    print_substep "Removed setup scripts"
-
-    git add -A >/dev/null 2>&1
-    git commit -q --no-gpg-sign -m "chore: initial project setup"
-    print_success "Initial commit created"
 fi
 
 # ── Build & Test ────────────────────────────────────────────────────────────

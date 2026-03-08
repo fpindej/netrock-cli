@@ -238,6 +238,36 @@ if (-not [string]::IsNullOrWhiteSpace($proceed) -and $proceed.ToLower() -ne "y")
 # ─────────────────────────────────────────────────────────────────────────────
 Write-Header "Executing"
 
+# Helper: commit if git is enabled
+function Git-Commit($msg) {
+    if ($doGit) {
+        git add -A 2>$null
+        git commit -q --no-gpg-sign -m $msg 2>$null
+        Write-Ok "Committed: $msg"
+    }
+}
+
+# ── Git Init ────────────────────────────────────────────────────────────────
+if ($doGit) {
+    Write-Step "Initializing git repository..."
+
+    if (Test-Path ".git") {
+        Write-Ok "Git repository already initialized"
+    } else {
+        git init -q
+        Write-Ok "Git repository initialized"
+    }
+
+    # Clean up setup scripts and create initial commit
+    Remove-Item -Path "setup.sh" -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path "setup.ps1" -Force -ErrorAction SilentlyContinue
+    Write-Sub "Removed setup scripts"
+
+    git add -A 2>$null
+    git commit -q --no-gpg-sign -m "chore: initial project setup" 2>$null
+    Write-Ok "Committed: chore: initial project setup"
+}
+
 // @feature aspire
 # ── Port Configuration ──────────────────────────────────────────────────────
 if ($basePort -ne 5173) {
@@ -255,6 +285,7 @@ if ($basePort -ne 5173) {
     }
 
     Write-Ok "Ports updated (base: $basePort)"
+    Git-Commit "chore: configure ports (base: $basePort)"
 }
 // @end
 
@@ -296,6 +327,7 @@ if ($doMigration) {
             --no-build 2>&1
         if ($LASTEXITCODE -eq 0) {
             Write-Ok "Migration 'Initial' created"
+            Git-Commit "chore: add initial database migration"
         } else {
             Write-Fail "Migration creation failed"
             Write-Warn "Run manually after fixing any issues:"
@@ -305,27 +337,6 @@ if ($doMigration) {
             Write-Host "    --output-dir Persistence/Migrations" -ForegroundColor DarkGray
         }
     }
-}
-
-# ── Git Init ────────────────────────────────────────────────────────────────
-if ($doGit) {
-    Write-Step "Initializing git repository..."
-
-    if (Test-Path ".git") {
-        Write-Ok "Git repository already initialized"
-    } else {
-        git init -q
-        Write-Ok "Git repository initialized"
-    }
-
-    # Clean up setup scripts before committing
-    Remove-Item -Path "setup.sh" -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path "setup.ps1" -Force -ErrorAction SilentlyContinue
-    Write-Sub "Removed setup scripts"
-
-    git add -A 2>$null
-    git commit -q --no-gpg-sign -m "chore: initial project setup" 2>$null
-    Write-Ok "Initial commit created"
 }
 
 # ── Build & Test ────────────────────────────────────────────────────────────
