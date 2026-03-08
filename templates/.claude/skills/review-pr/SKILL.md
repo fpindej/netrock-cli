@@ -15,7 +15,7 @@ Argument: PR number or URL. If omitted, reviews the current branch's open PR.
 1. Resolve the PR: `gh pr view {number} --json number,title,headRefName,body`
 2. Get the full diff: `gh pr diff {number}`
 3. Read every changed file in full (not just the diff) to understand surrounding context
-4. Read the relevant AGENTS.md (`src/frontend/AGENTS.md` or `src/backend/AGENTS.md`) for conventions
+4. Read the relevant convention skills in `.claude/skills/` (e.g., `backend-conventions`) for conventions
 
 ## Review Checklist
 

@@ -1,12 +1,25 @@
 import { registerManifest } from '../features/manifest.js';
 
-/** Registers the claude-skills feature manifest with Claude Code skills and hooks. */
+/** Registers the claude-skills feature manifest with Claude Code skills, convention references, and assets. */
 export function registerClaudeSkillsManifest(): void {
 	registerManifest({
 		featureId: 'claude-skills',
 		files: [
-			// Settings (hooks)
-			{ path: '.claude/settings.json', templated: true },
+			// Settings (hooks config)
+			{ path: '.claude/settings.json', templated: false },
+
+			// Convention skills (auto-injected into agents, not user-invocable)
+			{ path: '.claude/skills/backend-conventions/SKILL.md', templated: true },
+			{ path: '.claude/skills/security-conventions/SKILL.md', templated: true },
+			{ path: '.claude/skills/infra-conventions/SKILL.md', templated: true },
+
+			// Skill assets (templates and references for agents)
+			{ path: '.claude/skills/create-pr/assets/pr-body.md', templated: false },
+			{ path: '.claude/skills/new-endpoint/assets/controller-action.cs.md', templated: false },
+			{ path: '.claude/skills/new-endpoint/assets/validator.cs.md', templated: false },
+			{ path: '.claude/skills/new-entity/assets/entity.cs.md', templated: false },
+			{ path: '.claude/skills/new-entity/assets/configuration.cs.md', templated: false },
+			{ path: '.claude/skills/review-pr/references/conventions-summary.md', templated: true },
 
 			// Generic skills (always available)
 			{ path: '.claude/skills/add-ci-area/SKILL.md', templated: false },

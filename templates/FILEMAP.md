@@ -100,7 +100,7 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 | **`RateLimitingOptions.cs`** (add/rename option class) | `RateLimiterExtensions.cs`, `appsettings.json`, `appsettings.Development.json` |
 | **`RateLimiterExtensions.cs`** (add policy) | Requires matching constant in `RateLimitPolicies.cs` and config in `RateLimitingOptions.cs` |
 | **`HostingOptions.cs`** (change hosting config shape) | `HostingExtensions.cs`, `appsettings.json`, `appsettings.Development.json`, `deploy/docker-compose.yml` |
-| **`HostingExtensions.cs`** (change middleware behavior) | `Program.cs`, `AGENTS.md` Hosting Configuration section |
+| **`HostingExtensions.cs`** (change middleware behavior) | `Program.cs` |
 | **`Dockerfile`** (backend - change build/publish steps) | `.dockerignore`, verify published files don't include dev/test config |
 | **`MyProject.WebApi.csproj`** (add appsettings file) | If non-production: add `CopyToPublishDirectory="Never"` and matching `rm -f` in `Dockerfile` |
 | **Route constraint** (add/modify in `Routing/`) | `Program.cs` constraint registration, route templates using that constraint |
@@ -122,7 +122,7 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 
 ## Key Files Quick Reference
 
-Files that are frequently referenced in impact tables above. For anything not listed here, use Glob/Grep - the codebase follows predictable naming patterns documented in the AGENTS.md files.
+Files that are frequently referenced in impact tables above. For anything not listed here, use Glob/Grep - the codebase follows predictable naming patterns documented in the convention skills.
 
 ### Backend Naming Patterns
 

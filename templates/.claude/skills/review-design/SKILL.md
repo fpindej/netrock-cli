@@ -15,7 +15,7 @@ Argument: file path, component name, or glob pattern. If omitted, reviews all fi
 
 1. **Resolve scope**: If argument provided, find matching `.svelte` files. If omitted, get changed files via `git diff master --name-only -- '*.svelte'`
 2. **Read every file in scope** in full - understand the complete component, not just fragments
-3. **Read `src/frontend/AGENTS.md`** for project conventions (styling, props, responsive, theming)
+3. **Read convention skills** in `.claude/skills/` for project conventions (styling, props, responsive, theming)
 4. **Check the parent layout/page** that renders each component - understand the context it lives in
 5. **Cross-reference related components** - check siblings in the same feature folder for consistency
 
