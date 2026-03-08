@@ -120,13 +120,14 @@
 			</summary>
 			<div class="border-t border-amber/15 px-5 py-4 text-sm leading-relaxed text-text-secondary">
 				<p class="mb-3 text-xs text-text-muted">
-					The generated project works locally out of the box. These items need your input before
-					production.
+					Local dev works out of the box{generator.resolvedFeatures.has('aspire')
+						? ' (Aspire manages Postgres, MailPit, MinIO automatically)'
+						: ''}. These items need your input for production.
 				</p>
 				<ul class="space-y-1.5">
 					<li>
 						<span class="font-mono text-xs text-amber">DB</span> - Point
-						<code class="text-xs">ConnectionStrings__Database</code> to your PostgreSQL instance
+						<code class="text-xs">ConnectionStrings__Database</code> to your production PostgreSQL
 					</li>
 					<li>
 						<span class="font-mono text-xs text-amber">CORS</span> - Set
@@ -135,13 +136,14 @@
 					</li>
 					{#if generator.resolvedFeatures.has('auth')}
 						<li>
-							<span class="font-mono text-xs text-amber">JWT</span> - Set
-							<code class="text-xs">Authentication__Jwt__Key</code> (64+ chars, cryptographically
-							random)
+							<span class="font-mono text-xs text-amber">JWT</span> - Replace the dev JWT key with
+							a production secret (64+ chars, cryptographically random)
 						</li>
 						<li>
-							<span class="font-mono text-xs text-amber">Email</span> - Replace NoOpEmailService
-							with a real SMTP provider
+							<span class="font-mono text-xs text-amber">Email</span> - Configure a real SMTP
+							provider{generator.resolvedFeatures.has('aspire')
+								? ' (MailPit handles local dev)'
+								: ''}
 						</li>
 						<li>
 							<span class="font-mono text-xs text-amber">Admin</span> - Set
@@ -163,7 +165,10 @@
 					{#if generator.resolvedFeatures.has('file-storage')}
 						<li>
 							<span class="font-mono text-xs text-amber">Storage</span> - Configure
-							<code class="text-xs">FileStorage__*</code> for your S3 provider
+							<code class="text-xs">FileStorage__*</code> for your S3
+							provider{generator.resolvedFeatures.has('aspire')
+								? ' (MinIO handles local dev)'
+								: ''}
 						</li>
 					{/if}
 					<li>
