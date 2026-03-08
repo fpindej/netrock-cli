@@ -15,6 +15,18 @@ export type FeatureId =
 	| 'claude-skills'
 	| 'frontend';
 
+/** A selectable sub-option within a feature (e.g., individual OAuth providers). */
+export interface FeatureOption {
+	/** Unique option identifier within the parent feature. */
+	id: string;
+
+	/** Human-readable name shown in the UI. */
+	name: string;
+
+	/** Whether this option is enabled by default when the parent feature is selected. */
+	defaultEnabled: boolean;
+}
+
 /** Definition of a single generator feature. */
 export interface Feature {
 	/** Unique feature identifier. */
@@ -37,15 +49,13 @@ export interface Feature {
 
 	/** Group for UI display. */
 	group: FeatureGroup;
+
+	/** Selectable sub-options (e.g., individual OAuth providers). */
+	options?: FeatureOption[];
 }
 
 /** Grouping for features in the picker UI. */
-export type FeatureGroup =
-	| 'core'
-	| 'authentication'
-	| 'infrastructure'
-	| 'tooling'
-	| 'frontend';
+export type FeatureGroup = 'core' | 'authentication' | 'infrastructure' | 'tooling' | 'frontend';
 
 /** The complete feature dependency graph. */
 export interface FeatureGraph {

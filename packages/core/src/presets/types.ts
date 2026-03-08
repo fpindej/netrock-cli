@@ -13,4 +13,11 @@ export interface Preset {
 
 	/** The features enabled by this preset. */
 	features: FeatureId[];
+
+	/**
+	 * Explicit option selections per feature.
+	 * When a feature has options but isn't listed here, defaults from the
+	 * feature definition are used.
+	 */
+	featureOptions?: Partial<Record<FeatureId, string[]>>;
 }

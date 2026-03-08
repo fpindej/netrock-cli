@@ -8,6 +8,13 @@ export interface GeneratorConfig {
 
 	/** The set of features to include (should be pre-resolved via resolveFeatures). */
 	features: Set<FeatureId>;
+
+	/**
+	 * Selected sub-options per feature (e.g., which OAuth providers to include).
+	 * Keys are feature IDs, values are sets of selected option IDs.
+	 * Omitted features use all default-enabled options from their definition.
+	 */
+	featureOptions?: Map<FeatureId, Set<string>>;
 }
 
 /** A single generated file ready for output. */

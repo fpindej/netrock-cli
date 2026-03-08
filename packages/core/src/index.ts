@@ -8,7 +8,13 @@ export { registerManifest, getManifests, getManifest } from './features/manifest
 export { registerAllManifests } from './manifests/index.js';
 export { featureDefinitions } from './features/definitions.js';
 
-export type { Feature, FeatureId, FeatureGraph, FeatureGroup } from './features/types.js';
+export type {
+	Feature,
+	FeatureId,
+	FeatureGraph,
+	FeatureGroup,
+	FeatureOption
+} from './features/types.js';
 export type { FeatureManifest, TemplateEntry } from './features/manifest.js';
 export type {
 	GeneratorConfig,

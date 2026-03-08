@@ -17,6 +17,12 @@ export interface TemplateEntry {
 	 * to strip/keep conditional blocks.
 	 */
 	templated: boolean;
+
+	/**
+	 * If set, this file is only included when the specified option is selected
+	 * for its parent feature (e.g., `option: 'google'` on an oauth manifest file).
+	 */
+	option?: string;
 }
 
 /**
