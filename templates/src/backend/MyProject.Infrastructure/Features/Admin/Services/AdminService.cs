@@ -645,12 +645,12 @@ internal class AdminService(
     }
 
     /// <summary>
-    /// Prevents removal of the SuperAdmin role if the target user is the last SuperAdmin.
+    /// Prevents removal of the Superuser role if the target user is the last Superuser.
     /// </summary>
     private async Task<Result> EnforceLastAdminProtectionAsync(Guid userId, string role,
         CancellationToken cancellationToken)
     {
-        if (role is not AppRoles.SuperAdmin)
+        if (role is not AppRoles.Superuser)
         {
             return Result.Success();
         }
@@ -673,12 +673,12 @@ internal class AdminService(
     }
 
     /// <summary>
-    /// Prevents deletion of a user if they are the last SuperAdmin.
+    /// Prevents deletion of a user if they are the last Superuser.
     /// </summary>
     private async Task<Result> EnforceLastAdminProtectionForDeletionAsync(
         IList<string> targetRoles, CancellationToken cancellationToken)
     {
-        foreach (var role in targetRoles.Where(r => r is AppRoles.SuperAdmin))
+        foreach (var role in targetRoles.Where(r => r is AppRoles.Superuser))
         {
             var roleEntity = await roleManager.FindByNameAsync(role);
             if (roleEntity is null) continue;
@@ -697,7 +697,7 @@ internal class AdminService(
 
     /// <summary>
     /// Verifies that the caller holds every permission granted by the target custom role.
-    /// SuperAdmin callers are exempt (implicit all permissions).
+    /// Superuser callers are exempt (implicit all permissions).
     /// Roles with no permissions are allowed unconditionally.
     /// </summary>
     private async Task<Result> EnforceRolePermissionEscalationAsync(string roleName, IList<string> callerRoles)
@@ -719,7 +719,7 @@ internal class AdminService(
             return Result.Success();
         }
 
-        if (callerRoles.Contains(AppRoles.SuperAdmin))
+        if (callerRoles.Contains(AppRoles.Superuser))
         {
             return Result.Success();
         }

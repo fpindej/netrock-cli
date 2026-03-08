@@ -222,16 +222,16 @@ DO_ASPIRE="0"
 
 // @feature auth
 # ─────────────────────────────────────────────────────────────────────────────
-# SuperAdmin Account
+# Superuser Account
 # ─────────────────────────────────────────────────────────────────────────────
-print_step "SuperAdmin account"
+print_step "Superuser account"
 echo ""
-echo -e "  The first user is a ${BOLD}SuperAdmin${NC} with full system access."
+echo -e "  The first user is a ${BOLD}Superuser${NC} with full system access."
 echo -e "  Two additional dev accounts (Admin, User) are created automatically."
 echo ""
 
-SA_EMAIL="superadmin@test.com"
-SA_PASS="SuperAdmin123!"
+SA_EMAIL="superuser@test.com"
+SA_PASS="Superuser123!"
 
 read -p "$(echo -e "  ${BOLD}Email${NC} [$SA_EMAIL]: ")" input
 [ -n "$input" ] && SA_EMAIL="$input"
@@ -271,7 +271,7 @@ echo -e "
 // @end
 // @feature auth
 echo -e "
-  ${BOLD}SuperAdmin${NC}
+  ${BOLD}Superuser${NC}
   ────────────────────────────────────
   Email:            ${CYAN}$SA_EMAIL${NC}
   Password:         ${CYAN}$SA_PASS${NC}
@@ -348,23 +348,23 @@ fi
 
 // @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
-if [ "$SA_EMAIL" != "superadmin@test.com" ] || [ "$SA_PASS" != "SuperAdmin123!" ]; then
-    print_step "Applying SuperAdmin configuration..."
+if [ "$SA_EMAIL" != "superuser@test.com" ] || [ "$SA_PASS" != "Superuser123!" ]; then
+    print_step "Applying Superuser configuration..."
     DEV_SETTINGS="src/backend/MyProject.WebApi/appsettings.Development.json"
     OS=$(uname)
     if [ "$OS" = "Darwin" ]; then
         sed -i '' \
-            -e "s/superadmin@test.com/$SA_EMAIL/g" \
-            -e "s/SuperAdmin123!/$SA_PASS/g" \
+            -e "s/superuser@test.com/$SA_EMAIL/g" \
+            -e "s/Superuser123!/$SA_PASS/g" \
             "$DEV_SETTINGS"
     else
         sed -i \
-            -e "s/superadmin@test.com/$SA_EMAIL/g" \
-            -e "s/SuperAdmin123!/$SA_PASS/g" \
+            -e "s/superuser@test.com/$SA_EMAIL/g" \
+            -e "s/Superuser123!/$SA_PASS/g" \
             "$DEV_SETTINGS"
     fi
-    print_success "SuperAdmin credentials updated"
-    git_commit "chore: configure SuperAdmin credentials"
+    print_success "Superuser credentials updated"
+    git_commit "chore: configure Superuser credentials"
 fi
 // @end
 

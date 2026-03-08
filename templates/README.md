@@ -133,7 +133,7 @@ Development seed users are configured in `appsettings.Development.json`:
 {
   "Seed": {
     "Users": [
-      { "Email": "admin@example.com", "Password": "YourPassword123!", "Role": "SuperAdmin" }
+      { "Email": "admin@example.com", "Password": "YourPassword123!", "Role": "Superuser" }
     ]
   }
 }

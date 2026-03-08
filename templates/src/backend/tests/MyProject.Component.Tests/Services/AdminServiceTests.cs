@@ -289,11 +289,11 @@ public class AdminServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task AssignRole_SuperAdmin_CanAssignAnyCustomRole()
+    public async Task AssignRole_Superuser_CanAssignAnyCustomRole()
     {
-        var caller = new ApplicationUser { Id = _callerId, UserName = "superadmin@test.com" };
+        var caller = new ApplicationUser { Id = _callerId, UserName = "superuser@test.com" };
         _userManager.FindByIdAsync(_callerId.ToString()).Returns(caller);
-        _userManager.GetRolesAsync(caller).Returns(new List<string> { AppRoles.SuperAdmin });
+        _userManager.GetRolesAsync(caller).Returns(new List<string> { AppRoles.Superuser });
 
         var target = SetupTargetAsUser();
 
@@ -601,10 +601,10 @@ public class AdminServiceTests : IDisposable
     [Fact]
     public async Task DeleteUser_LastAdmin_Succeeds()
     {
-        // SuperAdmin (rank 3) can delete the last Admin (rank 2) - only SuperAdmin role is protected
-        var caller = new ApplicationUser { Id = _callerId, UserName = "superadmin@test.com" };
+        // Superuser (rank 3) can delete the last Admin (rank 2) - only Superuser role is protected
+        var caller = new ApplicationUser { Id = _callerId, UserName = "superuser@test.com" };
         _userManager.FindByIdAsync(_callerId.ToString()).Returns(caller);
-        _userManager.GetRolesAsync(caller).Returns(new List<string> { AppRoles.SuperAdmin });
+        _userManager.GetRolesAsync(caller).Returns(new List<string> { AppRoles.Superuser });
 
         var target = new ApplicationUser { Id = _targetId, UserName = "admin@test.com" };
         _userManager.FindByIdAsync(_targetId.ToString()).Returns(target);

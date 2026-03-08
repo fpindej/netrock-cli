@@ -274,17 +274,17 @@ public class UserServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task DeleteAccount_LastSuperAdmin_ReturnsFailure()
+    public async Task DeleteAccount_LastSuperuser_ReturnsFailure()
     {
-        var user = new ApplicationUser { Id = _userId, UserName = "superadmin@example.com" };
+        var user = new ApplicationUser { Id = _userId, UserName = "superuser@example.com" };
         _userContext.UserId.Returns(_userId);
         _userManager.FindByIdAsync(_userId.ToString()).Returns(user);
         _userManager.CheckPasswordAsync(user, "correct").Returns(true);
-        _userManager.GetRolesAsync(user).Returns(new List<string> { AppRoles.SuperAdmin });
+        _userManager.GetRolesAsync(user).Returns(new List<string> { AppRoles.Superuser });
 
-        // Set up single SuperAdmin in role
-        var superAdminRole = new ApplicationRole { Id = Guid.NewGuid(), Name = AppRoles.SuperAdmin };
-        _roleManager.FindByNameAsync(AppRoles.SuperAdmin).Returns(superAdminRole);
+        // Set up single Superuser in role
+        var superAdminRole = new ApplicationRole { Id = Guid.NewGuid(), Name = AppRoles.Superuser };
+        _roleManager.FindByNameAsync(AppRoles.Superuser).Returns(superAdminRole);
         _dbContext.UserRoles.Add(new IdentityUserRole<Guid> { RoleId = superAdminRole.Id, UserId = _userId });
         await _dbContext.SaveChangesAsync();
 

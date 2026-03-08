@@ -163,7 +163,7 @@
 						</li>
 						<li>
 							<span class="font-mono text-xs text-amber">Admin</span> - Set
-							<code class="text-xs">Seed__Users__0__*</code> env vars for bootstrap SuperAdmin
+							<code class="text-xs">Seed__Users__0__*</code> env vars for bootstrap Superuser
 						</li>
 					{/if}
 					{#if generator.resolvedFeatures.has('captcha')}

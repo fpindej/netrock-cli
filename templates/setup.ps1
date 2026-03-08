@@ -200,18 +200,18 @@ $doAspire = $false
 
 // @feature auth
 # ─────────────────────────────────────────────────────────────────────────────
-# SuperAdmin Account
+# Superuser Account
 # ─────────────────────────────────────────────────────────────────────────────
-Write-Step "SuperAdmin account"
+Write-Step "Superuser account"
 Write-Host ""
 Write-Host "  The first user is a " -NoNewline
-Write-Host "SuperAdmin" -ForegroundColor White -NoNewline
+Write-Host "Superuser" -ForegroundColor White -NoNewline
 Write-Host " with full system access."
 Write-Host "  Two additional dev accounts (Admin, User) are created automatically."
 Write-Host ""
 
-$saEmail = "superadmin@test.com"
-$saPass = "SuperAdmin123!"
+$saEmail = "superuser@test.com"
+$saPass = "Superuser123!"
 
 $input = Read-Host "  Email [$saEmail]"
 if ($input) { $saEmail = $input }
@@ -246,7 +246,7 @@ if ($doAspire) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No
 // @end
 // @feature auth
 Write-Host ""
-Write-Host "  SuperAdmin" -ForegroundColor White
+Write-Host "  Superuser" -ForegroundColor White
 Write-Host "  ────────────────────────────────────"
 Write-Host "  Email:            " -NoNewline; Write-Host "$saEmail" -ForegroundColor Cyan
 Write-Host "  Password:         " -NoNewline; Write-Host "$saPass" -ForegroundColor Cyan
@@ -317,15 +317,15 @@ if ($basePort -ne 5173) {
 
 // @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
-if ($saEmail -ne "superadmin@test.com" -or $saPass -ne "SuperAdmin123!") {
-    Write-Step "Applying SuperAdmin configuration..."
+if ($saEmail -ne "superuser@test.com" -or $saPass -ne "Superuser123!") {
+    Write-Step "Applying Superuser configuration..."
     $devSettings = "src/backend/MyProject.WebApi/appsettings.Development.json"
     $content = Get-Content $devSettings -Raw
-    $content = $content -replace 'superadmin@test\.com', $saEmail
-    $content = $content -replace 'SuperAdmin123!', $saPass
+    $content = $content -replace 'superuser@test\.com', $saEmail
+    $content = $content -replace 'Superuser123!', $saPass
     Set-Content $devSettings -Value $content -NoNewline
-    Write-Ok "SuperAdmin credentials updated"
-    Git-Commit "chore: configure SuperAdmin credentials"
+    Write-Ok "Superuser credentials updated"
+    Git-Commit "chore: configure Superuser credentials"
 }
 // @end
 
