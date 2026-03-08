@@ -599,28 +599,28 @@ public class AdminServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task DeleteUser_LastAdmin_ReturnsFailure()
+    public async Task DeleteUser_LastAdmin_Succeeds()
     {
-        // Caller must be SuperAdmin (rank 3) to pass hierarchy check against Admin target (rank 2)
+        // SuperAdmin (rank 3) can delete the last Admin (rank 2) - only SuperAdmin role is protected
         var caller = new ApplicationUser { Id = _callerId, UserName = "superadmin@test.com" };
         _userManager.FindByIdAsync(_callerId.ToString()).Returns(caller);
         _userManager.GetRolesAsync(caller).Returns(new List<string> { AppRoles.SuperAdmin });
 
-        // Target is the only Admin
-        var target = new ApplicationUser { Id = _targetId, UserName = "target@test.com" };
+        var target = new ApplicationUser { Id = _targetId, UserName = "admin@test.com" };
         _userManager.FindByIdAsync(_targetId.ToString()).Returns(target);
         _userManager.GetRolesAsync(target).Returns(new List<string> { AppRoles.Admin });
 
-        // Simulate only 1 user in Admin role
+        // Only 1 user in Admin role - this should no longer block deletion
         var adminRole = new ApplicationRole { Id = Guid.NewGuid(), Name = AppRoles.Admin };
         _roleManager.FindByNameAsync(AppRoles.Admin).Returns(adminRole);
         _dbContext.UserRoles.Add(new IdentityUserRole<Guid> { RoleId = adminRole.Id, UserId = _targetId });
         await _dbContext.SaveChangesAsync();
 
+        _userManager.DeleteAsync(target).Returns(IdentityResult.Success);
+
         var result = await _sut.DeleteUserAsync(_callerId, _targetId);
 
-        Assert.True(result.IsFailure);
-        Assert.Equal(ErrorMessages.Admin.LastAdminCannotDelete, result.Error);
+        Assert.True(result.IsSuccess);
     }
 
     #endregion

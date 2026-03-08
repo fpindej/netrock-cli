@@ -645,13 +645,12 @@ internal class AdminService(
     }
 
     /// <summary>
-    /// Prevents removal of an administrative role if the target user is the last user with that role.
-    /// Only applies to Admin and SuperAdmin roles.
+    /// Prevents removal of the SuperAdmin role if the target user is the last SuperAdmin.
     /// </summary>
     private async Task<Result> EnforceLastAdminProtectionAsync(Guid userId, string role,
         CancellationToken cancellationToken)
     {
-        if (role is not (AppRoles.Admin or AppRoles.SuperAdmin))
+        if (role is not AppRoles.SuperAdmin)
         {
             return Result.Success();
         }
@@ -674,13 +673,12 @@ internal class AdminService(
     }
 
     /// <summary>
-    /// Prevents deletion of a user if they are the last user holding any administrative role
-    /// (Admin or SuperAdmin).
+    /// Prevents deletion of a user if they are the last SuperAdmin.
     /// </summary>
     private async Task<Result> EnforceLastAdminProtectionForDeletionAsync(
         IList<string> targetRoles, CancellationToken cancellationToken)
     {
-        foreach (var role in targetRoles.Where(r => r is AppRoles.Admin or AppRoles.SuperAdmin))
+        foreach (var role in targetRoles.Where(r => r is AppRoles.SuperAdmin))
         {
             var roleEntity = await roleManager.FindByNameAsync(role);
             if (roleEntity is null) continue;

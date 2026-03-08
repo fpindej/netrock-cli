@@ -348,14 +348,14 @@ internal sealed class UserService(
     }
 
     /// <summary>
-    /// Prevents self-deletion if the user is the last holder of any administrative role.
+    /// Prevents self-deletion if the user is the last SuperAdmin.
     /// </summary>
     private async Task<Result> EnforceLastAdminProtectionForDeletionAsync(
         ApplicationUser user, CancellationToken cancellationToken)
     {
         var userRoles = await userManager.GetRolesAsync(user);
 
-        foreach (var role in userRoles.Where(r => r is AppRoles.Admin or AppRoles.SuperAdmin))
+        foreach (var role in userRoles.Where(r => r is AppRoles.SuperAdmin))
         {
             var roleEntity = await roleManager.FindByNameAsync(role);
             if (roleEntity is null) continue;
