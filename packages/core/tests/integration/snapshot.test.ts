@@ -16,18 +16,25 @@ beforeAll(() => {
 });
 
 /** Generates a sorted file list for snapshotting. */
-function generateFileList(features: FeatureId[]): string[] {
+function generateFileList(
+	features: FeatureId[],
+	featureOptions?: Map<FeatureId, Set<string>>
+): string[] {
 	const result = generateProject(
-		{ projectName: 'snapshot-app', features: new Set<FeatureId>(features) },
+		{ projectName: 'snapshot-app', features: new Set<FeatureId>(features), featureOptions },
 		source
 	);
 	return result.files.map((f) => f.path).sort();
 }
 
 /** Generates content of a specific file for a given feature set. */
-function generateFileContent(features: FeatureId[], filePathSuffix: string): string {
+function generateFileContent(
+	features: FeatureId[],
+	filePathSuffix: string,
+	featureOptions?: Map<FeatureId, Set<string>>
+): string {
 	const result = generateProject(
-		{ projectName: 'snapshot-app', features: new Set<FeatureId>(features) },
+		{ projectName: 'snapshot-app', features: new Set<FeatureId>(features), featureOptions },
 		source
 	);
 	const file = result.files.find((f) => f.path.endsWith(filePathSuffix));
@@ -41,6 +48,18 @@ function generateFileContent(features: FeatureId[], filePathSuffix: string): str
 			/"EncryptionKey":\s*"[A-Za-z0-9+/=]{40,}"/,
 			'"EncryptionKey": "<GENERATED_ENCRYPTION_KEY>"'
 		);
+}
+
+/** Converts a preset's featureOptions record to the Map format used by the generator. */
+function presetOptionsToMap(
+	record?: Record<string, string[]>
+): Map<FeatureId, Set<string>> | undefined {
+	if (!record) return undefined;
+	const map = new Map<FeatureId, Set<string>>();
+	for (const [key, values] of Object.entries(record)) {
+		map.set(key as FeatureId, new Set(values));
+	}
+	return map;
 }
 
 describe('file list snapshots', () => {
@@ -67,7 +86,10 @@ describe('file list snapshots', () => {
 
 	it('full preset file list', () => {
 		const preset = presets.find((p) => p.id === 'full')!;
-		const files = generateFileList(preset.features as FeatureId[]);
+		const files = generateFileList(
+			preset.features as FeatureId[],
+			presetOptionsToMap(preset.featureOptions)
+		);
 		expect(files).toMatchSnapshot();
 	});
 });
@@ -86,7 +108,11 @@ describe('convergence file snapshots', () => {
 
 		it('full preset', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
-			const content = generateFileContent(preset.features as FeatureId[], 'Program.cs');
+			const content = generateFileContent(
+				preset.features as FeatureId[],
+				'Program.cs',
+				presetOptionsToMap(preset.featureOptions)
+			);
 			expect(content).toMatchSnapshot();
 		});
 	});
@@ -106,7 +132,8 @@ describe('convergence file snapshots', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
 			const content = generateFileContent(
 				preset.features as FeatureId[],
-				'SnapshotAppDbContext.cs'
+				'SnapshotAppDbContext.cs',
+				presetOptionsToMap(preset.featureOptions)
 			);
 			expect(content).toMatchSnapshot();
 		});
@@ -122,7 +149,8 @@ describe('convergence file snapshots', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
 			const content = generateFileContent(
 				preset.features as FeatureId[],
-				'WebApi/appsettings.json'
+				'WebApi/appsettings.json',
+				presetOptionsToMap(preset.featureOptions)
 			);
 			expect(content).toMatchSnapshot();
 		});
@@ -143,7 +171,8 @@ describe('convergence file snapshots', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
 			const content = generateFileContent(
 				preset.features as FeatureId[],
-				'appsettings.Testing.json'
+				'appsettings.Testing.json',
+				presetOptionsToMap(preset.featureOptions)
 			);
 			expect(content).toMatchSnapshot();
 		});
@@ -162,7 +191,8 @@ describe('convergence file snapshots', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
 			const content = generateFileContent(
 				preset.features as FeatureId[],
-				'SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj'
+				'SnapshotApp.Infrastructure/SnapshotApp.Infrastructure.csproj',
+				presetOptionsToMap(preset.featureOptions)
 			);
 			expect(content).toMatchSnapshot();
 		});
@@ -181,7 +211,11 @@ describe('convergence file snapshots', () => {
 
 		it('full preset', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
-			const content = generateFileContent(preset.features as FeatureId[], 'SnapshotApp.slnx');
+			const content = generateFileContent(
+				preset.features as FeatureId[],
+				'SnapshotApp.slnx',
+				presetOptionsToMap(preset.featureOptions)
+			);
 			expect(content).toMatchSnapshot();
 		});
 	});
@@ -199,28 +233,42 @@ describe('convergence file snapshots', () => {
 
 		it('full preset', () => {
 			const preset = presets.find((p) => p.id === 'full')!;
-			const content = generateFileContent(preset.features as FeatureId[], 'ErrorMessages.cs');
+			const content = generateFileContent(
+				preset.features as FeatureId[],
+				'ErrorMessages.cs',
+				presetOptionsToMap(preset.featureOptions)
+			);
 			expect(content).toMatchSnapshot();
 		});
 	});
 });
 
 describe('no residual markers', () => {
-	const combinations: { name: string; features: FeatureId[] }[] = [
+	const fullPreset = presets.find((p) => p.id === 'full')!;
+	const combinations: {
+		name: string;
+		features: FeatureId[];
+		featureOptions?: Map<FeatureId, Set<string>>;
+	}[] = [
 		{ name: 'core-only', features: ['core'] },
 		{ name: 'minimal', features: ['core', 'auth'] },
 		{ name: 'core + auth + 2fa + oauth', features: ['core', 'auth', '2fa', 'oauth'] },
 		{ name: 'core + jobs', features: ['core', 'jobs'] },
 		{
 			name: 'full',
-			features: presets.find((p) => p.id === 'full')!.features as FeatureId[]
+			features: fullPreset.features as FeatureId[],
+			featureOptions: presetOptionsToMap(fullPreset.featureOptions)
 		}
 	];
 
 	for (const combo of combinations) {
 		it(`${combo.name} has no @feature markers in output`, () => {
 			const result = generateProject(
-				{ projectName: 'test', features: new Set<FeatureId>(combo.features) },
+				{
+					projectName: 'test',
+					features: new Set<FeatureId>(combo.features),
+					featureOptions: combo.featureOptions
+				},
 				source
 			);
 

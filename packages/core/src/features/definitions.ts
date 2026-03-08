@@ -37,7 +37,19 @@ export const featureDefinitions: Feature[] = [
 		dependencies: ['auth'],
 		required: false,
 		defaultEnabled: false,
-		group: 'authentication'
+		group: 'authentication',
+		options: [
+			{ id: 'google', name: 'Google', defaultEnabled: true },
+			{ id: 'github', name: 'GitHub', defaultEnabled: true },
+			{ id: 'microsoft', name: 'Microsoft', defaultEnabled: true },
+			{ id: 'apple', name: 'Apple', defaultEnabled: true },
+			{ id: 'discord', name: 'Discord', defaultEnabled: false },
+			{ id: 'facebook', name: 'Facebook', defaultEnabled: false },
+			{ id: 'gitlab', name: 'GitLab', defaultEnabled: false },
+			{ id: 'linkedin', name: 'LinkedIn', defaultEnabled: false },
+			{ id: 'slack', name: 'Slack', defaultEnabled: false },
+			{ id: 'twitch', name: 'Twitch', defaultEnabled: false }
+		]
 	},
 	{
 		id: 'captcha',

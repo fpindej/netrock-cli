@@ -31,6 +31,20 @@ export const presets: Preset[] = [
 			'aspire',
 			'claude',
 			'claude-skills'
-		]
+		],
+		featureOptions: {
+			oauth: [
+				'google',
+				'github',
+				'microsoft',
+				'apple',
+				'discord',
+				'facebook',
+				'gitlab',
+				'linkedin',
+				'slack',
+				'twitch'
+			]
+		}
 	}
 ];

@@ -161,35 +161,55 @@ public static class ServiceCollectionExtensions
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
+            // @feature oauth:google
             services.AddHttpClient(GoogleAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, GoogleAuthProvider>();
+            // @end
 
+            // @feature oauth:github
             services.AddHttpClient(GitHubAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, GitHubAuthProvider>();
+            // @end
 
+            // @feature oauth:discord
             services.AddHttpClient(DiscordAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, DiscordAuthProvider>();
+            // @end
 
+            // @feature oauth:apple
             services.AddHttpClient(AppleAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, AppleAuthProvider>();
+            // @end
 
+            // @feature oauth:microsoft
             services.AddHttpClient(MicrosoftAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, MicrosoftAuthProvider>();
+            // @end
 
+            // @feature oauth:linkedin
             services.AddHttpClient(LinkedInAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, LinkedInAuthProvider>();
+            // @end
 
+            // @feature oauth:gitlab
             services.AddHttpClient(GitLabAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, GitLabAuthProvider>();
+            // @end
 
+            // @feature oauth:facebook
             services.AddHttpClient(FacebookAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, FacebookAuthProvider>();
+            // @end
 
+            // @feature oauth:slack
             services.AddHttpClient(SlackAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, SlackAuthProvider>();
+            // @end
 
+            // @feature oauth:twitch
             services.AddHttpClient(TwitchAuthProvider.HttpClientName);
             services.AddSingleton<IExternalAuthProvider, TwitchAuthProvider>();
+            // @end
 
             services.AddSingleton<ISecretEncryptionService, AesGcmEncryptionService>();
             services.AddScoped<IProviderConfigService, ProviderConfigService>();

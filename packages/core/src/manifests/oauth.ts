@@ -6,7 +6,10 @@ export function registerOAuthManifest(): void {
 		featureId: 'oauth',
 		files: [
 			// Application - Cryptography
-			{ path: 'src/backend/MyProject.Application/Cryptography/ISecretEncryptionService.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Cryptography/ISecretEncryptionService.cs',
+				templated: false
+			},
 
 			// Infrastructure - Cryptography
 			{
@@ -84,7 +87,7 @@ export function registerOAuthManifest(): void {
 				templated: false
 			},
 
-			// Infrastructure - Services
+			// Infrastructure - Services (core OAuth, always included with oauth feature)
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalAuthService.cs',
 				templated: true
@@ -94,13 +97,9 @@ export function registerOAuthManifest(): void {
 				templated: true
 			},
 
-			// Infrastructure - External providers
+			// Infrastructure - Shared provider types (always included with oauth)
 			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/AppleAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/DiscordAuthProvider.cs',
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/IExternalAuthProvider.cs',
 				templated: false
 			},
 			{
@@ -108,44 +107,60 @@ export function registerOAuthManifest(): void {
 				templated: false
 			},
 			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/FacebookAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/GitHubAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/GitLabAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/GoogleAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/IExternalAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/LinkedInAuthProvider.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/MicrosoftAuthProvider.cs',
-				templated: false
-			},
-			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/ProviderCredentials.cs',
 				templated: false
 			},
+
+			// Infrastructure - Individual provider implementations (option-gated)
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/GoogleAuthProvider.cs',
+				templated: false,
+				option: 'google'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/GitHubAuthProvider.cs',
+				templated: false,
+				option: 'github'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/MicrosoftAuthProvider.cs',
+				templated: false,
+				option: 'microsoft'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/AppleAuthProvider.cs',
+				templated: false,
+				option: 'apple'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/DiscordAuthProvider.cs',
+				templated: false,
+				option: 'discord'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/FacebookAuthProvider.cs',
+				templated: false,
+				option: 'facebook'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/GitLabAuthProvider.cs',
+				templated: false,
+				option: 'gitlab'
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/LinkedInAuthProvider.cs',
+				templated: false,
+				option: 'linkedin'
+			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/SlackAuthProvider.cs',
-				templated: false
+				templated: false,
+				option: 'slack'
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Authentication/Services/ExternalProviders/TwitchAuthProvider.cs',
-				templated: false
+				templated: false,
+				option: 'twitch'
 			},
 
 			// WebApi - External auth controller
@@ -218,7 +233,7 @@ export function registerOAuthManifest(): void {
 				templated: false
 			},
 
-			// Tests
+			// Tests - Core OAuth (always included)
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/ExternalAuthControllerTests.cs',
 				templated: false
@@ -236,36 +251,44 @@ export function registerOAuthManifest(): void {
 				templated: true
 			},
 			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/FacebookAuthProviderTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/GitLabAuthProviderTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/LinkedInAuthProviderTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/SlackAuthProviderTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/TwitchAuthProviderTests.cs',
-				templated: false
-			},
-			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs',
 				templated: false
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Cryptography/AesGcmEncryptionServiceTests.cs',
 				templated: false
+			},
+
+			// Tests - Provider-specific (option-gated)
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/FacebookAuthProviderTests.cs',
+				templated: false,
+				option: 'facebook'
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/GitLabAuthProviderTests.cs',
+				templated: false,
+				option: 'gitlab'
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/LinkedInAuthProviderTests.cs',
+				templated: false,
+				option: 'linkedin'
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs',
+				templated: false,
+				option: 'microsoft'
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/SlackAuthProviderTests.cs',
+				templated: false,
+				option: 'slack'
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/ExternalProviders/TwitchAuthProviderTests.cs',
+				templated: false,
+				option: 'twitch'
 			}
 		]
 	});
