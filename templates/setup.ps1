@@ -198,6 +198,27 @@ $doBuild = $results[2]
 $doAspire = $false
 // @end
 
+// @feature auth
+# ─────────────────────────────────────────────────────────────────────────────
+# SuperAdmin Account
+# ─────────────────────────────────────────────────────────────────────────────
+Write-Step "SuperAdmin account"
+Write-Host ""
+Write-Host "  The first user is a " -NoNewline
+Write-Host "SuperAdmin" -ForegroundColor White -NoNewline
+Write-Host " with full system access."
+Write-Host "  Two additional dev accounts (Admin, User) are created automatically."
+Write-Host ""
+
+$saEmail = "superadmin@test.com"
+$saPass = "SuperAdmin123!"
+
+$input = Read-Host "  Email [$saEmail]"
+if ($input) { $saEmail = $input }
+$input = Read-Host "  Password [$saPass]"
+if ($input) { $saPass = $input }
+// @end
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Summary
 # ─────────────────────────────────────────────────────────────────────────────
@@ -222,6 +243,13 @@ if ($doBuild) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No"
 // @feature aspire
 Write-Host "  Launch Aspire:    " -NoNewline
 if ($doAspire) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No" -ForegroundColor DarkGray }
+// @end
+// @feature auth
+Write-Host ""
+Write-Host "  SuperAdmin" -ForegroundColor White
+Write-Host "  ────────────────────────────────────"
+Write-Host "  Email:            " -NoNewline; Write-Host "$saEmail" -ForegroundColor Cyan
+Write-Host "  Password:         " -NoNewline; Write-Host "$saPass" -ForegroundColor Cyan
 // @end
 Write-Host ""
 
@@ -289,62 +317,15 @@ if ($basePort -ne 5173) {
 
 // @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
-Write-Step "Development seed users"
-Write-Host ""
-Write-Host "  These accounts are created on first startup (Development only)."
-Write-Host ""
-Write-Host "  #   Email                     Password          Role" -ForegroundColor White
-Write-Host "  ────────────────────────────────────────────────────────────────"
-
-$saEmail = "superadmin@test.com"
-$saPass = "SuperAdmin123!"
-$admEmail = "admin@test.com"
-$admPass = "AdminUser123!"
-$usrEmail = "testuser@test.com"
-$usrPass = "TestUser123!"
-
-Write-Host "  1   " -NoNewline; Write-Host "$saEmail" -ForegroundColor Cyan -NoNewline; Write-Host "     $saPass    SuperAdmin"
-Write-Host "  2   " -NoNewline; Write-Host "$admEmail" -ForegroundColor Cyan -NoNewline; Write-Host "          $admPass      Admin"
-Write-Host "  3   " -NoNewline; Write-Host "$usrEmail" -ForegroundColor Cyan -NoNewline; Write-Host "       $usrPass       User"
-Write-Host ""
-
-$customizeUsers = Read-Host "  Customize? [y/N]"
-if ($customizeUsers.ToLower() -eq "y") {
-    Write-Host ""
-    Write-Host "  SuperAdmin" -ForegroundColor White -NoNewline; Write-Host " (full system access)"
-    $input = Read-Host "    Email [$saEmail]"
-    if ($input) { $saEmail = $input }
-    $input = Read-Host "    Password [$saPass]"
-    if ($input) { $saPass = $input }
-
-    Write-Host ""
-    Write-Host "  Admin" -ForegroundColor White -NoNewline; Write-Host " (user and role management)"
-    $input = Read-Host "    Email [$admEmail]"
-    if ($input) { $admEmail = $input }
-    $input = Read-Host "    Password [$admPass]"
-    if ($input) { $admPass = $input }
-
-    Write-Host ""
-    Write-Host "  User" -ForegroundColor White -NoNewline; Write-Host " (standard account)"
-    $input = Read-Host "    Email [$usrEmail]"
-    if ($input) { $usrEmail = $input }
-    $input = Read-Host "    Password [$usrPass]"
-    if ($input) { $usrPass = $input }
-
+if ($saEmail -ne "superadmin@test.com" -or $saPass -ne "SuperAdmin123!") {
+    Write-Step "Applying SuperAdmin configuration..."
     $devSettings = "src/backend/MyProject.WebApi/appsettings.Development.json"
     $content = Get-Content $devSettings -Raw
     $content = $content -replace 'superadmin@test\.com', $saEmail
     $content = $content -replace 'SuperAdmin123!', $saPass
-    $content = $content -replace 'admin@test\.com', $admEmail
-    $content = $content -replace 'AdminUser123!', $admPass
-    $content = $content -replace 'testuser@test\.com', $usrEmail
-    $content = $content -replace 'TestUser123!', $usrPass
     Set-Content $devSettings -Value $content -NoNewline
-
-    Write-Ok "Seed users updated"
-    Git-Commit "chore: configure development seed users"
-} else {
-    Write-Ok "Keeping default seed users"
+    Write-Ok "SuperAdmin credentials updated"
+    Git-Commit "chore: configure SuperAdmin credentials"
 }
 // @end
 
