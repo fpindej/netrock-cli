@@ -36,9 +36,9 @@
 		</p>
 
 		<p>
-			So I turned it into a generator. Pick the features you want, give your project a name, and get a
-			complete repository - builds, tests pass, ready to deploy. No magic, no lock-in, no hidden runtime.
-			Just your code.
+			So I turned it into a generator. Pick backend features, optionally add a SvelteKit frontend,
+			give your project a name, and get a complete repository - builds, tests pass, ready to deploy.
+			No magic, no lock-in, no hidden runtime. Just your code.
 		</p>
 
 		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Opinionated on purpose</h2>
@@ -88,9 +88,10 @@
 		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Alpha, but real</h2>
 
 		<p>
-			This is early. The backend generator works well - 11 features, 9 tested combinations,
-			over 1,000 tests passing on the full stack. The SvelteKit frontend templates are coming
-			next. There will be rough edges.
+			This is early, but it works. 14 features with a dependency graph that validates all 1,752
+			valid combinations. The backend generates clean .NET 10 solutions that build and pass tests
+			out of the box. The SvelteKit frontend generates feature-gated pages and components that
+			match your backend selection. There will still be rough edges.
 		</p>
 
 		<p>
