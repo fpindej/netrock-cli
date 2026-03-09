@@ -117,7 +117,18 @@ class GeneratorState {
 	activePresetId = $state<string | null>('standard');
 	featureOptions = $state<Map<FeatureId, Set<string>>>(new Map());
 
-	resolvedFeatures = $derived(resolveFeatures(new Set(this.selectedIds)));
+	/** Frontend is independent of backend selection - survives preset changes and feature toggles. */
+	frontendEnabled = $state(false);
+
+	/** All features including frontend (if enabled) with dependencies auto-resolved. */
+	resolvedFeatures = $derived(
+		resolveFeatures(
+			new Set([
+				...this.selectedIds,
+				...(this.frontendEnabled ? (['frontend'] as FeatureId[]) : [])
+			])
+		)
+	);
 
 	isValidName = $derived(
 		this.projectName.trim().length > 0 && /^[a-zA-Z][a-zA-Z0-9-]*$/.test(this.projectName.trim())
@@ -145,7 +156,7 @@ class GeneratorState {
 
 	featureCount = $derived(this.resolvedFeatures.size);
 	fileCount = $derived(this.project?.summary.totalFiles ?? 0);
-	isFrontendEnabled = $derived(this.resolvedFeatures.has('frontend'));
+	isFrontendEnabled = $derived(this.frontendEnabled);
 
 	groups = groupFeatures();
 	presets = presets;
@@ -161,6 +172,11 @@ class GeneratorState {
 
 	isAutoEnabled(id: FeatureId): boolean {
 		return this.resolvedFeatures.has(id) && !this.selectedIds.includes(id);
+	}
+
+	/** Toggles the frontend independently of backend feature selection. */
+	toggleFrontend() {
+		this.frontendEnabled = !this.frontendEnabled;
 	}
 
 	/** Returns selected options for a feature, or undefined if it has no options. */
@@ -203,6 +219,7 @@ class GeneratorState {
 	toggle(id: FeatureId) {
 		const feature = featureDefinitions.find((f) => f.id === id);
 		if (!feature || feature.required) return;
+		if (CUSTOM_SECTION_FEATURES.has(id)) return;
 
 		const isEnabled = this.selectedIds.includes(id);
 		if (isEnabled) {
@@ -215,7 +232,7 @@ class GeneratorState {
 			this.featureOptions = next;
 		} else {
 			const withDeps = resolveFeatures(new Set([...this.selectedIds, id]));
-			this.selectedIds = [...withDeps];
+			this.selectedIds = [...withDeps].filter((f) => !CUSTOM_SECTION_FEATURES.has(f));
 			// Initialize default options for features that have them
 			if (feature.options) {
 				const next = new Map(this.featureOptions);

@@ -24,7 +24,7 @@
 				<button
 					type="button"
 					onclick={() => {
-						if (generator.isFrontendEnabled) generator.toggle('frontend');
+						if (generator.isFrontendEnabled) generator.toggleFrontend();
 					}}
 					class="flex flex-col items-center px-4 py-6 transition-all sm:px-6
 						{!generator.isFrontendEnabled
@@ -53,7 +53,7 @@
 				<button
 					type="button"
 					onclick={() => {
-						if (!generator.isFrontendEnabled) generator.toggle('frontend');
+						if (!generator.isFrontendEnabled) generator.toggleFrontend();
 					}}
 					class="flex flex-col items-center border-s border-border-subtle px-4 py-6 transition-all sm:px-6
 						{generator.isFrontendEnabled
