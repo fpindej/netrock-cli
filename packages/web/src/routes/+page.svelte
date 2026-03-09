@@ -67,33 +67,6 @@
 </main>
 
 <footer class="border-t border-border-subtle">
-	<!-- Coming soon -->
-	<div class="mx-auto max-w-4xl px-4 pt-12 pb-8">
-		<h2 class="mb-4 text-center font-mono text-sm font-medium text-text-secondary">
-			More frontends coming soon
-		</h2>
-		<div class="flex flex-wrap justify-center gap-3">
-			<span class="rounded-lg border border-accent/30 bg-accent-dim px-4 py-2 font-mono text-xs text-accent-light">
-				SvelteKit
-			</span>
-			<span class="rounded-lg border border-border-subtle bg-surface px-4 py-2 font-mono text-xs text-text-muted">
-				Angular
-			</span>
-			<span class="rounded-lg border border-border-subtle bg-surface px-4 py-2 font-mono text-xs text-text-muted">
-				Next.js
-			</span>
-			<span class="rounded-lg border border-border-subtle bg-surface px-4 py-2 font-mono text-xs text-text-muted">
-				Nuxt
-			</span>
-			<span class="rounded-lg border border-border-subtle bg-surface px-4 py-2 font-mono text-xs text-text-muted">
-				React SPA
-			</span>
-		</div>
-		<p class="mt-3 text-center text-xs text-text-muted">
-			The .NET backend stays the same - just swap the frontend template.
-		</p>
-	</div>
-
 	<!-- CTA -->
 	<div class="mx-auto max-w-4xl px-4 pb-10">
 		<div class="rounded-xl border border-border-subtle bg-surface px-6 py-8 sm:px-8">

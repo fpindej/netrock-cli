@@ -7,6 +7,8 @@
 		standard: { badge: 'Popular', icon: '>>' },
 		full: { icon: '>>>' }
 	};
+
+	const comingSoonFrameworks = ['Angular', 'Next.js', 'Nuxt', 'React SPA'];
 </script>
 
 <section id="features" class="mx-auto w-full max-w-4xl px-4">
@@ -14,8 +16,105 @@
 		02 / Choose your stack
 	</div>
 
-	<!-- Presets -->
-	<div class="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+	<!-- Architecture selector -->
+	<div class="mb-10">
+		<div class="overflow-hidden rounded-xl border border-border-subtle">
+			<div class="grid grid-cols-2">
+				<!-- API only -->
+				<button
+					type="button"
+					onclick={() => {
+						if (generator.isFrontendEnabled) generator.toggleFrontend();
+					}}
+					class="flex flex-col items-center px-4 py-6 transition-all sm:px-6
+						{!generator.isFrontendEnabled
+						? 'bg-accent-dim'
+						: 'bg-surface hover:bg-surface-raised'}"
+				>
+					<!-- Visual: single layer -->
+					<div
+						class="flex h-10 w-20 items-center justify-center rounded-lg border transition-colors
+							{!generator.isFrontendEnabled
+							? 'border-accent/40 bg-accent/10'
+							: 'border-border-subtle bg-surface-raised'}"
+					>
+						<span
+							class="font-mono text-[11px] font-semibold transition-colors
+								{!generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+						>.NET</span>
+					</div>
+					<span class="mt-3 text-sm font-semibold text-text-primary">API only</span>
+					<span class="mt-0.5 text-center text-xs text-text-secondary">
+						Backend for any client
+					</span>
+				</button>
+
+				<!-- Full stack -->
+				<button
+					type="button"
+					onclick={() => {
+						if (!generator.isFrontendEnabled) generator.toggleFrontend();
+					}}
+					class="flex flex-col items-center border-s border-border-subtle px-4 py-6 transition-all sm:px-6
+						{generator.isFrontendEnabled
+						? 'bg-accent-dim'
+						: 'bg-surface hover:bg-surface-raised'}"
+				>
+					<!-- Visual: two stacked layers -->
+					<div
+						class="w-20 overflow-hidden rounded-lg border transition-colors
+							{generator.isFrontendEnabled
+							? 'border-accent/40'
+							: 'border-border-subtle'}"
+					>
+						<div
+							class="flex h-[19px] items-center justify-center transition-colors
+								{generator.isFrontendEnabled
+								? 'bg-accent/10'
+								: 'bg-surface-raised'}"
+						>
+							<span
+								class="font-mono text-[10px] font-semibold transition-colors
+									{generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+							>Svelte</span>
+						</div>
+						<div
+							class="flex h-[19px] items-center justify-center border-t transition-colors
+								{generator.isFrontendEnabled
+								? 'border-accent/30 bg-accent/10'
+								: 'border-border-subtle bg-surface-raised'}"
+						>
+							<span
+								class="font-mono text-[10px] font-semibold transition-colors
+									{generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+							>.NET</span>
+						</div>
+					</div>
+					<span class="mt-3 text-sm font-semibold text-text-primary">Full stack</span>
+					<span class="mt-0.5 text-center text-xs text-text-secondary">
+						SvelteKit + .NET API
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Coming soon frameworks -->
+		<div class="mt-3 flex flex-wrap items-center justify-center gap-2">
+			<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+				Coming soon
+			</span>
+			{#each comingSoonFrameworks as framework}
+				<span
+					class="rounded-lg border border-border-subtle bg-surface px-2.5 py-1 font-mono text-[10px] text-text-muted"
+				>
+					{framework}
+				</span>
+			{/each}
+		</div>
+	</div>
+
+	<!-- Backend presets -->
+	<div class="mb-8 grid grid-cols-3 gap-3">
 		{#each generator.presets as preset}
 			{@const meta = presetMeta[preset.id]}
 			<button
@@ -41,26 +140,6 @@
 				</span>
 			</button>
 		{/each}
-
-		<!-- Frontend toggle -->
-		<button
-			type="button"
-			onclick={() => generator.toggle('frontend')}
-			class="relative flex flex-col items-center rounded-xl border px-3 py-4 transition-all
-				{generator.isFrontendEnabled
-				? 'border-accent bg-accent-dim'
-				: 'border-border-subtle bg-surface hover:border-border-active hover:bg-surface-raised'}"
-		>
-			<span
-				class="absolute -top-2 rounded-full border border-amber/30 bg-amber-dim px-2 py-0.5 text-[10px] font-medium text-amber"
-			>
-				WIP
-			</span>
-			<span class="mb-1 font-mono text-xs text-text-muted">&lt;/&gt;</span>
-			<span class="text-sm font-medium text-text-primary">Full Stack</span>
-			<span class="mt-0.5 text-center text-xs text-text-secondary">SvelteKit frontend</span>
-			<span class="mt-2 font-mono text-xs text-text-muted">all features</span>
-		</button>
 	</div>
 
 	<!-- Custom label -->
@@ -72,7 +151,7 @@
 		</div>
 	{/if}
 
-	<!-- Feature groups -->
+	<!-- Backend feature groups -->
 	<div class="space-y-6">
 		{#each generator.groups as group}
 			<div>

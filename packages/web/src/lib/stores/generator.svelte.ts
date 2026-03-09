@@ -26,8 +26,8 @@ const GROUP_LABELS: Record<string, string> = {
 	tooling: 'Tooling'
 };
 
-/** Features hidden from the UI (no templates yet). */
-const HIDDEN_FEATURES: Set<FeatureId> = new Set(['frontend']);
+/** Features that have their own dedicated UI section (not in the feature card grid). */
+const CUSTOM_SECTION_FEATURES: Set<FeatureId> = new Set(['frontend']);
 
 interface FeatureNote {
 	title: string;
@@ -69,19 +69,17 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 		});
 	}
 
-	if (features.has('auth') && !features.has('aspire')) {
+	if (!features.has('aspire') && features.has('frontend')) {
+		notes.push({
+			title: 'Full stack without orchestration',
+			message:
+				"Without Aspire, you'll run the SvelteKit dev server and .NET API as separate processes, and configure PostgreSQL and other services manually. Add Aspire for single-command local dev with automatic service wiring."
+		});
+	} else if (features.has('auth') && !features.has('aspire')) {
 		notes.push({
 			title: 'Manual infrastructure setup',
 			message:
 				"Without Aspire, you'll set up PostgreSQL and other services manually or via Docker Compose. Add Aspire for one-command local dev."
-		});
-	}
-
-	if (features.has('frontend')) {
-		notes.push({
-			title: 'Frontend feature split in progress',
-			message:
-				'The SvelteKit frontend currently requires all backend features to be enabled. Individual feature selection for the frontend is a work in progress. All features have been locked.'
 		});
 	}
 
@@ -91,7 +89,7 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 function groupFeatures(): { group: string; label: string; features: Feature[] }[] {
 	const groups = new Map<string, Feature[]>();
 	for (const f of featureDefinitions) {
-		if (HIDDEN_FEATURES.has(f.id)) continue;
+		if (CUSTOM_SECTION_FEATURES.has(f.id)) continue;
 		const existing = groups.get(f.group) ?? [];
 		existing.push(f);
 		groups.set(f.group, existing);
@@ -125,7 +123,18 @@ class GeneratorState {
 	activePresetId = $state<string | null>('standard');
 	featureOptions = $state<Map<FeatureId, Set<string>>>(new Map());
 
-	resolvedFeatures = $derived(resolveFeatures(new Set(this.selectedIds)));
+	/** Frontend is independent of backend selection - survives preset changes and feature toggles. */
+	frontendEnabled = $state(false);
+
+	/** All features including frontend (if enabled) with dependencies auto-resolved. */
+	resolvedFeatures = $derived(
+		resolveFeatures(
+			new Set([
+				...this.selectedIds,
+				...(this.frontendEnabled ? (['frontend'] as FeatureId[]) : [])
+			])
+		)
+	);
 
 	isValidName = $derived(
 		this.projectName.trim().length > 0 && /^[a-zA-Z][a-zA-Z0-9-]*$/.test(this.projectName.trim())
@@ -153,7 +162,7 @@ class GeneratorState {
 
 	featureCount = $derived(this.resolvedFeatures.size);
 	fileCount = $derived(this.project?.summary.totalFiles ?? 0);
-	isFrontendEnabled = $derived(this.resolvedFeatures.has('frontend'));
+	isFrontendEnabled = $derived(this.frontendEnabled);
 
 	groups = groupFeatures();
 	presets = presets;
@@ -171,8 +180,9 @@ class GeneratorState {
 		return this.resolvedFeatures.has(id) && !this.selectedIds.includes(id);
 	}
 
-	isLockedByFrontend(id: FeatureId): boolean {
-		return id !== 'frontend' && this.isFrontendEnabled;
+	/** Toggles the frontend independently of backend feature selection. */
+	toggleFrontend() {
+		this.frontendEnabled = !this.frontendEnabled;
 	}
 
 	/** Returns selected options for a feature, or undefined if it has no options. */
@@ -184,7 +194,6 @@ class GeneratorState {
 
 	/** Toggles a single option within a feature. */
 	toggleOption(featureId: FeatureId, optionId: string) {
-		if (this.isFrontendEnabled) return;
 		const feature = featureDefinitions.find((f) => f.id === featureId);
 		if (!feature?.options) return;
 
@@ -204,7 +213,6 @@ class GeneratorState {
 
 	/** Selects or deselects all options for a feature. */
 	setAllOptions(featureId: FeatureId, selectAll: boolean) {
-		if (this.isFrontendEnabled) return;
 		const feature = featureDefinitions.find((f) => f.id === featureId);
 		if (!feature?.options) return;
 
@@ -217,11 +225,7 @@ class GeneratorState {
 	toggle(id: FeatureId) {
 		const feature = featureDefinitions.find((f) => f.id === id);
 		if (!feature || feature.required) return;
-
-		// Block toggling off any feature while frontend is enabled
-		if (id !== 'frontend' && this.selectedIds.includes(id) && this.isFrontendEnabled) {
-			return;
-		}
+		if (CUSTOM_SECTION_FEATURES.has(id)) return;
 
 		const isEnabled = this.selectedIds.includes(id);
 		if (isEnabled) {
@@ -233,24 +237,13 @@ class GeneratorState {
 			for (const removed of cascaded) next.delete(removed);
 			this.featureOptions = next;
 		} else {
-			if (id === 'frontend') {
-				// Frontend requires all features - enable everything
-				const allIds = featureDefinitions.map((f) => f.id);
-				this.selectedIds = [...resolveFeatures(new Set(allIds))];
-				const next = new Map<FeatureId, Set<string>>();
-				for (const f of featureDefinitions) {
-					if (f.options) next.set(f.id, getAllOptions(f));
-				}
+			const withDeps = resolveFeatures(new Set([...this.selectedIds, id]));
+			this.selectedIds = [...withDeps].filter((f) => !CUSTOM_SECTION_FEATURES.has(f));
+			// Initialize default options for features that have them
+			if (feature.options) {
+				const next = new Map(this.featureOptions);
+				next.set(id, getDefaultOptions(feature));
 				this.featureOptions = next;
-			} else {
-				const withDeps = resolveFeatures(new Set([...this.selectedIds, id]));
-				this.selectedIds = [...withDeps];
-				// Initialize default options for features that have them
-				if (feature.options) {
-					const next = new Map(this.featureOptions);
-					next.set(id, getDefaultOptions(feature));
-					this.featureOptions = next;
-				}
 			}
 		}
 		this.activePresetId = this.findMatchingPreset();
