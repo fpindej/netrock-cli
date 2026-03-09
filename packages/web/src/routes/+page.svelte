@@ -4,9 +4,6 @@
 	import StackStep from '$lib/components/StackStep.svelte';
 	import ReviewStep from '$lib/components/ReviewStep.svelte';
 
-	const plausibleDomain = import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? '';
-	const plausibleSrc = import.meta.env.VITE_PLAUSIBLE_SRC || 'https://plausible.io/js/script.js';
-
 	let activeSection = $state('name');
 
 	function handleScroll() {
@@ -27,9 +24,6 @@
 
 <svelte:head>
 	<title>netrock - Generate production-ready .NET API projects</title>
-	{#if plausibleDomain}
-		<script defer data-domain={plausibleDomain} src={plausibleSrc}></script>
-	{/if}
 </svelte:head>
 
 <svelte:window onscroll={handleScroll} />
