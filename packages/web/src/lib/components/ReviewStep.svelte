@@ -45,16 +45,6 @@
 			a.download = `${rootDir}.zip`;
 			a.click();
 			URL.revokeObjectURL(url);
-		// Track download event for analytics (Plausible)
-			if (typeof window !== 'undefined' && 'plausible' in window) {
-				(window as Record<string, Function>).plausible('Download', {
-					props: {
-						features: project.summary.enabledFeatures.join(','),
-						featureCount: project.summary.enabledFeatures.length,
-						fileCount: project.summary.totalFiles
-					}
-				});
-			}
 		} finally {
 			isDownloading = false;
 		}
