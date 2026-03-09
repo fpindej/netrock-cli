@@ -65,24 +65,25 @@
 		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Built with Claude</h2>
 
 		<p>
-			Full transparency: this generator was built 99% with
+			Full transparency: this generator - the template engine, dependency resolver, feature
+			manifests, web UI, and the page you're reading - was built 99% with
 			<a href="https://claude.ai" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">Claude</a>.
-			The template engine, dependency resolver, feature manifests, web UI, and the
-			page you're reading right now.
 		</p>
 
 		<p>
 			The original
 			<a href="https://github.com/fpindej/netrock" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">netrock</a>
-			repository is also heavily Claude-assisted. It grew out of patterns and learnings
-			from my own projects and explorations over the years, and Claude helped me
-			organize, structure, and refine everything into a clean, cohesive template.
+			repository is a different story. It's Claude-assisted, but it grew out of patterns and
+			learnings from years of professional .NET experience. The architecture, conventions, and
+			decisions behind the template are mine - Claude helped me organize, structure, and refine
+			everything into a clean, cohesive codebase.
 		</p>
 
 		<p>
 			I think that's worth mentioning. Not as a gimmick, but because it's honest. AI is
 			genuinely good at this kind of work - organizing patterns, keeping things consistent,
-			and building tooling around well-understood codebases.
+			and building tooling around well-understood codebases. The domain knowledge and
+			production experience behind it is human.
 		</p>
 
 		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Alpha, but real</h2>
