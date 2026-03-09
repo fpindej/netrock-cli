@@ -137,7 +137,9 @@
 			<div class="border-t border-amber/15 px-5 py-4 text-sm leading-relaxed text-text-secondary">
 				<p class="mb-3 text-xs text-text-muted">
 					Local dev works out of the box{generator.resolvedFeatures.has('aspire')
-						? ' (Aspire manages Postgres, MailPit, MinIO automatically)'
+						? generator.resolvedFeatures.has('frontend')
+							? ' (Aspire orchestrates the SvelteKit dev server, .NET API, Postgres, MailPit, and MinIO automatically)'
+							: ' (Aspire manages Postgres, MailPit, MinIO automatically)'
 						: ''}. These items need your input for production.
 				</p>
 				<ul class="space-y-1.5">

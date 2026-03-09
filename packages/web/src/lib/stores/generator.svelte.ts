@@ -69,7 +69,13 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 		});
 	}
 
-	if (features.has('auth') && !features.has('aspire')) {
+	if (!features.has('aspire') && features.has('frontend')) {
+		notes.push({
+			title: 'Full stack without orchestration',
+			message:
+				"Without Aspire, you'll run the SvelteKit dev server and .NET API as separate processes, and configure PostgreSQL and other services manually. Add Aspire for single-command local dev with automatic service wiring."
+		});
+	} else if (features.has('auth') && !features.has('aspire')) {
 		notes.push({
 			title: 'Manual infrastructure setup',
 			message:
