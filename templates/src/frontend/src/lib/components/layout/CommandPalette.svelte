@@ -2,7 +2,9 @@
 	import * as Command from '$lib/components/ui/command';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	// @feature admin
 	import { hasPermission, Permissions } from '$lib/utils';
+	// @end
 	import { shortcutsState, ShortcutAction, getShortcutSymbol } from '$lib/state/shortcuts.svelte';
 	import { toggleTheme } from '$lib/state/theme.svelte';
 	import { logout } from '$lib/auth';
@@ -11,10 +13,16 @@
 		LayoutDashboard,
 		User,
 		Settings,
+		// @feature admin
 		Users,
 		Shield,
+		// @feature jobs
 		Clock,
+		// @end
+		// @feature oauth
 		KeyRound,
+		// @end
+		// @end
 		Sun,
 		LogOut
 	} from '@lucide/svelte';
@@ -35,7 +43,9 @@
 		shortcut?: string;
 	};
 
+	// @feature admin
 	type AdminCommandItem = CommandItem & { permission: string };
+	// @end
 
 	function close() {
 		shortcutsState.isCommandPaletteOpen = false;
@@ -69,6 +79,7 @@
 		}
 	];
 
+	// @feature admin
 	const adminItems: AdminCommandItem[] = [
 		{
 			label: m.nav_adminUsers,
@@ -88,6 +99,7 @@
 			},
 			permission: Permissions.Roles.View
 		},
+		// @feature jobs
 		{
 			label: m.nav_adminJobs,
 			icon: Clock,
@@ -97,6 +109,8 @@
 			},
 			permission: Permissions.Jobs.View
 		},
+		// @end
+		// @feature oauth
 		{
 			label: m.nav_adminOAuthProviders,
 			icon: KeyRound,
@@ -105,8 +119,10 @@
 				goto(resolve('/admin/oauth-providers'));
 			},
 			permission: Permissions.OAuthProviders.View
-		}
+		},
+		// @end
 	];
+	// @end
 
 	const actionItems: CommandItem[] = [
 		{
@@ -128,9 +144,11 @@
 		}
 	];
 
+	// @feature admin
 	let visibleAdminItems = $derived(
 		adminItems.filter((item) => hasPermission(user, item.permission))
 	);
+	// @end
 </script>
 
 <Command.Dialog
@@ -154,6 +172,7 @@
 			{/each}
 		</Command.Group>
 
+		<!-- @feature admin -->
 		{#if visibleAdminItems.length > 0}
 			<Command.Group heading={m.commandPalette_admin()}>
 				{#each visibleAdminItems as item (item.label())}
@@ -164,6 +183,7 @@
 				{/each}
 			</Command.Group>
 		{/if}
+		<!-- @end -->
 
 		<Command.Separator />
 

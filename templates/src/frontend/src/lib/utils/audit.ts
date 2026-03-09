@@ -1,3 +1,4 @@
+// @feature audit
 import * as m from '$lib/paraglide/messages';
 
 type TimelineVariant = 'default' | 'success' | 'destructive' | 'warning';
@@ -173,3 +174,4 @@ export function getAuditDescription(
 
 	return undefined;
 }
+// @end

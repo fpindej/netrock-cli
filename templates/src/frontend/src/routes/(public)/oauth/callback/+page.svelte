@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { resolve } from '$app/paths';
@@ -57,3 +58,4 @@
 		</div>
 	{/if}
 </AuthShell>
+<!-- @end -->

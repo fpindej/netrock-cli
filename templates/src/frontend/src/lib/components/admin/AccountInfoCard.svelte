@@ -1,18 +1,25 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
+	// @feature 2fa
 	import * as AlertDialog from '$lib/components/ui/alert-dialog';
+	// @end
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
+	// @feature 2fa
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Label } from '$lib/components/ui/label';
+	// @end
 	import {
 		Hash,
 		User as UserIcon,
 		Mail,
 		Phone,
 		Shield,
+		// @feature 2fa
 		ShieldCheck,
 		ShieldOff,
+		// @end
 		CheckCircle,
 		XCircle,
 		AtSign,
@@ -38,9 +45,11 @@
 	let { user, canManage, canManageTwoFactor, piiMasked, cooldown }: Props = $props();
 
 	let isVerifying = $state(false);
+	// @feature 2fa
 	let disable2faDialogOpen = $state(false);
 	let isDisabling2fa = $state(false);
 	let disable2faReason = $state('');
+	// @end
 
 	async function verifyEmail() {
 		isVerifying = true;
@@ -60,6 +69,7 @@
 		}
 	}
 
+	// @feature 2fa
 	async function disableTwoFactor() {
 		isDisabling2fa = true;
 		const { response, error } = await browserClient.POST('/api/v1/admin/users/{id}/disable-2fa', {
@@ -80,6 +90,7 @@
 			});
 		}
 	}
+	// @end
 </script>
 
 <Card.Root>
@@ -167,6 +178,7 @@
 			{/if}
 		</InfoItem>
 
+		<!-- @feature 2fa -->
 		<InfoItem
 			icon={user.twoFactorEnabled ? ShieldCheck : ShieldOff}
 			label={m.admin_userDetail_twoFactorEnabled()}
@@ -244,9 +256,11 @@
 				</Badge>
 			{/if}
 		</InfoItem>
+		<!-- @end -->
 
 		<InfoItem icon={Shield} label={m.admin_userDetail_accessFailedCount()}>
 			<span class="tabular-nums">{user.accessFailedCount ?? 0}</span>
 		</InfoItem>
 	</Card.Content>
 </Card.Root>
+<!-- @end -->

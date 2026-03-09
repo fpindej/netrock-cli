@@ -9,8 +9,15 @@
 	import { Input } from '$lib/components/ui/input';
 	import * as Form from '$lib/components/ui/form';
 	import { PhoneInput } from '$lib/components/ui/phone-input';
+	// @feature captcha
 	import { AuthShell, TurnstileWidget } from '$lib/components/auth';
+	// @end
+	// @feature !captcha
+	import { AuthShell } from '$lib/components/auth';
+	// @end
+	// @feature oauth
 	import { OAuthProviderButtons } from '$lib/components/oauth';
+	// @end
 	import * as m from '$lib/paraglide/messages';
 	import { toast } from '$lib/components/ui/sonner';
 	import { Loader2 } from '@lucide/svelte';
@@ -19,15 +26,24 @@
 	import { zod4 as zod } from 'sveltekit-superforms/adapters';
 
 	interface Props {
+		// @feature captcha
 		turnstileSiteKey: string;
+		// @end
 	}
 
+	// @feature captcha
 	let { turnstileSiteKey }: Props = $props();
+	// @end
+	// @feature !captcha
+	let {}: Props = $props();
+	// @end
 
 	const shake = createShake();
 	const cooldown = createCooldown();
+	// @feature captcha
 	let captchaToken = $state('');
 	let resetCaptcha: (() => void) | null = $state(null);
+	// @end
 
 	const DRAFT_KEY = 'register-form-draft';
 
@@ -42,7 +58,9 @@
 					body: {
 						email: form.data.email,
 						password: form.data.password,
+						// @feature captcha
 						captchaToken,
+						// @end
 						firstName: form.data.firstName || undefined,
 						lastName: form.data.lastName || undefined,
 						phoneNumber: form.data.phoneNumber || undefined
@@ -71,14 +89,18 @@
 							shake.trigger();
 						}
 					});
+					// @feature captcha
 					resetCaptcha?.();
 					captchaToken = '';
+					// @end
 				}
 			} catch {
 				toast.error(m.auth_register_failed());
 				shake.trigger();
+				// @feature captcha
 				resetCaptcha?.();
 				captchaToken = '';
+				// @end
 			}
 		}
 	});
@@ -243,18 +265,29 @@
 				<Form.FieldErrors />
 			</Form.Field>
 
+			<!-- @feature captcha -->
 			<TurnstileWidget
 				siteKey={turnstileSiteKey}
 				onVerified={(t) => (captchaToken = t)}
 				onError={() => toast.error(m.auth_captcha_error())}
 				resetRef={(fn) => (resetCaptcha = fn)}
 			/>
+			<!-- @end -->
 
+			<!-- @feature captcha -->
 			<Button
 				type="submit"
 				class="w-full"
 				disabled={$submitting || cooldown.active || !captchaToken}
 			>
+			<!-- @end -->
+			<!-- @feature !captcha -->
+			<Button
+				type="submit"
+				class="w-full"
+				disabled={$submitting || cooldown.active}
+			>
+			<!-- @end -->
 				{#if cooldown.active}
 					{m.common_waitSeconds({ seconds: cooldown.remaining })}
 				{:else}
@@ -266,7 +299,9 @@
 			</Button>
 		</form>
 
+		<!-- @feature oauth -->
 		<OAuthProviderButtons />
+		<!-- @end -->
 
 		<div class="text-center text-sm">
 			<span class="text-muted-foreground">{m.auth_register_haveAccount()}</span>

@@ -12,8 +12,15 @@
 	import { StatusIndicator } from '$lib/components/common';
 	import * as m from '$lib/paraglide/messages';
 	import { Loader2 } from '@lucide/svelte';
+	// @feature 2fa
 	import { AuthShell, TwoFactorStep } from '$lib/components/auth';
+	// @end
+	// @feature !2fa
+	import { AuthShell } from '$lib/components/auth';
+	// @end
+	// @feature oauth
 	import { OAuthProviderButtons } from '$lib/components/oauth';
+	// @end
 	import { toast } from '$lib/components/ui/sonner';
 	import { loginSchema } from '$lib/schemas/auth';
 	import { superForm, defaults } from 'sveltekit-superforms';
@@ -29,8 +36,10 @@
 	const shake = createShake();
 	const cooldown = createCooldown();
 
+	// @feature 2fa
 	let challengeToken = $state('');
 	let requiresTwoFactor = $state(false);
+	// @end
 	let loginSuccess = $state(false);
 
 	let isApiOnline = $derived(!healthState.checked || healthState.online);
@@ -55,6 +64,7 @@
 				});
 
 				if (response.ok && data) {
+					// @feature 2fa
 					if (data.requiresTwoFactor && data.challengeToken) {
 						challengeToken = data.challengeToken;
 						$formData.password = '';
@@ -62,6 +72,10 @@
 					} else {
 						await completeLogin();
 					}
+					// @end
+					// @feature !2fa
+					await completeLogin();
+					// @end
 				} else {
 					handleMutationError(response, apiError, {
 						cooldown,
@@ -109,10 +123,12 @@
 		await goto(resolve('/'));
 	}
 
+	// @feature 2fa
 	function handleTwoFactorBack() {
 		requiresTwoFactor = false;
 		challengeToken = '';
 	}
+	// @end
 </script>
 
 <AuthShell
@@ -129,9 +145,11 @@
 		</div>
 	{/snippet}
 
+	<!-- @feature 2fa -->
 	{#if requiresTwoFactor}
 		<TwoFactorStep {challengeToken} onSuccess={completeLogin} onBack={handleTwoFactorBack} />
 	{:else}
+	<!-- @end -->
 		<div class="flex flex-col gap-6">
 			<div class="flex flex-col items-center gap-2 text-center">
 				<h1 class="text-2xl font-bold">
@@ -210,7 +228,9 @@
 				</Button>
 			</form>
 
+			<!-- @feature oauth -->
 			<OAuthProviderButtons />
+			<!-- @end -->
 
 			<div class="text-center text-sm">
 				<span class="text-muted-foreground">{m.auth_login_noAccount()}</span>
@@ -222,5 +242,7 @@
 				</a>
 			</div>
 		</div>
+	<!-- @feature 2fa -->
 	{/if}
+	<!-- @end -->
 </AuthShell>

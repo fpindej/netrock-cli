@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import { Badge } from '$lib/components/ui/badge';
 	import { Separator } from '$lib/components/ui/separator';
@@ -73,3 +74,4 @@
 		<RoleDeleteSection roleId={data.role?.id ?? ''} {cooldown} />
 	{/if}
 </div>
+<!-- @end -->

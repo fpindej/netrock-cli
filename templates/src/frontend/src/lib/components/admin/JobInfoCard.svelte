@@ -1,3 +1,4 @@
+<!-- @feature jobs -->
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import { Badge } from '$lib/components/ui/badge';
@@ -49,3 +50,4 @@
 		</InfoItem>
 	</Card.Content>
 </Card.Root>
+<!-- @end -->

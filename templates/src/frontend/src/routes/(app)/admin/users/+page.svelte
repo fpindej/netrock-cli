@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
@@ -102,3 +103,4 @@
 {#if canManageUsers}
 	<CreateUserDialog bind:open={inviteDialogOpen} />
 {/if}
+<!-- @end -->

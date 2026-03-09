@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	import { PageHeader, EmptyState } from '$lib/components/common';
 	import { OAuthProviderCard } from '$lib/components/admin';
@@ -32,3 +33,4 @@
 		</div>
 	{/if}
 </div>
+<!-- @end -->

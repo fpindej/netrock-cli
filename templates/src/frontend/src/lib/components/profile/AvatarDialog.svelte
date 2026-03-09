@@ -1,3 +1,4 @@
+<!-- @feature avatars -->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import type { CropArea } from 'svelte-easy-crop';
@@ -182,3 +183,4 @@
 		{/if}
 	</Dialog.Content>
 </Dialog.Root>
+<!-- @end -->

@@ -10,19 +10,31 @@
 	const segmentLabels: Record<string, () => string> = {
 		profile: m.nav_profile,
 		settings: m.nav_settings,
+		// @feature admin
 		users: m.nav_adminUsers,
 		roles: m.nav_adminRoles,
+		// @feature jobs
 		jobs: m.nav_adminJobs,
-		'oauth-providers': m.nav_adminOAuthProviders
+		// @end
+		// @feature oauth
+		'oauth-providers': m.nav_adminOAuthProviders,
+		// @end
+		// @end
 	};
 
 	const segmentHrefs: Record<string, string> = {
 		profile: resolve('/profile'),
 		settings: resolve('/settings'),
+		// @feature admin
 		users: resolve('/admin/users'),
 		roles: resolve('/admin/roles'),
+		// @feature jobs
 		jobs: resolve('/admin/jobs'),
-		'oauth-providers': resolve('/admin/oauth-providers')
+		// @end
+		// @feature oauth
+		'oauth-providers': resolve('/admin/oauth-providers'),
+		// @end
+		// @end
 	};
 
 	interface Crumb {

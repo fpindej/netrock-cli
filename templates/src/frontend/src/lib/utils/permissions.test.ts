@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import type { User } from '$lib/types';
-import { hasAnyPermission, hasPermission, isSuperuser, Permissions } from './permissions';
+import { isSuperuser } from './permissions';
+// @feature admin
+import { hasAnyPermission, hasPermission, Permissions } from './permissions';
+// @end
 
 /** Creates a minimal User object for testing. */
 function makeUser(overrides: Partial<User> = {}): User {
@@ -52,6 +55,7 @@ describe('isSuperuser', () => {
 	});
 });
 
+// @feature admin
 // ── hasPermission ───────────────────────────────────────────────────
 
 describe('hasPermission', () => {
@@ -109,7 +113,9 @@ describe('hasPermission', () => {
 		expect(hasPermission(user, 'users.view_pii')).toBe(false);
 	});
 });
+// @end
 
+// @feature admin
 // ── hasAnyPermission ────────────────────────────────────────────────
 
 describe('hasAnyPermission', () => {
@@ -152,7 +158,9 @@ describe('hasAnyPermission', () => {
 		expect(hasAnyPermission(null, [])).toBe(false);
 	});
 });
+// @end
 
+// @feature admin
 // ── Permissions constant ────────────────────────────────────────────
 
 describe('Permissions constant', () => {
@@ -178,3 +186,4 @@ describe('Permissions constant', () => {
 		expect(Permissions.OAuthProviders.Manage).toBe('oauth_providers.manage');
 	});
 });
+// @end

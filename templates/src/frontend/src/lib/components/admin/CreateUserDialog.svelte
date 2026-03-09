@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
@@ -133,3 +134,4 @@
 		</form>
 	</Dialog.Content>
 </Dialog.Root>
+<!-- @end -->

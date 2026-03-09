@@ -1,3 +1,4 @@
+<!-- @feature jobs -->
 <script lang="ts">
 	import { EmptyState } from '$lib/components/common';
 	import { Badge } from '$lib/components/ui/badge';
@@ -95,3 +96,4 @@
 		</Table.Root>
 	</div>
 {/if}
+<!-- @end -->

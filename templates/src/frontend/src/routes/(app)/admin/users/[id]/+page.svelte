@@ -1,6 +1,12 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import { Separator } from '$lib/components/ui/separator';
+	// @feature audit
 	import { UserDetailCards, AuditTrailCard } from '$lib/components/admin';
+	// @end
+	// @feature !audit
+	import { UserDetailCards } from '$lib/components/admin';
+	// @end
 	import { EyeOff } from '@lucide/svelte';
 	import { hasPermission, Permissions } from '$lib/utils';
 	import { setDynamicLabel, clearDynamicLabel } from '$lib/state/breadcrumb.svelte';
@@ -50,7 +56,10 @@
 		/>
 	{/if}
 
+	<!-- @feature audit -->
 	{#if data.adminUser}
 		<AuditTrailCard userId={data.adminUser.id ?? ''} />
 	{/if}
+	<!-- @end -->
 </div>
+<!-- @end -->

@@ -1,3 +1,4 @@
+<!-- @feature avatars -->
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Avatar from '$lib/components/ui/avatar';
@@ -127,3 +128,4 @@
 		{/snippet}
 	</Dialog.Close>
 </Dialog.Footer>
+<!-- @end -->
