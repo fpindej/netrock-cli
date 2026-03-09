@@ -3,8 +3,13 @@
 	import NameStep from '$lib/components/NameStep.svelte';
 	import StackStep from '$lib/components/StackStep.svelte';
 	import ReviewStep from '$lib/components/ReviewStep.svelte';
+	import { generator } from '$lib/stores/generator.svelte';
 
 	let activeSection = $state('name');
+
+	$effect(() => {
+		generator.syncToUrl();
+	});
 
 	function handleScroll() {
 		const sections = ['review', 'features', 'name'];
@@ -124,7 +129,7 @@
 				<p class="text-center text-xs leading-relaxed text-text-muted">
 					This generator is in
 					<span class="font-medium text-accent">alpha</span>
-					- built 99% with
+					- generator built with
 					<a
 						href="https://claude.ai"
 						target="_blank"
@@ -132,8 +137,7 @@
 						class="font-medium text-text-secondary hover:text-accent"
 					>
 						Claude
-					</a>
-					based on the original
+					</a>, based on the original
 					<a
 						href="https://github.com/fpindej/netrock"
 						target="_blank"
