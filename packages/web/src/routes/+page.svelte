@@ -3,8 +3,13 @@
 	import NameStep from '$lib/components/NameStep.svelte';
 	import StackStep from '$lib/components/StackStep.svelte';
 	import ReviewStep from '$lib/components/ReviewStep.svelte';
+	import { generator } from '$lib/stores/generator.svelte';
 
 	let activeSection = $state('name');
+
+	$effect(() => {
+		generator.syncToUrl();
+	});
 
 	function handleScroll() {
 		const sections = ['review', 'features', 'name'];

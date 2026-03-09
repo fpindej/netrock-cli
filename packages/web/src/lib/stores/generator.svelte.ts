@@ -117,6 +117,9 @@ function getAllOptions(feature: Feature): Set<string> {
 	return new Set(feature.options.map((o) => o.id));
 }
 
+/** All valid feature IDs for URL param validation. */
+const VALID_FEATURE_IDS = new Set<string>(featureDefinitions.map((f) => f.id));
+
 class GeneratorState {
 	projectName = $state('my-app');
 	selectedIds = $state<FeatureId[]>([]);
@@ -125,6 +128,9 @@ class GeneratorState {
 
 	/** Frontend is independent of backend selection - survives preset changes and feature toggles. */
 	frontendEnabled = $state(false);
+
+	/** Whether the initial state was loaded from URL params. */
+	private initializedFromUrl = false;
 
 	/** All features including frontend (if enabled) with dependencies auto-resolved. */
 	resolvedFeatures = $derived(
@@ -169,7 +175,117 @@ class GeneratorState {
 	definitions = featureDefinitions;
 
 	constructor() {
-		this.applyPreset('standard');
+		if (typeof window !== 'undefined' && !this.loadFromUrl()) {
+			this.applyPreset('standard');
+		}
+	}
+
+	/** Serializes current state to URL search params. */
+	toUrlParams(): string {
+		const params = new URLSearchParams();
+		if (this.projectName !== 'my-app') {
+			params.set('name', this.projectName);
+		}
+		if (this.frontendEnabled) {
+			params.set('frontend', '1');
+		}
+		// Only encode features if they differ from a preset
+		if (this.activePresetId) {
+			params.set('preset', this.activePresetId);
+		} else {
+			const features = this.selectedIds.filter((f) => f !== 'core');
+			if (features.length > 0) {
+				params.set('features', features.join(','));
+			}
+		}
+		// Encode non-default feature options
+		for (const [featureId, options] of this.featureOptions) {
+			const feature = featureDefinitions.find((f) => f.id === featureId);
+			if (!feature?.options) continue;
+			const defaults = getDefaultOptions(feature);
+			if (options.size !== defaults.size || ![...options].every((o) => defaults.has(o))) {
+				params.set(`opts.${featureId}`, [...options].join(','));
+			}
+		}
+		return params.toString();
+	}
+
+	/** Restores state from current URL search params. Returns true if params were found. */
+	private loadFromUrl(): boolean {
+		const params = new URLSearchParams(window.location.search);
+		if (params.size === 0) return false;
+
+		const hasFeatures = params.has('features');
+		const hasPreset = params.has('preset');
+		if (!hasFeatures && !hasPreset && !params.has('name') && !params.has('frontend')) return false;
+
+		// Restore preset or custom features
+		if (hasPreset) {
+			const presetId = params.get('preset')!;
+			if (presets.some((p) => p.id === presetId)) {
+				this.applyPreset(presetId);
+			} else {
+				this.applyPreset('standard');
+			}
+		} else if (hasFeatures) {
+			const ids = params
+				.get('features')!
+				.split(',')
+				.filter((id) => VALID_FEATURE_IDS.has(id)) as FeatureId[];
+			const resolved = resolveFeatures(new Set(ids));
+			this.selectedIds = [...resolved].filter((f) => !CUSTOM_SECTION_FEATURES.has(f));
+			this.activePresetId = this.findMatchingPreset();
+			// Initialize default options for features that have them
+			const next = new Map<FeatureId, Set<string>>();
+			for (const featureId of this.selectedIds) {
+				const feature = featureDefinitions.find((f) => f.id === featureId);
+				if (!feature?.options) continue;
+				next.set(featureId, getDefaultOptions(feature));
+			}
+			this.featureOptions = next;
+		} else {
+			this.applyPreset('standard');
+		}
+
+		// Restore feature options overrides
+		for (const [key, value] of params) {
+			if (!key.startsWith('opts.')) continue;
+			const featureId = key.slice(5) as FeatureId;
+			if (!VALID_FEATURE_IDS.has(featureId)) continue;
+			const feature = featureDefinitions.find((f) => f.id === featureId);
+			if (!feature?.options) continue;
+			const validOptionIds = new Set(feature.options.map((o) => o.id));
+			const options = new Set(value.split(',').filter((o) => validOptionIds.has(o)));
+			const next = new Map(this.featureOptions);
+			next.set(featureId, options);
+			this.featureOptions = next;
+		}
+		if (params.has('features') || [...params.keys()].some((k) => k.startsWith('opts.'))) {
+			this.activePresetId = this.findMatchingPreset();
+		}
+
+		// Restore frontend
+		if (params.get('frontend') === '1') {
+			this.frontendEnabled = true;
+		}
+
+		// Restore name
+		const name = params.get('name');
+		if (name && /^[a-zA-Z][a-zA-Z0-9-]*$/.test(name)) {
+			this.projectName = name;
+		}
+
+		this.initializedFromUrl = true;
+		return true;
+	}
+
+	/** Syncs current state to the URL. Call from a $effect in a component. */
+	syncToUrl() {
+		const qs = this.toUrlParams();
+		const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+		if (url !== `${window.location.pathname}${window.location.search}`) {
+			history.replaceState(null, '', url);
+		}
 	}
 
 	isEnabled(id: FeatureId): boolean {
