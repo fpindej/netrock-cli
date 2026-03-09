@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature audit -->
 <script lang="ts">
 	import { EmptyState, LoadingSpinner } from '$lib/components/common';
@@ -182,4 +183,5 @@
 		{/if}
 	</Dialog.Content>
 </Dialog.Root>
+<!-- @end -->
 <!-- @end -->

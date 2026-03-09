@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature jobs -->
 <script lang="ts">
 	import { Separator } from '$lib/components/ui/separator';
@@ -39,4 +40,5 @@
 		<JobExecutionHistory executions={data.job.executionHistory ?? []} />
 	{/if}
 </div>
+<!-- @end -->
 <!-- @end -->

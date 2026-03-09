@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature oauth -->
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
@@ -177,4 +178,5 @@
 		</Card.Footer>
 	{/if}
 </Card.Root>
+<!-- @end -->
 <!-- @end -->

@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature oauth -->
 <script lang="ts">
 	import { PageHeader, EmptyState } from '$lib/components/common';
@@ -33,4 +34,5 @@
 		</div>
 	{/if}
 </div>
+<!-- @end -->
 <!-- @end -->

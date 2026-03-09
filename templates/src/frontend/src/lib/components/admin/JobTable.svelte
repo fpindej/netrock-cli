@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature jobs -->
 <script lang="ts">
 	import { EmptyState } from '$lib/components/common';
@@ -96,4 +97,5 @@
 		</Table.Root>
 	</div>
 {/if}
+<!-- @end -->
 <!-- @end -->

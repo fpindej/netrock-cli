@@ -1,3 +1,4 @@
+// @feature admin
 // @feature jobs
 import { createApiClient, getErrorMessage } from '$lib/api';
 import { error, redirect } from '@sveltejs/kit';
@@ -29,4 +30,5 @@ export const load: PageServerLoad = async ({ fetch, url, params, parent }) => {
 		job: data
 	};
 };
+// @end
 // @end

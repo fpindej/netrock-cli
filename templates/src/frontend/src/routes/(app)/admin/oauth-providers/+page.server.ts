@@ -1,3 +1,4 @@
+// @feature admin
 // @feature oauth
 import { createApiClient, getErrorMessage } from '$lib/api';
 import { error, redirect } from '@sveltejs/kit';
@@ -26,4 +27,5 @@ export const load: PageServerLoad = async ({ fetch, url, parent }) => {
 		providers: data ?? []
 	};
 };
+// @end
 // @end

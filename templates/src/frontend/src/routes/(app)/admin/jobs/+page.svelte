@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature jobs -->
 <script lang="ts">
 	import { PageHeader } from '$lib/components/common';
@@ -89,4 +90,5 @@
 		</Card.Content>
 	</Card.Root>
 </div>
+<!-- @end -->
 <!-- @end -->

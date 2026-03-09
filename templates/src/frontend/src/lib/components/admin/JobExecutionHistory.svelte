@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature jobs -->
 <script lang="ts">
 	import { EmptyState } from '$lib/components/common';
@@ -97,4 +98,5 @@
 		{/if}
 	</Card.Content>
 </Card.Root>
+<!-- @end -->
 <!-- @end -->

@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <!-- @feature jobs -->
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
@@ -217,4 +218,5 @@
 		</div>
 	</Card.Content>
 </Card.Root>
+<!-- @end -->
 <!-- @end -->

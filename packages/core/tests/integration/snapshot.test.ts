@@ -379,6 +379,58 @@ describe('frontend feature gate content', () => {
 		});
 	});
 
+	describe('sub-features without admin do not leak admin files', () => {
+		it('jobs without admin excludes admin/jobs routes and components', () => {
+			const files = generateFrontend(['core', 'auth', 'jobs', 'frontend']);
+			expect(files.filter((f) => f.path.includes('admin/jobs/'))).toHaveLength(0);
+			expect(files.filter((f) => f.path.includes('JobTable'))).toHaveLength(0);
+			expect(files.filter((f) => f.path.includes('JobInfoCard'))).toHaveLength(0);
+			expect(files.filter((f) => f.path.includes('JobActionsCard'))).toHaveLength(0);
+			expect(files.filter((f) => f.path.includes('JobExecutionHistory'))).toHaveLength(0);
+		});
+
+		it('oauth without admin excludes admin/oauth routes and OAuthProviderCard', () => {
+			const files = generateFrontend(['core', 'auth', 'oauth', 'frontend']);
+			expect(files.filter((f) => f.path.includes('admin/oauth-providers/'))).toHaveLength(0);
+			expect(files.filter((f) => f.path.includes('OAuthProviderCard'))).toHaveLength(0);
+		});
+
+		it('audit without admin excludes AuditTrailCard', () => {
+			const files = generateFrontend(['core', 'auth', 'audit', 'frontend']);
+			expect(files.filter((f) => f.path.includes('AuditTrailCard'))).toHaveLength(0);
+		});
+
+		it('all sub-features without admin excludes all admin files', () => {
+			const files = generateFrontend([
+				'core',
+				'auth',
+				'jobs',
+				'oauth',
+				'audit',
+				'frontend'
+			]);
+			expect(files.filter((f) => f.path.includes('/admin/'))).toHaveLength(0);
+		});
+
+		it('admin + jobs includes job routes and components', () => {
+			const files = generateFrontend(['core', 'auth', 'admin', 'jobs', 'frontend']);
+			expect(files.filter((f) => f.path.includes('admin/jobs/'))).toHaveLength(4);
+			expect(files.some((f) => f.path.includes('JobTable'))).toBe(true);
+			expect(files.some((f) => f.path.includes('JobInfoCard'))).toBe(true);
+		});
+
+		it('admin + oauth includes oauth routes and OAuthProviderCard', () => {
+			const files = generateFrontend(['core', 'auth', 'admin', 'oauth', 'frontend']);
+			expect(files.filter((f) => f.path.includes('admin/oauth-providers/'))).toHaveLength(2);
+			expect(files.some((f) => f.path.includes('OAuthProviderCard'))).toBe(true);
+		});
+
+		it('admin + audit includes AuditTrailCard', () => {
+			const files = generateFrontend(['core', 'auth', 'admin', 'audit', 'frontend']);
+			expect(files.some((f) => f.path.includes('AuditTrailCard'))).toBe(true);
+		});
+	});
+
 	describe('frontend with all features', () => {
 		let files: ReturnType<typeof generateFrontend>;
 		beforeAll(() => {
@@ -469,6 +521,19 @@ describe('no residual markers', () => {
 		{
 			name: 'frontend + admin + jobs + audit',
 			features: ['core', 'auth', 'admin', 'jobs', 'audit', 'frontend']
+		},
+		// Sub-features without admin (edge case - must not leak admin files)
+		{
+			name: 'frontend + jobs (no admin)',
+			features: ['core', 'auth', 'jobs', 'frontend']
+		},
+		{
+			name: 'frontend + oauth (no admin)',
+			features: ['core', 'auth', 'oauth', 'frontend']
+		},
+		{
+			name: 'frontend + audit (no admin)',
+			features: ['core', 'auth', 'audit', 'frontend']
 		},
 		{
 			name: 'frontend full',
