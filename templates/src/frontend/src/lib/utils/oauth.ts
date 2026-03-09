@@ -1,3 +1,4 @@
+// @feature oauth
 import { browserClient } from '$lib/api';
 import { toast } from '$lib/components/ui/sonner';
 import * as m from '$lib/paraglide/messages';
@@ -29,3 +30,4 @@ export async function startOAuthChallenge(provider: string): Promise<boolean> {
 	toast.error(m.oauth_challengeError());
 	return false;
 }
+// @end

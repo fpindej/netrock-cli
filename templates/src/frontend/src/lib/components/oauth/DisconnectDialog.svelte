@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
@@ -92,3 +93,4 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
+<!-- @end -->

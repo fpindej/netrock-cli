@@ -2,13 +2,21 @@
 	import * as Sidebar from '$lib/components/ui/sidebar';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
+	// @feature admin
 	import { hasPermission, Permissions } from '$lib/utils';
+	// @end
 	import {
 		LayoutDashboard,
+		// @feature admin
 		Users,
 		Shield,
+		// @feature jobs
 		Clock,
+		// @end
+		// @feature oauth
 		KeyRound,
+		// @end
+		// @end
 		Package2,
 		CircleHelp,
 		Search,
@@ -30,7 +38,9 @@
 	let collapsed = $derived(sidebar.state === 'collapsed');
 
 	type NavItem = { title: () => string; href: string; icon: Component<IconProps> };
+	// @feature admin
 	type AdminNavItem = NavItem & { permission: string };
+	// @end
 
 	const items: NavItem[] = [
 		{
@@ -40,6 +50,7 @@
 		}
 	];
 
+	// @feature admin
 	const adminItems: AdminNavItem[] = [
 		{
 			title: m.nav_adminUsers,
@@ -53,23 +64,28 @@
 			icon: Shield,
 			permission: Permissions.Roles.View
 		},
+		// @feature jobs
 		{
 			title: m.nav_adminJobs,
 			href: resolve('/admin/jobs'),
 			icon: Clock,
 			permission: Permissions.Jobs.View
 		},
+		// @end
+		// @feature oauth
 		{
 			title: m.nav_adminOAuthProviders,
 			href: resolve('/admin/oauth-providers'),
 			icon: KeyRound,
 			permission: Permissions.OAuthProviders.View
-		}
+		},
+		// @end
 	];
 
 	let visibleAdminItems = $derived(
 		adminItems.filter((item) => hasPermission(user, item.permission))
 	);
+	// @end
 
 	function isActive(href: string): boolean {
 		const pathname = page.url.pathname;
@@ -154,6 +170,7 @@
 				</Sidebar.Menu>
 			</Sidebar.GroupContent>
 		</Sidebar.Group>
+		<!-- @feature admin -->
 		{#if visibleAdminItems.length > 0}
 			<Sidebar.Group>
 				<Sidebar.GroupLabel>{m.nav_admin()}</Sidebar.GroupLabel>
@@ -180,6 +197,7 @@
 				</Sidebar.GroupContent>
 			</Sidebar.Group>
 		{/if}
+		<!-- @end -->
 	</Sidebar.Content>
 	<Sidebar.Footer class="pb-[max(0.5rem,env(safe-area-inset-bottom,0px))]">
 		{#if !sidebar.isMobile}

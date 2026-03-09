@@ -1,3 +1,4 @@
+<!-- @feature 2fa -->
 <script lang="ts">
 	import { browserClient, getErrorMessage, handleMutationError } from '$lib/api';
 	import { cn } from '$lib/utils';
@@ -230,3 +231,4 @@
 		</Button>
 	</div>
 </div>
+<!-- @end -->

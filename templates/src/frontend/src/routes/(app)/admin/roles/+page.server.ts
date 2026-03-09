@@ -1,3 +1,4 @@
+// @feature admin
 import { createApiClient, getErrorMessage } from '$lib/api';
 import { error, redirect } from '@sveltejs/kit';
 import { hasPermission, Permissions } from '$lib/utils';
@@ -22,3 +23,4 @@ export const load: PageServerLoad = async ({ fetch, url, parent }) => {
 		roles: data ?? []
 	};
 };
+// @end

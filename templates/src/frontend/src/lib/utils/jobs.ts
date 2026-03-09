@@ -1,3 +1,4 @@
+// @feature jobs
 import * as m from '$lib/paraglide/messages';
 
 type BadgeVariant = 'default' | 'secondary' | 'destructive' | 'outline';
@@ -64,3 +65,4 @@ export function formatJobDuration(duration: string | null | undefined): string {
 	if (minutes > 0) return `${minutes}m ${seconds}s`;
 	return `${seconds}s`;
 }
+// @end

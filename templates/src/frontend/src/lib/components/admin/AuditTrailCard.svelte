@@ -1,3 +1,5 @@
+<!-- @feature admin -->
+<!-- @feature audit -->
 <script lang="ts">
 	import { EmptyState, LoadingSpinner } from '$lib/components/common';
 	import * as Card from '$lib/components/ui/card';
@@ -181,3 +183,5 @@
 		{/if}
 	</Dialog.Content>
 </Dialog.Root>
+<!-- @end -->
+<!-- @end -->

@@ -1,3 +1,5 @@
+<!-- @feature admin -->
+<!-- @feature jobs -->
 <script lang="ts">
 	import { Separator } from '$lib/components/ui/separator';
 	import { JobInfoCard, JobActionsCard, JobExecutionHistory } from '$lib/components/admin';
@@ -38,3 +40,5 @@
 		<JobExecutionHistory executions={data.job.executionHistory ?? []} />
 	{/if}
 </div>
+<!-- @end -->
+<!-- @end -->

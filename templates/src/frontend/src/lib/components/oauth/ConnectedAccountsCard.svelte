@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { components } from '$lib/api/v1';
@@ -131,3 +132,4 @@
 		onDisconnected={handleDisconnected}
 	/>
 {/if}
+<!-- @end -->

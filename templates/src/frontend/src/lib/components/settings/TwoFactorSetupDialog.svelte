@@ -1,3 +1,4 @@
+<!-- @feature 2fa -->
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
@@ -272,3 +273,4 @@
 		{/if}
 	</Dialog.Content>
 </Dialog.Root>
+<!-- @end -->

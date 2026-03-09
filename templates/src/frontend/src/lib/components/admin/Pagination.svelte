@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import * as PaginationUI from '$lib/components/ui/pagination';
 
@@ -41,3 +42,4 @@
 		{/snippet}
 	</PaginationUI.Root>
 {/if}
+<!-- @end -->

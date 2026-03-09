@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browserClient } from '$lib/api';
@@ -58,3 +59,4 @@
 		</div>
 	</div>
 {/if}
+<!-- @end -->

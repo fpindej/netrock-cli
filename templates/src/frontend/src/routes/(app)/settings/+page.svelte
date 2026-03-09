@@ -2,12 +2,20 @@
 	import { PageHeader } from '$lib/components/common';
 	import {
 		ChangePasswordForm,
+		// @feature oauth
 		SetPasswordForm,
+		// @end
 		DeleteAccountDialog,
+		// @feature audit
 		ActivityLog,
+		// @end
+		// @feature 2fa
 		TwoFactorCard
+		// @end
 	} from '$lib/components/settings';
+	// @feature oauth
 	import { ConnectedAccountsCard } from '$lib/components/oauth';
+	// @end
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
 	import * as m from '$lib/paraglide/messages';
@@ -15,9 +23,13 @@
 
 	let { data }: { data: PageData } = $props();
 
+	// @feature 2fa
 	let twoFactorEnabled = $state(data.user.twoFactorEnabled ?? false);
+	// @end
+	// @feature oauth
 	let hasPassword = $state(data.user.hasPassword !== false);
 	let linkedProviders = $state(data.user.linkedProviders ?? []);
+	// @end
 	let deleteDialogOpen = $state(false);
 </script>
 
@@ -29,17 +41,28 @@
 <div class="space-y-6">
 	<PageHeader title={m.settings_title()} description={m.settings_description()} />
 	<div class="space-y-8">
+		<!-- @feature oauth -->
 		{#if hasPassword}
 			<ChangePasswordForm />
 		{:else}
 			<SetPasswordForm onPasswordSet={() => (hasPassword = true)} />
 		{/if}
+		<!-- @end -->
+		<!-- @feature !oauth -->
+		<ChangePasswordForm />
+		<!-- @end -->
 
+		<!-- @feature 2fa -->
 		<TwoFactorCard bind:twoFactorEnabled />
+		<!-- @end -->
 
+		<!-- @feature oauth -->
 		<ConnectedAccountsCard bind:linkedProviders {hasPassword} />
+		<!-- @end -->
 
+		<!-- @feature audit -->
 		<ActivityLog />
+		<!-- @end -->
 
 		<div class="space-y-4">
 			<h4 class="text-sm font-medium text-destructive">{m.common_dangerZone()}</h4>

@@ -1,3 +1,4 @@
+// @feature avatars
 import type { CropArea } from 'svelte-easy-crop';
 
 /**
@@ -47,3 +48,4 @@ function loadImage(src: string): Promise<HTMLImageElement> {
 		img.src = src;
 	});
 }
+// @end

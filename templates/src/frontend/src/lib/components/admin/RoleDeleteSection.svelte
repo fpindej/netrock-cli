@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import * as Dialog from '$lib/components/ui/dialog';
@@ -86,3 +87,4 @@
 		</div>
 	</Card.Content>
 </Card.Root>
+<!-- @end -->

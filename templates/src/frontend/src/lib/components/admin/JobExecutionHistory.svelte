@@ -1,3 +1,5 @@
+<!-- @feature admin -->
+<!-- @feature jobs -->
 <script lang="ts">
 	import { EmptyState } from '$lib/components/common';
 	import * as Card from '$lib/components/ui/card';
@@ -96,3 +98,5 @@
 		{/if}
 	</Card.Content>
 </Card.Root>
+<!-- @end -->
+<!-- @end -->

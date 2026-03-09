@@ -1,3 +1,4 @@
+// @feature oauth
 import { isRedirect, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
@@ -42,3 +43,4 @@ export const load: PageServerLoad = async ({ url, fetch }) => {
 	// Successful login - redirect to dashboard
 	throw redirect(303, '/');
 };
+// @end

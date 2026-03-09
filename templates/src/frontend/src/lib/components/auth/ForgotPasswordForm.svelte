@@ -9,18 +9,32 @@
 	import * as m from '$lib/paraglide/messages';
 	import { MailCheck } from '@lucide/svelte';
 	import { IconCircle } from '$lib/components/common';
+	// @feature captcha
 	import { AuthShell, TurnstileWidget } from '$lib/components/auth';
+	// @end
+	// @feature !captcha
+	import { AuthShell } from '$lib/components/auth';
+	// @end
 	import { toast } from '$lib/components/ui/sonner';
 
 	interface Props {
+		// @feature captcha
 		turnstileSiteKey: string;
+		// @end
 	}
 
+	// @feature captcha
 	let { turnstileSiteKey }: Props = $props();
+	// @end
+	// @feature !captcha
+	let {}: Props = $props();
+	// @end
 
 	let email = $state('');
+	// @feature captcha
 	let captchaToken = $state('');
 	let resetCaptcha: (() => void) | null = $state(null);
+	// @end
 	let isLoading = $state(false);
 	let isSubmitted = $state(false);
 	const shake = createShake();
@@ -34,7 +48,12 @@
 
 		try {
 			const { response, error: apiError } = await browserClient.POST('/api/auth/password/forgot', {
+				// @feature captcha
 				body: { email, captchaToken }
+				// @end
+				// @feature !captcha
+				body: { email }
+				// @end
 			});
 
 			if (response.ok) {
@@ -51,14 +70,18 @@
 						shake.trigger();
 					}
 				});
+				// @feature captcha
 				resetCaptcha?.();
 				captchaToken = '';
+				// @end
 			}
 		} catch {
 			toast.error(m.auth_forgotPassword_error());
 			shake.trigger();
+			// @feature captcha
 			resetCaptcha?.();
 			captchaToken = '';
+			// @end
 		} finally {
 			isLoading = false;
 		}
@@ -81,18 +104,29 @@
 					<Input id="email" type="email" autocomplete="email" required bind:value={email} />
 				</div>
 
+				<!-- @feature captcha -->
 				<TurnstileWidget
 					siteKey={turnstileSiteKey}
 					onVerified={(t) => (captchaToken = t)}
 					onError={() => toast.error(m.auth_captcha_error())}
 					resetRef={(fn) => (resetCaptcha = fn)}
 				/>
+				<!-- @end -->
 
+				<!-- @feature captcha -->
 				<Button
 					type="submit"
 					class="w-full"
 					disabled={isLoading || cooldown.active || !captchaToken}
 				>
+				<!-- @end -->
+				<!-- @feature !captcha -->
+				<Button
+					type="submit"
+					class="w-full"
+					disabled={isLoading || cooldown.active}
+				>
+				<!-- @end -->
 					{#if cooldown.active}
 						{m.common_waitSeconds({ seconds: cooldown.remaining })}
 					{:else if isLoading}

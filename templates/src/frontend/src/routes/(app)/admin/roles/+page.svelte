@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import { PageHeader } from '$lib/components/common';
 	import { Button } from '$lib/components/ui/button';
@@ -36,3 +37,4 @@
 {#if canManageRoles}
 	<CreateRoleDialog bind:open={createDialogOpen} />
 {/if}
+<!-- @end -->

@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Loader2 } from '@lucide/svelte';
@@ -23,3 +24,4 @@
 	{/if}
 	{m.oauth_continueWith({ provider: displayName })}
 </Button>
+<!-- @end -->

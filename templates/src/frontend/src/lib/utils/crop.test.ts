@@ -1,3 +1,4 @@
+// @feature avatars
 /**
  * Tests for the canvas-based crop utility.
  *
@@ -102,3 +103,4 @@ describe('getCroppedBlob', () => {
 		);
 	});
 });
+// @end

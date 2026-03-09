@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -147,3 +148,4 @@
 		</Table.Root>
 	</div>
 {/if}
+<!-- @end -->

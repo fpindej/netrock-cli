@@ -1,3 +1,4 @@
+// @feature oauth
 import { describe, expect, it, vi } from 'vitest';
 import { isRedirect } from '@sveltejs/kit';
 import { load } from './+page.server';
@@ -146,3 +147,4 @@ describe('OAuth callback page server load', () => {
 		expect(result).toEqual({ error: 'network_error' });
 	});
 });
+// @end

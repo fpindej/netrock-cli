@@ -1,3 +1,4 @@
+// @feature admin
 /**
  * Tests for the admin layout server guard - the permission boundary for admin routes.
  *
@@ -115,17 +116,21 @@ describe('admin layout server load', () => {
 		expect(result).toEqual({ user });
 	});
 
+	// @feature jobs
 	it('user with only jobs.view - returns user data', async () => {
 		const user = { ...MOCK_REGULAR_USER, permissions: ['jobs.view'] };
 		const result = await load(mockLoadEvent(user));
 		expect(result).toEqual({ user });
 	});
+	// @end
 
+	// @feature oauth
 	it('user with only oauth_providers.view - returns user data', async () => {
 		const user = { ...MOCK_REGULAR_USER, permissions: ['oauth_providers.view'] };
 		const result = await load(mockLoadEvent(user));
 		expect(result).toEqual({ user });
 	});
+	// @end
 
 	it('Superuser without explicit permissions - returns user data (implicit all)', async () => {
 		const result = await load(mockLoadEvent(MOCK_SUPERUSER_USER));
@@ -143,3 +148,4 @@ describe('admin layout server load', () => {
 		await expectRedirect(() => load(mockLoadEvent(user)), 303, '/');
 	});
 });
+// @end

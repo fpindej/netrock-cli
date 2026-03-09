@@ -1,3 +1,4 @@
+<!-- @feature oauth -->
 <script lang="ts">
 	interface Props {
 		provider: string;
@@ -103,3 +104,4 @@
 		/>
 	</svg>
 {/if}
+<!-- @end -->

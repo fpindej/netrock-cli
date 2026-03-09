@@ -1,10 +1,14 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar';
+	// @feature avatars
 	import { Button } from '$lib/components/ui/button';
 	import { AvatarDialog } from '$lib/components/profile';
+	// @end
 	import type { User } from '$lib/types';
 	import * as m from '$lib/paraglide/messages';
+	// @feature avatars
 	import { Camera } from '@lucide/svelte';
+	// @end
 
 	interface Props {
 		user: User | null | undefined;
@@ -12,8 +16,10 @@
 
 	let { user }: Props = $props();
 
+	// @feature avatars
 	let avatarDialogOpen = $state(false);
 	let avatarVersion = $state(Date.now());
+	// @end
 
 	// Computed display name
 	const displayName = $derived.by(() => {
@@ -25,6 +31,7 @@
 		return user?.username ?? m.common_user();
 	});
 
+	// @feature avatars
 	// Avatar URL with cache-busting (version bumps after upload/remove via invalidateAll)
 	const avatarUrl = $derived(
 		user?.hasAvatar && user?.id ? `/api/users/${user.id}/avatar?v=${avatarVersion}` : null
@@ -36,6 +43,7 @@
 			avatarVersion = Date.now();
 		}
 	});
+	// @end
 
 	// Computed initials for avatar
 	const initials = $derived.by(() => {
@@ -52,6 +60,7 @@
 </script>
 
 <div class="flex flex-col items-center gap-4 sm:flex-row">
+	<!-- @feature avatars -->
 	<button
 		type="button"
 		class="group relative h-24 w-24 cursor-pointer rounded-full focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none"
@@ -79,9 +88,18 @@
 			<Camera class="text-background" size={24} />
 		</div>
 	</button>
+	<!-- @end -->
+	<!-- @feature !avatars -->
+	<div class="h-24 w-24 rounded-full">
+		<Avatar.Root class="h-24 w-24 ring-2 ring-border">
+			<Avatar.Fallback class="text-lg">{initials}</Avatar.Fallback>
+		</Avatar.Root>
+	</div>
+	<!-- @end -->
 	<div class="flex flex-col gap-1 text-center sm:text-start">
 		<h3 class="text-lg font-medium">{displayName}</h3>
 		<p class="text-sm text-muted-foreground">{user?.email ?? ''}</p>
+		<!-- @feature avatars -->
 		<Button
 			variant="outline"
 			size="sm"
@@ -97,5 +115,6 @@
 			{displayName}
 			{initials}
 		/>
+		<!-- @end -->
 	</div>
 </div>

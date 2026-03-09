@@ -1,3 +1,4 @@
+// @feature oauth
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('$lib/api', () => ({
@@ -93,3 +94,4 @@ describe('startOAuthChallenge', () => {
 		expect(toast.error).toHaveBeenCalledWith('Challenge error');
 	});
 });
+// @end

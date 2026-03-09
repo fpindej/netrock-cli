@@ -4,8 +4,15 @@
  */
 
 import type { User } from '$lib/types';
-import { SystemRoles } from './roles';
 
+/** Well-known system role names. Mirrors backend AppRoles constants. */
+export const SystemRoles = {
+	Superuser: 'Superuser',
+	Admin: 'Admin',
+	User: 'User'
+} as const;
+
+// @feature admin
 export const Permissions = {
 	Users: {
 		View: 'users.view',
@@ -18,15 +25,20 @@ export const Permissions = {
 		View: 'roles.view',
 		Manage: 'roles.manage'
 	},
+	// @feature jobs
 	Jobs: {
 		View: 'jobs.view',
 		Manage: 'jobs.manage'
 	},
+	// @end
+	// @feature oauth
 	OAuthProviders: {
 		View: 'oauth_providers.view',
 		Manage: 'oauth_providers.manage'
-	}
+	},
+	// @end
 } as const;
+// @end
 
 /** Returns true if the user is a Superuser (implicit all permissions). */
 export function isSuperuser(user: User | null | undefined): boolean {

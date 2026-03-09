@@ -1,3 +1,4 @@
+// @feature admin
 import { describe, expect, it } from 'vitest';
 import { canManageUser, getAssignableRoles, getHighestRank, getRoleRank } from './roles';
 
@@ -171,3 +172,4 @@ describe('getAssignableRoles', () => {
 		expect(result).toEqual(['User']);
 	});
 });
+// @end

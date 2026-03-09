@@ -1,3 +1,4 @@
+<!-- @feature admin -->
 <script lang="ts">
 	import { AccountInfoCard, UserManagementCard } from '$lib/components/admin';
 	import type { AdminUser, AdminRole, User } from '$lib/types';
@@ -43,3 +44,4 @@
 		{rolesLoadFailed}
 	/>
 </div>
+<!-- @end -->

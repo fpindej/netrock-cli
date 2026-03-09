@@ -1,3 +1,4 @@
+<!-- @feature captcha -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
@@ -102,3 +103,4 @@
 </script>
 
 <div class="w-full" bind:this={container}></div>
+<!-- @end -->

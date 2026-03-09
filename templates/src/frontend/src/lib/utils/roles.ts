@@ -1,14 +1,10 @@
+// @feature admin
 /**
  * Client-side role hierarchy utilities.
  * Mirrors the backend AppRoles.GetRoleRank() logic.
  */
 
-/** Well-known system role names. Mirrors backend AppRoles constants. */
-export const SystemRoles = {
-	Superuser: 'Superuser',
-	Admin: 'Admin',
-	User: 'User'
-} as const;
+import { SystemRoles } from './permissions';
 
 const ROLE_RANKS: Record<string, number> = {
 	[SystemRoles.Superuser]: 3,
@@ -36,3 +32,4 @@ export function getAssignableRoles(callerRoles: string[], allRoleNames: string[]
 	const callerRank = getHighestRank(callerRoles);
 	return allRoleNames.filter((role) => getRoleRank(role) < callerRank);
 }
+// @end

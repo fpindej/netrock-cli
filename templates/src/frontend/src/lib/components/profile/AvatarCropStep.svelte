@@ -1,3 +1,4 @@
+<!-- @feature avatars -->
 <script lang="ts">
 	import Cropper from 'svelte-easy-crop';
 	import type { CropArea } from 'svelte-easy-crop';
@@ -83,3 +84,4 @@
 		{/if}
 	</Button>
 </Dialog.Footer>
+<!-- @end -->
