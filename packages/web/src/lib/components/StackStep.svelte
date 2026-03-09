@@ -16,6 +16,103 @@
 		02 / Choose your stack
 	</div>
 
+	<!-- Architecture selector -->
+	<div class="mb-10">
+		<div class="overflow-hidden rounded-xl border border-border-subtle">
+			<div class="grid grid-cols-2">
+				<!-- API only -->
+				<button
+					type="button"
+					onclick={() => {
+						if (generator.isFrontendEnabled) generator.toggle('frontend');
+					}}
+					class="flex flex-col items-center px-4 py-6 transition-all sm:px-6
+						{!generator.isFrontendEnabled
+						? 'bg-accent-dim'
+						: 'bg-surface hover:bg-surface-raised'}"
+				>
+					<!-- Visual: single layer -->
+					<div
+						class="flex h-10 w-20 items-center justify-center rounded-lg border transition-colors
+							{!generator.isFrontendEnabled
+							? 'border-accent/40 bg-accent/10'
+							: 'border-border-subtle bg-surface-raised'}"
+					>
+						<span
+							class="font-mono text-[11px] font-semibold transition-colors
+								{!generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+						>.NET</span>
+					</div>
+					<span class="mt-3 text-sm font-semibold text-text-primary">API only</span>
+					<span class="mt-0.5 text-center text-xs text-text-secondary">
+						Backend for any client
+					</span>
+				</button>
+
+				<!-- Full stack -->
+				<button
+					type="button"
+					onclick={() => {
+						if (!generator.isFrontendEnabled) generator.toggle('frontend');
+					}}
+					class="flex flex-col items-center border-s border-border-subtle px-4 py-6 transition-all sm:px-6
+						{generator.isFrontendEnabled
+						? 'bg-accent-dim'
+						: 'bg-surface hover:bg-surface-raised'}"
+				>
+					<!-- Visual: two stacked layers -->
+					<div
+						class="w-20 overflow-hidden rounded-lg border transition-colors
+							{generator.isFrontendEnabled
+							? 'border-accent/40'
+							: 'border-border-subtle'}"
+					>
+						<div
+							class="flex h-[19px] items-center justify-center transition-colors
+								{generator.isFrontendEnabled
+								? 'bg-accent/10'
+								: 'bg-surface-raised'}"
+						>
+							<span
+								class="font-mono text-[10px] font-semibold transition-colors
+									{generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+							>Svelte</span>
+						</div>
+						<div
+							class="flex h-[19px] items-center justify-center border-t transition-colors
+								{generator.isFrontendEnabled
+								? 'border-accent/30 bg-accent/10'
+								: 'border-border-subtle bg-surface-raised'}"
+						>
+							<span
+								class="font-mono text-[10px] font-semibold transition-colors
+									{generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+							>.NET</span>
+						</div>
+					</div>
+					<span class="mt-3 text-sm font-semibold text-text-primary">Full stack</span>
+					<span class="mt-0.5 text-center text-xs text-text-secondary">
+						SvelteKit + .NET API
+					</span>
+				</button>
+			</div>
+		</div>
+
+		<!-- Coming soon frameworks -->
+		<div class="mt-3 flex flex-wrap items-center justify-center gap-2">
+			<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+				Coming soon
+			</span>
+			{#each comingSoonFrameworks as framework}
+				<span
+					class="rounded-lg border border-border-subtle bg-surface px-2.5 py-1 font-mono text-[10px] text-text-muted"
+				>
+					{framework}
+				</span>
+			{/each}
+		</div>
+	</div>
+
 	<!-- Backend presets -->
 	<div class="mb-8 grid grid-cols-3 gap-3">
 		{#each generator.presets as preset}
@@ -68,79 +165,6 @@
 				</div>
 			</div>
 		{/each}
-	</div>
-
-	<!-- Frontend client -->
-	<div class="mt-8">
-		<h3 class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-			Frontend client
-		</h3>
-
-		<!-- SvelteKit toggle -->
-		<button
-			type="button"
-			onclick={() => generator.toggle('frontend')}
-			class="flex w-full items-center gap-4 rounded-xl border px-4 py-3.5 text-start transition-all
-				{generator.isFrontendEnabled
-				? 'border-accent/30 bg-accent-dim'
-				: 'border-border-subtle bg-surface hover:border-border-active hover:bg-surface-raised'}"
-		>
-			<!-- Toggle indicator -->
-			<div class="flex-shrink-0">
-				<div
-					class="flex size-5 items-center justify-center rounded-md border transition-all
-						{generator.isFrontendEnabled
-						? 'border-accent bg-accent text-bg'
-						: 'border-border-active bg-transparent'}"
-				>
-					{#if generator.isFrontendEnabled}
-						<svg
-							class="size-3"
-							viewBox="0 0 12 12"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-						>
-							<path d="M2 6l3 3 5-5" />
-						</svg>
-					{/if}
-				</div>
-			</div>
-
-			<!-- Content -->
-			<div class="min-w-0 flex-1">
-				<div class="flex items-center gap-2">
-					<span class="text-sm font-medium text-text-primary">SvelteKit</span>
-					{#if generator.isAutoEnabled('frontend')}
-						<span class="rounded bg-accent-dim px-1.5 py-0.5 font-mono text-[10px] text-accent">
-							auto
-						</span>
-					{/if}
-				</div>
-				<p class="mt-0.5 text-xs leading-relaxed text-text-secondary">
-					Full-stack reference client with Svelte 5, SSR, and feature-gated UI
-				</p>
-			</div>
-
-			<!-- Framework badge -->
-			<span class="flex-shrink-0 rounded bg-surface px-2 py-1 font-mono text-[10px] text-text-muted">
-				Svelte 5
-			</span>
-		</button>
-
-		<!-- Coming soon frameworks -->
-		<div class="mt-3 flex flex-wrap items-center gap-2">
-			<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
-				Coming soon
-			</span>
-			{#each comingSoonFrameworks as framework}
-				<span
-					class="rounded-lg border border-border-subtle bg-surface px-3 py-1.5 font-mono text-xs text-text-muted"
-				>
-					{framework}
-				</span>
-			{/each}
-		</div>
 	</div>
 
 	<!-- Notes -->
