@@ -15,7 +15,7 @@
     <!-- @end -->
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
     <!-- @feature auth -->
-    <PackageVersion Include="Fluid.Core" Version="2.13.0" />
+    <PackageVersion Include="Fluid.Core" Version="2.31.0" />
     <PackageVersion Include="MailKit" Version="4.15.1" />
     <!-- @end -->
     <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.1" />
@@ -31,14 +31,14 @@
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(FrameworkVersion)" />
     <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.3.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
-    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.12.0" />
-    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.12.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.12.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.0" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.15.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.0" />
     <!-- EF Core OTEL instrumentation is stable in practice but officially pre-release. -->
     <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.12.0-beta.2" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.12.0" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
-    <PackageVersion Include="Scalar.AspNetCore" Version="2.12.46" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.0" />
+    <PackageVersion Include="Scalar.AspNetCore" Version="2.13.2" />
     <PackageVersion Include="Serilog" Version="4.3.1" />
     <PackageVersion Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageVersion Include="Serilog.Sinks.Async" Version="2.1.0" />
@@ -54,7 +54,7 @@
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Minio" Version="13.1.1" />
     <!-- @end -->
     <!-- @feature file-storage -->
-    <PackageVersion Include="AWSSDK.S3" Version="3.7.510.9" />
+    <PackageVersion Include="AWSSDK.S3" Version="3.7.510.14" />
     <!-- @end -->
     <!-- @feature avatars -->
     <PackageVersion Include="SkiaSharp" Version="3.119.2" />
