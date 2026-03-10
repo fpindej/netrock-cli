@@ -96,6 +96,9 @@ builder.AddViteApp("frontend", "../../../src/frontend")
         e.IsProxied = false;
     })
     .WithEnvironment("API_URL", "http://127.0.0.1:" + apiPort)
+    // @feature captcha
+    .WithEnvironment("TURNSTILE_SITE_KEY", "1x00000000000000000000AA")
+    // @end
     .WaitFor(api);
 // @end
 

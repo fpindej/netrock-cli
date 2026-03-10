@@ -320,6 +320,15 @@ if [ "$DO_GIT" = "1" ]; then
     print_success "Committed: chore: initial project setup"
 fi
 
+// @feature frontend
+# ── Frontend Environment ──────────────────────────────────────────────────
+if [ -f "src/frontend/.env.example" ] && [ ! -f "src/frontend/.env" ]; then
+    print_step "Setting up frontend environment..."
+    cp "src/frontend/.env.example" "src/frontend/.env"
+    print_success "Created src/frontend/.env from .env.example"
+fi
+// @end
+
 // @feature aspire
 # ── Port Configuration ──────────────────────────────────────────────────────
 if [ "$BASE_PORT" != "5173" ]; then

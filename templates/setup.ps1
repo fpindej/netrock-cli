@@ -293,6 +293,15 @@ if ($doGit) {
     Write-Ok "Committed: chore: initial project setup"
 }
 
+// @feature frontend
+# ── Frontend Environment ──────────────────────────────────────────────────
+if ((Test-Path "src/frontend/.env.example") -and -not (Test-Path "src/frontend/.env")) {
+    Write-Step "Setting up frontend environment..."
+    Copy-Item "src/frontend/.env.example" "src/frontend/.env"
+    Write-Ok "Created src/frontend/.env from .env.example"
+}
+// @end
+
 // @feature aspire
 # ── Port Configuration ──────────────────────────────────────────────────────
 if ($basePort -ne 5173) {
