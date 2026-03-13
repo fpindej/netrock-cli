@@ -4,6 +4,20 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.4.0] - 2026-03-13
+
+### Added
+
+- Interactive dependency graph visualization with animated edges and flowing data particles
+- Click graph nodes to toggle features directly, synced with the card picker
+- Animated stat counters in the review section (feature count and file count)
+- anime.js v4 for entrance stagger animations, edge draw-in, and node toggle pulse effects
+
+### Changed
+
+- Graph nodes meet 44px touch target minimum on mobile via invisible hit areas
+- Custom focus-visible styling replaces browser default focus ring on graph nodes
+
 ## [0.3.0] - 2026-03-13
 
 ### Added

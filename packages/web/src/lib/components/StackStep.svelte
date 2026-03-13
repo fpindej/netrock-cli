@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { generator } from '$lib/stores/generator.svelte';
 	import FeatureCard from './FeatureCard.svelte';
+	import DependencyGraph from './DependencyGraph.svelte';
 
 	const presetMeta: Record<string, { badge?: string; icon: string }> = {
 		minimal: { icon: '>' },
@@ -140,6 +141,11 @@
 				</span>
 			</button>
 		{/each}
+	</div>
+
+	<!-- Dependency graph -->
+	<div class="mb-8">
+		<DependencyGraph />
 	</div>
 
 	<!-- Custom label -->

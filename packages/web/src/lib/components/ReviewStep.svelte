@@ -2,6 +2,7 @@
 	import { generator } from '$lib/stores/generator.svelte';
 	import { zipSync, strToU8, type Zippable } from 'fflate';
 	import FileTree from './FileTree.svelte';
+	import AnimatedNumber from './AnimatedNumber.svelte';
 
 	let isDownloading = $state(false);
 	let copiedCmd = $state<string | null>(null);
@@ -72,13 +73,13 @@
 		<div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
 			<div class="rounded-xl border border-border-subtle bg-surface px-4 py-3 text-center">
 				<div class="font-mono text-2xl font-bold text-accent-light">
-					{generator.featureCount}
+					<AnimatedNumber value={generator.featureCount} />
 				</div>
 				<div class="mt-0.5 text-xs text-text-muted">features</div>
 			</div>
 			<div class="rounded-xl border border-border-subtle bg-surface px-4 py-3 text-center">
 				<div class="font-mono text-2xl font-bold text-text-primary">
-					{generator.fileCount}
+					<AnimatedNumber value={generator.fileCount} />
 				</div>
 				<div class="mt-0.5 text-xs text-text-muted">files</div>
 			</div>
