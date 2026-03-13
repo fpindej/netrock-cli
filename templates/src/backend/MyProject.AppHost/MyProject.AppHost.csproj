@@ -7,8 +7,12 @@
     <ItemGroup>
         <PackageReference Include="Aspire.Hosting.PostgreSQL" />
         <PackageReference Include="Aspire.Hosting.JavaScript" />
+        <!-- @feature email -->
         <PackageReference Include="CommunityToolkit.Aspire.Hosting.MailPit" />
+        <!-- @end -->
+        <!-- @feature file-storage -->
         <PackageReference Include="CommunityToolkit.Aspire.Hosting.Minio" />
+        <!-- @end -->
     </ItemGroup>
 
     <ItemGroup>

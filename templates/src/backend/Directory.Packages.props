@@ -12,7 +12,7 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Hybrid" Version="10.3.0" />
     <!-- @end -->
     <PackageVersion Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.1" />
-    <!-- @feature auth -->
+    <!-- @feature email -->
     <PackageVersion Include="Fluid.Core" Version="2.31.0" />
     <PackageVersion Include="MailKit" Version="4.15.1" />
     <!-- @end -->
@@ -47,8 +47,12 @@
     <PackageVersion Include="Hangfire.Core" Version="1.8.23" />
     <PackageVersion Include="Hangfire.PostgreSql" Version="1.21.1" />
     <!-- @end -->
+    <!-- @feature email -->
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="13.1.1" />
+    <!-- @end -->
+    <!-- @feature file-storage -->
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Minio" Version="13.1.1" />
+    <!-- @end -->
     <!-- @feature file-storage -->
     <PackageVersion Include="AWSSDK.S3" Version="3.7.510.14" />
     <!-- @end -->

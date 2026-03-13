@@ -9,8 +9,10 @@ var pgAdminPort = frontendPort + 3;
 var postgresPort = frontendPort + 4;
 var minioPort = frontendPort + 5;
 var minioConsolePort = frontendPort + 6;
+// @feature email
 var mailpitSmtpPort = frontendPort + 7;
 var mailpitHttpPort = frontendPort + 8;
+// @end
 
 // ── Infrastructure ──────────────────────────────────────────────────────────
 // Container resources use session lifetime (default) - containers stop on
@@ -73,7 +75,7 @@ var api = builder.AddProject<Projects.MyProject_WebApi>("api")
     // @end
     ;
 
-// @feature auth
+// @feature email
 // Mailpit only for local development - production uses real SMTP (configured via environment variables)
 if (builder.ExecutionContext.IsRunMode)
 {
