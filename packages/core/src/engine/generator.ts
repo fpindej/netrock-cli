@@ -140,6 +140,9 @@ function collectFiles(
 			// Skip files gated to an unselected option
 			if (entry.option && !featureOptions?.has(entry.option)) continue;
 
+			// Skip frontend files from non-frontend manifests when frontend is disabled
+			if (entry.path.startsWith('src/frontend/') && !features.has('frontend')) continue;
+
 			// If a file is already included, upgrade to templated if needed
 			const existing = fileMap.get(entry.path);
 			if (existing === undefined) {

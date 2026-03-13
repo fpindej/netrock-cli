@@ -1863,12 +1863,6 @@ exports[`file list snapshots > core + auth + 2fa + oauth file list 1`] = `
   "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
-  "src/frontend/src/messages/cs/2fa.json",
-  "src/frontend/src/messages/cs/auth.json",
-  "src/frontend/src/messages/cs/oauth.json",
-  "src/frontend/src/messages/en/2fa.json",
-  "src/frontend/src/messages/en/auth.json",
-  "src/frontend/src/messages/en/oauth.json",
 ]
 `;
 
@@ -1974,8 +1968,6 @@ exports[`file list snapshots > core + jobs file list 1`] = `
   "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
-  "src/frontend/src/messages/cs/jobs.json",
-  "src/frontend/src/messages/en/jobs.json",
 ]
 `;
 
@@ -4454,20 +4446,6 @@ exports[`file list snapshots > full preset file list 1`] = `
   "src/backend/tests/SnapshotApp.Unit.Tests/Shared/ResultTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Shared/TimeSpanExtensionsTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj",
-  "src/frontend/src/messages/cs/2fa.json",
-  "src/frontend/src/messages/cs/admin.json",
-  "src/frontend/src/messages/cs/audit.json",
-  "src/frontend/src/messages/cs/auth.json",
-  "src/frontend/src/messages/cs/avatars.json",
-  "src/frontend/src/messages/cs/jobs.json",
-  "src/frontend/src/messages/cs/oauth.json",
-  "src/frontend/src/messages/en/2fa.json",
-  "src/frontend/src/messages/en/admin.json",
-  "src/frontend/src/messages/en/audit.json",
-  "src/frontend/src/messages/en/auth.json",
-  "src/frontend/src/messages/en/avatars.json",
-  "src/frontend/src/messages/en/jobs.json",
-  "src/frontend/src/messages/en/oauth.json",
 ]
 `;
 
