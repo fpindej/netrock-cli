@@ -5,6 +5,10 @@ export function registerAvatarsManifest(): void {
 	registerManifest({
 		featureId: 'avatars',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/avatars.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/avatars.json', templated: false },
+
 			// Application
 			{
 				path: 'src/backend/MyProject.Application/Features/Avatar/Dtos/ProcessedImageOutput.cs',

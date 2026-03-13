@@ -5,6 +5,10 @@ export function registerOAuthManifest(): void {
 	registerManifest({
 		featureId: 'oauth',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/oauth.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/oauth.json', templated: false },
+
 			// Application - Cryptography
 			{
 				path: 'src/backend/MyProject.Application/Cryptography/ISecretEncryptionService.cs',

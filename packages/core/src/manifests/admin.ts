@@ -5,6 +5,10 @@ export function registerAdminManifest(): void {
 	registerManifest({
 		featureId: 'admin',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/admin.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/admin.json', templated: false },
+
 			// Application - DTOs
 			{
 				path: 'src/backend/MyProject.Application/Features/Admin/Dtos/AdminRoleOutput.cs',
@@ -48,7 +52,10 @@ export function registerAdminManifest(): void {
 			},
 
 			// Application - Interfaces
-			{ path: 'src/backend/MyProject.Application/Features/Admin/IAdminService.cs', templated: true },
+			{
+				path: 'src/backend/MyProject.Application/Features/Admin/IAdminService.cs',
+				templated: true
+			},
 			{
 				path: 'src/backend/MyProject.Application/Features/Admin/IRoleManagementService.cs',
 				templated: false

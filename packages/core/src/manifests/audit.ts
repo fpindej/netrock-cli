@@ -5,8 +5,15 @@ export function registerAuditManifest(): void {
 	registerManifest({
 		featureId: 'audit',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/audit.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/audit.json', templated: false },
+
 			// Application
-			{ path: 'src/backend/MyProject.Application/Features/Audit/AuditActions.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Features/Audit/AuditActions.cs',
+				templated: false
+			},
 			{
 				path: 'src/backend/MyProject.Application/Features/Audit/Dtos/AuditEventListOutput.cs',
 				templated: false
@@ -15,7 +22,10 @@ export function registerAuditManifest(): void {
 				path: 'src/backend/MyProject.Application/Features/Audit/Dtos/AuditEventOutput.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Application/Features/Audit/IAuditService.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Features/Audit/IAuditService.cs',
+				templated: false
+			},
 
 			// Infrastructure
 			{

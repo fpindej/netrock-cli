@@ -5,6 +5,10 @@ export function registerJobsManifest(): void {
 	registerManifest({
 		featureId: 'jobs',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/jobs.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/jobs.json', templated: false },
+
 			// Application
 			{
 				path: 'src/backend/MyProject.Application/Features/Jobs/Dtos/JobExecutionOutput.cs',

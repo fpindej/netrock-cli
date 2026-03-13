@@ -5,6 +5,10 @@ export function registerAuthManifest(): void {
 	registerManifest({
 		featureId: 'auth',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/auth.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/auth.json', templated: false },
+
 			// Application - Identity
 			{
 				path: 'src/backend/MyProject.Application/Identity/Constants/AppPermissions.cs',

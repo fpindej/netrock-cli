@@ -5,6 +5,10 @@ export function registerTwoFactorManifest(): void {
 	registerManifest({
 		featureId: '2fa',
 		files: [
+			// Frontend i18n
+			{ path: 'src/frontend/src/messages/en/2fa.json', templated: false },
+			{ path: 'src/frontend/src/messages/cs/2fa.json', templated: false },
+
 			// Application
 			{
 				path: 'src/backend/MyProject.Application/Features/Authentication/Dtos/TwoFactorSetupOutput.cs',
