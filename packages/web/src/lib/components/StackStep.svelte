@@ -150,23 +150,42 @@
 
 	<!-- Notes -->
 	{#if generator.notes.length > 0}
-		<div class="mb-6 space-y-2">
-			{#each generator.notes as note}
-				<div class="flex gap-3 rounded-lg border border-amber/20 bg-amber-dim px-4 py-3">
-					<svg class="mt-0.5 size-4 flex-shrink-0 text-amber" viewBox="0 0 20 20" fill="currentColor">
-						<path
-							fill-rule="evenodd"
-							d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
-							clip-rule="evenodd"
-						/>
-					</svg>
+		<details class="group mb-6 rounded-xl border border-amber/30 bg-amber-dim">
+			<summary
+				class="flex min-h-[44px] cursor-pointer items-center gap-2.5 px-4 py-3 select-none sm:min-h-0"
+			>
+				<svg class="size-4 shrink-0 text-amber" viewBox="0 0 20 20" fill="currentColor">
+					<path
+						fill-rule="evenodd"
+						d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+				<span class="font-mono text-sm font-medium text-amber">
+					{generator.notes.length}
+					{generator.notes.length === 1 ? 'thing' : 'things'} to know about your selection
+				</span>
+				<svg
+					class="ms-auto size-4 shrink-0 text-amber/60 transition-transform group-open:rotate-180"
+					viewBox="0 0 16 16"
+					fill="currentColor"
+				>
+					<path
+						fill-rule="evenodd"
+						d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+						clip-rule="evenodd"
+					/>
+				</svg>
+			</summary>
+			<div class="space-y-2 border-t border-amber/15 px-4 py-3">
+				{#each generator.notes as note}
 					<div>
 						<p class="text-sm font-medium text-amber">{note.title}</p>
 						<p class="mt-0.5 text-xs leading-relaxed text-text-secondary">{note.message}</p>
 					</div>
-				</div>
-			{/each}
-		</div>
+				{/each}
+			</div>
+		</details>
 	{/if}
 
 	<!-- Feature cards (collapsed by default) -->
