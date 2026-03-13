@@ -26,17 +26,15 @@ This chains entity -> service/API -> frontend. Commit atomically after each logi
 9. Verify: `dotnet test src/backend/MyProject.slnx -c Release` - loop until green
 10. Commit: `feat({feature}): add {Feature} service and API endpoints`
 
-<!-- @feature frontend -->
 **Frontend (see `/new-page`):**
 
 11. Regenerate types: `cd src/frontend && pnpm run api:generate`
 12. Add type alias to `src/frontend/src/lib/types/index.ts`
 13. Create components in `$lib/components/{feature}/` with barrel `index.ts`
 14. Create page in `routes/(app)/{feature}/`
-15. Add i18n keys to both `en.json` and `cs.json`
+15. Add i18n keys to the correct feature file in all locale directories
 16. Add sidebar navigation entry and command palette entry (both with permission if guarded)
 17. Verify: `cd src/frontend && pnpm run format && pnpm run lint && pnpm run check` - loop until green
 18. Commit: `feat({feature}): add {feature} frontend page`
-<!-- @end -->
 
 **Always:** If build/check fails, read the error, fix it, re-run. Never stop to report a fixable error.

@@ -4,20 +4,20 @@ A production-ready SvelteKit template with Svelte 5, TypeScript, Tailwind CSS 4,
 
 ## Tech Stack
 
-| Layer     | Technology                   |
-| --------- | ---------------------------- |
-| Framework | SvelteKit + Svelte 5 (Runes) |
-| Language  | TypeScript (Strict)          |
-| Styling   | Tailwind CSS 4               |
-| UI        | shadcn-svelte (bits-ui)      |
-| i18n      | Paraglide JS                 |
-| API       | openapi-fetch (type-safe)    |
+| Layer     | Technology                                     |
+| --------- | ---------------------------------------------- |
+| Framework | SvelteKit + Svelte 5 (Runes)                   |
+| Language  | TypeScript (Strict)                            |
+| Styling   | Tailwind CSS 4                                 |
+| UI        | shadcn-svelte (bits-ui)                        |
+| i18n      | Paraglide JS                                   |
+| API       | openapi-typescript + openapi-fetch (type-safe) |
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js 20+
+- Node.js 22+
 - Backend API running (for API type generation)
 
 ### Installation
@@ -57,15 +57,21 @@ src/
 │   ├── auth/          # Authentication utilities
 │   ├── components/    # UI components (grouped by feature)
 │   │   ├── ui/        # shadcn base components
+│   │   ├── admin/     # Admin management components
 │   │   ├── auth/      # Login, Register components
+│   │   ├── common/    # Shared components
+│   │   ├── dashboard/ # Dashboard widgets
 │   │   ├── layout/    # Header, Sidebar, Navigation
+│   │   ├── oauth/     # OAuth provider components
 │   │   ├── profile/   # Profile page components
-│   │   └── common/    # Shared components
-│   ├── config/        # Configuration (i18n, server)
+│   │   └── settings/  # Settings and security components
+│   ├── config/        # Configuration (i18n, server, routes)
+│   ├── hooks/         # Svelte hooks and reactive utilities
+│   ├── schemas/       # Zod validation schemas
 │   ├── state/         # Reactive state (.svelte.ts files)
 │   ├── types/         # Type definitions
 │   └── utils/         # Pure utility functions
-├── messages/          # i18n translation files (en.json, cs.json)
+├── messages/          # i18n translation files ({locale}/*.json per feature)
 └── routes/
     ├── (app)/         # Authenticated routes
     ├── (public)/      # Public routes (login)
@@ -83,7 +89,7 @@ For example, to remove the profile feature entirely:
 
 1. Delete `src/lib/components/profile/`
 2. Delete `src/routes/(app)/profile/`
-3. Remove profile-related keys from `src/messages/*.json`
+3. Remove profile-related keys from `auth.json` in each locale directory under `src/messages/`
 4. Remove any imports referencing profile components
 
 ## Working with the Codebase
@@ -94,7 +100,11 @@ For example, to remove the profile feature entirely:
 
 ```svelte
 <script lang="ts">
-	let { user }: { user: User } = $props();
+	interface Props {
+		user: User;
+	}
+
+	let { user }: Props = $props();
 	let count = $state(0);
 	let doubled = $derived(count * 2);
 </script>
@@ -105,7 +115,7 @@ For example, to remove the profile feature entirely:
 ```typescript
 import { browserClient } from '$lib/api';
 
-const { data, error } = await browserClient.GET('/api/users/me');
+const { response, data, error } = await browserClient.GET('/api/users/me');
 ```
 
 **Translations** - Use Paraglide with type-safe keys:
@@ -136,14 +146,14 @@ const { data, error } = await browserClient.GET('/api/users/me');
 Check [shadcn-svelte](https://shadcn-svelte.com/) before creating custom components:
 
 ```bash
-pnpm dlx shadcn-svelte@next add <component-name>
+pnpm dlx shadcn-svelte@latest add <component-name>
 ```
 
 ### Import Conventions
 
 ```typescript
 // Use barrel exports
-import { Header, Sidebar } from '$lib/components/layout';
+import { Header, AppSidebar } from '$lib/components/layout';
 import { browserClient } from '$lib/api';
 
 // Don't import directly from files
@@ -175,7 +185,10 @@ For detailed coding conventions, patterns, and best practices, see [`CLAUDE.md`]
 | `dev`          | Start development server             |
 | `build`        | Create production build              |
 | `preview`      | Preview production build             |
+| `test`         | Run tests with Vitest                |
+| `test:watch`   | Run tests in watch mode              |
 | `check`        | Run Svelte/TypeScript checks         |
+| `check:watch`  | Run Svelte/TypeScript checks (watch) |
 | `lint`         | Run ESLint and Prettier checks       |
 | `format`       | Format code with Prettier            |
 | `api:generate` | Generate API types from OpenAPI spec |

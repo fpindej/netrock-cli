@@ -4041,6 +4041,7 @@ exports[`file list snapshots > full preset file list 1`] = `
   ".claude/skills/new-entity/assets/configuration.cs.md",
   ".claude/skills/new-entity/assets/entity.cs.md",
   ".claude/skills/new-feature/SKILL.md",
+  ".claude/skills/new-page/SKILL.md",
   ".claude/skills/review-dependabot/SKILL.md",
   ".claude/skills/review-pr/SKILL.md",
   ".claude/skills/review-pr/references/conventions-summary.md",

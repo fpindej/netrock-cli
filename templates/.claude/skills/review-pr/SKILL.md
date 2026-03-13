@@ -10,19 +10,26 @@ Reviews a pull request for production-readiness before merge.
 
 Argument: PR number or URL. If omitted, reviews the current branch's open PR.
 
+**Current branch:** !`git branch --show-current`
+**Open PR for this branch:** !`gh pr view --json number,title,url --jq '"#\(.number) \(.title) - \(.url)"' 2>/dev/null || echo "(no open PR)"`
+
+## References
+
+- [Conventions quick reference](references/conventions-summary.md) - condensed rules for fast lookup during review
+
 ## Steps
 
 1. Resolve the PR: `gh pr view {number} --json number,title,headRefName,body`
 2. Get the full diff: `gh pr diff {number}`
 3. Read every changed file in full (not just the diff) to understand surrounding context
-4. Read the relevant convention skills in `.claude/skills/` (e.g., `backend-conventions`) for conventions
+4. Read the [conventions quick reference](references/conventions-summary.md) for project rules
 
 ## Review Checklist
 
 - **Correctness**: Does the code do what the PR description says? Edge cases handled?
 - **Type safety**: TypeScript types align, no `any`, no unsafe casts
 - **Security**: No information leakage, no auth bypasses, inputs validated
-- **i18n**: If i18n keys added - present in both `en.json` AND `cs.json`, Czech translations correct
+- **i18n**: If i18n keys added - present in all locale directories, translations correct
 - **Conventions**: Matches project patterns (Props, logical CSS, Result pattern, etc.)
 - **Completeness**: Are new flags/props consumed where needed? No dead code introduced?
 - **Tests**: If behavior changed, are tests added or updated?
