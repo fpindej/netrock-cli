@@ -3,7 +3,12 @@
 </script>
 
 <svelte:head>
-	<title>Why netrock?</title>
+	<title>Why netrock? - .NET API project generator</title>
+	<meta name="description" content="Why another .NET starter? Because dotnet new webapi gives you nothing. netrock gives you auth, email, jobs, admin, and a SvelteKit frontend - all wired together." />
+	<link rel="canonical" href="https://netrock.dev/why" />
+	<meta property="og:title" content="Why netrock?" />
+	<meta property="og:description" content="Why another .NET starter? Because dotnet new webapi gives you nothing. netrock gives you auth, email, jobs, admin, and a SvelteKit frontend - all wired together." />
+	<meta property="og:url" content="https://netrock.dev/why" />
 </svelte:head>
 
 <Header />

@@ -62,6 +62,11 @@
 
 <svelte:head>
 	<title>Changelog - netrock</title>
+	<meta name="description" content="Release history for the netrock .NET project generator. New features, bug fixes, and improvements." />
+	<link rel="canonical" href="https://netrock.dev/changelog" />
+	<meta property="og:title" content="Changelog - netrock" />
+	<meta property="og:description" content="Release history for the netrock .NET project generator. New features, bug fixes, and improvements." />
+	<meta property="og:url" content="https://netrock.dev/changelog" />
 </svelte:head>
 
 <Header />
