@@ -7,7 +7,7 @@ packages/core   Pure TS engine: feature graph, template processor, namespace sub
 packages/web    SvelteKit static UI: feature picker, preset grid, ZIP download
 packages/cli    (future) CLI interface
 scripts/        generate.ts (interactive), generate-ci.ts (CI), audit.ts (matrix verification), deploy.sh
-templates/      458 template files - the .NET project skeleton with @feature conditional markers
+templates/      846 template files - the .NET project skeleton with @feature conditional markers
 ```
 
 ## Hard Rules
@@ -57,21 +57,22 @@ pnpm tsx scripts/audit.ts
 
 ## Key Files
 
-| File | Purpose |
-|---|---|
-| `packages/core/src/features/definitions.ts` | Feature definitions with dependency graph |
-| `packages/core/src/manifests/` | Per-feature file lists and templated flags |
-| `packages/core/src/engine/processor.ts` | `@feature` marker processing logic |
-| `packages/core/src/engine/generator.ts` | Main generation entry point |
-| `packages/core/src/presets/index.ts` | Minimal, Standard, Full presets |
-| `packages/web/src/lib/stores/generator.svelte.ts` | Reactive UI state |
-| `packages/web/src/lib/components/StackStep.svelte` | Feature picker + preset grid |
-| `.github/workflows/ci.yml` | Unit tests + dotnet build/test matrix |
-| `scripts/deploy.sh` | Docker build + push to Docker Hub |
+| File                                               | Purpose                                    |
+| -------------------------------------------------- | ------------------------------------------ |
+| `packages/core/src/features/definitions.ts`        | Feature definitions with dependency graph  |
+| `packages/core/src/manifests/`                     | Per-feature file lists and templated flags |
+| `packages/core/src/engine/processor.ts`            | `@feature` marker processing logic         |
+| `packages/core/src/engine/generator.ts`            | Main generation entry point                |
+| `packages/core/src/presets/index.ts`               | Minimal, Standard, Full presets            |
+| `packages/web/src/lib/stores/generator.svelte.ts`  | Reactive UI state                          |
+| `packages/web/src/lib/components/StackStep.svelte` | Feature picker + preset grid               |
+| `.github/workflows/ci.yml`                         | Unit tests + dotnet build/test matrix      |
+| `scripts/deploy.sh`                                | Docker build + push to Docker Hub          |
 
 ## Template Sync
 
 Templates are synced manually from `fpindej/netrock` (the source project). When syncing:
+
 - Copy files, then add `@feature` markers for conditional sections
 - Update the relevant manifest's file list
 - Run `pnpm test` to verify engine, then `pnpm tsx scripts/audit.ts` for integration

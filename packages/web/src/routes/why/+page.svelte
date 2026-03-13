@@ -89,7 +89,7 @@
 		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Early, but real</h2>
 
 		<p>
-			This is early, but it works. 14 features with a dependency graph that validates all 1,752
+			This is early, but it works. 14 features with a dependency graph that validates all 1,824
 			valid combinations. The backend generates clean .NET 10 solutions that build and pass tests
 			out of the box. The SvelteKit frontend generates feature-gated pages and components that
 			match your backend selection. Check the
