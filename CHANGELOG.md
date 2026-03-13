@@ -4,6 +4,20 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.5.1] - 2026-03-13
+
+### Added
+
+- "Click nodes to toggle" hint and "Full stack / API only" architecture indicator on the dependency graph
+- Changelog link in the desktop header navigation
+
+### Fixed
+
+- Hero title "netrock" clipped to "ne" on mobile due to typewriter animation using percentage max-width instead of ch units
+- Setup script @feature markers used wrong comment syntax (// instead of #) causing markers to leak into generated output
+- MailPit and MinIO packages included in generated projects even without email or file-storage features
+- Fluid.Core and MailKit version definitions gated by auth instead of email in Directory.Packages.props
+
 ## [0.5.0] - 2026-03-13
 
 ### Added
