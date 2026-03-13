@@ -144,9 +144,30 @@
 	</div>
 
 	<!-- Dependency graph -->
-	<div class="mb-8">
+	<div class="mb-6">
 		<DependencyGraph />
 	</div>
+
+	<!-- Notes -->
+	{#if generator.notes.length > 0}
+		<div class="mb-6 space-y-2">
+			{#each generator.notes as note}
+				<div class="flex gap-3 rounded-lg border border-amber/20 bg-amber-dim px-4 py-3">
+					<svg class="mt-0.5 size-4 flex-shrink-0 text-amber" viewBox="0 0 20 20" fill="currentColor">
+						<path
+							fill-rule="evenodd"
+							d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+							clip-rule="evenodd"
+						/>
+					</svg>
+					<div>
+						<p class="text-sm font-medium text-amber">{note.title}</p>
+						<p class="mt-0.5 text-xs leading-relaxed text-text-secondary">{note.message}</p>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{/if}
 
 	<!-- Feature cards (collapsed by default) -->
 	<details id="feature-cards" class="group">
