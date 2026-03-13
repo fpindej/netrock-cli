@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import Header from '$lib/components/Header.svelte';
 	import changelog from 'virtual:changelog';
 
@@ -36,6 +37,27 @@
 	}
 
 	const releases = parseChangelog(changelog);
+	let activeVersion = $state(releases[0]?.version ?? '');
+
+	onMount(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						activeVersion = entry.target.id.slice(1);
+					}
+				}
+			},
+			{ rootMargin: '-80px 0px -60% 0px' }
+		);
+
+		for (const release of releases) {
+			const el = document.getElementById(`v${release.version}`);
+			if (el) observer.observe(el);
+		}
+
+		return () => observer.disconnect();
+	});
 </script>
 
 <svelte:head>
@@ -45,40 +67,64 @@
 <Header />
 
 <main class="mx-auto max-w-2xl px-4 pt-28 pb-20 sm:pt-32">
-	<article class="space-y-8 text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-relaxed">
+	<article class="text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-relaxed">
 		<div>
 			<h1 class="font-mono text-2xl font-bold text-text-primary sm:text-3xl">Changelog</h1>
 			<p class="mt-2 text-text-muted">Notable changes to the netrock generator.</p>
 		</div>
 
-		{#each releases as release}
-			<section class="space-y-4">
-				<div class="flex items-baseline gap-3">
-					<h2 class="font-mono text-lg font-bold text-text-primary">
-						{release.version}
-					</h2>
-					<span class="font-mono text-xs text-text-muted">{release.date}</span>
+		{#if releases.length > 1}
+			<nav
+				class="sticky top-14 z-40 -mx-4 mt-6 border-b border-border-subtle bg-bg/90 px-4 py-2.5 backdrop-blur-sm"
+			>
+				<div class="flex flex-wrap gap-2">
+					{#each releases as release}
+						<a
+							href="#v{release.version}"
+							class="inline-flex min-h-[36px] items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:min-h-0 sm:px-2.5 sm:py-1
+								{activeVersion === release.version
+								? 'bg-accent-dim text-accent-light'
+								: 'text-text-muted hover:bg-surface-raised hover:text-text-secondary'}"
+						>
+							{release.version}
+						</a>
+					{/each}
 				</div>
+			</nav>
+		{/if}
 
-				{#each release.sections as section}
-					<div>
-						<h3 class="mb-2 font-mono text-sm font-semibold text-accent">
-							{section.title}
-						</h3>
-						<ul class="space-y-1">
-							{#each section.items as item}
-								<li class="flex gap-2">
-									<span class="mt-2 size-1 flex-shrink-0 rounded-full bg-border-active"></span>
-									<span>{item}</span>
-								</li>
-							{/each}
-						</ul>
+		<div class="mt-8 space-y-8">
+			{#each releases as release}
+				<section id="v{release.version}" class="scroll-mt-28 space-y-4">
+					<div class="flex items-baseline gap-3">
+						<h2 class="font-mono text-lg font-bold text-text-primary">
+							{release.version}
+						</h2>
+						<span class="font-mono text-xs text-text-muted">{release.date}</span>
 					</div>
-				{/each}
-			</section>
-		{/each}
 
-		<div class="pt-4">
+					{#each release.sections as section}
+						<div>
+							<h3 class="mb-2 font-mono text-sm font-semibold text-accent">
+								{section.title}
+							</h3>
+							<ul class="space-y-1">
+								{#each section.items as item}
+									<li class="flex gap-2">
+										<span
+											class="mt-2 size-1 flex-shrink-0 rounded-full bg-border-active"
+										></span>
+										<span>{item}</span>
+									</li>
+								{/each}
+							</ul>
+						</div>
+					{/each}
+				</section>
+			{/each}
+		</div>
+
+		<div class="pt-8">
 			<a
 				href="/"
 				class="inline-flex min-h-11 items-center rounded-lg bg-accent px-5 py-2 text-sm font-medium text-bg transition-opacity hover:opacity-90"

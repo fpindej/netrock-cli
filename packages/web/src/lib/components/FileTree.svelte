@@ -1,28 +1,30 @@
 <script lang="ts">
 	interface TreeNode {
 		name: string;
+		path: string;
 		children: TreeNode[];
 		isFile: boolean;
 	}
 
 	interface Props {
 		paths: string[];
-		maxVisible?: number;
 	}
 
-	let { paths, maxVisible = 60 }: Props = $props();
-	let showAll = $state(false);
+	let { paths }: Props = $props();
+
+	let expanded = $state(new Set<string>());
 
 	function buildTree(filePaths: string[]): TreeNode {
-		const root: TreeNode = { name: '', children: [], isFile: false };
-		for (const path of filePaths) {
-			const parts = path.split('/');
+		const root: TreeNode = { name: '', path: '', children: [], isFile: false };
+		for (const fp of filePaths) {
+			const parts = fp.split('/');
 			let node = root;
 			for (let i = 0; i < parts.length; i++) {
 				const isLast = i === parts.length - 1;
+				const childPath = parts.slice(0, i + 1).join('/');
 				let child = node.children.find((c) => c.name === parts[i]);
 				if (!child) {
-					child = { name: parts[i], children: [], isFile: isLast };
+					child = { name: parts[i], path: childPath, children: [], isFile: isLast };
 					node.children.push(child);
 				}
 				node = child;
@@ -40,52 +42,115 @@
 		for (const child of node.children) sortTree(child);
 	}
 
-	function flattenTree(node: TreeNode, depth: number): { name: string; depth: number; isFile: boolean }[] {
-		const lines: { name: string; depth: number; isFile: boolean }[] = [];
+	function collectFolders(node: TreeNode): string[] {
+		const result: string[] = [];
 		for (const child of node.children) {
-			lines.push({ name: child.name, depth, isFile: child.isFile });
 			if (!child.isFile) {
-				lines.push(...flattenTree(child, depth + 1));
+				result.push(child.path);
+				result.push(...collectFolders(child));
 			}
 		}
-		return lines;
+		return result;
+	}
+
+	function countFiles(node: TreeNode): number {
+		let count = 0;
+		for (const child of node.children) {
+			if (child.isFile) count++;
+			else count += countFiles(child);
+		}
+		return count;
 	}
 
 	let tree = $derived(buildTree(paths));
-	let allLines = $derived(flattenTree(tree, 0));
-	let visibleLines = $derived(showAll ? allLines : allLines.slice(0, maxVisible));
-	let hasMore = $derived(allLines.length > maxVisible);
+	let allFolders = $derived(collectFolders(tree));
+	let isAllExpanded = $derived(allFolders.length > 0 && allFolders.every((f) => expanded.has(f)));
+
+	// Default: expand top-level folders. Resets when paths change (feature toggle).
+	$effect(() => {
+		const next = new Set<string>();
+		for (const child of tree.children) {
+			if (!child.isFile) next.add(child.path);
+		}
+		expanded = next;
+	});
+
+	function toggle(path: string) {
+		const next = new Set(expanded);
+		if (next.has(path)) {
+			next.delete(path);
+		} else {
+			next.add(path);
+		}
+		expanded = next;
+	}
+
+	function expandAll() {
+		expanded = new Set(allFolders);
+	}
+
+	function collapseAll() {
+		expanded = new Set<string>();
+	}
 </script>
 
 <div class="overflow-hidden rounded-xl border border-border-subtle bg-surface">
 	<div class="flex items-center justify-between border-b border-border-subtle px-4 py-2">
 		<span class="font-mono text-xs text-text-muted">{paths.length} files</span>
-		{#if hasMore && !showAll}
-			<button
-				type="button"
-				onclick={() => (showAll = true)}
-				class="font-mono text-xs text-accent hover:text-accent-light"
-			>
-				Show all
-			</button>
-		{/if}
+		<button
+			type="button"
+			onclick={() => (isAllExpanded ? collapseAll() : expandAll())}
+			class="min-h-[34px] font-mono text-xs text-accent hover:text-accent-light sm:min-h-0"
+		>
+			{isAllExpanded ? 'Collapse all' : 'Expand all'}
+		</button>
 	</div>
 	<div class="max-h-80 overflow-y-auto p-3 sm:max-h-96">
 		<div class="font-mono text-xs leading-relaxed">
-			{#each visibleLines as line}
-				<div style="padding-inline-start: {line.depth * 16}px" class="flex items-center gap-1.5 py-px">
-					{#if line.isFile}
-						<span class="text-text-muted">-</span>
-						<span class="text-text-secondary">{line.name}</span>
+			{#snippet renderNodes(nodes: TreeNode[], depth: number)}
+				{#each nodes as node}
+					{#if node.isFile}
+						<div
+							style="padding-inline-start: {depth * 20}px"
+							class="flex min-w-0 items-center gap-1.5 py-0.5"
+						>
+							<span class="flex w-3 shrink-0 justify-center text-text-muted/50">-</span>
+							<span class="min-w-0 truncate text-text-secondary">{node.name}</span>
+						</div>
 					{:else}
-						<span class="text-accent">+</span>
-						<span class="text-text-primary">{line.name}/</span>
+						{@const isOpen = expanded.has(node.path)}
+						<button
+							type="button"
+							onclick={() => toggle(node.path)}
+							style="padding-inline-start: {depth * 20}px"
+							class="flex min-h-[34px] w-full min-w-0 items-center gap-1.5 rounded py-1 text-start transition-colors hover:bg-surface-raised/50 sm:min-h-0 sm:py-0.5"
+						>
+							<svg
+								class="size-3 shrink-0 text-text-muted transition-transform {isOpen
+									? 'rotate-90'
+									: ''}"
+								viewBox="0 0 16 16"
+								fill="currentColor"
+							>
+								<path
+									d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
+								/>
+							</svg>
+							<span class="min-w-0 truncate text-accent-light">{node.name}/</span>
+							{#if !isOpen}
+								<span class="shrink-0 text-[10px] text-text-muted/40">
+									{countFiles(node)}
+								</span>
+							{/if}
+						</button>
+						{#if isOpen}
+							{@render renderNodes(node.children, depth + 1)}
+						{/if}
 					{/if}
-				</div>
-			{/each}
-			{#if hasMore && !showAll}
-				<div class="mt-1 text-text-muted">... {allLines.length - maxVisible} more</div>
-			{/if}
+				{/each}
+			{/snippet}
+
+			{@render renderNodes(tree.children, 0)}
 		</div>
 	</div>
 </div>

@@ -4,6 +4,20 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.2.1] - 2026-03-13
+
+### Added
+
+- Collapsible file tree - folders expand/collapse with chevron indicators and file counts
+- Changelog version navigator - sticky bar with scroll-tracked active version
+
+### Changed
+
+- File tree touch targets sized for mobile (34px min-height on folders)
+- Changelog version badges sized for mobile (36px min-height)
+- Long file/folder names truncate instead of overflowing on small screens
+- Footer CTA card spacing improved (was flush against footer border)
+
 ## [0.2.0] - 2026-03-13
 
 ### Added

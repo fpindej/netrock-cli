@@ -67,7 +67,7 @@
 
 <footer class="border-t border-border-subtle">
 	<!-- CTA -->
-	<div class="mx-auto max-w-4xl px-4 pb-10">
+	<div class="mx-auto max-w-4xl px-4 pt-8 pb-10">
 		<div class="rounded-xl border border-border-subtle bg-surface px-6 py-8 sm:px-8">
 			<div class="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
 				<div class="text-center sm:text-start">
