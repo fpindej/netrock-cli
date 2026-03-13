@@ -8,9 +8,7 @@ user-invocable: false
 ## Overview
 
 ```
-# @feature aspire
 Local dev:  Aspire AppHost -> PostgreSQL, MinIO, MailPit (containers) + API (process)
-# @end
 Production: User's choice - Docker Compose, Coolify, Railway, Kubernetes, etc.
 ```
 
@@ -34,7 +32,6 @@ Production: User's choice - Docker Compose, Coolify, Railway, Kubernetes, etc.
 - [ ] Connection strings use env var substitution, not hardcoded values
 - [ ] `ASPNETCORE_ENVIRONMENT` set to `Production`
 
-# @feature aspire
 ### Aspire (Local Dev)
 - [ ] AppHost references all infrastructure dependencies
 - [ ] Port allocation follows the project convention (base+N pattern)
@@ -42,7 +39,6 @@ Production: User's choice - Docker Compose, Coolify, Railway, Kubernetes, etc.
 - [ ] `WithDataVolume()` on stateful resources for persistence across restarts
 - [ ] ServiceDefaults wired: OTEL, service discovery, resilience
 - [ ] Graceful degradation when not running under Aspire
-# @end
 
 ### Health Checks
 - [ ] API: `/health/live` (liveness) and `/health/ready` (readiness)
@@ -50,9 +46,7 @@ Production: User's choice - Docker Compose, Coolify, Railway, Kubernetes, etc.
 - [ ] Start periods appropriate for cold starts (API: 60s, DB: 15s)
 
 ### Reproducibility
-# @feature aspire
 - [ ] Can clone and run with `dotnet run --project src/backend/MyProject.AppHost` (local dev)
-# @end
 - [ ] No machine-specific paths or assumptions
 - [ ] NuGet versions pinned in `Directory.Packages.props`
 

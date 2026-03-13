@@ -4,10 +4,8 @@
     <FrameworkVersion>10.0.3</FrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
-    <!-- @feature aspire -->
     <PackageVersion Include="Aspire.Hosting.JavaScript" Version="13.1.2" />
     <PackageVersion Include="Aspire.Hosting.PostgreSQL" Version="13.1.2" />
-    <!-- @end -->
 
     <PackageVersion Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <!-- @feature auth -->
@@ -49,10 +47,8 @@
     <PackageVersion Include="Hangfire.Core" Version="1.8.23" />
     <PackageVersion Include="Hangfire.PostgreSql" Version="1.21.1" />
     <!-- @end -->
-    <!-- @feature aspire -->
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.MailPit" Version="13.1.1" />
     <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Minio" Version="13.1.1" />
-    <!-- @end -->
     <!-- @feature file-storage -->
     <PackageVersion Include="AWSSDK.S3" Version="3.7.510.14" />
     <!-- @end -->

@@ -1209,6 +1209,10 @@ exports[`convergence file snapshots > Solution file > core-only 1`] = `
   <Project Path="SnapshotApp.Shared/SnapshotApp.Shared.csproj" />
   <Project Path="SnapshotApp.WebApi/SnapshotApp.WebApi.csproj" />
   <Project Path="SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj" />
+  <Project Path="SnapshotApp.AppHost/SnapshotApp.AppHost.csproj" />
+  <Folder Name="/deploy/">
+    <Project Path="HealthProbe/HealthProbe.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj" />
     <Project Path="tests/SnapshotApp.Architecture.Tests/SnapshotApp.Architecture.Tests.csproj" />
@@ -1263,6 +1267,10 @@ exports[`convergence file snapshots > Solution file > minimal (core + auth) 1`] 
   <Project Path="SnapshotApp.Shared/SnapshotApp.Shared.csproj" />
   <Project Path="SnapshotApp.WebApi/SnapshotApp.WebApi.csproj" />
   <Project Path="SnapshotApp.ServiceDefaults/SnapshotApp.ServiceDefaults.csproj" />
+  <Project Path="SnapshotApp.AppHost/SnapshotApp.AppHost.csproj" />
+  <Folder Name="/deploy/">
+    <Project Path="HealthProbe/HealthProbe.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/SnapshotApp.Unit.Tests/SnapshotApp.Unit.Tests.csproj" />
     <Project Path="tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj" />

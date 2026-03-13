@@ -134,11 +134,9 @@
 			</summary>
 			<div class="border-t border-amber/15 px-5 py-4 text-sm leading-relaxed text-text-secondary">
 				<p class="mb-3 text-xs text-text-muted">
-					Local dev works out of the box{generator.resolvedFeatures.has('aspire')
-						? generator.resolvedFeatures.has('frontend')
-							? ' (Aspire orchestrates the SvelteKit dev server, .NET API, Postgres, MailPit, and MinIO automatically)'
-							: ' (Aspire manages Postgres, MailPit, MinIO automatically)'
-						: ''}. These items need your input for production.
+					Local dev works out of the box (Aspire orchestrates{generator.resolvedFeatures.has('frontend')
+						? ' the SvelteKit dev server, .NET API, Postgres, MailPit, and MinIO'
+						: ' Postgres, MailPit, and MinIO'} automatically). These items need your input for production.
 				</p>
 				<ul class="space-y-1.5">
 					<li>
@@ -157,9 +155,7 @@
 						</li>
 						<li>
 							<span class="font-mono text-xs text-amber">Email</span> - Configure a real SMTP
-							provider{generator.resolvedFeatures.has('aspire')
-								? ' (MailPit handles local dev)'
-								: ''}
+							provider (MailPit handles local dev)
 						</li>
 						<li>
 							<span class="font-mono text-xs text-amber">Admin</span> - Set
@@ -182,9 +178,7 @@
 						<li>
 							<span class="font-mono text-xs text-amber">Storage</span> - Configure
 							<code class="text-xs">FileStorage__*</code> for your S3
-							provider{generator.resolvedFeatures.has('aspire')
-								? ' (MinIO handles local dev)'
-								: ''}
+							provider (MinIO handles local dev)
 						</li>
 					{/if}
 					<li>

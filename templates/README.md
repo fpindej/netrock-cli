@@ -5,12 +5,7 @@ Generated with [netrock](https://netrock.dev) - a .NET API project generator.
 ## Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-// @feature aspire
 - [Docker](https://docs.docker.com/get-docker/) (required for Aspire orchestration)
-// @end
-// @feature !aspire
-- [PostgreSQL](https://www.postgresql.org/) (running instance required)
-// @end
 
 ## Quick start
 
@@ -25,17 +20,11 @@ chmod +x setup.sh && ./setup.sh
 ```
 
 The setup script will:
-// @feature aspire
 - Check prerequisites (.NET SDK, Docker)
 - Let you choose a base port for the service stack
-// @end
-// @feature !aspire
-- Check prerequisites (.NET SDK, PostgreSQL)
-// @end
 - Optionally initialize a git repository with an initial commit
 - Build the solution and run tests
 
-// @feature aspire
 ### Manual start
 
 If you prefer to skip the setup script:
@@ -46,19 +35,6 @@ dotnet run --project src/backend/MyProject.AppHost
 
 The Aspire dashboard opens automatically. From there you can access the API, pgAdmin, Mailpit, and MinIO console.
 
-// @end
-// @feature !aspire
-### Manual start
-
-```bash
-# Make sure PostgreSQL is running, then update the connection string in
-# src/backend/MyProject.WebApi/appsettings.Development.json
-
-dotnet build src/backend/MyProject.slnx
-dotnet run --project src/backend/MyProject.WebApi
-```
-
-// @end
 ## Run tests
 
 ```bash
@@ -94,9 +70,7 @@ dotnet test src/backend/MyProject.slnx
 // @feature admin
 - **Admin panel** - User and role management
 // @end
-// @feature aspire
 - **Aspire** - .NET Aspire for local dev orchestration with OpenTelemetry
-// @end
 
 ## Project structure
 
@@ -108,9 +82,7 @@ src/backend/
   MyProject.Infrastructure/   EF Core, services, external integrations
   MyProject.WebApi/           Controllers, middleware, configuration
   MyProject.ServiceDefaults/  OpenTelemetry, health checks, resilience
-// @feature aspire
   MyProject.AppHost/          Aspire orchestration (local dev)
-// @end
   tests/                      Architecture, unit, and integration tests
 ```
 
@@ -118,12 +90,10 @@ src/backend/
 
 Key settings are in `src/backend/MyProject.WebApi/appsettings.json`. Development overrides are in `appsettings.Development.json`.
 
-// @feature aspire
 ### Port allocation
 
 Ports are configured in `src/backend/MyProject.AppHost/appsettings.json`. The setup script can change these for you. All infrastructure ports (pgAdmin, PostgreSQL, MinIO, Mailpit) are derived from the base port automatically.
 
-// @end
 // @feature auth
 ### Seed users
 

@@ -81,8 +81,10 @@
 		return isOn(from) && isOn(to);
 	}
 
+	const requiredIds = new Set<FeatureId>(['core', 'aspire']);
+
 	function handleClick(id: FeatureId) {
-		if (id === 'core') return;
+		if (requiredIds.has(id)) return;
 		generator.toggle(id);
 
 		const rect = document.querySelector(`#gnode-${CSS.escape(id)} .gnode-rect`);
@@ -199,18 +201,18 @@
 		<!-- Nodes -->
 		{#each nodes as node}
 			{@const on = isOn(node.id)}
-			{@const isCore = node.id === 'core'}
+			{@const isRequired = requiredIds.has(node.id)}
 			<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 			<g
 				id="gnode-{node.id}"
-				class="gnode outline-none {isCore ? '' : 'cursor-pointer'}"
-				role={isCore ? 'img' : 'button'}
-				tabindex={isCore ? undefined : 0}
+				class="gnode outline-none {isRequired ? '' : 'cursor-pointer'}"
+				role={isRequired ? 'img' : 'button'}
+				tabindex={isRequired ? undefined : 0}
 				onclick={() => handleClick(node.id)}
 				onkeydown={(e) => e.key === 'Enter' && handleClick(node.id)}
 			>
 				<!-- Invisible hit area for touch targets -->
-				{#if !isCore}
+				{#if !isRequired}
 					<rect
 						x={node.cx - W / 2 - HIT_PAD}
 						y={node.cy - H / 2 - HIT_PAD}
@@ -247,7 +249,7 @@
 				>
 					{node.label}
 				</text>
-				{#if isCore}
+				{#if isRequired}
 					<circle cx={node.cx} cy={node.cy - H / 2 - 4} r="2" fill="#06b6d4" opacity="0.6">
 						<animate
 							attributeName="opacity"

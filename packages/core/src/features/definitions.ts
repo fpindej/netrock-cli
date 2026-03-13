@@ -141,9 +141,9 @@ export const featureDefinitions: Feature[] = [
 		name: 'Aspire orchestration',
 		description: '.NET Aspire for local dev orchestration with OpenTelemetry',
 		details:
-			'Adds a .NET Aspire AppHost that orchestrates all services locally with a single command: PostgreSQL, the API, the frontend dev server, and any other dependencies like MinIO. Includes OpenTelemetry integration for distributed tracing, metrics, and structured logging via the Aspire dashboard.',
+			'Included in every project. Aspire orchestrates all services locally with a single command: PostgreSQL, the API, the frontend dev server, and dependencies like MinIO or MailPit. Includes OpenTelemetry for distributed tracing, metrics, and structured logging via the Aspire dashboard.',
 		dependencies: ['core'],
-		required: false,
+		required: true,
 		defaultEnabled: true,
 		group: 'infrastructure'
 	},

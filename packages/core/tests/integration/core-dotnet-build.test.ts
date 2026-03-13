@@ -15,7 +15,7 @@ beforeAll(() => {
 	const source = createFsSource(templatesDir);
 
 	const result = generateProject(
-		{ projectName: 'test-app', features: new Set<FeatureId>(['core']) },
+		{ projectName: 'test-app', features: new Set<FeatureId>(['core', 'aspire']) },
 		source
 	);
 

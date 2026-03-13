@@ -95,7 +95,6 @@ try {
     $errors++
 }
 
-// @feature aspire
 try {
     $null = docker --version 2>$null
     $null = docker info 2>$null
@@ -109,16 +108,7 @@ try {
     Write-Fail "Docker not found - install from https://docs.docker.com/get-docker/"
     $errors++
 }
-// @end
 
-// @feature !aspire
-try {
-    $null = psql --version 2>$null
-    Write-Ok "PostgreSQL client (psql)"
-} catch {
-    Write-Warn "PostgreSQL client (psql) not found - make sure PostgreSQL is running and accessible"
-}
-// @end
 
 if ($errors -gt 0) {
     Write-Host ""
@@ -128,7 +118,6 @@ if ($errors -gt 0) {
 
 Write-Ok "All prerequisites met"
 
-// @feature aspire
 # ─────────────────────────────────────────────────────────────────────────────
 # Port Configuration
 # ─────────────────────────────────────────────────────────────────────────────
@@ -173,12 +162,10 @@ Write-Host "  MinIO:          $($basePort + 5)   Console:  $($basePort + 6)" -Fo
 # // @feature auth
 Write-Host "  MailPit SMTP:   $($basePort + 7)   HTTP:     $($basePort + 8)" -ForegroundColor DarkGray
 # // @end
-// @end
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Options Checklist
 # ─────────────────────────────────────────────────────────────────────────────
-// @feature aspire
 $results = Show-Checklist `
     -Options @("Create initial database migration", "Initialize git repository and commit", "Build and run tests", "Launch Aspire after setup") `
     -Defaults @($true, $true, $true, $true)
@@ -186,17 +173,7 @@ $doMigration = $results[0]
 $doGit = $results[1]
 $doBuild = $results[2]
 $doAspire = $results[3]
-// @end
 
-// @feature !aspire
-$results = Show-Checklist `
-    -Options @("Create initial database migration", "Initialize git repository and commit", "Build and run tests") `
-    -Defaults @($true, $true, $true)
-$doMigration = $results[0]
-$doGit = $results[1]
-$doBuild = $results[2]
-$doAspire = $false
-// @end
 
 // @feature auth
 # ─────────────────────────────────────────────────────────────────────────────
@@ -223,14 +200,12 @@ if ($input) { $saPass = $input }
 # ─────────────────────────────────────────────────────────────────────────────
 Write-Header "Summary"
 
-// @feature aspire
 Write-Host ""
 Write-Host "  Ports" -ForegroundColor White
 Write-Host "  ────────────────────────────────────"
 Write-Host "  Frontend:         " -NoNewline; Write-Host "$frontendPort" -ForegroundColor Cyan
 Write-Host "  API:              " -NoNewline; Write-Host "$apiPort" -ForegroundColor Cyan
 Write-Host ""
-// @end
 Write-Host "  Options" -ForegroundColor White
 Write-Host "  ────────────────────────────────────"
 Write-Host "  Create migration: " -NoNewline
@@ -239,10 +214,8 @@ Write-Host "  Git init/commit:  " -NoNewline
 if ($doGit) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No" -ForegroundColor DarkGray }
 Write-Host "  Build and test:   " -NoNewline
 if ($doBuild) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No" -ForegroundColor DarkGray }
-// @feature aspire
 Write-Host "  Launch Aspire:    " -NoNewline
 if ($doAspire) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No" -ForegroundColor DarkGray }
-// @end
 // @feature auth
 Write-Host ""
 Write-Host "  Superuser" -ForegroundColor White
@@ -302,7 +275,6 @@ if ((Test-Path "src/frontend/.env.example") -and -not (Test-Path "src/frontend/.
 }
 // @end
 
-// @feature aspire
 # ── Port Configuration ──────────────────────────────────────────────────────
 if ($basePort -ne 5173) {
     Write-Step "Updating port configuration..."
@@ -321,7 +293,6 @@ if ($basePort -ne 5173) {
     Write-Ok "Ports updated (base: $basePort)"
     Git-Commit "chore: configure ports (base: $basePort)"
 }
-// @end
 
 // @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
@@ -415,7 +386,6 @@ $elapsed = [int]((Get-Date) - $startTime).TotalSeconds
 
 Write-Header "Setup Complete!"
 
-// @feature aspire
 if ($doAspire) {
     Write-Host ""
     Write-Host "  Your project is ready!" -ForegroundColor White
@@ -440,15 +410,3 @@ if ($doAspire) {
     Write-Host "  Completed in ${elapsed}s" -ForegroundColor DarkGray
     Write-Host ""
 }
-// @end
-// @feature !aspire
-Write-Host ""
-Write-Host "  Your project is ready!" -ForegroundColor White
-Write-Host ""
-Write-Host "  Quick start" -ForegroundColor White
-Write-Host "  ────────────────────────────────────"
-Write-Host "  dotnet run --project src/backend/MyProject.WebApi"
-Write-Host ""
-Write-Host "  Completed in ${elapsed}s" -ForegroundColor DarkGray
-Write-Host ""
-// @end

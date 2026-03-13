@@ -48,11 +48,9 @@ Run before every commit. Fix all errors before committing. **Loop until green - 
 ```bash
 # Backend (run when src/backend/ changed)
 dotnet build src/backend/MyProject.slnx && dotnet test src/backend/MyProject.slnx -c Release
-# @feature aspire
 
 # Aspire (run to verify local orchestration - requires Docker)
 dotnet run --project src/backend/MyProject.AppHost
-# @end
 ```
 
 ## Autonomous Behaviors

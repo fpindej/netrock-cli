@@ -21,10 +21,8 @@ src/backend/
 ├── MyProject.Infrastructure/      # Implementations (all internal)
 │   ├── Features/{Feature}/Services/, Configurations/, Extensions/
 │   └── Persistence/MyProjectDbContext.cs
-# @feature aspire
 ├── MyProject.ServiceDefaults/     # Aspire shared: OTEL, service discovery, resilience
 ├── MyProject.AppHost/             # Aspire orchestrator (local dev only)
-# @end
 └── MyProject.WebApi/              # Entry point
     ├── Features/{Feature}/{Feature}Controller.cs, {Feature}Mapper.cs
     ├── Features/{Feature}/Dtos/{Operation}/{Operation}Request.cs + Validator
@@ -256,10 +254,8 @@ API test auth: `"Authorization", "Test"` (basic user), `TestAuth.WithPermissions
 
 Response contracts: frozen records in `Contracts/ResponseContracts.cs` - deserialize and assert key fields.
 
-# @feature aspire
 ## Aspire (Local Development)
 
 Run: `dotnet run --project src/backend/MyProject.AppHost` - launches PostgreSQL, MinIO, MailPit, API. See `/add-aspire-dep` skill for adding dependencies.
 
 **Logging gotcha**: Serilog bridges to OTEL via `writeToProviders: true` - do NOT add `Serilog.Sinks.OpenTelemetry` (causes duplicate logs).
-# @end

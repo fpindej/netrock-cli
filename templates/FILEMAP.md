@@ -105,12 +105,10 @@ Quick-reference for "when you change X, also update Y" and "where does X live?"
 | **`MyProject.WebApi.csproj`** (add appsettings file) | If non-production: add `CopyToPublishDirectory="Never"` and matching `rm -f` in `Dockerfile` |
 | **Route constraint** (add/modify in `Routing/`) | `Program.cs` constraint registration, route templates using that constraint |
 | **`HealthCheckExtensions.cs`** (change endpoints/checks) | Frontend health proxy `+server.ts`, Dockerfile healthcheck command |
-# @feature aspire
 | **New infrastructure dependency** (DB, cache, storage, etc.) | `MyProject.AppHost/Program.cs` (add resource + `.WithReference()`/`.WithEnvironment()`) |
 | **Connection string config** (change format/name) | Verify `MyProject.AppHost/Program.cs` environment variable mapping still works |
 | **`MyProject.ServiceDefaults/Extensions.cs`** | All projects referencing ServiceDefaults, `Program.cs` `AddServiceDefaults()` call |
 | **`MyProject.AppHost/Program.cs`** | Verify resource names match `ConnectionStrings:*` and `WithEnvironment` keys match `appsettings.json` option paths |
-# @end
 | **`ProblemDetailsAuthorizationHandler`** | `ProblemDetails` shape, `ErrorMessages.Auth` constants, `Program.cs` registration |
 | **OpenAPI transformers** | Regenerate types to verify; check Scalar UI |
 # @feature captcha
@@ -247,9 +245,7 @@ src/backend/tests/
 # @end
 | `src/backend/MyProject.WebApi/Shared/RateLimitPolicies.cs` | Rate limit policy name constants |
 | `src/backend/Directory.Packages.props` | NuGet versions (never in .csproj) |
-# @feature aspire
 | `src/backend/MyProject.ServiceDefaults/Extensions.cs` | Aspire shared: OTEL, service discovery, HTTP resilience defaults |
 | `src/backend/MyProject.AppHost/Program.cs` | Aspire orchestrator: local dev (PostgreSQL, MinIO, MailPit, API, Frontend) |
-# @end
 | `src/backend/MyProject.WebApi/appsettings.Testing.json` | Test environment config |
 | `src/backend/tests/MyProject.Api.Tests/Fixtures/CustomWebApplicationFactory.cs` | Test host configuration for API tests |

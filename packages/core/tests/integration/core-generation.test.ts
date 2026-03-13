@@ -137,9 +137,11 @@ describe('core-only generation', () => {
 		expect(slnx!.content).toContain('Test.Unit.Tests');
 		expect(slnx!.content).toContain('Test.Architecture.Tests');
 
+		// Should have Aspire projects (required)
+		expect(slnx!.content).toContain('AppHost');
+		expect(slnx!.content).toContain('HealthProbe');
+
 		// Should NOT have feature-specific projects
-		expect(slnx!.content).not.toContain('AppHost');
-		expect(slnx!.content).not.toContain('HealthProbe');
 		expect(slnx!.content).not.toContain('Api.Tests');
 		expect(slnx!.content).not.toContain('Component.Tests');
 	});

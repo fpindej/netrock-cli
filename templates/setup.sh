@@ -112,7 +112,6 @@ else
     errors=$((errors + 1))
 fi
 
-// @feature aspire
 if command -v docker &>/dev/null; then
     if docker info &>/dev/null; then
         print_success "Docker (running)"
@@ -124,15 +123,7 @@ else
     print_error "Docker not found - install from https://docs.docker.com/get-docker/"
     errors=$((errors + 1))
 fi
-// @end
 
-// @feature !aspire
-if command -v psql &>/dev/null; then
-    print_success "PostgreSQL client (psql)"
-else
-    print_warning "PostgreSQL client (psql) not found - make sure PostgreSQL is running and accessible"
-fi
-// @end
 
 if [ "$errors" -gt 0 ]; then
     echo ""
@@ -142,7 +133,6 @@ fi
 
 print_success "All prerequisites met"
 
-// @feature aspire
 # ─────────────────────────────────────────────────────────────────────────────
 # Port Configuration
 # ─────────────────────────────────────────────────────────────────────────────
@@ -190,12 +180,10 @@ echo -e "  ${DIM}MinIO:          $MINIO_PORT   Console:  $MINIO_CONSOLE_PORT${NC
 # // @feature auth
 echo -e "  ${DIM}MailPit SMTP:   $MAILPIT_SMTP_PORT   HTTP:     $MAILPIT_HTTP_PORT${NC}"
 # // @end
-// @end
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Options Checklist
 # ─────────────────────────────────────────────────────────────────────────────
-// @feature aspire
 CHECKLIST_DEFAULTS=(1 1 1 1)
 prompt_checklist \
     "Create initial database migration" \
@@ -206,19 +194,7 @@ DO_MIGRATION="${CHECKLIST_RESULTS[0]}"
 DO_GIT="${CHECKLIST_RESULTS[1]}"
 DO_BUILD="${CHECKLIST_RESULTS[2]}"
 DO_ASPIRE="${CHECKLIST_RESULTS[3]}"
-// @end
 
-// @feature !aspire
-CHECKLIST_DEFAULTS=(1 1 1)
-prompt_checklist \
-    "Create initial database migration" \
-    "Initialize git repository and commit" \
-    "Build and run tests"
-DO_MIGRATION="${CHECKLIST_RESULTS[0]}"
-DO_GIT="${CHECKLIST_RESULTS[1]}"
-DO_BUILD="${CHECKLIST_RESULTS[2]}"
-DO_ASPIRE="0"
-// @end
 
 // @feature auth
 # ─────────────────────────────────────────────────────────────────────────────
@@ -244,7 +220,6 @@ read -p "$(echo -e "  ${BOLD}Password${NC} [$SA_PASS]: ")" input
 echo -e "${CYAN}${BOLD}============================================================${NC}"
 echo -e "${CYAN}${BOLD}  Summary${NC}"
 echo -e "${CYAN}${BOLD}============================================================${NC}"
-// @feature aspire
 echo -e "
   ${BOLD}Ports${NC}
   ────────────────────────────────────
@@ -258,16 +233,6 @@ echo -e "
   Build and test:   $([ "$DO_BUILD" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
   Launch Aspire:    $([ "$DO_ASPIRE" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
 "
-// @end
-// @feature !aspire
-echo -e "
-  ${BOLD}Options${NC}
-  ────────────────────────────────────
-  Create migration: $([ "$DO_MIGRATION" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
-  Git init/commit:  $([ "$DO_GIT" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
-  Build and test:   $([ "$DO_BUILD" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
-"
-// @end
 // @feature auth
 echo -e "
   ${BOLD}Superuser${NC}
@@ -329,7 +294,6 @@ if [ -f "src/frontend/.env.example" ] && [ ! -f "src/frontend/.env" ]; then
 fi
 // @end
 
-// @feature aspire
 # ── Port Configuration ──────────────────────────────────────────────────────
 if [ "$BASE_PORT" != "5173" ]; then
     print_step "Updating port configuration..."
@@ -352,7 +316,6 @@ if [ "$BASE_PORT" != "5173" ]; then
     print_success "Ports updated (base: $BASE_PORT)"
     git_commit "chore: configure ports (base: $BASE_PORT)"
 fi
-// @end
 
 // @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
@@ -449,7 +412,6 @@ echo -e "${CYAN}${BOLD}=========================================================
 echo -e "${CYAN}${BOLD}  Setup Complete!${NC}"
 echo -e "${CYAN}${BOLD}============================================================${NC}"
 
-// @feature aspire
 if [ "$DO_ASPIRE" = "1" ]; then
     echo -e "
   ${BOLD}Your project is ready!${NC}
@@ -474,15 +436,3 @@ else
   ${DIM}Completed in $(($(date +%s) - START_TIME))s${NC}
 "
 fi
-// @end
-// @feature !aspire
-echo -e "
-  ${BOLD}Your project is ready!${NC}
-
-  ${BOLD}Quick start${NC}
-  ────────────────────────────────────
-  dotnet run --project src/backend/MyProject.WebApi
-
-  ${DIM}Completed in $(($(date +%s) - START_TIME))s${NC}
-"
-// @end

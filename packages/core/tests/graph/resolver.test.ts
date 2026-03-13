@@ -24,7 +24,7 @@ describe('resolveFeatures', () => {
 
 	it('handles empty selection (only required features)', () => {
 		const result = resolveFeatures(new Set());
-		expect(result.size).toBe(1); // core only
+		expect(result.size).toBe(2); // core + aspire (both required)
 	});
 
 	it('ignores unknown feature IDs', () => {
