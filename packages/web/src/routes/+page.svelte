@@ -28,7 +28,7 @@
 </script>
 
 <svelte:head>
-	<title>netrock - Generate production-ready .NET API projects</title>
+	<title>netrock - .NET API project generator</title>
 </svelte:head>
 
 <svelte:window onscroll={handleScroll} />
@@ -44,7 +44,7 @@
 			</span><span class="cursor-blink text-accent-light">_</span>
 		</h1>
 		<p class="mt-4 max-w-md text-base text-text-secondary sm:text-lg">
-			Production-ready .NET APIs in seconds.
+			Ship-ready .NET APIs in seconds.
 			<br class="hidden sm:block" />
 			Pick features, preview, download.
 		</p>

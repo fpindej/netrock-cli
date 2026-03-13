@@ -154,7 +154,7 @@ export const featureDefinitions: Feature[] = [
 		description:
 			'22 Claude Code skills, 3 convention references, and skill assets for code generation',
 		details:
-			'Adds slash-command skills for common workflows: adding permissions, background jobs, email templates, API endpoints, and more. Includes convention reference documents that agents auto-load for consistent code style. Skills generate production-ready code following the project patterns.',
+			'Adds slash-command skills for common workflows: adding permissions, background jobs, email templates, API endpoints, and more. Includes convention reference documents that agents auto-load for consistent code style. Skills generate code following established project patterns.',
 		dependencies: ['claude'],
 		required: false,
 		defaultEnabled: true,
@@ -165,7 +165,7 @@ export const featureDefinitions: Feature[] = [
 		name: 'SvelteKit frontend',
 		description: 'SvelteKit reference frontend that adapts to your selected features',
 		details:
-			'Adds a full SvelteKit 5 frontend with Tailwind CSS, shadcn-svelte components, i18n (Paraglide), dark/light themes, and a responsive sidebar layout. Includes pages and components matching your backend features: auth pages, admin dashboard, profile management, and more. Without auth, ships as a clean dashboard shell.',
+			'Adds a SvelteKit 5 frontend with Tailwind CSS, shadcn-svelte components, i18n (Paraglide), dark/light themes, and a responsive sidebar layout. Includes an API proxy, typed API client with openapi-typescript code generation, backend health monitoring, and keyboard shortcuts. Pages and components adapt to your selected features. Without auth, ships as a clean dashboard shell.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
