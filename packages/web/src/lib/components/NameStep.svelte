@@ -7,9 +7,9 @@
 	);
 </script>
 
-<section id="name" class="mx-auto w-full max-w-2xl px-4">
+<section class="mx-auto w-full max-w-2xl px-4">
 	<div class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-		01 / Project name
+		Project name
 	</div>
 
 	<div class="group relative">

@@ -20,17 +20,13 @@
 	const Y0 = 24;
 
 	const nodes: GNode[] = [
-		// Layer 0 - required
 		{ id: 'core', label: 'Core', cx: 48, cy: Y0 + 2.5 * S },
-		// Layer 0.5 - email bridge
 		{ id: 'email', label: 'Email', cx: 168, cy: Y0 },
-		// Layer 1 - features
 		{ id: 'auth', label: 'Auth', cx: 298, cy: Y0 },
 		{ id: 'audit', label: 'Audit', cx: 298, cy: Y0 + S },
 		{ id: 'file-storage', label: 'Files', cx: 298, cy: Y0 + 2 * S },
 		{ id: 'jobs', label: 'Jobs', cx: 298, cy: Y0 + 3 * S },
 		{ id: 'claude', label: 'Claude', cx: 298, cy: Y0 + 4 * S },
-		// Layer 2 - extensions
 		{ id: '2fa', label: '2FA', cx: 458, cy: Y0 },
 		{ id: 'oauth', label: 'OAuth', cx: 458, cy: Y0 + S },
 		{ id: 'captcha', label: 'Captcha', cx: 458, cy: Y0 + 2 * S },
@@ -38,6 +34,22 @@
 		{ id: 'avatars', label: 'Avatars', cx: 458, cy: Y0 + 4 * S },
 		{ id: 'claude-skills', label: 'Skills', cx: 458, cy: Y0 + 5 * S }
 	];
+
+	const tips: Record<string, string> = {
+		core: 'Clean Architecture, Result pattern, PostgreSQL, Aspire, health checks',
+		email: 'SMTP service with Liquid templates. Standalone or auto-included with Auth',
+		auth: 'JWT login, registration, email verification, password reset, user profile',
+		audit: 'Append-only event log for security-sensitive actions',
+		'file-storage': 'S3/MinIO abstraction for file uploads',
+		jobs: 'Hangfire background processing with PostgreSQL storage',
+		claude: 'CLAUDE.md, agents, lifecycle hooks for AI-assisted dev',
+		'2fa': 'TOTP-based two-factor with recovery codes',
+		oauth: 'Google, GitHub, Microsoft, Apple + more. Pick your providers',
+		captcha: 'Cloudflare Turnstile on registration and password reset',
+		admin: 'User management, role management, permissions',
+		avatars: 'Profile avatar upload with server-side image processing',
+		'claude-skills': '22 slash-command skills and convention references'
+	};
 
 	const lastY = Y0 + 5 * S + H / 2;
 	const labelY = lastY + 20;
@@ -71,7 +83,6 @@
 		const ty = t.cy;
 		const dx = tx - sx;
 
-		// Fan out core edges along its right edge for cleaner routing
 		if (from === 'core') {
 			const targets = edgeDefs.filter((e) => e[0] === 'core').map((e) => e[1]);
 			const idx = targets.indexOf(to);
@@ -93,8 +104,29 @@
 
 	const requiredIds = new Set<FeatureId>(['core']);
 
+	// Tooltip state
+	let hoveredNode = $state<FeatureId | null>(null);
+	let tooltipX = $state(0);
+	let tooltipY = $state(0);
+	let svgEl: SVGSVGElement;
+
+	function oauthCount(): string {
+		const opts = generator.getSelectedOptions('oauth');
+		const total = generator.definitions.find((d) => d.id === 'oauth')?.options?.length ?? 0;
+		return opts ? `${opts.size}/${total}` : '';
+	}
+
+	function nodeLabel(node: GNode): string {
+		if (node.id === 'oauth' && isOn('oauth')) {
+			const count = oauthCount();
+			return count ? `OAuth (${count})` : node.label;
+		}
+		return node.label;
+	}
+
 	function handleClick(id: FeatureId) {
 		if (requiredIds.has(id)) return;
+		const wasOff = !generator.resolvedFeatures.has(id);
 		generator.toggle(id);
 
 		const rect = document.querySelector(`#gnode-${CSS.escape(id)} .gnode-rect`);
@@ -105,6 +137,33 @@
 				ease: 'outQuad'
 			});
 		}
+
+		// When enabling OAuth, expand feature cards so user can pick providers
+		if (id === 'oauth' && wasOff) {
+			setTimeout(() => {
+				const details = document.getElementById('feature-cards') as HTMLDetailsElement | null;
+				if (details) {
+					details.open = true;
+					setTimeout(() => {
+						const oauthCard = document.querySelector('[data-feature="oauth"]');
+						oauthCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}, 100);
+				}
+			}, 200);
+		}
+	}
+
+	function showTip(node: GNode) {
+		hoveredNode = node.id;
+		if (!svgEl) return;
+		const rect = svgEl.getBoundingClientRect();
+		const scaleX = rect.width / 510;
+		tooltipX = rect.left + node.cx * scaleX;
+		tooltipY = rect.top + (node.cy - H / 2) * (rect.height / viewH);
+	}
+
+	function hideTip() {
+		hoveredNode = null;
 	}
 
 	onMount(() => {
@@ -130,14 +189,19 @@
 	});
 </script>
 
-<div class="overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
+<div class="relative overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
 	<div class="mb-2 flex items-center justify-between px-1">
 		<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
 			{generator.isFrontendEnabled ? 'Full stack' : 'API only'} - backend dependencies
 		</span>
 		<span class="font-mono text-[10px] text-text-muted">click nodes to toggle</span>
 	</div>
-	<svg viewBox="0 0 510 {viewH}" class="mx-auto block w-full" style="min-width: 380px;">
+	<svg
+		bind:this={svgEl}
+		viewBox="0 0 510 {viewH}"
+		class="mx-auto block w-full"
+		style="min-width: 380px;"
+	>
 		<defs>
 			<pattern id="gg" width="20" height="20" patternUnits="userSpaceOnUse">
 				<path d="M20 0 L0 0 0 20" fill="none" stroke="#222233" stroke-width="0.3" opacity="0.5" />
@@ -156,34 +220,13 @@
 		<rect width="510" height={viewH} fill="url(#gg)" rx="8" />
 
 		<!-- Layer labels -->
-		<text
-			x="48"
-			y={labelY}
-			text-anchor="middle"
-			fill="#555566"
-			font-size="8"
-			font-family="var(--font-mono)"
-		>
+		<text x="48" y={labelY} text-anchor="middle" fill="#555566" font-size="8" font-family="var(--font-mono)">
 			required
 		</text>
-		<text
-			x="298"
-			y={labelY}
-			text-anchor="middle"
-			fill="#555566"
-			font-size="8"
-			font-family="var(--font-mono)"
-		>
+		<text x="298" y={labelY} text-anchor="middle" fill="#555566" font-size="8" font-family="var(--font-mono)">
 			features
 		</text>
-		<text
-			x="458"
-			y={labelY}
-			text-anchor="middle"
-			fill="#555566"
-			font-size="8"
-			font-family="var(--font-mono)"
-		>
+		<text x="458" y={labelY} text-anchor="middle" fill="#555566" font-size="8" font-family="var(--font-mono)">
 			extensions
 		</text>
 
@@ -222,8 +265,9 @@
 				tabindex={isRequired ? undefined : 0}
 				onclick={() => handleClick(node.id)}
 				onkeydown={(e) => e.key === 'Enter' && handleClick(node.id)}
+				onpointerenter={() => showTip(node)}
+				onpointerleave={hideTip}
 			>
-				<!-- Invisible hit area for touch targets -->
 				{#if !isRequired}
 					<rect
 						x={node.cx - W / 2 - HIT_PAD}
@@ -234,7 +278,6 @@
 						fill="transparent"
 					/>
 				{/if}
-				<!-- Visible node -->
 				<rect
 					class="gnode-rect"
 					x={node.cx - W / 2}
@@ -254,12 +297,12 @@
 					text-anchor="middle"
 					dominant-baseline="central"
 					fill={on ? '#22d3ee' : '#555566'}
-					font-size="11"
+					font-size={node.id === 'oauth' && isOn('oauth') ? '9' : '11'}
 					font-family="var(--font-mono)"
 					class="pointer-events-none select-none"
 					style="transition: fill 0.3s;"
 				>
-					{node.label}
+					{nodeLabel(node)}
 				</text>
 				{#if isRequired}
 					<circle cx={node.cx} cy={node.cy - H / 2 - 4} r="2" fill="#06b6d4" opacity="0.6">
@@ -276,9 +319,33 @@
 	</svg>
 </div>
 
+<!-- Tooltip (positioned outside SVG, desktop only) -->
+{#if hoveredNode && tips[hoveredNode]}
+	<div
+		class="pointer-events-none fixed z-50 max-w-[220px] rounded-lg border border-border-subtle bg-surface px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-lg hover-tooltip"
+		style="left: {tooltipX}px; top: {tooltipY - 8}px; transform: translate(-50%, -100%);"
+	>
+		<span class="font-mono font-medium text-accent-light">
+			{nodes.find((n) => n.id === hoveredNode)?.label}
+		</span>
+		<span class="mx-1 text-border-active">-</span>
+		{tips[hoveredNode]}
+	</div>
+{/if}
+
 <style>
 	.gnode:focus-visible .gnode-rect {
 		stroke: #22d3ee;
 		stroke-width: 2;
+	}
+
+	.hover-tooltip {
+		display: none;
+	}
+
+	@media (hover: hover) {
+		.hover-tooltip {
+			display: block;
+		}
 	}
 </style>

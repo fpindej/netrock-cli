@@ -22,6 +22,7 @@
 </script>
 
 <div
+	data-feature={feature.id}
 	class="flex w-full flex-col rounded-xl border transition-all
 		{isOn
 		? 'border-accent/30 bg-accent-dim'

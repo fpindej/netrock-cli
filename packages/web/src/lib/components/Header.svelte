@@ -2,18 +2,6 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 
-	interface Props {
-		activeSection?: string;
-	}
-
-	let { activeSection }: Props = $props();
-
-	const steps = [
-		{ id: 'name', label: '1. Name' },
-		{ id: 'features', label: '2. Features' },
-		{ id: 'review', label: '3. Download' }
-	];
-
 	let isHome = $derived(page.url.pathname === '/');
 	let stars = $state<number | null>(null);
 
@@ -48,17 +36,6 @@
 	</div>
 
 	<nav class="flex items-center gap-1">
-		{#each steps as step}
-			<a
-				href="{isHome ? '' : '/'}#{step.id}"
-				class="hidden rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:block
-					{isHome && activeSection === step.id
-					? 'bg-accent-dim text-accent-light'
-					: 'text-text-muted hover:text-text-secondary'}"
-			>
-				{step.label}
-			</a>
-		{/each}
 		<a
 			href="/why"
 			class="inline-flex min-h-[44px] items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:min-h-0

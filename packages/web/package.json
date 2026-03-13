@@ -13,8 +13,7 @@
 	"dependencies": {
 		"@netrock/core": "workspace:*",
 		"animejs": "^4.3.6",
-		"fflate": "^0.8.2",
-		"shepherd.js": "^15.2.2"
+		"fflate": "^0.8.2"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^3.0.0",

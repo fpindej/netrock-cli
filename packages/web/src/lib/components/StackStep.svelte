@@ -12,9 +12,9 @@
 	const comingSoonFrameworks = ['Angular', 'Next.js', 'Nuxt', 'React SPA'];
 </script>
 
-<section id="features" class="mx-auto w-full max-w-4xl px-4">
+<section class="mx-auto w-full max-w-4xl px-4">
 	<div class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-		02 / Choose your stack
+		Choose your stack
 	</div>
 
 	<!-- Architecture selector -->
@@ -148,30 +148,38 @@
 		<DependencyGraph />
 	</div>
 
-	<!-- Custom label -->
-	{#if !generator.activePresetId}
-		<div
-			class="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent-dim px-3 py-1"
+	<!-- Feature cards (collapsed by default) -->
+	<details id="feature-cards" class="group">
+		<summary
+			class="flex cursor-pointer items-center gap-2 rounded-lg px-1 py-2 font-mono text-xs text-text-muted transition-colors select-none hover:text-text-secondary"
 		>
-			<span class="font-mono text-xs text-accent">Custom configuration</span>
-		</div>
-	{/if}
-
-	<!-- Backend feature groups -->
-	<div class="space-y-6">
-		{#each generator.groups as group}
-			<div>
-				<h3 class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-					{group.label}
-				</h3>
-				<div class="grid gap-2 sm:grid-cols-2">
-					{#each group.features as feature}
-						<FeatureCard {feature} />
-					{/each}
+			<svg
+				class="size-3.5 transition-transform group-open:rotate-90"
+				viewBox="0 0 16 16"
+				fill="currentColor"
+			>
+				<path
+					d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
+				/>
+			</svg>
+			{!generator.activePresetId ? 'Custom configuration' : 'All features'}
+			<span class="text-text-muted/60">- toggle individually</span>
+		</summary>
+		<div class="mt-4 space-y-6">
+			{#each generator.groups as group}
+				<div>
+					<h3 class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
+						{group.label}
+					</h3>
+					<div class="grid gap-2 sm:grid-cols-2">
+						{#each group.features as feature}
+							<FeatureCard {feature} />
+						{/each}
+					</div>
 				</div>
-			</div>
-		{/each}
-	</div>
+			{/each}
+		</div>
+	</details>
 
 	<!-- Notes -->
 	{#if generator.notes.length > 0}

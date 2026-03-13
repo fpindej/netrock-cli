@@ -69,6 +69,44 @@ pnpm tsx scripts/audit.ts
 | `.github/workflows/ci.yml`                         | Unit tests + dotnet build/test matrix      |
 | `scripts/deploy.sh`                                | Docker build + push to Docker Hub          |
 
+## Web UI Design Rules
+
+All changes to `packages/web` must follow these rules. Do not ask - just enforce them.
+
+### Responsiveness
+
+- Every UI change must work on phones (320px), tablets (768px), and desktops (1280px+)
+- Test all screen orientations conceptually - no horizontal overflow, no clipped content
+- Use Tailwind responsive prefixes (`sm:`, `md:`, `lg:`) for breakpoint-specific sizing
+
+### Touch Targets
+
+- Minimum **44px** touch target on all interactive elements (buttons, links, toggles) on mobile
+- Use `min-h-[44px]` on mobile, `sm:min-h-0` on desktop for compact mode
+- Invisible hit areas (transparent rects) are acceptable for SVG elements
+
+### Visual Standards
+
+- Dark theme only - all colors from `app.css` theme variables
+- No white flash - inline `background` on `<html>` for instant dark paint
+- No browser default focus rings - use custom `focus-visible` styles with accent color
+- Monospace font (`font-mono`) for labels, stats, and technical text
+- Touch-friendly spacing on mobile, compact on desktop
+
+### Anime.js
+
+- Use `animate` and `stagger` from `animejs` (v4 named exports, not default)
+- Easing names: `outCubic`, `inCubic`, `outQuad`, `outExpo` (no `ease` prefix)
+- Entrance animations: stagger + opacity + translateX/Y
+- Step transitions: slide + fade (200-300ms)
+
+### Before Shipping
+
+- Verify touch targets with pixel math: `(element_size_in_svg_units * render_scale) >= 44px`
+- Verify no content clipping on 320px viewport
+- Run `pnpm build` + `pnpm --filter @netrock/web check` (0 errors, 0 warnings)
+- Update version + CHANGELOG.md for feature changes
+
 ## Template Sync
 
 Templates are synced manually from `fpindej/netrock` (the source project). When syncing:
