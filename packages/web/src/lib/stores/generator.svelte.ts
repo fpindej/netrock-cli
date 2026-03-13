@@ -42,7 +42,7 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 			title: 'No authentication',
 			message: features.has('frontend')
 				? 'All API endpoints will be public. The frontend ships as a dashboard shell without login, register, profile, or settings pages. Add Authentication for JWT-based auth and user management.'
-				: 'All API endpoints will be public. Add Authentication for JWT-based auth, email services, and user management.'
+				: 'All API endpoints will be public. Add Authentication for JWT-based auth and user management.'
 		});
 	}
 

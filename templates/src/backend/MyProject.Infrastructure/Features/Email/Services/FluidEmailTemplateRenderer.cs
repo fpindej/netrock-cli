@@ -4,7 +4,9 @@ using System.Text.Encodings.Web;
 using Fluid;
 using Microsoft.Extensions.Options;
 using MyProject.Application.Features.Email;
+// @feature auth
 using MyProject.Application.Features.Email.Models;
+// @end
 using MyProject.Infrastructure.Features.Email.Options;
 
 namespace MyProject.Infrastructure.Features.Email.Services;
@@ -158,10 +160,12 @@ internal class FluidEmailTemplateRenderer : IEmailTemplateRenderer
             }
         };
 
+        // @feature auth
         options.MemberAccessStrategy.Register<VerifyEmailModel>();
         options.MemberAccessStrategy.Register<ResetPasswordModel>();
         options.MemberAccessStrategy.Register<AdminResetPasswordModel>();
         options.MemberAccessStrategy.Register<InvitationModel>();
+        // @end
 
         return options;
     }

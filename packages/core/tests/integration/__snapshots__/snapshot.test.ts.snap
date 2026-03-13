@@ -555,8 +555,6 @@ exports[`convergence file snapshots > Infrastructure.csproj > full preset 1`] = 
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Fluid.Core" />
-        <PackageReference Include="MailKit" />
         <PackageReference Include="Serilog" />
         <PackageReference Include="Serilog.AspNetCore" />
         <PackageReference Include="Serilog.Sinks.Async" />
@@ -576,9 +574,6 @@ exports[`convergence file snapshots > Infrastructure.csproj > full preset 1`] = 
         <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" />
     </ItemGroup>
 
-    <ItemGroup>
-        <EmbeddedResource Include="Features\\Email\\Templates\\*.liquid" />
-    </ItemGroup>
 
     <ItemGroup>
         <InternalsVisibleTo Include="SnapshotApp.Api.Tests"/>
@@ -781,7 +776,6 @@ using SnapshotApp.Infrastructure.Features.Audit.Extensions;
 using SnapshotApp.Infrastructure.Features.Avatar.Extensions;
 using SnapshotApp.Infrastructure.Features.Captcha.Extensions;
 using SnapshotApp.Infrastructure.Features.FileStorage.Extensions;
-using SnapshotApp.Infrastructure.Features.Email.Extensions;
 using SnapshotApp.Infrastructure.Features.Jobs.Extensions;
 using SnapshotApp.Infrastructure.Persistence.Extensions;
 using SnapshotApp.WebApi.Authorization;
@@ -838,8 +832,6 @@ try
         Log.Debug("Adding audit services");
         builder.Services.AddAuditServices();
 
-        Log.Debug("Adding email services");
-        builder.Services.AddEmailServices(builder.Configuration);
 
         Log.Debug("Adding file storage services");
         builder.Services.AddFileStorageServices(builder.Configuration);
@@ -1007,7 +999,6 @@ using Microsoft.AspNetCore.Authorization;
 using SnapshotApp.Infrastructure.Caching.Extensions;
 using SnapshotApp.Infrastructure.Cookies.Extensions;
 using SnapshotApp.Infrastructure.Identity.Extensions;
-using SnapshotApp.Infrastructure.Features.Email.Extensions;
 using SnapshotApp.Infrastructure.Persistence.Extensions;
 using SnapshotApp.WebApi.Authorization;
 using SnapshotApp.WebApi.Extensions;
@@ -1056,8 +1047,6 @@ try
 
 
 
-        Log.Debug("Adding email services");
-        builder.Services.AddEmailServices(builder.Configuration);
 
 
 
@@ -1286,339 +1275,300 @@ exports[`convergence file snapshots > Solution file > minimal (core + auth) 1`] 
 
 exports[`convergence file snapshots > appsettings.Testing.json > core-only 1`] = `
 "{
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Warning"
-    }
-  },
-  "ConnectionStrings": {
-    "Database": "Host=localhost;Database=test_db;Username=test;Password=test"
-  },
-  "RateLimiting": {
-    "Global": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-  },
-  "Hosting": {
-    "ForceHttps": false
-  },
-  "Cors": {
-    "AllowAllOrigins": false,
-    "AllowedOrigins": [
-      "https://test.example.com"
-    ],
-    "PolicyName": "DefaultCorsPolicy"
-  }
+	"Serilog": {
+		"MinimumLevel": {
+			"Default": "Warning"
+		}
+	},
+	"ConnectionStrings": {
+		"Database": "Host=localhost;Database=test_db;Username=test;Password=test"
+	},
+	"RateLimiting": {
+		"Global": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+	},
+	"Hosting": {
+		"ForceHttps": false
+	},
+	"Cors": {
+		"AllowAllOrigins": false,
+		"AllowedOrigins": ["https://test.example.com"],
+		"PolicyName": "DefaultCorsPolicy"
+	}
 }
 "
 `;
 
 exports[`convergence file snapshots > appsettings.Testing.json > full preset 1`] = `
 "{
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Warning"
-    }
-  },
-  "ConnectionStrings": {
-    "Database": "Host=localhost;Database=test_db;Username=test;Password=test"
-  },
-  "Authentication": {
-    "Jwt": {
-      "Key": "ThisIsATestOnlyJwtSigningKeyThatIsAtLeast64CharactersLongForTests!",
-      "Issuer": "test-issuer",
-      "Audience": "test-audience"
-    },
-    "ExternalProviders": {
-      "AllowedRedirectUris": [
-        "https://test.example.com/oauth/callback"
-      ],
-      "EncryptionKey": "ThisIsATestOnlyEncryptionKeyThatMustBeAtLeast32CharactersLong!!"
-    }
-  },
-  "Caching": {
-    "Enabled": false
-  },
-  "JobScheduling": {
-    "Enabled": false
-  },
-  "Email": {
-    "Enabled": false,
-    "FrontendBaseUrl": "https://test.example.com"
-  },
-  "Captcha": {
-    "SecretKey": "1x0000000000000000000000000000000AA"
-  },
-  "FileStorage": {
-    "Endpoint": "http://localhost:9000",
-    "AccessKey": "testaccess",
-    "SecretKey": "testsecret",
-    "BucketName": "test-files",
-    "UseSSL": false
-  },
-  "RateLimiting": {
-    "Global": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "Registration": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "Auth": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "Sensitive": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "AdminMutations": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    }
-  },
-  "Hosting": {
-    "ForceHttps": false
-  },
-  "Cors": {
-    "AllowAllOrigins": false,
-    "AllowedOrigins": [
-      "https://test.example.com"
-    ],
-    "PolicyName": "DefaultCorsPolicy"
-  }
+	"Serilog": {
+		"MinimumLevel": {
+			"Default": "Warning"
+		}
+	},
+	"ConnectionStrings": {
+		"Database": "Host=localhost;Database=test_db;Username=test;Password=test"
+	},
+	"Authentication": {
+		"Jwt": {
+			"Key": "ThisIsATestOnlyJwtSigningKeyThatIsAtLeast64CharactersLongForTests!",
+			"Issuer": "test-issuer",
+			"Audience": "test-audience"
+		},
+		"ExternalProviders": {
+			"AllowedRedirectUris": ["https://test.example.com/oauth/callback"],
+			"EncryptionKey": "ThisIsATestOnlyEncryptionKeyThatMustBeAtLeast32CharactersLong!!"
+		}
+	},
+	"Caching": {
+		"Enabled": false
+	},
+	"JobScheduling": {
+		"Enabled": false
+	},
+	"Captcha": {
+		"SecretKey": "1x0000000000000000000000000000000AA"
+	},
+	"FileStorage": {
+		"Endpoint": "http://localhost:9000",
+		"AccessKey": "testaccess",
+		"SecretKey": "testsecret",
+		"BucketName": "test-files",
+		"UseSSL": false
+	},
+	"RateLimiting": {
+		"Global": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"Registration": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"Auth": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"Sensitive": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"AdminMutations": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		}
+	},
+	"Hosting": {
+		"ForceHttps": false
+	},
+	"Cors": {
+		"AllowAllOrigins": false,
+		"AllowedOrigins": ["https://test.example.com"],
+		"PolicyName": "DefaultCorsPolicy"
+	}
 }
 "
 `;
 
 exports[`convergence file snapshots > appsettings.Testing.json > minimal (core + auth) 1`] = `
 "{
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Warning"
-    }
-  },
-  "ConnectionStrings": {
-    "Database": "Host=localhost;Database=test_db;Username=test;Password=test"
-  },
-  "Authentication": {
-    "Jwt": {
-      "Key": "ThisIsATestOnlyJwtSigningKeyThatIsAtLeast64CharactersLongForTests!",
-      "Issuer": "test-issuer",
-      "Audience": "test-audience"
-    },
-  },
-  "Caching": {
-    "Enabled": false
-  },
-  "Email": {
-    "Enabled": false,
-    "FrontendBaseUrl": "https://test.example.com"
-  },
-  "RateLimiting": {
-    "Global": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "Registration": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "Auth": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-    "Sensitive": {
-      "PermitLimit": 10000,
-      "Window": "00:00:10"
-    },
-  },
-  "Hosting": {
-    "ForceHttps": false
-  },
-  "Cors": {
-    "AllowAllOrigins": false,
-    "AllowedOrigins": [
-      "https://test.example.com"
-    ],
-    "PolicyName": "DefaultCorsPolicy"
-  }
+	"Serilog": {
+		"MinimumLevel": {
+			"Default": "Warning"
+		}
+	},
+	"ConnectionStrings": {
+		"Database": "Host=localhost;Database=test_db;Username=test;Password=test"
+	},
+	"Authentication": {
+		"Jwt": {
+			"Key": "ThisIsATestOnlyJwtSigningKeyThatIsAtLeast64CharactersLongForTests!",
+			"Issuer": "test-issuer",
+			"Audience": "test-audience"
+		},
+	},
+	"Caching": {
+		"Enabled": false
+	},
+	"RateLimiting": {
+		"Global": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"Registration": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"Auth": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+		"Sensitive": {
+			"PermitLimit": 10000,
+			"Window": "00:00:10"
+		},
+	},
+	"Hosting": {
+		"ForceHttps": false
+	},
+	"Cors": {
+		"AllowAllOrigins": false,
+		"AllowedOrigins": ["https://test.example.com"],
+		"PolicyName": "DefaultCorsPolicy"
+	}
 }
 "
 `;
 
 exports[`convergence file snapshots > appsettings.json > core-only 1`] = `
 "{
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Information",
-      "Override": {
-        "Microsoft": "Information",
-        "Microsoft.AspNetCore": "Error",
-        "Microsoft.EntityFrameworkCore": "Warning"
-      }
-    },
-    "Enrich": [
-      "FromLogContext"
-    ]
-  },
-  "ConnectionStrings": {
-    "Database": "<DB_CONNECTION_STRING>"
-  },
-  "RateLimiting": {
-    "Global": {
-      "PermitLimit": 120,
-      "Window": "00:01:00",
-      "QueueLimit": 0,
-      "QueueProcessingOrder": "OldestFirst"
-    },
-  },
-  "Cors": {
-    "AllowAllOrigins": false,
-    "AllowedOrigins": [
-      "https://your-production-domain.com"
-    ],
-    "PolicyName": "DefaultCorsPolicy"
-  },
-  "Hosting": {
-    "ForceHttps": true,
-    "ReverseProxy": {
-      "TrustedNetworks": [],
-      "TrustedProxies": []
-    }
-  },
-  "AllowedHosts": "*"
+	"Serilog": {
+		"MinimumLevel": {
+			"Default": "Information",
+			"Override": {
+				"Microsoft": "Information",
+				"Microsoft.AspNetCore": "Error",
+				"Microsoft.EntityFrameworkCore": "Warning"
+			}
+		},
+		"Enrich": ["FromLogContext"]
+	},
+	"ConnectionStrings": {
+		"Database": "<DB_CONNECTION_STRING>"
+	},
+	"RateLimiting": {
+		"Global": {
+			"PermitLimit": 120,
+			"Window": "00:01:00",
+			"QueueLimit": 0,
+			"QueueProcessingOrder": "OldestFirst"
+		},
+	},
+	"Cors": {
+		"AllowAllOrigins": false,
+		"AllowedOrigins": ["https://your-production-domain.com"],
+		"PolicyName": "DefaultCorsPolicy"
+	},
+	"Hosting": {
+		"ForceHttps": true,
+		"ReverseProxy": {
+			"TrustedNetworks": [],
+			"TrustedProxies": []
+		}
+	},
+	"AllowedHosts": "*"
 }
 "
 `;
 
 exports[`convergence file snapshots > appsettings.json > full preset 1`] = `
 "{
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Information",
-      "Override": {
-        "Microsoft": "Information",
-        "Microsoft.AspNetCore": "Error",
-        "Microsoft.EntityFrameworkCore": "Warning"
-      }
-    },
-    "Enrich": [
-      "FromLogContext"
-    ]
-  },
-  "ConnectionStrings": {
-    "Database": "<DB_CONNECTION_STRING>"
-  },
-  "Caching": {
-    "Enabled": true,
-    "DefaultExpiration": "00:10:00"
-  },
-  "RateLimiting": {
-    "Global": {
-      "PermitLimit": 120,
-      "Window": "00:01:00",
-      "QueueLimit": 0,
-      "QueueProcessingOrder": "OldestFirst"
-    },
-    "Registration": {
-      "PermitLimit": 10,
-      "Window": "00:01:00",
-      "QueueLimit": 0,
-      "QueueProcessingOrder": "OldestFirst"
-    },
-    "Auth": {
-      "PermitLimit": 10,
-      "Window": "00:01:00",
-      "QueueLimit": 0,
-      "QueueProcessingOrder": "OldestFirst"
-    },
-    "Sensitive": {
-      "PermitLimit": 5,
-      "Window": "00:05:00",
-      "QueueLimit": 0,
-      "QueueProcessingOrder": "OldestFirst"
-    },
-    "AdminMutations": {
-      "PermitLimit": 30,
-      "Window": "00:01:00",
-      "QueueLimit": 0,
-      "QueueProcessingOrder": "OldestFirst"
-    }
-  },
-  "Authentication": {
-    "Jwt": {
-      "Key": "<GENERATED_JWT_SECRET>",
-      "Issuer": "SnapshotAppIssuer",
-      "Audience": "SnapshotAppAudience",
-      "AccessTokenLifetime": "00:10:00",
-      "SecurityStampClaimType": "security_stamp",
-      "RefreshToken": {
-        "PersistentLifetime": "7.00:00:00",
-        "SessionLifetime": "1.00:00:00"
-      }
-    },
-    "EmailToken": {
-      "TokenLengthInBytes": 32,
-      "Lifetime": "1.00:00:00"
-    },
-    "TwoFactor": {
-      "ChallengeLifetime": "00:05:00",
-      "Issuer": "SnapshotApp",
-      "MaxChallengeAttempts": 5
-    },
-    "ExternalProviders": {
-      "AllowedRedirectUris": [
-        "https://your-production-domain.com/oauth/callback"
-      ],
-      "StateLifetime": "00:10:00",
-      "EncryptionKey": "<GENERATED_ENCRYPTION_KEY>"
-    }
-  },
-  "Email": {
-    "Enabled": false,
-    "FromAddress": "noreply@example.com",
-    "FromName": "SnapshotApp",
-    "FrontendBaseUrl": "https://your-production-domain.com",
-    "Smtp": {
-      "Host": "",
-      "Port": 587,
-      "Username": "",
-      "Password": "",
-      "UseSsl": true
-    }
-  },
-  "JobScheduling": {
-    "Enabled": true,
-    "WorkerCount": 4
-  },
-  "FileStorage": {
-    "Endpoint": "<FILE_STORAGE_ENDPOINT>",
-    "AccessKey": "<FILE_STORAGE_ACCESS_KEY>",
-    "SecretKey": "<FILE_STORAGE_SECRET_KEY>",
-    "BucketName": "snapshot-app-files",
-    "UseSSL": true
-  },
-  "Captcha": {
-    "SecretKey": "<TURNSTILE_SECRET_KEY>"
-  },
-  "Cors": {
-    "AllowAllOrigins": false,
-    "AllowedOrigins": [
-      "https://your-production-domain.com"
-    ],
-    "PolicyName": "DefaultCorsPolicy"
-  },
-  "Hosting": {
-    "ForceHttps": true,
-    "ReverseProxy": {
-      "TrustedNetworks": [],
-      "TrustedProxies": []
-    }
-  },
-  "AllowedHosts": "*"
+	"Serilog": {
+		"MinimumLevel": {
+			"Default": "Information",
+			"Override": {
+				"Microsoft": "Information",
+				"Microsoft.AspNetCore": "Error",
+				"Microsoft.EntityFrameworkCore": "Warning"
+			}
+		},
+		"Enrich": ["FromLogContext"]
+	},
+	"ConnectionStrings": {
+		"Database": "<DB_CONNECTION_STRING>"
+	},
+	"Caching": {
+		"Enabled": true,
+		"DefaultExpiration": "00:10:00"
+	},
+	"RateLimiting": {
+		"Global": {
+			"PermitLimit": 120,
+			"Window": "00:01:00",
+			"QueueLimit": 0,
+			"QueueProcessingOrder": "OldestFirst"
+		},
+		"Registration": {
+			"PermitLimit": 10,
+			"Window": "00:01:00",
+			"QueueLimit": 0,
+			"QueueProcessingOrder": "OldestFirst"
+		},
+		"Auth": {
+			"PermitLimit": 10,
+			"Window": "00:01:00",
+			"QueueLimit": 0,
+			"QueueProcessingOrder": "OldestFirst"
+		},
+		"Sensitive": {
+			"PermitLimit": 5,
+			"Window": "00:05:00",
+			"QueueLimit": 0,
+			"QueueProcessingOrder": "OldestFirst"
+		},
+		"AdminMutations": {
+			"PermitLimit": 30,
+			"Window": "00:01:00",
+			"QueueLimit": 0,
+			"QueueProcessingOrder": "OldestFirst"
+		}
+	},
+	"Authentication": {
+		"Jwt": {
+			"Key": "<GENERATED_JWT_SECRET>",
+			"Issuer": "SnapshotAppIssuer",
+			"Audience": "SnapshotAppAudience",
+			"AccessTokenLifetime": "00:10:00",
+			"SecurityStampClaimType": "security_stamp",
+			"RefreshToken": {
+				"PersistentLifetime": "7.00:00:00",
+				"SessionLifetime": "1.00:00:00"
+			}
+		},
+		"EmailToken": {
+			"TokenLengthInBytes": 32,
+			"Lifetime": "1.00:00:00"
+		},
+		"TwoFactor": {
+			"ChallengeLifetime": "00:05:00",
+			"Issuer": "SnapshotApp",
+			"MaxChallengeAttempts": 5
+		},
+		"ExternalProviders": {
+			"AllowedRedirectUris": ["https://your-production-domain.com/oauth/callback"],
+			"StateLifetime": "00:10:00",
+			"EncryptionKey": "<GENERATED_ENCRYPTION_KEY>"
+		}
+	},
+	"JobScheduling": {
+		"Enabled": true,
+		"WorkerCount": 4
+	},
+	"FileStorage": {
+		"Endpoint": "<FILE_STORAGE_ENDPOINT>",
+		"AccessKey": "<FILE_STORAGE_ACCESS_KEY>",
+		"SecretKey": "<FILE_STORAGE_SECRET_KEY>",
+		"BucketName": "snapshot-app-files",
+		"UseSSL": true
+	},
+	"Captcha": {
+		"SecretKey": "<TURNSTILE_SECRET_KEY>"
+	},
+	"Cors": {
+		"AllowAllOrigins": false,
+		"AllowedOrigins": ["https://your-production-domain.com"],
+		"PolicyName": "DefaultCorsPolicy"
+	},
+	"Hosting": {
+		"ForceHttps": true,
+		"ReverseProxy": {
+			"TrustedNetworks": [],
+			"TrustedProxies": []
+		}
+	},
+	"AllowedHosts": "*"
 }
 "
 `;
@@ -1662,11 +1612,7 @@ exports[`file list snapshots > core + auth + 2fa + oauth file list 1`] = `
   "src/backend/SnapshotApp.Application/Features/Authentication/IExternalAuthService.cs",
   "src/backend/SnapshotApp.Application/Features/Authentication/IProviderConfigService.cs",
   "src/backend/SnapshotApp.Application/Features/Authentication/ITwoFactorService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
   "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
   "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
   "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
   "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
@@ -1716,13 +1662,6 @@ exports[`file list snapshots > core + auth + 2fa + oauth file list 1`] = `
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ProviderConfigService.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TwoFactorService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
@@ -1898,16 +1837,12 @@ exports[`file list snapshots > core + auth + 2fa + oauth file list 1`] = `
   "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalAuthServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/TwoFactorServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
@@ -2152,11 +2087,7 @@ exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = 
   "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
   "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/VerifyEmailInput.cs",
   "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
   "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
   "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
   "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
   "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
@@ -2191,13 +2122,6 @@ exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = 
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
@@ -2365,16 +2289,12 @@ exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = 
   "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/AdminServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/RoleManagementServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
@@ -2797,11 +2717,7 @@ exports[`file list snapshots > frontend full file list 1`] = `
   "src/backend/SnapshotApp.Application/Features/Avatar/Dtos/ProcessedImageOutput.cs",
   "src/backend/SnapshotApp.Application/Features/Avatar/IImageProcessingService.cs",
   "src/backend/SnapshotApp.Application/Features/Captcha/ICaptchaService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
   "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
   "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
   "src/backend/SnapshotApp.Application/Features/FileStorage/Dtos/FileDownloadOutput.cs",
   "src/backend/SnapshotApp.Application/Features/FileStorage/IFileStorageService.cs",
@@ -2869,13 +2785,6 @@ exports[`file list snapshots > frontend full file list 1`] = `
   "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Extensions/ServiceCollectionExtensions.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Options/CaptchaOptions.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Services/TurnstileCaptchaService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
@@ -3109,19 +3018,15 @@ exports[`file list snapshots > frontend full file list 1`] = `
   "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalAuthServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ImageProcessingServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/RoleManagementServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/TwoFactorServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CaptchaOptionsValidationTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/FileStorageOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/JobSchedulingOptionsValidationTests.cs",
@@ -3552,11 +3457,7 @@ exports[`file list snapshots > frontend minimal (core + auth + frontend) file li
   "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/UserOutput.cs",
   "src/backend/SnapshotApp.Application/Features/Authentication/Dtos/VerifyEmailInput.cs",
   "src/backend/SnapshotApp.Application/Features/Authentication/IAuthenticationService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
   "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
   "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
   "src/backend/SnapshotApp.Application/Identity/Constants/AppPermissions.cs",
   "src/backend/SnapshotApp.Application/Identity/Constants/AppRoles.cs",
@@ -3588,13 +3489,6 @@ exports[`file list snapshots > frontend minimal (core + auth + frontend) file li
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/ITokenProvider.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/JwtTokenProvider.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Authentication/Services/TokenSessionService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
@@ -3734,15 +3628,11 @@ exports[`file list snapshots > frontend minimal (core + auth + frontend) file li
   "src/backend/tests/SnapshotApp.Component.Tests/GlobalUsings.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Persistence/BaseEntityRepositoryTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/AuthenticationServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppPermissionsTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Application/AppRolesTests.cs",
   "src/backend/tests/SnapshotApp.Unit.Tests/Domain/BaseEntityTests.cs",
@@ -4187,11 +4077,7 @@ exports[`file list snapshots > full preset file list 1`] = `
   "src/backend/SnapshotApp.Application/Features/Avatar/Dtos/ProcessedImageOutput.cs",
   "src/backend/SnapshotApp.Application/Features/Avatar/IImageProcessingService.cs",
   "src/backend/SnapshotApp.Application/Features/Captcha/ICaptchaService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/EmailMessage.cs",
   "src/backend/SnapshotApp.Application/Features/Email/EmailTemplateNames.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailService.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/IEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Application/Features/Email/ITemplatedEmailSender.cs",
   "src/backend/SnapshotApp.Application/Features/Email/Models/EmailTemplateModels.cs",
   "src/backend/SnapshotApp.Application/Features/FileStorage/Dtos/FileDownloadOutput.cs",
   "src/backend/SnapshotApp.Application/Features/FileStorage/IFileStorageService.cs",
@@ -4265,13 +4151,6 @@ exports[`file list snapshots > full preset file list 1`] = `
   "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Extensions/ServiceCollectionExtensions.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Options/CaptchaOptions.cs",
   "src/backend/SnapshotApp.Infrastructure/Features/Captcha/Services/TurnstileCaptchaService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Options/EmailOptions.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/NoOpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/SmtpEmailService.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs",
-  "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/_base.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.subject.liquid",
   "src/backend/SnapshotApp.Infrastructure/Features/Email/Templates/admin-disable-2fa.text.liquid",
@@ -4510,19 +4389,15 @@ exports[`file list snapshots > full preset file list 1`] = `
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/MicrosoftAuthProviderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/SlackAuthProviderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ExternalProviders/TwitchAuthProviderTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/FluidEmailTemplateRendererTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/ImageProcessingServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/NoOpHybridCacheTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/RoleManagementServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/SmtpEmailServiceTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Services/TemplatedEmailSenderTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/TwoFactorServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Services/UserServiceTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/SnapshotApp.Component.Tests.csproj",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/AuthenticationOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CachingOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/CaptchaOptionsValidationTests.cs",
-  "src/backend/tests/SnapshotApp.Component.Tests/Validation/EmailOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/ExternalAuthOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/FileStorageOptionsValidationTests.cs",
   "src/backend/tests/SnapshotApp.Component.Tests/Validation/JobSchedulingOptionsValidationTests.cs",

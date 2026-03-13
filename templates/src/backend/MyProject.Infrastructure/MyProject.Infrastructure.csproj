@@ -6,7 +6,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <!-- @feature auth -->
+        <!-- @feature email -->
         <PackageReference Include="Fluid.Core" />
         <PackageReference Include="MailKit" />
         <!-- @end -->
@@ -39,7 +39,7 @@
         <!-- @end -->
     </ItemGroup>
 
-    <!-- @feature auth -->
+    <!-- @feature email -->
     <ItemGroup>
         <EmbeddedResource Include="Features\Email\Templates\*.liquid" />
     </ItemGroup>

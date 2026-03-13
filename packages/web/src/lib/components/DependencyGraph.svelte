@@ -20,20 +20,21 @@
 	const Y0 = 26;
 
 	const nodes: GNode[] = [
-		{ id: 'core', label: 'Core', cx: 52, cy: Y0 + 3 * S1 },
-		{ id: 'auth', label: 'Auth', cx: 228, cy: Y0 },
-		{ id: 'audit', label: 'Audit', cx: 228, cy: Y0 + S1 },
-		{ id: 'file-storage', label: 'Files', cx: 228, cy: Y0 + 2 * S1 },
-		{ id: 'jobs', label: 'Jobs', cx: 228, cy: Y0 + 3 * S1 },
-		{ id: 'aspire', label: 'Aspire', cx: 228, cy: Y0 + 4 * S1 },
-		{ id: 'claude', label: 'Claude', cx: 228, cy: Y0 + 5 * S1 },
-		{ id: 'frontend', label: 'Svelte', cx: 228, cy: Y0 + 6 * S1 },
-		{ id: '2fa', label: '2FA', cx: 428, cy: Y0 },
-		{ id: 'oauth', label: 'OAuth', cx: 428, cy: Y0 + S1 },
-		{ id: 'captcha', label: 'Captcha', cx: 428, cy: Y0 + 2 * S1 },
-		{ id: 'admin', label: 'Admin', cx: 428, cy: Y0 + 3 * S1 },
-		{ id: 'avatars', label: 'Avatars', cx: 428, cy: Y0 + 4 * S1 },
-		{ id: 'claude-skills', label: 'Skills', cx: 428, cy: Y0 + 5 * S1 }
+		{ id: 'core', label: 'Core', cx: 40, cy: Y0 + 3 * S1 },
+		{ id: 'email', label: 'Email', cx: 155, cy: Y0 },
+		{ id: 'auth', label: 'Auth', cx: 280, cy: Y0 },
+		{ id: 'audit', label: 'Audit', cx: 280, cy: Y0 + S1 },
+		{ id: 'file-storage', label: 'Files', cx: 280, cy: Y0 + 2 * S1 },
+		{ id: 'jobs', label: 'Jobs', cx: 280, cy: Y0 + 3 * S1 },
+		{ id: 'aspire', label: 'Aspire', cx: 280, cy: Y0 + 4 * S1 },
+		{ id: 'claude', label: 'Claude', cx: 280, cy: Y0 + 5 * S1 },
+		{ id: 'frontend', label: 'Svelte', cx: 280, cy: Y0 + 6 * S1 },
+		{ id: '2fa', label: '2FA', cx: 460, cy: Y0 },
+		{ id: 'oauth', label: 'OAuth', cx: 460, cy: Y0 + S1 },
+		{ id: 'captcha', label: 'Captcha', cx: 460, cy: Y0 + 2 * S1 },
+		{ id: 'admin', label: 'Admin', cx: 460, cy: Y0 + 3 * S1 },
+		{ id: 'avatars', label: 'Avatars', cx: 460, cy: Y0 + 4 * S1 },
+		{ id: 'claude-skills', label: 'Skills', cx: 460, cy: Y0 + 5 * S1 }
 	];
 
 	const lastY = Y0 + 6 * S1 + H / 2;
@@ -41,7 +42,8 @@
 	const viewH = labelY + 12;
 
 	const edgeDefs: [FeatureId, FeatureId][] = [
-		['core', 'auth'],
+		['core', 'email'],
+		['email', 'auth'],
 		['core', 'audit'],
 		['core', 'file-storage'],
 		['core', 'jobs'],
@@ -118,7 +120,7 @@
 
 <div class="overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
 	<svg
-		viewBox="0 0 520 {viewH}"
+		viewBox="0 0 550 {viewH}"
 		class="mx-auto block w-full"
 		style="min-width: 380px;"
 	>
@@ -137,11 +139,11 @@
 			</filter>
 		</defs>
 
-		<rect width="520" height={viewH} fill="url(#gg)" rx="8" />
+		<rect width="550" height={viewH} fill="url(#gg)" rx="8" />
 
 		<!-- Layer labels -->
 		<text
-			x="52"
+			x="40"
 			y={labelY}
 			text-anchor="middle"
 			fill="#555566"
@@ -151,7 +153,7 @@
 			required
 		</text>
 		<text
-			x="228"
+			x="280"
 			y={labelY}
 			text-anchor="middle"
 			fill="#555566"
@@ -161,7 +163,7 @@
 			features
 		</text>
 		<text
-			x="428"
+			x="460"
 			y={labelY}
 			text-anchor="middle"
 			fill="#555566"

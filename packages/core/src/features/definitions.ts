@@ -14,13 +14,24 @@ export const featureDefinitions: Feature[] = [
 		group: 'core'
 	},
 	{
+		id: 'email',
+		name: 'Email (SMTP)',
+		description: 'SMTP email service with Liquid template rendering',
+		details:
+			'Adds a generic email infrastructure with MailKit SMTP, Fluid template engine, and a safe templated sender that swallows transient failures. Includes a shared base layout template. Add this standalone for contact forms or notifications, or let it auto-resolve when Authentication is selected.',
+		dependencies: ['core'],
+		required: false,
+		defaultEnabled: false,
+		group: 'infrastructure'
+	},
+	{
 		id: 'auth',
 		name: 'Authentication',
 		description:
-			'Local login, registration, token refresh, user profile, email (SMTP + templates), email verification, password reset',
+			'Local login, registration, token refresh, user profile, email verification, password reset',
 		details:
-			'Adds JWT-based authentication with access/refresh token flow, user registration with email verification, password reset via email links, user profile management, SMTP email service with Razor templates, and cookie-based token storage. Without this, all API endpoints are public.',
-		dependencies: ['core'],
+			'Adds JWT-based authentication with access/refresh token flow, user registration with email verification, password reset via email links, user profile management, auth-specific email templates, and cookie-based token storage. Without this, all API endpoints are public.',
+		dependencies: ['core', 'email'],
 		required: false,
 		defaultEnabled: true,
 		group: 'core'

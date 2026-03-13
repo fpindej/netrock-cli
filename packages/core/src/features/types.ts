@@ -1,6 +1,7 @@
 /** Unique identifier for a generator feature. */
 export type FeatureId =
 	| 'core'
+	| 'email'
 	| 'auth'
 	| '2fa'
 	| 'oauth'

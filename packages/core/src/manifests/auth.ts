@@ -6,21 +6,36 @@ export function registerAuthManifest(): void {
 		featureId: 'auth',
 		files: [
 			// Application - Identity
-			{ path: 'src/backend/MyProject.Application/Identity/Constants/AppPermissions.cs', templated: false },
-			{ path: 'src/backend/MyProject.Application/Identity/Constants/AppRoles.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Identity/Constants/AppPermissions.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Application/Identity/Constants/AppRoles.cs',
+				templated: false
+			},
 			{
 				path: 'src/backend/MyProject.Application/Identity/Constants/PermissionDefinition.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Application/Identity/Dtos/DeleteAccountInput.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Identity/Dtos/DeleteAccountInput.cs',
+				templated: false
+			},
 			{ path: 'src/backend/MyProject.Application/Identity/IUserContext.cs', templated: false },
 			{ path: 'src/backend/MyProject.Application/Identity/IUserService.cs', templated: true },
 
 			// Application - Caching
-			{ path: 'src/backend/MyProject.Application/Caching/Constants/CacheKeys.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Caching/Constants/CacheKeys.cs',
+				templated: false
+			},
 
 			// Application - Cookies
-			{ path: 'src/backend/MyProject.Application/Cookies/Constants/CookieNames.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Application/Cookies/Constants/CookieNames.cs',
+				templated: false
+			},
 			{ path: 'src/backend/MyProject.Application/Cookies/ICookieService.cs', templated: false },
 
 			// Application - Authentication DTOs and interfaces
@@ -69,19 +84,9 @@ export function registerAuthManifest(): void {
 				templated: false
 			},
 
-			// Application - Email
-			{ path: 'src/backend/MyProject.Application/Features/Email/EmailMessage.cs', templated: false },
+			// Application - Email (auth-specific template names and models)
 			{
 				path: 'src/backend/MyProject.Application/Features/Email/EmailTemplateNames.cs',
-				templated: false
-			},
-			{ path: 'src/backend/MyProject.Application/Features/Email/IEmailService.cs', templated: false },
-			{
-				path: 'src/backend/MyProject.Application/Features/Email/IEmailTemplateRenderer.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Application/Features/Email/ITemplatedEmailSender.cs',
 				templated: false
 			},
 			{
@@ -94,7 +99,10 @@ export function registerAuthManifest(): void {
 				path: 'src/backend/MyProject.Infrastructure/Caching/Extensions/ServiceCollectionExtensions.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Infrastructure/Caching/Options/CachingOptions.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Infrastructure/Caching/Options/CachingOptions.cs',
+				templated: false
+			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Caching/Services/NoOpHybridCache.cs',
 				templated: false
@@ -168,37 +176,7 @@ export function registerAuthManifest(): void {
 				templated: false
 			},
 
-			// Infrastructure - Email
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Options/EmailOptions.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/NoOpEmailService.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/SmtpEmailService.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/TemplatedEmailSender.cs',
-				templated: false
-			},
-
-			// Infrastructure - Email Templates
-			{
-				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/_base.liquid',
-				templated: false
-			},
+			// Infrastructure - Auth-specific email templates
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Email/Templates/verify-email.liquid',
 				templated: false
@@ -265,7 +243,10 @@ export function registerAuthManifest(): void {
 				path: 'src/backend/MyProject.Infrastructure/Identity/Extensions/ServiceCollectionExtensions.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Infrastructure/Identity/Services/UserService.cs', templated: true },
+			{
+				path: 'src/backend/MyProject.Infrastructure/Identity/Services/UserService.cs',
+				templated: true
+			},
 			{ path: 'src/backend/MyProject.Infrastructure/Identity/UserContext.cs', templated: false },
 
 			// Infrastructure - Persistence interceptors and seed
@@ -277,7 +258,10 @@ export function registerAuthManifest(): void {
 				path: 'src/backend/MyProject.Infrastructure/Persistence/Interceptors/UserCacheInvalidationInterceptor.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Infrastructure/Persistence/Options/SeedOptions.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Infrastructure/Persistence/Options/SeedOptions.cs',
+				templated: false
+			},
 
 			// WebApi - Authorization
 			{
@@ -550,24 +534,6 @@ export function registerAuthManifest(): void {
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Validation/CachingOptionsValidationTests.cs',
-				templated: false
-			},
-
-			// Tests - Component: Email
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/FluidEmailTemplateRendererTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/SmtpEmailServiceTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Services/TemplatedEmailSenderTests.cs',
-				templated: false
-			},
-			{
-				path: 'src/backend/tests/MyProject.Component.Tests/Validation/EmailOptionsValidationTests.cs',
 				templated: false
 			},
 
