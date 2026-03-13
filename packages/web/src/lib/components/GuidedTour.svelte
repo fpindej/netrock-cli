@@ -11,6 +11,11 @@
 	let showButton = $state(false);
 	let tour: Tour | null = null;
 
+	const backNext = (t: Tour) => [
+		{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
+		{ text: 'Next', action: t.next, classes: 'tour-btn-primary' }
+	];
+
 	function createTour(): Tour {
 		const t = new Shepherd.Tour({
 			useModalOverlay: true,
@@ -39,64 +44,86 @@
 			title: '1. Name your project',
 			text: 'Type a name and the generator derives the .NET namespace and file slug automatically.',
 			attachTo: { element: '#name', on: 'bottom' },
-			buttons: [
-				{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
-				{ text: 'Next', action: t.next, classes: 'tour-btn-primary' }
-			]
+			buttons: backNext(t)
 		});
 
 		t.addStep({
 			id: 'architecture',
 			title: '2. Choose your architecture',
-			text: 'API only gives you a clean .NET backend. Full stack adds a SvelteKit frontend that adapts to your selected features.',
+			text: 'API only gives you a clean .NET backend. Full stack adds a SvelteKit frontend that adapts to your selected features. More frontends are on the roadmap - Next.js is next.',
 			attachTo: { element: '.grid.grid-cols-2', on: 'bottom' },
-			buttons: [
-				{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
-				{ text: 'Next', action: t.next, classes: 'tour-btn-primary' }
-			]
+			buttons: backNext(t)
 		});
 
 		t.addStep({
 			id: 'presets',
 			title: '3. Pick a preset or go custom',
-			text: 'Presets configure common feature sets in one click. Standard is recommended for most projects.',
+			text: 'Presets configure common feature sets in one click. Standard is recommended for most projects. Or toggle individual features below.',
 			attachTo: { element: '.grid.grid-cols-3', on: 'bottom' },
-			buttons: [
-				{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
-				{ text: 'Next', action: t.next, classes: 'tour-btn-primary' }
-			]
+			buttons: backNext(t)
 		});
 
 		t.addStep({
 			id: 'graph',
 			title: '4. Interactive dependency graph',
-			text: 'Click any node to toggle a feature. Dependencies auto-resolve - enable Admin and Auth + Audit light up automatically.',
+			text: 'Click any node to toggle a feature. Dependencies auto-resolve - enable Admin and Auth + Audit light up automatically. The graph and feature cards below stay in sync.',
 			attachTo: { element: '.overflow-x-auto.rounded-xl', on: 'top' },
-			buttons: [
-				{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
-				{ text: 'Next', action: t.next, classes: 'tour-btn-primary' }
-			]
+			buttons: backNext(t)
 		});
 
 		t.addStep({
 			id: 'features',
 			title: '5. Fine-tune features',
-			text: 'Each card shows dependencies and has a "What\'s included" dropdown. Toggle features here or on the graph above - they stay in sync.',
+			text: 'Each card shows dependencies and has a "What\'s included" dropdown with details on what you get.',
 			attachTo: { element: '.space-y-6 > div:first-child .grid.gap-2', on: 'top' },
-			buttons: [
-				{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
-				{ text: 'Next', action: t.next, classes: 'tour-btn-primary' }
-			]
+			buttons: backNext(t)
+		});
+
+		t.addStep({
+			id: 'oauth',
+			title: 'OAuth providers',
+			text: 'When OAuth is enabled, you can choose exactly which providers to include - Google, GitHub, Microsoft, Apple, and more. Only the ones you pick get configured.',
+			attachTo: { element: '.space-y-6 > div:nth-child(2) .grid.gap-2', on: 'top' },
+			buttons: backNext(t)
 		});
 
 		t.addStep({
 			id: 'review',
 			title: '6. Review and download',
-			text: 'See the file tree, stats, and setup instructions. Everything generates client-side - no data leaves your browser. Hit download and you get a ready-to-run .NET project.',
+			text: 'See the generated file tree, project stats, and setup commands. Everything runs client-side - no data leaves your browser.',
 			attachTo: { element: '#review', on: 'top' },
+			buttons: backNext(t)
+		});
+
+		t.addStep({
+			id: 'before-ship',
+			title: 'Before you ship',
+			text: 'This checklist shows exactly what to configure for production - database, CORS, JWT secrets, SMTP, and more. Local dev works out of the box with Aspire.',
+			attachTo: { element: '#before-you-ship', on: 'top' },
+			beforeShowPromise: () => {
+				return new Promise<void>((resolve) => {
+					const el = document.getElementById('before-you-ship');
+					if (el) el.open = true;
+					setTimeout(resolve, 100);
+				});
+			},
+			buttons: backNext(t)
+		});
+
+		t.addStep({
+			id: 'done',
+			title: 'You are all set',
+			text: 'Pick features, download, run the setup script, and you have a production-ready .NET project. You can replay this tour anytime with the button in the bottom right.',
 			buttons: [
 				{ text: 'Back', action: t.back, classes: 'tour-btn-secondary' },
-				{ text: 'Done', action: t.complete, classes: 'tour-btn-primary' }
+				{
+					text: 'Done',
+					action: () => {
+						t.complete();
+						window.scrollTo({ top: 0, behavior: 'smooth' });
+					},
+					classes: 'tour-btn-primary'
+				}
 			]
 		});
 

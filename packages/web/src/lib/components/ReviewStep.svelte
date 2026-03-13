@@ -115,7 +115,7 @@
 		<FileTree paths={generator.filePaths} />
 
 		<!-- Before You Ship -->
-		<details class="group mt-8 rounded-xl border border-amber/30 bg-amber-dim">
+		<details id="before-you-ship" class="group mt-8 rounded-xl border border-amber/30 bg-amber-dim">
 			<summary
 				class="flex cursor-pointer items-center gap-2 px-5 py-3.5 font-mono text-sm font-medium text-amber select-none"
 			>
