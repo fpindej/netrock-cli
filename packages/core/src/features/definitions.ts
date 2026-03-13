@@ -5,9 +5,10 @@ export const featureDefinitions: Feature[] = [
 	{
 		id: 'core',
 		name: 'Core',
-		description: 'Clean Architecture skeleton, Result pattern, health checks, PostgreSQL',
+		description:
+			'Clean Architecture skeleton, Result pattern, health checks, PostgreSQL, Aspire orchestration',
 		details:
-			'Sets up a .NET 10 Web API with Clean Architecture layers (Domain, Application, Infrastructure, WebApi), the Result pattern for error handling, ProblemDetails (RFC 9457), health check endpoints, PostgreSQL with EF Core, Serilog structured logging, CORS, rate limiting, and security headers.',
+			'Sets up a .NET 10 Web API with Clean Architecture layers (Domain, Application, Infrastructure, WebApi), the Result pattern for error handling, ProblemDetails (RFC 9457), health check endpoints, PostgreSQL with EF Core, Serilog structured logging, CORS, rate limiting, security headers, and .NET Aspire for local dev orchestration with OpenTelemetry.',
 		dependencies: [],
 		required: true,
 		defaultEnabled: true,

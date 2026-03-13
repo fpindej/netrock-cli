@@ -29,8 +29,7 @@
 		{ id: 'audit', label: 'Audit', cx: 298, cy: Y0 + S },
 		{ id: 'file-storage', label: 'Files', cx: 298, cy: Y0 + 2 * S },
 		{ id: 'jobs', label: 'Jobs', cx: 298, cy: Y0 + 3 * S },
-		{ id: 'aspire', label: 'Aspire', cx: 298, cy: Y0 + 4 * S },
-		{ id: 'claude', label: 'Claude', cx: 298, cy: Y0 + 5 * S },
+		{ id: 'claude', label: 'Claude', cx: 298, cy: Y0 + 4 * S },
 		// Layer 2 - extensions
 		{ id: '2fa', label: '2FA', cx: 458, cy: Y0 },
 		{ id: 'oauth', label: 'OAuth', cx: 458, cy: Y0 + S },
@@ -50,7 +49,6 @@
 		['core', 'audit'],
 		['core', 'file-storage'],
 		['core', 'jobs'],
-		['core', 'aspire'],
 		['core', 'claude'],
 		['auth', '2fa'],
 		['auth', 'oauth'],
@@ -93,7 +91,7 @@
 		return isOn(from) && isOn(to);
 	}
 
-	const requiredIds = new Set<FeatureId>(['core', 'aspire']);
+	const requiredIds = new Set<FeatureId>(['core']);
 
 	function handleClick(id: FeatureId) {
 		if (requiredIds.has(id)) return;

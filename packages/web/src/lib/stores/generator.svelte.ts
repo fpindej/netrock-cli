@@ -27,7 +27,7 @@ const GROUP_LABELS: Record<string, string> = {
 };
 
 /** Features that have their own dedicated UI section (not in the feature card grid). */
-const CUSTOM_SECTION_FEATURES: Set<FeatureId> = new Set(['frontend']);
+const CUSTOM_SECTION_FEATURES: Set<FeatureId> = new Set(['frontend', 'aspire']);
 
 interface FeatureNote {
 	title: string;
