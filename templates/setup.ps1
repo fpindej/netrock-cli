@@ -128,12 +128,12 @@ Write-Host "  All ports are derived from a single base port:" -ForegroundColor W
 Write-Host ""
 Write-Host "  Frontend:       BASE         pgAdmin:      BASE + 3" -ForegroundColor DarkGray
 Write-Host "  API:            BASE + 2     Postgres:     BASE + 4" -ForegroundColor DarkGray
-# // @feature file-storage
+# @feature file-storage
 Write-Host "  MinIO:          BASE + 5     Console:      BASE + 6" -ForegroundColor DarkGray
-# // @end
-# // @feature auth
+# @end
+# @feature email
 Write-Host "  MailPit SMTP:   BASE + 7     HTTP:         BASE + 8" -ForegroundColor DarkGray
-# // @end
+# @end
 Write-Host ""
 
 $portInput = Read-Host "  Base port [5173]"
@@ -156,12 +156,12 @@ Write-Host "  ──────────────────────
 Write-Host "  Frontend:       " -NoNewline; Write-Host "$frontendPort" -ForegroundColor Cyan
 Write-Host "  API:            " -NoNewline; Write-Host "$apiPort" -ForegroundColor Cyan
 Write-Host "  pgAdmin:        $($basePort + 3)   Postgres: $($basePort + 4)" -ForegroundColor DarkGray
-# // @feature file-storage
+# @feature file-storage
 Write-Host "  MinIO:          $($basePort + 5)   Console:  $($basePort + 6)" -ForegroundColor DarkGray
-# // @end
-# // @feature auth
+# @end
+# @feature email
 Write-Host "  MailPit SMTP:   $($basePort + 7)   HTTP:     $($basePort + 8)" -ForegroundColor DarkGray
-# // @end
+# @end
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Options Checklist
@@ -175,7 +175,7 @@ $doBuild = $results[2]
 $doAspire = $results[3]
 
 
-// @feature auth
+# @feature auth
 # ─────────────────────────────────────────────────────────────────────────────
 # Superuser Account
 # ─────────────────────────────────────────────────────────────────────────────
@@ -193,7 +193,7 @@ $input = Read-Host "  Email [$saEmail]"
 if ($input) { $saEmail = $input }
 $input = Read-Host "  Password [$saPass]"
 if ($input) { $saPass = $input }
-// @end
+# @end
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Summary
@@ -216,13 +216,13 @@ Write-Host "  Build and test:   " -NoNewline
 if ($doBuild) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No" -ForegroundColor DarkGray }
 Write-Host "  Launch Aspire:    " -NoNewline
 if ($doAspire) { Write-Host "Yes" -ForegroundColor Green } else { Write-Host "No" -ForegroundColor DarkGray }
-// @feature auth
+# @feature auth
 Write-Host ""
 Write-Host "  Superuser" -ForegroundColor White
 Write-Host "  ────────────────────────────────────"
 Write-Host "  Email:            " -NoNewline; Write-Host "$saEmail" -ForegroundColor Cyan
 Write-Host "  Password:         " -NoNewline; Write-Host "$saPass" -ForegroundColor Cyan
-// @end
+# @end
 Write-Host ""
 
 $proceed = Read-Host "  Proceed? [Y/n]"
@@ -266,14 +266,14 @@ if ($doGit) {
     Write-Ok "Committed: chore: initial project setup"
 }
 
-// @feature frontend
+# @feature frontend
 # ── Frontend Environment ──────────────────────────────────────────────────
 if ((Test-Path "src/frontend/.env.example") -and -not (Test-Path "src/frontend/.env")) {
     Write-Step "Setting up frontend environment..."
     Copy-Item "src/frontend/.env.example" "src/frontend/.env"
     Write-Ok "Created src/frontend/.env from .env.example"
 }
-// @end
+# @end
 
 # ── Port Configuration ──────────────────────────────────────────────────────
 if ($basePort -ne 5173) {
@@ -294,7 +294,7 @@ if ($basePort -ne 5173) {
     Git-Commit "chore: configure ports (base: $basePort)"
 }
 
-// @feature auth
+# @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
 if ($saEmail -ne "superuser@test.com" -or $saPass -ne "Superuser123!") {
     Write-Step "Applying Superuser configuration..."
@@ -306,7 +306,7 @@ if ($saEmail -ne "superuser@test.com" -or $saPass -ne "Superuser123!") {
     Write-Ok "Superuser credentials updated"
     Git-Commit "chore: configure Superuser credentials"
 }
-// @end
+# @end
 
 # ── Database Migration ──────────────────────────────────────────────────────
 if ($doMigration) {

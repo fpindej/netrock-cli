@@ -143,12 +143,12 @@ echo -e "  All ports are derived from a single base port:"
 echo ""
 echo -e "  ${DIM}Frontend:       BASE${NC}         ${DIM}pgAdmin:      BASE + 3${NC}"
 echo -e "  ${DIM}API:            BASE + 2${NC}     ${DIM}Postgres:     BASE + 4${NC}"
-# // @feature file-storage
+# @feature file-storage
 echo -e "  ${DIM}MinIO:          BASE + 5${NC}     ${DIM}Console:      BASE + 6${NC}"
-# // @end
-# // @feature auth
+# @end
+# @feature email
 echo -e "  ${DIM}MailPit SMTP:   BASE + 7${NC}     ${DIM}HTTP:         BASE + 8${NC}"
-# // @end
+# @end
 echo ""
 
 read -p "$(echo -e "${BOLD}Base port${NC} [5173]: ")" BASE_PORT
@@ -174,12 +174,12 @@ echo -e "  ───────────────────────
 echo -e "  Frontend:       ${CYAN}$FRONTEND_PORT${NC}"
 echo -e "  API:            ${CYAN}$API_PORT${NC}"
 echo -e "  ${DIM}pgAdmin:        $PGADMIN_PORT   Postgres: $POSTGRES_PORT${NC}"
-# // @feature file-storage
+# @feature file-storage
 echo -e "  ${DIM}MinIO:          $MINIO_PORT   Console:  $MINIO_CONSOLE_PORT${NC}"
-# // @end
-# // @feature auth
+# @end
+# @feature email
 echo -e "  ${DIM}MailPit SMTP:   $MAILPIT_SMTP_PORT   HTTP:     $MAILPIT_HTTP_PORT${NC}"
-# // @end
+# @end
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Options Checklist
@@ -196,7 +196,7 @@ DO_BUILD="${CHECKLIST_RESULTS[2]}"
 DO_ASPIRE="${CHECKLIST_RESULTS[3]}"
 
 
-// @feature auth
+# @feature auth
 # ─────────────────────────────────────────────────────────────────────────────
 # Superuser Account
 # ─────────────────────────────────────────────────────────────────────────────
@@ -212,7 +212,7 @@ read -p "$(echo -e "  ${BOLD}Email${NC} [$SA_EMAIL]: ")" input
 [ -n "$input" ] && SA_EMAIL="$input"
 read -p "$(echo -e "  ${BOLD}Password${NC} [$SA_PASS]: ")" input
 [ -n "$input" ] && SA_PASS="$input"
-// @end
+# @end
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Summary
@@ -233,14 +233,14 @@ echo -e "
   Build and test:   $([ "$DO_BUILD" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
   Launch Aspire:    $([ "$DO_ASPIRE" == "1" ] && echo -e "${GREEN}Yes${NC}" || echo -e "${DIM}No${NC}")
 "
-// @feature auth
+# @feature auth
 echo -e "
   ${BOLD}Superuser${NC}
   ────────────────────────────────────
   Email:            ${CYAN}$SA_EMAIL${NC}
   Password:         ${CYAN}$SA_PASS${NC}
 "
-// @end
+# @end
 
 read -p "$(echo -e "${BOLD}Proceed?${NC} [Y/n]: ")" PROCEED
 PROCEED=${PROCEED:-y}
@@ -285,14 +285,14 @@ if [ "$DO_GIT" = "1" ]; then
     print_success "Committed: chore: initial project setup"
 fi
 
-// @feature frontend
+# @feature frontend
 # ── Frontend Environment ──────────────────────────────────────────────────
 if [ -f "src/frontend/.env.example" ] && [ ! -f "src/frontend/.env" ]; then
     print_step "Setting up frontend environment..."
     cp "src/frontend/.env.example" "src/frontend/.env"
     print_success "Created src/frontend/.env from .env.example"
 fi
-// @end
+# @end
 
 # ── Port Configuration ──────────────────────────────────────────────────────
 if [ "$BASE_PORT" != "5173" ]; then
@@ -317,7 +317,7 @@ if [ "$BASE_PORT" != "5173" ]; then
     git_commit "chore: configure ports (base: $BASE_PORT)"
 fi
 
-// @feature auth
+# @feature auth
 # ── Seed Users ──────────────────────────────────────────────────────────────
 if [ "$SA_EMAIL" != "superuser@test.com" ] || [ "$SA_PASS" != "Superuser123!" ]; then
     print_step "Applying Superuser configuration..."
@@ -337,7 +337,7 @@ if [ "$SA_EMAIL" != "superuser@test.com" ] || [ "$SA_PASS" != "Superuser123!" ];
     print_success "Superuser credentials updated"
     git_commit "chore: configure Superuser credentials"
 fi
-// @end
+# @end
 
 # ── Database Migration ──────────────────────────────────────────────────────
 if [ "$DO_MIGRATION" = "1" ]; then
