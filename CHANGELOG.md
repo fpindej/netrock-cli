@@ -4,6 +4,19 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.5.0] - 2026-03-13
+
+### Added
+
+- Email (SMTP) as an independent feature - SMTP service, Liquid template rendering, and base layout can be used standalone for contact forms or notifications without requiring authentication
+- 15 features with 960 valid combinations (up from 14/1,824)
+
+### Changed
+
+- Auth now depends on email - auth-specific templates (verify-email, reset-password, invitation) stay in auth, generic email infrastructure is independent
+- Aspire orchestration is now required and always included - removed 31 conditional markers from 10 template files
+- Simplified "before you ship" section and generator notes (Aspire is always available)
+
 ## [0.4.0] - 2026-03-13
 
 ### Added
