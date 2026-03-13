@@ -191,7 +191,7 @@
 	<!-- Feature cards (collapsed by default) -->
 	<details id="feature-cards" class="group">
 		<summary
-			class="flex cursor-pointer items-center gap-2 rounded-lg px-1 py-2 font-mono text-xs text-text-muted transition-colors select-none hover:text-text-secondary"
+			class="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg px-1 py-2 font-mono text-xs text-text-muted transition-colors select-none hover:text-text-secondary sm:min-h-0"
 		>
 			<svg
 				class="size-3.5 transition-transform group-open:rotate-90"
