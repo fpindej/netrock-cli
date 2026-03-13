@@ -131,6 +131,12 @@
 </script>
 
 <div class="overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
+	<div class="mb-2 flex items-center justify-between px-1">
+		<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
+			{generator.isFrontendEnabled ? 'Full stack' : 'API only'} - backend dependencies
+		</span>
+		<span class="font-mono text-[10px] text-text-muted">click nodes to toggle</span>
+	</div>
 	<svg viewBox="0 0 510 {viewH}" class="mx-auto block w-full" style="min-width: 380px;">
 		<defs>
 			<pattern id="gg" width="20" height="20" patternUnits="userSpaceOnUse">

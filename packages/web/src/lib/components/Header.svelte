@@ -62,11 +62,20 @@
 		<a
 			href="/why"
 			class="inline-flex min-h-[44px] items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:min-h-0
-				{!isHome
+				{page.url.pathname === '/why'
 				? 'bg-accent-dim text-accent-light'
 				: 'text-text-muted hover:text-text-secondary'}"
 		>
 			Why?
+		</a>
+		<a
+			href="/changelog"
+			class="hidden items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:inline-flex
+				{page.url.pathname === '/changelog'
+				? 'bg-accent-dim text-accent-light'
+				: 'text-text-muted hover:text-text-secondary'}"
+		>
+			Changelog
 		</a>
 	</nav>
 
