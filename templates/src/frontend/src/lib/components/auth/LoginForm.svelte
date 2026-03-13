@@ -4,6 +4,7 @@
 	import { createShake, createCooldown, healthState } from '$lib/state';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { routes } from '$lib/config';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { Checkbox } from '$lib/components/ui/checkbox';
@@ -120,7 +121,7 @@
 			await new Promise((r) => setTimeout(r, 400));
 		}
 		await invalidateAll();
-		await goto(resolve('/'));
+		await goto(resolve(routes.dashboard));
 	}
 
 	// @feature 2fa
@@ -185,7 +186,7 @@
 								<div class="flex items-center justify-between">
 									<Form.Label>{m.auth_login_password()}</Form.Label>
 									<a
-										href={resolve('/forgot-password')}
+										href={resolve(routes.forgotPassword)}
 										class="inline-flex min-h-11 items-center text-sm font-medium text-primary hover:underline"
 									>
 										{m.auth_login_forgotPassword()}
@@ -235,7 +236,7 @@
 			<div class="text-center text-sm">
 				<span class="text-muted-foreground">{m.auth_login_noAccount()}</span>
 				<a
-					href={resolve('/register')}
+					href={resolve(routes.register)}
 					class="ms-1 inline-flex min-h-11 items-center font-medium text-primary hover:underline"
 				>
 					{m.auth_login_signUp()}

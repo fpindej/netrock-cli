@@ -52,14 +52,23 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/admin/RoleDeleteSection.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/admin/RoleDetailsCard.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/admin/RoleManagement.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/admin/RolePermissionEditor.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/admin/RolePermissionsSection.svelte', templated: true },
+			{
+				path: 'src/frontend/src/lib/components/admin/RolePermissionEditor.svelte',
+				templated: true
+			},
+			{
+				path: 'src/frontend/src/lib/components/admin/RolePermissionsSection.svelte',
+				templated: true
+			},
 			{ path: 'src/frontend/src/lib/components/admin/UserDetailCards.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/admin/UserManagementCard.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/admin/UserTable.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/admin/index.ts', templated: true },
 			{ path: 'src/frontend/src/lib/components/auth/AuthShell.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/auth/EmailVerificationBanner.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/auth/EmailVerificationBanner.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/auth/ForgotPasswordForm.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/auth/LoginForm.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/auth/RegisterForm.svelte', templated: true },
@@ -85,10 +94,16 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/layout/ThemeToggle.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/layout/UserNav.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/layout/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/oauth/ConnectedAccountsCard.svelte', templated: true },
+			{
+				path: 'src/frontend/src/lib/components/oauth/ConnectedAccountsCard.svelte',
+				templated: true
+			},
 			{ path: 'src/frontend/src/lib/components/oauth/DisconnectDialog.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/oauth/OAuthProviderButton.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/oauth/OAuthProviderButtons.svelte', templated: true },
+			{
+				path: 'src/frontend/src/lib/components/oauth/OAuthProviderButtons.svelte',
+				templated: true
+			},
 			{ path: 'src/frontend/src/lib/components/oauth/ProviderIcon.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/oauth/index.ts', templated: true },
 			{ path: 'src/frontend/src/lib/components/profile/AccountDetails.svelte', templated: false },
@@ -100,42 +115,114 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/profile/ProfileHeader.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/profile/index.ts', templated: true },
 			{ path: 'src/frontend/src/lib/components/settings/ActivityLog.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/settings/ChangePasswordForm.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/settings/DeleteAccountDialog.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/settings/ChangePasswordForm.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/settings/DeleteAccountDialog.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/settings/SetPasswordForm.svelte', templated: true },
 			{ path: 'src/frontend/src/lib/components/settings/TwoFactorCard.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/settings/TwoFactorDisableDialog.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/settings/TwoFactorRecoveryCodesDialog.svelte', templated: true },
-			{ path: 'src/frontend/src/lib/components/settings/TwoFactorSetupDialog.svelte', templated: true },
+			{
+				path: 'src/frontend/src/lib/components/settings/TwoFactorDisableDialog.svelte',
+				templated: true
+			},
+			{
+				path: 'src/frontend/src/lib/components/settings/TwoFactorRecoveryCodesDialog.svelte',
+				templated: true
+			},
+			{
+				path: 'src/frontend/src/lib/components/settings/TwoFactorSetupDialog.svelte',
+				templated: true
+			},
 			{ path: 'src/frontend/src/lib/components/settings/index.ts', templated: true },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-action.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-cancel.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-description.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-footer.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-header.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-overlay.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-portal.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-title.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-trigger.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-action.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-cancel.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-description.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-footer.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-header.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-overlay.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-portal.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-title.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog-trigger.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/alert-dialog/alert-dialog.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/alert-dialog/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/alert/alert-description.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/alert/alert-description.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/alert/alert-title.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/alert/alert.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/alert/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/avatar/avatar-fallback.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/avatar/avatar-fallback.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/avatar/avatar-image.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/avatar/avatar.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/avatar/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/badge/badge.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/badge/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-ellipsis.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-link.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-list.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-page.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-separator.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-ellipsis.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-link.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-list.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-page.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb-separator.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/breadcrumb.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/breadcrumb/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/button/button.svelte', templated: false },
@@ -149,21 +236,39 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/ui/card/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/checkbox/checkbox.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/checkbox/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/command/command-dialog.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/command/command-dialog.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/command/command-empty.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/command/command-group.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/command/command-input.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/command/command-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/command/command-link-item.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/command/command-link-item.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/command/command-list.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/command/command-loading.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/command/command-separator.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/command/command-shortcut.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/command/command-loading.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/command/command-separator.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/command/command-shortcut.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/command/command.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/command/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-close.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-description.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/dialog/dialog-description.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-footer.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-header.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-overlay.svelte', templated: false },
@@ -172,55 +277,148 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog-trigger.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/dialog/dialog.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/dialog/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-group-heading.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-group.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-label.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-portal.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-radio-group.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-radio-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-separator.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-shortcut.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-sub-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-sub.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-trigger.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-group.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-checkbox-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-group-heading.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-group.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-label.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-portal.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-radio-group.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-radio-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-separator.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-shortcut.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-sub-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-sub-trigger.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-sub.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu-trigger.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/dropdown-menu/dropdown-menu.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/dropdown-menu/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/form/form-button.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/form/form-description.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/form/form-element-field.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/form/form-field-errors.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/form/form-element-field.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/form/form-field-errors.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/form/form-field.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/form/form-fieldset.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/form/form-label.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/form/form-legend.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/form/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/input-otp/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/input-otp/input-otp-group.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/input-otp/input-otp-separator.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/input-otp/input-otp-slot.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/input-otp/input-otp-group.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/input-otp/input-otp-separator.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/input-otp/input-otp-slot.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/input-otp/input-otp.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/input/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/input/input.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/label/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/label/label.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/pagination/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-ellipsis.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-link.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-next-button.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-next.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-prev-button.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination-previous.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-ellipsis.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-link.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-next-button.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-next.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-prev-button.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/pagination/pagination-previous.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/pagination/pagination.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/phone-input/country-codes.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/phone-input/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/phone-input/phone-input.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/phone-input/phone-input.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/select/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/select/select-content.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/select/select-item.svelte', templated: false },
@@ -230,7 +428,10 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/ui/sheet/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sheet/sheet-close.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sheet/sheet-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sheet/sheet-description.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/sheet/sheet-description.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/sheet/sheet-footer.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sheet/sheet-header.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sheet/sheet-overlay.svelte', templated: false },
@@ -241,28 +442,79 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/constants.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/context.svelte.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-footer.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group-action.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group-label.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-footer.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group-action.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group-label.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-group.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-header.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-header.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-input.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-inset.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-action.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-badge.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-button.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-skeleton.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-sub-button.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-sub-item.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-sub.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-action.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-badge.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-button.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-skeleton.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-sub-button.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-sub-item.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu-sub.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-menu.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-provider.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-provider.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-rail.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-separator.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-trigger.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-separator.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/sidebar/sidebar-trigger.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/sidebar/sidebar.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/skeleton/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/skeleton/skeleton.svelte', templated: false },
@@ -284,17 +536,36 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/lib/components/ui/textarea/index.ts', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/textarea/textarea.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/timeline/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/timeline/timeline-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/timeline/timeline-item.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/timeline/timeline-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/timeline/timeline-item.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/timeline/timeline.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/components/ui/tooltip/index.ts', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-content.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-portal.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-provider.svelte', templated: false },
-			{ path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-trigger.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-content.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-portal.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-provider.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/ui/tooltip/tooltip-trigger.svelte',
+				templated: false
+			},
 			{ path: 'src/frontend/src/lib/components/ui/tooltip/tooltip.svelte', templated: false },
 			{ path: 'src/frontend/src/lib/config/i18n.ts', templated: false },
-			{ path: 'src/frontend/src/lib/config/index.ts', templated: false },
+			{ path: 'src/frontend/src/lib/config/index.ts', templated: true },
+			{ path: 'src/frontend/src/lib/config/routes.ts', templated: true },
 			{ path: 'src/frontend/src/lib/config/server.ts', templated: false },
 			{ path: 'src/frontend/src/lib/hooks/is-mobile.svelte.ts', templated: false },
 			{ path: 'src/frontend/src/lib/schemas/auth.ts', templated: false },
@@ -324,14 +595,18 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/messages/en.json', templated: false },
 			{ path: 'src/frontend/src/routes/(app)/+layout.server.ts', templated: false },
 			{ path: 'src/frontend/src/routes/(app)/+layout.svelte', templated: false },
-			{ path: 'src/frontend/src/routes/(app)/+page.svelte', templated: false },
+			{ path: 'src/frontend/src/routes/(app)/+page.server.ts', templated: false },
+			{ path: 'src/frontend/src/routes/(app)/dashboard/+page.svelte', templated: false },
 			{ path: 'src/frontend/src/routes/(app)/admin/+layout.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/jobs/+page.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/jobs/+page.svelte', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/jobs/[jobId]/+page.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/jobs/[jobId]/+page.svelte', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/layout.server.test.ts', templated: true },
-			{ path: 'src/frontend/src/routes/(app)/admin/oauth-providers/+page.server.ts', templated: true },
+			{
+				path: 'src/frontend/src/routes/(app)/admin/oauth-providers/+page.server.ts',
+				templated: true
+			},
 			{ path: 'src/frontend/src/routes/(app)/admin/oauth-providers/+page.svelte', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/roles/+page.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/roles/+page.svelte', templated: true },
@@ -345,14 +620,20 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/routes/(app)/profile/+page.svelte', templated: false },
 			{ path: 'src/frontend/src/routes/(app)/settings/+page.svelte', templated: true },
 			{ path: 'src/frontend/src/routes/(public)/+layout.server.ts', templated: false },
-			{ path: 'src/frontend/src/routes/(public)/forgot-password/+page.server.ts', templated: false },
+			{
+				path: 'src/frontend/src/routes/(public)/forgot-password/+page.server.ts',
+				templated: false
+			},
 			{ path: 'src/frontend/src/routes/(public)/forgot-password/+page.svelte', templated: false },
 			{ path: 'src/frontend/src/routes/(public)/login/+page.server.ts', templated: false },
 			{ path: 'src/frontend/src/routes/(public)/login/+page.svelte', templated: false },
 			{ path: 'src/frontend/src/routes/(public)/login/page.server.test.ts', templated: false },
 			{ path: 'src/frontend/src/routes/(public)/oauth/callback/+page.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(public)/oauth/callback/+page.svelte', templated: true },
-			{ path: 'src/frontend/src/routes/(public)/oauth/callback/page.server.test.ts', templated: true },
+			{
+				path: 'src/frontend/src/routes/(public)/oauth/callback/page.server.test.ts',
+				templated: true
+			},
 			{ path: 'src/frontend/src/routes/(public)/register/+page.server.ts', templated: false },
 			{ path: 'src/frontend/src/routes/(public)/register/+page.svelte', templated: false },
 			{ path: 'src/frontend/src/routes/(public)/reset-password/+page.server.ts', templated: false },
@@ -385,7 +666,7 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/static/site.webmanifest', templated: false },
 			{ path: 'src/frontend/svelte.config.js', templated: false },
 			{ path: 'src/frontend/tsconfig.json', templated: false },
-			{ path: 'src/frontend/vite.config.ts', templated: false },
+			{ path: 'src/frontend/vite.config.ts', templated: false }
 		]
 	});
 }

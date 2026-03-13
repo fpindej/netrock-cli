@@ -2,8 +2,10 @@
 	import * as Sidebar from '$lib/components/ui/sidebar';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
+	import { routes } from '$lib/config';
 	// @feature admin
-	import { hasPermission, Permissions } from '$lib/utils';
+	import { adminRoutes, type AdminRoute } from '$lib/config';
+	import { hasPermission } from '$lib/utils';
 	// @end
 	import {
 		LayoutDashboard,
@@ -39,13 +41,13 @@
 
 	type NavItem = { title: () => string; href: string; icon: Component<IconProps> };
 	// @feature admin
-	type AdminNavItem = NavItem & { permission: string };
+	type AdminNavItem = NavItem & { permission: AdminRoute['permission'] };
 	// @end
 
 	const items: NavItem[] = [
 		{
 			title: m.nav_dashboard,
-			href: resolve('/'),
+			href: resolve(routes.dashboard),
 			icon: LayoutDashboard
 		}
 	];
@@ -54,30 +56,30 @@
 	const adminItems: AdminNavItem[] = [
 		{
 			title: m.nav_adminUsers,
-			href: resolve('/admin/users'),
+			href: resolve(adminRoutes.users.path),
 			icon: Users,
-			permission: Permissions.Users.View
+			permission: adminRoutes.users.permission
 		},
 		{
 			title: m.nav_adminRoles,
-			href: resolve('/admin/roles'),
+			href: resolve(adminRoutes.roles.path),
 			icon: Shield,
-			permission: Permissions.Roles.View
+			permission: adminRoutes.roles.permission
 		},
 		// @feature jobs
 		{
 			title: m.nav_adminJobs,
-			href: resolve('/admin/jobs'),
+			href: resolve(adminRoutes.jobs.path),
 			icon: Clock,
-			permission: Permissions.Jobs.View
+			permission: adminRoutes.jobs.permission
 		},
 		// @end
 		// @feature oauth
 		{
 			title: m.nav_adminOAuthProviders,
-			href: resolve('/admin/oauth-providers'),
+			href: resolve(adminRoutes.oauthProviders.path),
 			icon: KeyRound,
-			permission: Permissions.OAuthProviders.View
+			permission: adminRoutes.oauthProviders.permission
 		},
 		// @end
 	];
@@ -89,7 +91,7 @@
 
 	function isActive(href: string): boolean {
 		const pathname = page.url.pathname;
-		if (href === resolve('/')) {
+		if (href === resolve(routes.dashboard)) {
 			return pathname === href;
 		}
 		return pathname.startsWith(href);
@@ -109,7 +111,7 @@
 			<Sidebar.MenuItem>
 				<Sidebar.MenuButton size="lg">
 					{#snippet child({ props })}
-						<a href={resolve('/')} onclick={handleNavigate} {...props}>
+						<a href={resolve(routes.dashboard)} onclick={handleNavigate} {...props}>
 							<div
 								class="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"
 							>
