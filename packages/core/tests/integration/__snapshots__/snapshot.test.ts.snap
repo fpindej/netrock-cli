@@ -783,8 +783,6 @@ using SnapshotApp.WebApi.Extensions;
 using SnapshotApp.WebApi.Features.OpenApi.Extensions;
 using SnapshotApp.WebApi.Middlewares;
 using SnapshotApp.WebApi.Routing;
-using SnapshotApp.WebApi.Routing;
-using SnapshotApp.WebApi.Routing;
 using Serilog;
 using LoggerConfigurationExtensions = SnapshotApp.Infrastructure.Logging.Extensions.LoggerConfigurationExtensions;
 

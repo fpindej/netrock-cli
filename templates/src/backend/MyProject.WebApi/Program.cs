@@ -40,11 +40,15 @@ using MyProject.WebApi.Middlewares;
 // @feature admin
 using MyProject.WebApi.Routing;
 // @end
+// @feature !admin
 // @feature jobs
 using MyProject.WebApi.Routing;
 // @end
+// @feature !jobs
 // @feature oauth
 using MyProject.WebApi.Routing;
+// @end
+// @end
 // @end
 using Serilog;
 using LoggerConfigurationExtensions = MyProject.Infrastructure.Logging.Extensions.LoggerConfigurationExtensions;
