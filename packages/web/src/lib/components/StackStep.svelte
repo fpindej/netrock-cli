@@ -13,12 +13,12 @@
 </script>
 
 <section class="mx-auto w-full max-w-4xl px-4">
-	<div class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
+	<div class="anim-up mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
 		Choose your stack
 	</div>
 
 	<!-- Architecture selector -->
-	<div class="mb-10">
+	<div class="anim-up mb-10">
 		<div class="overflow-hidden rounded-xl border border-border-subtle">
 			<div class="grid grid-cols-2">
 				<!-- API only -->
@@ -115,7 +115,7 @@
 	</div>
 
 	<!-- Backend presets -->
-	<div class="mb-8 grid grid-cols-3 gap-3">
+	<div class="anim-up mb-8 grid grid-cols-3 gap-3">
 		{#each generator.presets as preset}
 			{@const meta = presetMeta[preset.id]}
 			<button
@@ -144,7 +144,7 @@
 	</div>
 
 	<!-- Dependency graph -->
-	<div class="mb-6">
+	<div class="anim-up mb-6">
 		<DependencyGraph />
 	</div>
 

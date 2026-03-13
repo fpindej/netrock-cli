@@ -60,7 +60,7 @@
 </script>
 
 <section class="mx-auto w-full max-w-4xl px-4">
-	<div class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
+	<div class="anim-up mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
 		Review &amp; download
 	</div>
 
@@ -108,10 +108,12 @@
 		</div>
 
 		<!-- File tree -->
-		<FileTree paths={generator.filePaths} />
+		<div class="anim-up">
+			<FileTree paths={generator.filePaths} />
+		</div>
 
 		<!-- Before You Ship -->
-		<details id="before-you-ship" class="group mt-8 rounded-xl border border-amber/30 bg-amber-dim">
+		<details id="before-you-ship" class="anim-up group mt-8 rounded-xl border border-amber/30 bg-amber-dim">
 			<summary
 				class="flex cursor-pointer items-center gap-2 px-5 py-3.5 font-mono text-sm font-medium text-amber select-none"
 			>
@@ -190,7 +192,7 @@
 		</details>
 
 		<!-- Download + Share -->
-		<div class="mt-8 flex flex-col items-center gap-3">
+		<div class="anim-up mt-8 flex flex-col items-center gap-3">
 			<div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
 				<button
 					type="button"
@@ -245,7 +247,7 @@
 		</div>
 
 		<!-- Setup instructions -->
-		<div class="mt-6 rounded-xl border border-accent/20 bg-surface px-5 py-4">
+		<div class="anim-up mt-6 rounded-xl border border-accent/20 bg-surface px-5 py-4">
 			<div class="mb-3 flex items-center gap-2">
 				<svg class="size-4 text-accent" viewBox="0 0 20 20" fill="currentColor">
 					<path

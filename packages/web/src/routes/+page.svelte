@@ -23,24 +23,58 @@
 
 	function animateStepContent() {
 		requestAnimationFrame(() => {
+			// Fade-up elements (subtitles, inputs, sections)
+			const fadeUps = document.querySelectorAll('.anim-up');
+			if (fadeUps.length) {
+				animate(fadeUps, {
+					opacity: [0, 1],
+					translateY: [12, 0],
+					delay: stagger(60, { start: 100 }),
+					duration: 400,
+					ease: 'outCubic'
+				});
+			}
+
+			// Cards (value props, stats)
 			const cards = document.querySelectorAll('.animate-card');
 			if (cards.length) {
 				animate(cards, {
 					opacity: [0, 1],
 					translateY: [16, 0],
-					delay: stagger(80, { start: 150 }),
+					delay: stagger(80, { start: 200 }),
 					duration: 400,
 					ease: 'outCubic'
 				});
 			}
+
+			// Pills (tech stack, feature tags)
 			const pills = document.querySelectorAll('.animate-pill');
 			if (pills.length) {
 				animate(pills, {
 					opacity: [0, 1],
 					scale: [0.85, 1],
-					delay: stagger(40, { start: 500 }),
+					delay: stagger(40, { start: 400 }),
 					duration: 300,
 					ease: 'outCubic'
+				});
+			}
+
+			// Hero glow
+			const glow = document.querySelector('.hero-glow');
+			if (glow) {
+				animate(glow, {
+					opacity: [0, 0.6, 0.4],
+					scale: [0.8, 1.1, 1],
+					duration: 2000,
+					ease: 'outCubic'
+				});
+				animate(glow, {
+					opacity: [0.4, 0.7, 0.4],
+					scale: [1, 1.08, 1],
+					duration: 4000,
+					ease: 'inOutSine',
+					loop: true,
+					delay: 2000
 				});
 			}
 		});
@@ -76,6 +110,7 @@
 	}
 
 	let isDownloading = $state(false);
+	let downloadDone = $state(false);
 
 	function download() {
 		const project = generator.project;
@@ -102,7 +137,17 @@
 			a.download = `${rootDir}.zip`;
 			a.click();
 			URL.revokeObjectURL(url);
-		} finally {
+
+			isDownloading = false;
+			downloadDone = true;
+			requestAnimationFrame(() => {
+				const btn = document.querySelector('.dl-btn');
+				if (btn) {
+					animate(btn, { scale: [1, 1.05, 1], duration: 400, ease: 'outCubic' });
+				}
+			});
+			setTimeout(() => (downloadDone = false), 2500);
+		} catch {
 			isDownloading = false;
 		}
 	}
@@ -126,57 +171,26 @@
 	<div bind:this={mainEl}>
 		{#if currentStep === 0}
 			<!-- Step 1: Name + Value proposition -->
-			<div class="flex flex-col items-center px-4 pb-6 text-center">
-				<h1 class="font-mono text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+			<div class="relative flex flex-col items-center px-4 pb-6 text-center">
+				<div class="hero-glow absolute -top-16 size-64 rounded-full sm:size-80"></div>
+				<h1 class="relative font-mono text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
 					<span class="typewriter">
 						<span class="text-accent-light">net</span><span class="text-text-primary"
 							>rock</span
 						>
 					</span><span class="cursor-blink text-accent-light">_</span>
 				</h1>
-				<p class="mt-4 text-base text-text-secondary sm:text-lg">
+				<p class="anim-up mt-4 text-base text-text-secondary sm:text-lg">
 					Your next <span class="text-text-primary">.NET</span> project starts here.
 				</p>
 			</div>
 
-			<div class="mt-2">
+			<div class="anim-up mt-2">
 				<NameStep />
 			</div>
 
-			<!-- What you get -->
-			<div class="mx-auto mt-10 max-w-2xl px-4">
-				<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-					<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-4">
-						<div class="mb-2 font-mono text-sm font-medium text-accent-light">What is this?</div>
-						<p class="text-xs leading-relaxed text-text-secondary">
-							A .NET project generator. Pick auth, email, jobs, file storage, admin panel,
-							and more. Get a complete solution that builds and tests pass.
-						</p>
-					</div>
-					<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-4">
-						<div class="mb-2 font-mono text-sm font-medium text-accent-light">Why use this?</div>
-						<p class="text-xs leading-relaxed text-text-secondary">
-							Skip the weeks of plumbing. JWT auth, background jobs, SMTP, file storage,
-							Aspire orchestration - all wired together and tested.
-						</p>
-					</div>
-					<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-4">
-						<div class="mb-2 font-mono text-sm font-medium text-accent-light">API-first, frontend ready</div>
-						<p class="text-xs leading-relaxed text-text-secondary">
-							The .NET API works with any client. Add a SvelteKit frontend
-							that adapts to your features - auth pages, admin panel, dashboard, all wired up. Next.js coming soon.
-						</p>
-					</div>
-					<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-4">
-						<div class="mb-2 font-mono text-sm font-medium text-accent-light">No strings attached</div>
-						<p class="text-xs leading-relaxed text-text-secondary">
-							Download a ZIP, it is your code. No framework, no CLI dependency, no lock-in.
-							Clean Architecture you can reshape however you need.
-						</p>
-					</div>
-				</div>
-
-				<div class="mt-6 flex flex-wrap items-center justify-center gap-2 font-mono text-[10px] text-text-muted">
+			<div class="anim-up mx-auto mt-8 max-w-2xl px-4 text-center">
+				<div class="flex flex-wrap items-center justify-center gap-2 font-mono text-[10px] text-text-muted">
 					<span class="animate-pill rounded bg-surface-raised px-2 py-1">.NET 10</span>
 					<span class="animate-pill text-border-active">+</span>
 					<span class="animate-pill rounded bg-surface-raised px-2 py-1">Clean Architecture</span>
@@ -188,8 +202,8 @@
 					<span class="animate-pill rounded bg-surface-raised px-2 py-1">SvelteKit</span>
 				</div>
 
-				<p class="mt-6 text-center text-xs text-text-muted">
-					100% client-side. Zero tracking. Open source.
+				<p class="anim-up mt-4 text-xs text-text-muted">
+					100% client-side. Zero tracking.
 					<a href="/why" class="text-text-secondary hover:text-accent">Why netrock?</a>
 				</p>
 			</div>
@@ -273,11 +287,23 @@
 				<button
 					type="button"
 					onclick={download}
-					disabled={isDownloading || transitioning}
-					class="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-accent px-6 py-2.5 font-mono text-sm font-medium text-bg transition-all hover:bg-accent-light disabled:opacity-50"
+					disabled={isDownloading || downloadDone || transitioning}
+					class="dl-btn inline-flex min-h-[44px] items-center gap-2 rounded-lg px-6 py-2.5 font-mono text-sm font-medium transition-all disabled:opacity-90
+						{downloadDone
+						? 'bg-emerald text-bg'
+						: 'bg-accent text-bg hover:bg-accent-light'}"
 				>
 					{#if isDownloading}
 						Generating...
+					{:else if downloadDone}
+						<svg class="size-4" viewBox="0 0 20 20" fill="currentColor">
+							<path
+								fill-rule="evenodd"
+								d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+						Downloaded
 					{:else}
 						<svg class="size-4" viewBox="0 0 20 20" fill="currentColor">
 							<path
@@ -296,6 +322,12 @@
 </div>
 
 <style>
+	.hero-glow {
+		background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+		pointer-events: none;
+		opacity: 0;
+	}
+
 	:global(body) {
 		overflow-x: hidden;
 	}

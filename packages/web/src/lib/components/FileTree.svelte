@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { animate, stagger } from 'animejs';
+
 	interface TreeNode {
 		name: string;
 		path: string;
@@ -77,12 +79,29 @@
 
 	function toggle(path: string) {
 		const next = new Set(expanded);
-		if (next.has(path)) {
-			next.delete(path);
-		} else {
+		const opening = !next.has(path);
+		if (opening) {
 			next.add(path);
+		} else {
+			next.delete(path);
 		}
 		expanded = next;
+
+		if (opening) {
+			requestAnimationFrame(() => {
+				const el = document.querySelector(`[data-folder="${CSS.escape(path)}"]`);
+				if (el) {
+					const items = el.querySelectorAll(':scope > div, :scope > button');
+					animate(items, {
+						opacity: [0, 1],
+						translateX: [-8, 0],
+						delay: stagger(20),
+						duration: 200,
+						ease: 'outCubic'
+					});
+				}
+			});
+		}
 	}
 
 	function expandAll() {
@@ -144,7 +163,9 @@
 							{/if}
 						</button>
 						{#if isOpen}
-							{@render renderNodes(node.children, depth + 1)}
+							<div data-folder={node.path}>
+								{@render renderNodes(node.children, depth + 1)}
+							</div>
 						{/if}
 					{/if}
 				{/each}
