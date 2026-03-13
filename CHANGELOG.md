@@ -4,6 +4,20 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.0] - 2026-03-13
+
+### Added
+
+- Dashboard widget components from netrock PR #445 - account status, quick actions, welcome guide, developer guide
+- Feature-gated dashboard: auth enables personalized greeting and user widgets, admin adds admin quick action and grid layout, 2fa adds two-factor status row
+- 48 new i18n keys (EN + CS) for dashboard content
+- DeveloperGuide card always included - collapsible quick start reference for generated projects
+
+### Changed
+
+- Dashboard page is now templated with `@feature` markers instead of a static stub
+- Without auth, dashboard shows static header and developer guide only
+
 ## [0.2.1] - 2026-03-13
 
 ### Added

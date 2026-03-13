@@ -596,7 +596,24 @@ export function registerFrontendManifest(): void {
 			{ path: 'src/frontend/src/routes/(app)/+layout.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/+layout.svelte', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/+page.server.ts', templated: false },
-			{ path: 'src/frontend/src/routes/(app)/dashboard/+page.svelte', templated: false },
+			{
+				path: 'src/frontend/src/lib/components/dashboard/AccountStatus.svelte',
+				templated: true
+			},
+			{
+				path: 'src/frontend/src/lib/components/dashboard/DeveloperGuide.svelte',
+				templated: false
+			},
+			{
+				path: 'src/frontend/src/lib/components/dashboard/QuickActions.svelte',
+				templated: true
+			},
+			{
+				path: 'src/frontend/src/lib/components/dashboard/WelcomeGuide.svelte',
+				templated: true
+			},
+			{ path: 'src/frontend/src/lib/components/dashboard/index.ts', templated: true },
+			{ path: 'src/frontend/src/routes/(app)/dashboard/+page.svelte', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/+layout.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/jobs/+page.server.ts', templated: true },
 			{ path: 'src/frontend/src/routes/(app)/admin/jobs/+page.svelte', templated: true },
