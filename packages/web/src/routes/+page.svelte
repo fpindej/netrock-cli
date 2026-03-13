@@ -3,6 +3,7 @@
 	import NameStep from '$lib/components/NameStep.svelte';
 	import StackStep from '$lib/components/StackStep.svelte';
 	import ReviewStep from '$lib/components/ReviewStep.svelte';
+	import GuidedTour from '$lib/components/GuidedTour.svelte';
 	import { generator } from '$lib/stores/generator.svelte';
 
 	let activeSection = $state('name');
@@ -34,6 +35,7 @@
 <svelte:window onscroll={handleScroll} />
 
 <Header {activeSection} />
+<GuidedTour />
 
 <main class="pb-20 pt-16">
 	<!-- Hero -->
