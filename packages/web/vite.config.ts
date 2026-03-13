@@ -6,6 +6,26 @@ import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, type Plugin } from 'vite';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(readFileSync(resolve(__dirname, 'package.json'), 'utf-8'));
+
+function netrockChangelog(): Plugin {
+	const virtualId = 'virtual:changelog';
+	const resolvedId = '\0' + virtualId;
+	const changelogPath = resolve(__dirname, '../../CHANGELOG.md');
+
+	return {
+		name: 'netrock-changelog',
+		resolveId(id) {
+			if (id === virtualId) return resolvedId;
+		},
+		load(id) {
+			if (id === resolvedId) {
+				const content = readFileSync(changelogPath, 'utf-8');
+				return `export default ${JSON.stringify(content)};`;
+			}
+		}
+	};
+}
 
 function netrockTemplates(): Plugin {
 	const virtualId = 'virtual:templates';
@@ -41,5 +61,8 @@ function netrockTemplates(): Plugin {
 }
 
 export default defineConfig({
-	plugins: [tailwindcss(), netrockTemplates(), sveltekit()]
+	define: {
+		__APP_VERSION__: JSON.stringify(pkg.version)
+	},
+	plugins: [tailwindcss(), netrockChangelog(), netrockTemplates(), sveltekit()]
 });

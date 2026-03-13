@@ -16,7 +16,7 @@ COPY --from=deps /app/packages/web/node_modules ./packages/web/node_modules
 COPY packages/core packages/core
 COPY packages/web packages/web
 COPY templates templates
-COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY CHANGELOG.md pnpm-workspace.yaml pnpm-lock.yaml package.json ./
 RUN pnpm --filter @netrock/web build
 
 FROM nginx:alpine

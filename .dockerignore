@@ -1,6 +1,7 @@
 node_modules
 .git
 *.md
+!CHANGELOG.md
 .github
 packages/core/dist
 packages/web/build

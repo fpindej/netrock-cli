@@ -19,15 +19,19 @@
 <header
 	class="fixed top-0 z-50 flex w-full items-center justify-between border-b border-border-subtle bg-bg/80 px-4 py-3 backdrop-blur-xl sm:px-6"
 >
-	<a
-		href="/"
-		class="flex items-center gap-2 font-mono text-lg font-bold tracking-tight text-accent-light"
-	>
-		netrock
-		<span class="rounded bg-accent-dim px-1.5 py-0.5 text-[10px] font-medium text-accent"
-			>alpha</span
+	<div class="flex items-center gap-2">
+		<a
+			href="/"
+			class="font-mono text-lg font-bold tracking-tight text-accent-light"
 		>
-	</a>
+			netrock
+		</a>
+		<a
+			href="/changelog"
+			class="relative rounded bg-accent-dim px-1.5 py-0.5 text-[10px] font-medium text-accent transition-colors hover:bg-accent/20 after:absolute after:-inset-4 after:content-['']"
+			>v{__APP_VERSION__}</a
+		>
+	</div>
 
 	<nav class="flex items-center gap-1">
 		{#each steps as step}

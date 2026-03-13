@@ -2,7 +2,8 @@
 set -euo pipefail
 
 IMAGE="fpindej/netrock-web"
-TAG="${1:-latest}"
+DEFAULT_TAG=$(node -p "require('./packages/web/package.json').version")
+TAG="${1:-$DEFAULT_TAG}"
 
 TAGS="-t ${IMAGE}:${TAG}"
 if [ "${TAG}" != "latest" ]; then

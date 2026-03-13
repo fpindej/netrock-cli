@@ -86,13 +86,15 @@
 			production experience behind it is human.
 		</p>
 
-		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Alpha, but real</h2>
+		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Early, but real</h2>
 
 		<p>
 			This is early, but it works. 14 features with a dependency graph that validates all 1,752
 			valid combinations. The backend generates clean .NET 10 solutions that build and pass tests
 			out of the box. The SvelteKit frontend generates feature-gated pages and components that
-			match your backend selection. There will still be rough edges.
+			match your backend selection. Check the
+			<a href="/changelog" class="text-accent hover:text-accent-light">changelog</a>
+			for what's new. There will still be rough edges.
 		</p>
 
 		<p>

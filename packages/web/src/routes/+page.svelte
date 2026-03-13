@@ -127,9 +127,11 @@
 			<!-- Alpha disclaimer -->
 			<div class="mt-6 border-t border-border-subtle pt-5">
 				<p class="text-center text-xs leading-relaxed text-text-muted">
-					This generator is in
-					<span class="font-medium text-accent">alpha</span>
-					- generator built with
+					This generator is
+					<a href="/changelog" class="font-medium text-accent hover:text-accent-light"
+						>v{__APP_VERSION__}</a
+					>
+					- built with
 					<a
 						href="https://claude.ai"
 						target="_blank"
