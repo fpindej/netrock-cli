@@ -4,6 +4,37 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.7.0] - 2026-03-13
+
+### Added
+
+- 3-step wizard layout replacing infinite scroll (Name, Stack, Download)
+- anime.js step transitions (slide + fade), value card stagger, tech pill entrance animations
+- Sticky download button in bottom bar on step 3
+- Value proposition cards on step 1: What is this, Why use this, API-first, No strings attached
+- Hover tooltips on dependency graph nodes (desktop only, @media hover:hover)
+- OAuth provider count on graph node label when enabled (e.g. "OAuth 4/10")
+- Auto-expand feature cards and scroll to OAuth when enabling from graph
+- WizardProgress component with animated step indicators
+- Per-feature i18n gating: frontend files skip when frontend is disabled (netrock PR #446)
+- Web UI design rules in CLAUDE.md (touch targets, responsiveness, anime.js conventions)
+
+### Changed
+
+- Feature cards collapsed by default under expandable toggle
+- Before You Ship section dynamically adapts to selected features (no more hardcoded MailPit/MinIO)
+- Email checklist item gated by email feature instead of auth
+- Bottom bar shows contextual actions per step (next, review, download)
+- Removed Shepherd.js guided tour (redundant with wizard flow)
+- Deduplicated Routing using directive in Program.cs template
+
+### Fixed
+
+- Hero title "netrock" typewriter animation clipping on mobile (8ch instead of 100%)
+- SSR white flash on initial load (inline dark background on html element)
+- Frontend i18n files leaking into backend-only builds
+- Duplicate CS0105 warnings when admin + jobs + oauth all enabled
+
 ## [0.6.0] - 2026-03-13
 
 ### Added

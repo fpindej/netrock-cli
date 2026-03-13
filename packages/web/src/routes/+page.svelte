@@ -134,10 +134,8 @@
 						>
 					</span><span class="cursor-blink text-accent-light">_</span>
 				</h1>
-				<p class="mt-4 max-w-lg text-base leading-relaxed text-text-secondary sm:text-lg">
-					Stop wiring up auth, jobs, and email every time you start a .NET project.
-					<br class="hidden sm:block" />
-					Pick features, download, start building what matters.
+				<p class="mt-4 text-base text-text-secondary sm:text-lg">
+					Your next <span class="text-text-primary">.NET</span> project starts here.
 				</p>
 			</div>
 
