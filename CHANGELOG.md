@@ -4,6 +4,20 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.6.0] - 2026-03-13
+
+### Added
+
+- Guided tour (Shepherd.js + anime.js) - 10-step interactive walkthrough of the generator
+- Tour auto-starts on first visit, replayable via floating button in bottom right
+- Tour highlights OAuth provider selection, Before You Ship checklist (auto-opens), and scrolls back to top on completion
+- Custom dark-theme tooltip styling with accent glow and anime.js entrance transitions
+
+### Changed
+
+- Tour tooltips clamp to viewport width on narrow phones (no overflow on 320px screens)
+- Tour button touch targets meet 44px minimum on mobile, compact 34px on desktop
+
 ## [0.5.1] - 2026-03-13
 
 ### Added

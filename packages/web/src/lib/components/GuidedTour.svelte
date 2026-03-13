@@ -198,7 +198,7 @@
 		box-shadow:
 			0 0 30px rgba(6, 182, 212, 0.08),
 			0 20px 40px rgba(0, 0, 0, 0.5) !important;
-		max-width: 360px !important;
+		max-width: min(360px, calc(100vw - 32px)) !important;
 		font-family: var(--font-sans) !important;
 	}
 
@@ -253,7 +253,13 @@
 		font-weight: 500 !important;
 		cursor: pointer !important;
 		transition: opacity 0.2s !important;
-		min-height: 34px !important;
+		min-height: 44px !important;
+	}
+
+	@media (min-width: 640px) {
+		:global(.tour-btn-primary) {
+			min-height: 34px !important;
+		}
 	}
 
 	:global(.tour-btn-primary:hover) {
@@ -271,7 +277,13 @@
 		font-weight: 500 !important;
 		cursor: pointer !important;
 		transition: all 0.2s !important;
-		min-height: 34px !important;
+		min-height: 44px !important;
+	}
+
+	@media (min-width: 640px) {
+		:global(.tour-btn-secondary) {
+			min-height: 34px !important;
+		}
 	}
 
 	:global(.tour-btn-secondary:hover) {
