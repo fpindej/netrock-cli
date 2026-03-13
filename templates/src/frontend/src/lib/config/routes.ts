@@ -9,11 +9,13 @@ import { Permissions } from '$lib/utils/permissions';
  */
 export const routes = {
 	dashboard: '/dashboard',
+	// @feature auth
 	login: '/login',
 	register: '/register',
 	forgotPassword: '/forgot-password',
 	profile: '/profile',
 	settings: '/settings'
+	// @end
 } as const;
 
 // @feature admin

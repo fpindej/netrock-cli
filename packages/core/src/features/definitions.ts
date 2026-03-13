@@ -5,7 +5,9 @@ export const featureDefinitions: Feature[] = [
 	{
 		id: 'core',
 		name: 'Core',
-		description: 'Clean Architecture skeleton, Identity, Result pattern, health checks, PostgreSQL',
+		description: 'Clean Architecture skeleton, Result pattern, health checks, PostgreSQL',
+		details:
+			'Sets up a .NET 10 Web API with Clean Architecture layers (Domain, Application, Infrastructure, WebApi), the Result pattern for error handling, ProblemDetails (RFC 9457), health check endpoints, PostgreSQL with EF Core, Serilog structured logging, CORS, rate limiting, and security headers.',
 		dependencies: [],
 		required: true,
 		defaultEnabled: true,
@@ -16,6 +18,8 @@ export const featureDefinitions: Feature[] = [
 		name: 'Authentication',
 		description:
 			'Local login, registration, token refresh, user profile, email (SMTP + templates), email verification, password reset',
+		details:
+			'Adds JWT-based authentication with access/refresh token flow, user registration with email verification, password reset via email links, user profile management, SMTP email service with Razor templates, and cookie-based token storage. Without this, all API endpoints are public.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
@@ -25,6 +29,8 @@ export const featureDefinitions: Feature[] = [
 		id: '2fa',
 		name: 'Two-factor authentication',
 		description: 'TOTP-based 2FA with recovery codes',
+		details:
+			'Adds time-based one-time password (TOTP) support compatible with Google Authenticator, Authy, and similar apps. Includes setup flow with QR code, verification challenge during login, and single-use recovery codes for account recovery.',
 		dependencies: ['auth'],
 		required: false,
 		defaultEnabled: false,
@@ -34,6 +40,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'oauth',
 		name: 'External OAuth providers',
 		description: 'Google, GitHub, Microsoft, and more',
+		details:
+			'Adds OAuth 2.0 / OpenID Connect login with configurable providers. Users can link multiple external accounts, log in with any linked provider, and manage connections from their profile. Provider credentials are stored encrypted at rest.',
 		dependencies: ['auth'],
 		required: false,
 		defaultEnabled: false,
@@ -55,6 +63,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'captcha',
 		name: 'Captcha (Turnstile)',
 		description: 'Cloudflare Turnstile on register and forgot password',
+		details:
+			'Adds Cloudflare Turnstile CAPTCHA verification to registration and forgot-password forms. Turnstile is privacy-friendly and typically invisible to users. Requires a free Cloudflare Turnstile site key and secret.',
 		dependencies: ['auth'],
 		required: false,
 		defaultEnabled: false,
@@ -64,7 +74,9 @@ export const featureDefinitions: Feature[] = [
 		id: 'jobs',
 		name: 'Background jobs',
 		description: 'Hangfire job scheduling with PostgreSQL storage',
-		dependencies: ['auth'],
+		details:
+			'Adds Hangfire for background job processing with PostgreSQL-backed storage. Includes fire-and-forget jobs, recurring job scheduling with cron expressions, an admin API for managing jobs (trigger, pause, resume, remove), and example recurring jobs for expired token cleanup.',
+		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
 		group: 'infrastructure'
@@ -73,6 +85,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'file-storage',
 		name: 'File storage',
 		description: 'S3/MinIO file storage abstraction',
+		details:
+			'Adds an S3-compatible file storage abstraction that works with AWS S3, MinIO, or any S3-compatible provider. Includes upload, download, and delete operations with configurable bucket and path prefix. Use MinIO locally via Aspire for zero-config dev setup.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: false,
@@ -82,6 +96,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'avatars',
 		name: 'Avatar uploads',
 		description: 'User avatar upload with image processing',
+		details:
+			'Adds profile avatar upload with server-side image processing (resize, crop to square, format conversion). Avatars are stored via the file storage abstraction (S3/MinIO). Includes upload and remove endpoints with size and format validation.',
 		dependencies: ['auth', 'file-storage'],
 		required: false,
 		defaultEnabled: false,
@@ -91,6 +107,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'audit',
 		name: 'Audit trail',
 		description: 'Audit event logging for security-sensitive actions',
+		details:
+			'Adds an append-only audit log that records security-sensitive actions: logins, password changes, admin operations, account modifications, and more. Each event captures who performed the action, what was affected, and optional metadata. Viewable per-user in the admin panel.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
@@ -100,6 +118,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'admin',
 		name: 'Admin panel',
 		description: 'User management, role management, system administration',
+		details:
+			'Adds permission-based admin API endpoints for managing users (create, lock, unlock, delete, assign roles), roles (create, edit permissions, delete), and browsing audit logs. Includes a full admin UI in the frontend with data tables, detail views, and role permission editors.',
 		dependencies: ['auth', 'audit'],
 		required: false,
 		defaultEnabled: true,
@@ -109,6 +129,8 @@ export const featureDefinitions: Feature[] = [
 		id: 'aspire',
 		name: 'Aspire orchestration',
 		description: '.NET Aspire for local dev orchestration with OpenTelemetry',
+		details:
+			'Adds a .NET Aspire AppHost that orchestrates all services locally with a single command: PostgreSQL, the API, the frontend dev server, and any other dependencies like MinIO. Includes OpenTelemetry integration for distributed tracing, metrics, and structured logging via the Aspire dashboard.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
@@ -119,6 +141,8 @@ export const featureDefinitions: Feature[] = [
 		name: 'Claude agent team',
 		description:
 			'CLAUDE.md, FILEMAP.md, 8 specialized agents, and 4 lifecycle hooks for AI-assisted development',
+		details:
+			'Adds project-specific Claude Code configuration: CLAUDE.md with project rules and conventions, FILEMAP.md for change impact tracking, 8 specialized agents (backend engineer, reviewers, test writer, etc.), and 4 lifecycle hooks for auto-formatting and safety gates.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
@@ -129,6 +153,8 @@ export const featureDefinitions: Feature[] = [
 		name: 'Claude skills & conventions',
 		description:
 			'22 Claude Code skills, 3 convention references, and skill assets for code generation',
+		details:
+			'Adds slash-command skills for common workflows: adding permissions, background jobs, email templates, API endpoints, and more. Includes convention reference documents that agents auto-load for consistent code style. Skills generate production-ready code following the project patterns.',
 		dependencies: ['claude'],
 		required: false,
 		defaultEnabled: true,
@@ -137,8 +163,10 @@ export const featureDefinitions: Feature[] = [
 	{
 		id: 'frontend',
 		name: 'SvelteKit frontend',
-		description: 'Full SvelteKit reference frontend with all feature UIs',
-		dependencies: ['auth'],
+		description: 'SvelteKit reference frontend that adapts to your selected features',
+		details:
+			'Adds a full SvelteKit 5 frontend with Tailwind CSS, shadcn-svelte components, i18n (Paraglide), dark/light themes, and a responsive sidebar layout. Includes pages and components matching your backend features: auth pages, admin dashboard, profile management, and more. Without auth, ships as a clean dashboard shell.',
+		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
 		group: 'frontend'

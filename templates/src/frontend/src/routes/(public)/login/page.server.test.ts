@@ -1,3 +1,4 @@
+// @feature auth
 import { describe, expect, it, vi } from 'vitest';
 import { isRedirect } from '@sveltejs/kit';
 import { load } from './+page.server';
@@ -69,3 +70,4 @@ describe('login page server load', () => {
 		expect(result).toEqual({ reason: null, prefillEmail: 'user@example.com' });
 	});
 });
+// @end

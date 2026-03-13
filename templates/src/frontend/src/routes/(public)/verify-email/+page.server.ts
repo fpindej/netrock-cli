@@ -1,3 +1,4 @@
+// @feature auth
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url }) => {
@@ -5,3 +6,4 @@ export const load: PageServerLoad = async ({ url }) => {
 		token: url.searchParams.get('token') ?? ''
 	};
 };
+// @end

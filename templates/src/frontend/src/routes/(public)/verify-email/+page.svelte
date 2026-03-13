@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { browserClient, getErrorMessage } from '$lib/api';
 	import { invalidateAll } from '$app/navigation';
@@ -105,3 +106,4 @@
 		{/if}
 	</div>
 </AuthShell>
+<!-- @end -->

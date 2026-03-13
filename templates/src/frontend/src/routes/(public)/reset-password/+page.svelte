@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { ResetPasswordForm } from '$lib/components/auth';
 	import * as m from '$lib/paraglide/messages';
@@ -18,3 +19,4 @@
 </svelte:head>
 
 <ResetPasswordForm token={data.token} invited={data.invited} user={data.user} />
+<!-- @end -->

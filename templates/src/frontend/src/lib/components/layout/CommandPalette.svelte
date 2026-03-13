@@ -9,12 +9,16 @@
 	// @end
 	import { shortcutsState, ShortcutAction, getShortcutSymbol } from '$lib/state/shortcuts.svelte';
 	import { toggleTheme } from '$lib/state/theme.svelte';
+	// @feature auth
 	import { logout } from '$lib/auth';
+	// @end
 	import * as m from '$lib/paraglide/messages';
 	import {
 		LayoutDashboard,
+		// @feature auth
 		User,
 		Settings,
+		// @end
 		// @feature admin
 		Users,
 		Shield,
@@ -26,17 +30,28 @@
 		// @end
 		// @end
 		Sun,
+		// @feature auth
 		LogOut
+		// @end
 	} from '@lucide/svelte';
 	import type { Component } from 'svelte';
 	import type { IconProps } from '@lucide/svelte';
+	// @feature auth
 	import type { User as UserType } from '$lib/types';
+	// @end
 
 	interface Props {
+		// @feature auth
 		user: UserType | null | undefined;
+		// @end
 	}
 
+	// @feature auth
 	let { user }: Props = $props();
+	// @end
+	// @feature !auth
+	let {}: Props = $props();
+	// @end
 
 	type CommandItem = {
 		label: () => string;
@@ -62,6 +77,7 @@
 				goto(resolve(routes.dashboard));
 			}
 		},
+		// @feature auth
 		{
 			label: m.profile_title,
 			icon: User,
@@ -79,6 +95,7 @@
 			},
 			shortcut: getShortcutSymbol(ShortcutAction.Settings)
 		}
+		// @end
 	];
 
 	// @feature admin
@@ -135,6 +152,7 @@
 				close();
 			}
 		},
+		// @feature auth
 		{
 			label: m.nav_logout,
 			icon: LogOut,
@@ -144,6 +162,7 @@
 			},
 			shortcut: getShortcutSymbol(ShortcutAction.Logout)
 		}
+		// @end
 	];
 
 	// @feature admin

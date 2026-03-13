@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
@@ -40,3 +41,4 @@
 </svelte:head>
 
 <LoginForm apiUrl={data.apiUrl} prefillEmail={data.prefillEmail} />
+<!-- @end -->

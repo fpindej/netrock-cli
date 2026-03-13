@@ -1,3 +1,4 @@
+// @feature auth
 import { goto, invalidateAll } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { routes } from '$lib/config';
@@ -73,3 +74,4 @@ export async function logout() {
 	await invalidateAll();
 	await goto(resolve(routes.login));
 }
+// @end

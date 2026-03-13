@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import type { Component, Snippet } from 'svelte';
 	import type { IconProps } from '@lucide/svelte';
@@ -22,3 +23,4 @@
 		</div>
 	</div>
 </div>
+<!-- @end -->

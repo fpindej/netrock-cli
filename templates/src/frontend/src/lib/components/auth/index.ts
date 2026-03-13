@@ -1,3 +1,4 @@
+// @feature auth
 export { default as AuthShell } from './AuthShell.svelte';
 export { default as LoginForm } from './LoginForm.svelte';
 export { default as RegisterForm } from './RegisterForm.svelte';
@@ -9,4 +10,5 @@ export { default as TurnstileWidget } from './TurnstileWidget.svelte';
 // @end
 // @feature 2fa
 export { default as TwoFactorStep } from './TwoFactorStep.svelte';
+// @end
 // @end

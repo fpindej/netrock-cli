@@ -1,3 +1,4 @@
+// @feature auth
 /**
  * Client-side permission utilities.
  * Mirrors backend AppPermissions constants.
@@ -54,3 +55,4 @@ export function hasPermission(user: User | null | undefined, permission: string)
 export function hasAnyPermission(user: User | null | undefined, permissions: string[]): boolean {
 	return permissions.some((p) => hasPermission(user, p));
 }
+// @end

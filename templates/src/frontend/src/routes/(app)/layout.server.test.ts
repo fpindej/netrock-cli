@@ -1,3 +1,4 @@
+// @feature auth
 /**
  * Tests for the (app) layout server guard - the auth boundary for protected routes.
  *
@@ -93,3 +94,4 @@ describe('(app) layout server load', () => {
 		);
 	});
 });
+// @end

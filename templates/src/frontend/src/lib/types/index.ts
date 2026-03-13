@@ -4,7 +4,9 @@ import type { components } from '$lib/api/v1';
  * Shared type aliases for commonly used API types.
  * Centralizes type definitions to avoid repetition across components.
  */
+// @feature auth
 export type User = components['schemas']['UserResponse'];
+// @end
 // @feature admin
 export type AdminUser = components['schemas']['AdminUserResponse'];
 export type AdminRole = components['schemas']['AdminRoleResponse'];

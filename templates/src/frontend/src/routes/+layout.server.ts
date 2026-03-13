@@ -1,8 +1,11 @@
 import type { LayoutServerLoad } from './$types';
 import { dev } from '$app/environment';
 import { SERVER_CONFIG } from '$lib/config/server';
+// @feature auth
 import { getUser, REFRESH_TOKEN_COOKIE } from '$lib/auth';
+// @end
 
+// @feature auth
 export const load: LayoutServerLoad = async ({ locals, fetch, url, cookies }) => {
 	// Read BEFORE getUser - the failed-refresh response includes a Set-Cookie
 	// that clears the token, and SvelteKit's internal fetch mutates the shared
@@ -18,3 +21,13 @@ export const load: LayoutServerLoad = async ({ locals, fetch, url, cookies }) =>
 		apiUrl: dev ? SERVER_CONFIG.API_URL : undefined
 	};
 };
+// @end
+// @feature !auth
+export const load: LayoutServerLoad = async ({ locals }) => {
+	return {
+		user: null,
+		locale: locals.locale,
+		apiUrl: dev ? SERVER_CONFIG.API_URL : undefined
+	};
+};
+// @end

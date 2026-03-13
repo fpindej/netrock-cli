@@ -1,3 +1,4 @@
+// @feature auth
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
 using MyProject.Application.Features.Jobs;
@@ -212,3 +213,4 @@ public class JobsController(IJobManagementService jobManagementService) : ApiCon
         return NoContent();
     }
 }
+// @end

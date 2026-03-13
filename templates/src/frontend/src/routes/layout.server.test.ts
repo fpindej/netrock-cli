@@ -1,3 +1,4 @@
+// @feature auth
 /**
  * Tests for the root layout server load - the entry point for all routes.
  *
@@ -89,3 +90,4 @@ describe('root layout server load', () => {
 		expect(result.hadSession).toBe(true);
 	});
 });
+// @end

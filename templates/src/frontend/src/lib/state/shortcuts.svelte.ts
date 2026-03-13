@@ -14,8 +14,10 @@ export const shortcutsState = new ShortcutsState();
 
 export const ShortcutAction = {
 	CommandPalette: 'commandPalette',
+	// @feature auth
 	Settings: 'settings',
 	Logout: 'logout',
+	// @end
 	Help: 'help',
 	ToggleSidebar: 'toggleSidebar'
 } as const;
@@ -46,6 +48,7 @@ const SHORTCUTS: ShortcutConfig[] = [
 		display: () => (IS_MAC ? '⌘ K' : 'Ctrl+K'),
 		allowInInput: true
 	},
+	// @feature auth
 	{
 		code: 'Comma',
 		mod: true,
@@ -61,6 +64,7 @@ const SHORTCUTS: ShortcutConfig[] = [
 		description: m.shortcuts_logout,
 		display: () => (IS_MAC ? '⌘ ⇧ L' : 'Ctrl+Shift+L')
 	},
+	// @end
 	{
 		code: 'BracketLeft',
 		mod: true,

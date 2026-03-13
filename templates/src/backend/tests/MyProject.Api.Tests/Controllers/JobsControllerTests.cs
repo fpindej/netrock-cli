@@ -1,3 +1,4 @@
+// @feature auth
 using System.Net;
 using System.Net.Http.Json;
 using MyProject.Api.Tests.Contracts;
@@ -217,3 +218,4 @@ public class JobsControllerTests : IClassFixture<CustomWebApplicationFactory>, I
 
     #endregion
 }
+// @end

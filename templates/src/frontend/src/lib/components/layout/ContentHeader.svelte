@@ -13,8 +13,10 @@
 
 	const segmentLabels: Record<string, () => string> = {
 		dashboard: m.nav_dashboard,
+		// @feature auth
 		profile: m.nav_profile,
 		settings: m.nav_settings,
+		// @end
 		// @feature admin
 		users: m.nav_adminUsers,
 		roles: m.nav_adminRoles,
@@ -29,8 +31,10 @@
 
 	const segmentHrefs: Record<string, string> = {
 		dashboard: resolve(routes.dashboard),
+		// @feature auth
 		profile: resolve(routes.profile),
 		settings: resolve(routes.settings),
+		// @end
 		// @feature admin
 		users: resolve(adminRoutes.users.path),
 		roles: resolve(adminRoutes.roles.path),

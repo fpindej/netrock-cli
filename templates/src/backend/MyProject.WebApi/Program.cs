@@ -37,7 +37,13 @@ using MyProject.WebApi.Authorization;
 using MyProject.WebApi.Extensions;
 using MyProject.WebApi.Features.OpenApi.Extensions;
 using MyProject.WebApi.Middlewares;
-// @feature auth
+// @feature admin
+using MyProject.WebApi.Routing;
+// @end
+// @feature jobs
+using MyProject.WebApi.Routing;
+// @end
+// @feature oauth
 using MyProject.WebApi.Routing;
 // @end
 using Serilog;

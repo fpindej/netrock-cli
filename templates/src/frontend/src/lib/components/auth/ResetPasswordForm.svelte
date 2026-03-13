@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { browserClient, getErrorMessage, handleMutationError } from '$lib/api';
 	import { cn } from '$lib/utils';
@@ -241,3 +242,4 @@
 		</div>
 	{/if}
 </AuthShell>
+<!-- @end -->

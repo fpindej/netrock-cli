@@ -1,3 +1,4 @@
+// @feature auth
 import type { MergedOptions } from 'openapi-fetch';
 import { describe, expect, it, vi } from 'vitest';
 import { createAuthMiddleware } from './middleware';
@@ -303,3 +304,4 @@ describe('createAuthMiddleware', () => {
 		expect(result).toBeInstanceOf(Response);
 	});
 });
+// @end

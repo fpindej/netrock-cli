@@ -4,8 +4,8 @@ export const presets: Preset[] = [
 	{
 		id: 'minimal',
 		name: 'Minimal',
-		description: 'Core API with authentication',
-		features: ['core', 'auth']
+		description: 'Core API without authentication',
+		features: ['core']
 	},
 	{
 		id: 'standard',

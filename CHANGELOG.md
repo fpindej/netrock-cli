@@ -4,6 +4,22 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.2.0] - 2026-03-13
+
+### Added
+
+- Optional authentication - generate projects with or without auth, frontend adapts automatically
+- "What's included" expandable details on every feature card
+- Contextual notes that adapt to your selection (e.g., frontend without auth, audit without admin)
+- 36-combination audit matrix covering backend build, frontend build, type-check, and test pass for every valid feature combination
+
+### Changed
+
+- Frontend feature gating across 64 template files - auth pages, profile, settings, admin, and layout components are cleanly excluded when auth is disabled
+- Backend `JobsController` and tests properly gated behind auth when admin endpoints require permissions
+- `v1.d.ts` API types now templated to match selected features
+- `permissions.test.ts` assertions gated by feature so tests pass for all combinations
+
 ## [0.1.0] - 2026-03-13
 
 ### Added

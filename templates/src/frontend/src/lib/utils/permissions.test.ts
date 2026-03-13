@@ -1,3 +1,4 @@
+// @feature auth
 import { describe, expect, it } from 'vitest';
 import type { User } from '$lib/types';
 import { isSuperuser } from './permissions';
@@ -78,7 +79,9 @@ describe('hasPermission', () => {
 		const user = makeUser({ roles: ['Superuser'], permissions: [] });
 		expect(hasPermission(user, Permissions.Users.Manage)).toBe(true);
 		expect(hasPermission(user, Permissions.Roles.Manage)).toBe(true);
+		// @feature jobs
 		expect(hasPermission(user, Permissions.Jobs.Manage)).toBe(true);
+		// @end
 	});
 
 	it('Superuser implicitly has permissions even for unknown permission strings', () => {
@@ -132,7 +135,7 @@ describe('hasAnyPermission', () => {
 	});
 
 	it('returns false when user has none of the requested permissions', () => {
-		const user = makeUser({ permissions: [Permissions.Jobs.View] });
+		const user = makeUser({ permissions: [Permissions.Roles.View] });
 		expect(hasAnyPermission(user, [Permissions.Users.View, Permissions.Users.Manage])).toBe(false);
 	});
 
@@ -176,14 +179,19 @@ describe('Permissions constant', () => {
 		expect(Permissions.Roles.Manage).toBe('roles.manage');
 	});
 
+	// @feature jobs
 	it('exposes Jobs permissions', () => {
 		expect(Permissions.Jobs.View).toBe('jobs.view');
 		expect(Permissions.Jobs.Manage).toBe('jobs.manage');
 	});
+	// @end
 
+	// @feature oauth
 	it('exposes OAuthProviders permissions', () => {
 		expect(Permissions.OAuthProviders.View).toBe('oauth_providers.view');
 		expect(Permissions.OAuthProviders.Manage).toBe('oauth_providers.manage');
 	});
+	// @end
 });
+// @end
 // @end

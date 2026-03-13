@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { PageHeader } from '$lib/components/common';
 	import { ProfileForm, AccountDetails } from '$lib/components/profile';
@@ -19,3 +20,4 @@
 		<AccountDetails user={data.user} />
 	</div>
 </div>
+<!-- @end -->

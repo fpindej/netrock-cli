@@ -1,3 +1,4 @@
+// @feature auth
 import type { Middleware } from 'openapi-fetch';
 import type { paths } from '$lib/api/v1';
 
@@ -117,3 +118,4 @@ export function createAuthMiddleware(
 		}
 	};
 }
+// @end

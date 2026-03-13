@@ -17,6 +17,8 @@
 	let selectedCount = $derived(selectedOptions?.size ?? 0);
 	let allSelected = $derived(selectedOptions?.size === feature.options?.length);
 	let noneSelected = $derived(selectedOptions?.size === 0);
+
+	let showDetails = $state(false);
 </script>
 
 <div
@@ -89,6 +91,33 @@
 			{/if}
 		</div>
 	</button>
+
+	<!-- Info toggle + details panel -->
+	{#if feature.details}
+		<div class="flex items-start gap-2 border-t border-border-subtle/50 px-4 py-2">
+			<button
+				type="button"
+				onclick={() => (showDetails = !showDetails)}
+				class="inline-flex items-center gap-1.5 rounded-md py-0.5 font-mono text-[10px] text-text-muted transition-colors hover:text-accent"
+			>
+				<svg
+					class="size-3.5 transition-transform {showDetails ? 'rotate-90' : ''}"
+					viewBox="0 0 16 16"
+					fill="currentColor"
+				>
+					<path
+						d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
+					/>
+				</svg>
+				What's included
+			</button>
+		</div>
+		{#if showDetails}
+			<div class="px-4 pb-3.5">
+				<p class="text-xs leading-relaxed text-text-secondary">{feature.details}</p>
+			</div>
+		{/if}
+	{/if}
 
 	<!-- Inline options panel -->
 	{#if showOptions}

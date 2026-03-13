@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import * as Avatar from '$lib/components/ui/avatar';
 	// @feature avatars
@@ -118,3 +119,4 @@
 		<!-- @end -->
 	</div>
 </div>
+<!-- @end -->

@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { browserClient, handleMutationError } from '$lib/api';
 	import { createCooldown } from '$lib/state';
@@ -67,3 +68,4 @@
 		</Button>
 	</div>
 {/if}
+<!-- @end -->

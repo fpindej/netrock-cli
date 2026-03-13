@@ -3877,8 +3877,10 @@ export interface components {
 		ForgotPasswordRequest: {
 			/** @description The email address associated with the account. */
 			email: string;
+			// @feature captcha
 			/** @description The CAPTCHA verification token from Cloudflare Turnstile. */
 			captchaToken: string;
+			// @end
 		};
 		/** Format: binary */
 		IFormFile: string;
@@ -4080,8 +4082,10 @@ export interface components {
 			email: string;
 			/** @description The password for the new account. */
 			password: string;
+			// @feature captcha
 			/** @description The CAPTCHA verification token from Cloudflare Turnstile. */
 			captchaToken: string;
+			// @end
 			/** @description The phone number for the new account. */
 			phoneNumber?: null | string;
 			/** @description The first name of the user. */

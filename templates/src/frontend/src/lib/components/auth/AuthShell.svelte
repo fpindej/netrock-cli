@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { cn } from '$lib/utils';
@@ -54,3 +55,4 @@
 		</div>
 	</div>
 </div>
+<!-- @end -->

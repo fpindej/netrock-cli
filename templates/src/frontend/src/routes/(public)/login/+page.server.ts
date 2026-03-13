@@ -1,3 +1,4 @@
+// @feature auth
 import { redirect } from '@sveltejs/kit';
 import { routes } from '$lib/config';
 import type { PageServerLoad } from './$types';
@@ -22,3 +23,4 @@ export const load: PageServerLoad = async ({ parent, url }) => {
 
 	return { reason, prefillEmail };
 };
+// @end

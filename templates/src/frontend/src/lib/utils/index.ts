@@ -7,7 +7,9 @@ export * from './crop';
 // @feature jobs
 export * from './jobs';
 // @end
+// @feature auth
 export * from './permissions';
+// @end
 export * from './platform';
 // @feature admin
 export * from './roles';

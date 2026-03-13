@@ -44,7 +44,10 @@ export function registerJobsManifest(): void {
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/IRecurringJobDefinition.cs',
 				templated: false
 			},
-			{ path: 'src/backend/MyProject.Infrastructure/Features/Jobs/Models/PausedJob.cs', templated: false },
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/Models/PausedJob.cs',
+				templated: false
+			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Jobs/Options/JobSchedulingOptions.cs',
 				templated: false
@@ -69,7 +72,7 @@ export function registerJobsManifest(): void {
 			// WebApi
 			{
 				path: 'src/backend/MyProject.WebApi/Features/Admin/JobsController.cs',
-				templated: false
+				templated: true
 			},
 			{ path: 'src/backend/MyProject.WebApi/Features/Admin/JobsMapper.cs', templated: false },
 			{
@@ -89,7 +92,7 @@ export function registerJobsManifest(): void {
 			// Tests
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Controllers/JobsControllerTests.cs',
-				templated: false
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Validation/JobSchedulingOptionsValidationTests.cs',

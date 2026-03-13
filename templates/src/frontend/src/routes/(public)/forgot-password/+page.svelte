@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { ForgotPasswordForm } from '$lib/components/auth';
 	import * as m from '$lib/paraglide/messages';
@@ -11,3 +12,4 @@
 </svelte:head>
 
 <ForgotPasswordForm turnstileSiteKey={data.turnstileSiteKey} />
+<!-- @end -->

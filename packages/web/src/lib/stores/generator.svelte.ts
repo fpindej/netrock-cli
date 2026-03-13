@@ -40,8 +40,9 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 	if (!features.has('auth')) {
 		notes.push({
 			title: 'No authentication',
-			message:
-				'All API endpoints will be public. Add Authentication for JWT-based auth, email services, and user management.'
+			message: features.has('frontend')
+				? 'All API endpoints will be public. The frontend ships as a dashboard shell without login, register, profile, or settings pages. Add Authentication for JWT-based auth and user management.'
+				: 'All API endpoints will be public. Add Authentication for JWT-based auth, email services, and user management.'
 		});
 	}
 
@@ -53,7 +54,15 @@ function computeNotes(features: Set<FeatureId>): FeatureNote[] {
 		});
 	}
 
-	if (features.has('audit') && !features.has('admin')) {
+	if (features.has('audit') && !features.has('auth')) {
+		notes.push({
+			title: 'Audit without authentication',
+			message:
+				'The audit infrastructure is included but built-in events (login, password change, etc.) require Authentication. You can use AuditService.LogAsync() for your own custom events, but user identity tracking will not be available.'
+		});
+	}
+
+	if (features.has('audit') && features.has('auth') && !features.has('admin')) {
 		notes.push({
 			title: 'Audit without admin UI',
 			message:
@@ -135,10 +144,7 @@ class GeneratorState {
 	/** All features including frontend (if enabled) with dependencies auto-resolved. */
 	resolvedFeatures = $derived(
 		resolveFeatures(
-			new Set([
-				...this.selectedIds,
-				...(this.frontendEnabled ? (['frontend'] as FeatureId[]) : [])
-			])
+			new Set([...this.selectedIds, ...(this.frontendEnabled ? (['frontend'] as FeatureId[]) : [])])
 		)
 	);
 

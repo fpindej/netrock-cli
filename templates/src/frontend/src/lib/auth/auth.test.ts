@@ -1,3 +1,4 @@
+// @feature auth
 import { describe, expect, it, vi } from 'vitest';
 import { getUser } from './auth';
 
@@ -110,3 +111,4 @@ describe('getUser', () => {
 		expect(fetchFn).toHaveBeenCalledTimes(2);
 	});
 });
+// @end

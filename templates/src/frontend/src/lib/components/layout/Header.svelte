@@ -2,17 +2,31 @@
 	import { SidebarTrigger } from '$lib/components/ui/sidebar';
 	import { Separator } from '$lib/components/ui/separator';
 	import { Button } from '$lib/components/ui/button';
+	// @feature auth
 	import { LanguageSelector, ThemeToggle, UserNav } from '$lib/components/layout';
+	// @end
+	// @feature !auth
+	import { LanguageSelector, ThemeToggle } from '$lib/components/layout';
+	// @end
 	import { shortcutsState } from '$lib/state/shortcuts.svelte';
 	import { Search, CircleHelp } from '@lucide/svelte';
 	import * as m from '$lib/paraglide/messages';
+	// @feature auth
 	import type { User } from '$lib/types';
+	// @end
 
 	interface Props {
+		// @feature auth
 		user: User | null | undefined;
+		// @end
 	}
 
+	// @feature auth
 	let { user }: Props = $props();
+	// @end
+	// @feature !auth
+	let {}: Props = $props();
+	// @end
 </script>
 
 <header
@@ -42,8 +56,10 @@
 		</Button>
 		<LanguageSelector />
 		<ThemeToggle />
+		<!-- @feature auth -->
 		{#if user}
 			<UserNav {user} />
 		{/if}
+		<!-- @end -->
 	</nav>
 </header>

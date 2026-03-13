@@ -25,16 +25,30 @@
 		type IconProps
 	} from '@lucide/svelte';
 	import * as m from '$lib/paraglide/messages';
+	// @feature auth
 	import { ThemeToggle, LanguageSelector, UserNav } from '$lib/components/layout';
+	// @end
+	// @feature !auth
+	import { ThemeToggle, LanguageSelector } from '$lib/components/layout';
+	// @end
 	import { shortcutsState, ShortcutAction, getShortcutSymbol } from '$lib/state/shortcuts.svelte';
 	import type { Component } from 'svelte';
+	// @feature auth
 	import type { User } from '$lib/types';
+	// @end
 
 	interface Props {
+		// @feature auth
 		user: User | null | undefined;
+		// @end
 	}
 
+	// @feature auth
 	let { user }: Props = $props();
+	// @end
+	// @feature !auth
+	let {}: Props = $props();
+	// @end
 
 	const sidebar = Sidebar.useSidebar();
 	let collapsed = $derived(sidebar.state === 'collapsed');
@@ -207,9 +221,11 @@
 				<LanguageSelector />
 				<ThemeToggle {collapsed} />
 				<div class="flex-1 group-data-[collapsible=icon]:hidden"></div>
+				<!-- @feature auth -->
 				{#if user}
 					<UserNav {user} />
 				{/if}
+				<!-- @end -->
 			</div>
 			<Sidebar.Separator />
 			<Sidebar.Menu>

@@ -1,7 +1,9 @@
 <script lang="ts">
 	import * as Sidebar from '$lib/components/ui/sidebar';
 	import { AppSidebar, Header, ContentHeader, CommandPalette } from '$lib/components/layout';
+	// @feature auth
 	import { EmailVerificationBanner } from '$lib/components/auth';
+	// @end
 	import { page } from '$app/state';
 	import { invalidateAll } from '$app/navigation';
 	import { healthState } from '$lib/state';
@@ -20,16 +22,33 @@
 	});
 </script>
 
+<!-- @feature auth -->
 <CommandPalette user={data.user} />
+<!-- @end -->
+<!-- @feature !auth -->
+<CommandPalette />
+<!-- @end -->
 
 <Sidebar.Provider open={data.sidebarOpen} class="h-dvh overflow-hidden">
+	<!-- @feature auth -->
 	<AppSidebar user={data.user} />
+	<!-- @end -->
+	<!-- @feature !auth -->
+	<AppSidebar />
+	<!-- @end -->
 	<Sidebar.Inset>
+		<!-- @feature auth -->
 		<Header user={data.user} />
+		<!-- @end -->
+		<!-- @feature !auth -->
+		<Header />
+		<!-- @end -->
 		<ContentHeader />
-		{#if !data.user.emailConfirmed}
+		<!-- @feature auth -->
+		{#if data.user && !data.user.emailConfirmed}
 			<EmailVerificationBanner />
 		{/if}
+		<!-- @end -->
 		<div
 			class="flex flex-1 flex-col gap-4 overflow-y-auto overscroll-contain p-4 pb-[max(4rem,calc(env(safe-area-inset-bottom,0px)+2rem))] lg:gap-6 lg:p-6 lg:pb-[max(4rem,calc(env(safe-area-inset-bottom,0px)+2rem))]"
 		>

@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import * as Card from '$lib/components/ui/card';
 	import { Button } from '$lib/components/ui/button';
@@ -172,3 +173,4 @@
 		</form>
 	</Card.Content>
 </Card.Root>
+<!-- @end -->

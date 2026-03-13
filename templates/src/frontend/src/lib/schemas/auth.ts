@@ -1,3 +1,4 @@
+// @feature auth
 import { z } from 'zod';
 
 export const loginSchema = z.object({
@@ -19,3 +20,4 @@ export const registerSchema = z
 		message: 'Passwords do not match',
 		path: ['confirmPassword']
 	});
+// @end

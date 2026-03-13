@@ -1,3 +1,4 @@
+// @feature auth
 import { error } from '@sveltejs/kit';
 import * as m from '$lib/paraglide/messages';
 import type { LayoutServerLoad } from './$types';
@@ -14,3 +15,4 @@ export const load: LayoutServerLoad = async ({ parent }) => {
 		turnstileSiteKey: SERVER_CONFIG.TURNSTILE_SITE_KEY
 	};
 };
+// @end

@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 <script lang="ts">
 	import { PageHeader } from '$lib/components/common';
 	import {
@@ -96,3 +97,4 @@
 </div>
 
 <DeleteAccountDialog bind:open={deleteDialogOpen} />
+<!-- @end -->

@@ -38,6 +38,9 @@ export interface Feature {
 	/** Short description of what this feature adds. */
 	description: string;
 
+	/** Longer explanation shown on hover - what this feature includes and why you'd want it. */
+	details?: string;
+
 	/** Features that must be enabled when this feature is enabled. */
 	dependencies: FeatureId[];
 

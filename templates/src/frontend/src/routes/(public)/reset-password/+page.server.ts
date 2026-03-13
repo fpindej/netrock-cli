@@ -1,3 +1,4 @@
+// @feature auth
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ parent, url }) => {
@@ -13,3 +14,4 @@ export const load: PageServerLoad = async ({ parent, url }) => {
 		user: user ?? null
 	};
 };
+// @end
