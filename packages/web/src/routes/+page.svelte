@@ -328,6 +328,12 @@
 		opacity: 0;
 	}
 
+	:global(.anim-up),
+	:global(.animate-card),
+	:global(.animate-pill) {
+		opacity: 0;
+	}
+
 	:global(body) {
 		overflow-x: hidden;
 	}
