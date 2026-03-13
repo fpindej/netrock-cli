@@ -16,29 +16,32 @@
 		cy: number;
 	}
 
-	const S1 = 42;
-	const Y0 = 26;
+	const S = 46;
+	const Y0 = 24;
 
 	const nodes: GNode[] = [
-		{ id: 'core', label: 'Core', cx: 40, cy: Y0 + 3 * S1 },
-		{ id: 'email', label: 'Email', cx: 155, cy: Y0 },
-		{ id: 'auth', label: 'Auth', cx: 280, cy: Y0 },
-		{ id: 'audit', label: 'Audit', cx: 280, cy: Y0 + S1 },
-		{ id: 'file-storage', label: 'Files', cx: 280, cy: Y0 + 2 * S1 },
-		{ id: 'jobs', label: 'Jobs', cx: 280, cy: Y0 + 3 * S1 },
-		{ id: 'aspire', label: 'Aspire', cx: 280, cy: Y0 + 4 * S1 },
-		{ id: 'claude', label: 'Claude', cx: 280, cy: Y0 + 5 * S1 },
-		{ id: 'frontend', label: 'Svelte', cx: 280, cy: Y0 + 6 * S1 },
-		{ id: '2fa', label: '2FA', cx: 460, cy: Y0 },
-		{ id: 'oauth', label: 'OAuth', cx: 460, cy: Y0 + S1 },
-		{ id: 'captcha', label: 'Captcha', cx: 460, cy: Y0 + 2 * S1 },
-		{ id: 'admin', label: 'Admin', cx: 460, cy: Y0 + 3 * S1 },
-		{ id: 'avatars', label: 'Avatars', cx: 460, cy: Y0 + 4 * S1 },
-		{ id: 'claude-skills', label: 'Skills', cx: 460, cy: Y0 + 5 * S1 }
+		// Layer 0 - required
+		{ id: 'core', label: 'Core', cx: 48, cy: Y0 + 2.5 * S },
+		// Layer 0.5 - email bridge
+		{ id: 'email', label: 'Email', cx: 168, cy: Y0 },
+		// Layer 1 - features
+		{ id: 'auth', label: 'Auth', cx: 298, cy: Y0 },
+		{ id: 'audit', label: 'Audit', cx: 298, cy: Y0 + S },
+		{ id: 'file-storage', label: 'Files', cx: 298, cy: Y0 + 2 * S },
+		{ id: 'jobs', label: 'Jobs', cx: 298, cy: Y0 + 3 * S },
+		{ id: 'aspire', label: 'Aspire', cx: 298, cy: Y0 + 4 * S },
+		{ id: 'claude', label: 'Claude', cx: 298, cy: Y0 + 5 * S },
+		// Layer 2 - extensions
+		{ id: '2fa', label: '2FA', cx: 458, cy: Y0 },
+		{ id: 'oauth', label: 'OAuth', cx: 458, cy: Y0 + S },
+		{ id: 'captcha', label: 'Captcha', cx: 458, cy: Y0 + 2 * S },
+		{ id: 'admin', label: 'Admin', cx: 458, cy: Y0 + 3 * S },
+		{ id: 'avatars', label: 'Avatars', cx: 458, cy: Y0 + 4 * S },
+		{ id: 'claude-skills', label: 'Skills', cx: 458, cy: Y0 + 5 * S }
 	];
 
-	const lastY = Y0 + 6 * S1 + H / 2;
-	const labelY = lastY + 22;
+	const lastY = Y0 + 5 * S + H / 2;
+	const labelY = lastY + 20;
 	const viewH = labelY + 12;
 
 	const edgeDefs: [FeatureId, FeatureId][] = [
@@ -49,7 +52,6 @@
 		['core', 'jobs'],
 		['core', 'aspire'],
 		['core', 'claude'],
-		['core', 'frontend'],
 		['auth', '2fa'],
 		['auth', 'oauth'],
 		['auth', 'captcha'],
@@ -66,10 +68,20 @@
 		const f = nodeMap.get(from)!;
 		const t = nodeMap.get(to)!;
 		const sx = f.cx + W / 2;
-		const sy = f.cy;
+		let sy = f.cy;
 		const tx = t.cx - W / 2;
 		const ty = t.cy;
 		const dx = tx - sx;
+
+		// Fan out core edges along its right edge for cleaner routing
+		if (from === 'core') {
+			const targets = edgeDefs.filter((e) => e[0] === 'core').map((e) => e[1]);
+			const idx = targets.indexOf(to);
+			const count = targets.length;
+			const spread = Math.min(H - 4, count * 4);
+			sy = f.cy - spread / 2 + (spread / (count - 1)) * idx;
+		}
+
 		return `M${sx},${sy} C${sx + dx * 0.45},${sy} ${tx - dx * 0.45},${ty} ${tx},${ty}`;
 	}
 
@@ -121,11 +133,7 @@
 </script>
 
 <div class="overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
-	<svg
-		viewBox="0 0 550 {viewH}"
-		class="mx-auto block w-full"
-		style="min-width: 380px;"
-	>
+	<svg viewBox="0 0 510 {viewH}" class="mx-auto block w-full" style="min-width: 380px;">
 		<defs>
 			<pattern id="gg" width="20" height="20" patternUnits="userSpaceOnUse">
 				<path d="M20 0 L0 0 0 20" fill="none" stroke="#222233" stroke-width="0.3" opacity="0.5" />
@@ -141,11 +149,11 @@
 			</filter>
 		</defs>
 
-		<rect width="550" height={viewH} fill="url(#gg)" rx="8" />
+		<rect width="510" height={viewH} fill="url(#gg)" rx="8" />
 
 		<!-- Layer labels -->
 		<text
-			x="40"
+			x="48"
 			y={labelY}
 			text-anchor="middle"
 			fill="#555566"
@@ -155,7 +163,7 @@
 			required
 		</text>
 		<text
-			x="280"
+			x="298"
 			y={labelY}
 			text-anchor="middle"
 			fill="#555566"
@@ -165,7 +173,7 @@
 			features
 		</text>
 		<text
-			x="460"
+			x="458"
 			y={labelY}
 			text-anchor="middle"
 			fill="#555566"
