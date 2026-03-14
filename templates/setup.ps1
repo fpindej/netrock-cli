@@ -401,7 +401,9 @@ if ($doAspire) {
             try { $null = Invoke-WebRequest -Uri "http://localhost:15244" -UseBasicParsing -TimeoutSec 1 -ErrorAction Stop; Start-Process "http://localhost:15244"; break } catch { Start-Sleep -Seconds 1 }
         }
     } | Out-Null
-    dotnet run --project "src/backend/MyProject.AppHost"
+    $env:DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS = "true"
+    try { dotnet run --project "src/backend/MyProject.AppHost" }
+    finally { Remove-Item Env:\DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS -ErrorAction SilentlyContinue }
 } else {
     Write-Host ""
     Write-Host "  Your project is ready!" -ForegroundColor White

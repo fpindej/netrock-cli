@@ -430,7 +430,7 @@ if [ "$DO_ASPIRE" = "1" ]; then
         fi
         sleep 1
     done) &
-    exec dotnet run --project "src/backend/MyProject.AppHost"
+    exec env DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS=true dotnet run --project "src/backend/MyProject.AppHost"
 else
     echo -e "
   ${BOLD}Your project is ready!${NC}
