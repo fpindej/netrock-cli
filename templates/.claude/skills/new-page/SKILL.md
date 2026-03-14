@@ -9,6 +9,7 @@ Infers route, route group, components needed, and data requirements from context
 ## Templates
 
 Use these as starting points - fill in the specifics from context:
+
 - [Page and component templates](assets/page.svelte.md)
 
 ## Conventions
@@ -40,6 +41,7 @@ Use these as starting points - fill in the specifics from context:
 9. Add i18n keys to the correct feature file in all locale directories
 10. Add navigation entry in `AppSidebar.svelte` (using `adminRoutes.feature.path` and `.permission` for admin pages)
 11. Add matching entry in `CommandPalette.svelte` (using `adminRoutes.feature.path` and `.permission` for admin pages)
+12. If public page: add route to `publicRoutes` in `src/frontend/src/routes/sitemap.xml/+server.ts`
 
 **Verify and commit:**
 
