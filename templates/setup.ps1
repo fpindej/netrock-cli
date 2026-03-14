@@ -402,8 +402,7 @@ if ($doAspire) {
         }
     } | Out-Null
     $env:DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS = "true"
-    try { dotnet run --project "src/backend/MyProject.AppHost" }
-    finally { Remove-Item Env:\DOTNET_DASHBOARD_UNSECURED_ALLOW_ANONYMOUS -ErrorAction SilentlyContinue }
+    & dotnet run --project "src/backend/MyProject.AppHost"
 } else {
     Write-Host ""
     Write-Host "  Your project is ready!" -ForegroundColor White
