@@ -86,6 +86,11 @@ function writeProject(combo: Combination): string {
 		mkdirSync(dirname(fullPath), { recursive: true });
 		writeFileSync(fullPath, file.content, 'utf-8');
 	}
+	for (const file of result.binaryFiles) {
+		const fullPath = join(outputDir, file.path);
+		mkdirSync(dirname(fullPath), { recursive: true });
+		writeFileSync(fullPath, file.data);
+	}
 
 	return outputDir;
 }

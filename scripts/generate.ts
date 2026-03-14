@@ -21,7 +21,13 @@ const groupLabels: Record<FeatureGroup, string> = {
 	frontend: 'Frontend'
 };
 
-const groupOrder: FeatureGroup[] = ['core', 'authentication', 'infrastructure', 'tooling', 'frontend'];
+const groupOrder: FeatureGroup[] = [
+	'core',
+	'authentication',
+	'infrastructure',
+	'tooling',
+	'frontend'
+];
 
 async function main(): Promise<void> {
 	console.log('\nNetrock Project Generator\n');
@@ -64,7 +70,7 @@ async function main(): Promise<void> {
 					name: `${f.name} - ${f.description}`,
 					value: f.id,
 					checked: f.defaultEnabled,
-					disabled: f.required ? '(required)' as const : false as const
+					disabled: f.required ? ('(required)' as const) : (false as const)
 				}))
 			];
 		});
@@ -107,10 +113,7 @@ async function main(): Promise<void> {
 	const templatesDir = resolve(import.meta.dirname!, '..', 'templates');
 	const source = createFsSource(templatesDir);
 
-	const result = generateProject(
-		{ projectName, features: selectedFeatures },
-		source
-	);
+	const result = generateProject({ projectName, features: selectedFeatures }, source);
 
 	for (const file of result.files) {
 		const fullPath = join(resolvedOutput, file.path);
@@ -120,13 +123,16 @@ async function main(): Promise<void> {
 			chmodSync(fullPath, 0o755);
 		}
 	}
+	for (const file of result.binaryFiles) {
+		const fullPath = join(resolvedOutput, file.path);
+		mkdirSync(dirname(fullPath), { recursive: true });
+		writeFileSync(fullPath, file.data);
+	}
 
 	// 6. Summary
 	const effectiveSet = new Set(result.summary.enabledFeatures);
 	const skipped = [...selectedFeatures].filter((f) => !effectiveSet.has(f));
-	const featureNames = featureDefinitions
-		.filter((f) => effectiveSet.has(f.id))
-		.map((f) => f.name);
+	const featureNames = featureDefinitions.filter((f) => effectiveSet.has(f.id)).map((f) => f.name);
 
 	console.log(`Project:    ${result.names.pascalCase}`);
 	console.log(`Output:     ${resolvedOutput}`);

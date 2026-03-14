@@ -217,6 +217,11 @@ function main(): void {
 				mkdirSync(dirname(fullPath), { recursive: true });
 				writeFileSync(fullPath, file.content, 'utf-8');
 			}
+			for (const file of project.binaryFiles) {
+				const fullPath = join(outputDir, file.path);
+				mkdirSync(dirname(fullPath), { recursive: true });
+				writeFileSync(fullPath, file.data);
+			}
 
 			const effectiveFeatures = project.summary.enabledFeatures;
 			console.log(

@@ -9,6 +9,9 @@ function createTestSource(files: Record<string, string>): TemplateSource {
 		getFile(path: string) {
 			return files[path];
 		},
+		getBinaryFile() {
+			return undefined;
+		},
 		listFiles() {
 			return Object.keys(files);
 		}
@@ -27,9 +30,7 @@ beforeEach(() => {
 
 	registerManifest({
 		featureId: 'auth',
-		files: [
-			{ path: 'src/MyProject.WebApi/Features/Auth/AuthController.cs', templated: false }
-		]
+		files: [{ path: 'src/MyProject.WebApi/Features/Auth/AuthController.cs', templated: false }]
 	});
 
 	registerManifest({
@@ -62,7 +63,8 @@ describe('generateProject', () => {
 
 	it('substitutes namespace in file content', () => {
 		const source = createTestSource({
-			'src/MyProject.Domain/MyProject.Domain.csproj': '<RootNamespace>MyProject.Domain</RootNamespace>',
+			'src/MyProject.Domain/MyProject.Domain.csproj':
+				'<RootNamespace>MyProject.Domain</RootNamespace>',
 			'src/MyProject.WebApi/Program.cs': 'using MyProject.Domain;',
 			'src/MyProject.WebApi/Features/Auth/AuthController.cs':
 				'namespace MyProject.WebApi.Features.Auth;'

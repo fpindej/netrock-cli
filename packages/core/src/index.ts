@@ -19,6 +19,7 @@ export type { FeatureManifest, TemplateEntry } from './features/manifest.js';
 export type {
 	GeneratorConfig,
 	GeneratedFile,
+	BinaryFile,
 	GeneratedProject,
 	TemplateSource
 } from './engine/types.js';

@@ -1,6 +1,7 @@
 declare module 'virtual:templates' {
-	const templates: Map<string, string>;
-	export default templates;
+	export const textFiles: Map<string, string>;
+	/** Base64-encoded binary files. Decode with atob() at runtime. */
+	export const binaryFiles: Map<string, string>;
 }
 
 declare module 'virtual:changelog' {

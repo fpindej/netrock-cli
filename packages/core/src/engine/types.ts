@@ -17,7 +17,7 @@ export interface GeneratorConfig {
 	featureOptions?: Map<FeatureId, Set<string>>;
 }
 
-/** A single generated file ready for output. */
+/** A single generated text file ready for output. */
 export interface GeneratedFile {
 	/** Relative path from the project root (with namespace already substituted). */
 	path: string;
@@ -26,10 +26,22 @@ export interface GeneratedFile {
 	content: string;
 }
 
+/** A binary file to include in the output as-is (no text processing). */
+export interface BinaryFile {
+	/** Relative path from the project root (with namespace already substituted). */
+	path: string;
+
+	/** Raw binary content. */
+	data: Uint8Array;
+}
+
 /** The complete result of project generation. */
 export interface GeneratedProject {
-	/** All generated files. */
+	/** Generated text files (namespace-substituted, feature-gated). */
 	files: GeneratedFile[];
+
+	/** Binary files passed through without processing. */
+	binaryFiles: BinaryFile[];
 
 	/** The derived project name formats. */
 	names: ProjectNames;
@@ -55,8 +67,11 @@ export interface GeneratedProject {
  * - Filesystem templates (CLI: read from disk)
  */
 export interface TemplateSource {
-	/** Returns the raw content of a template file, or undefined if not found. */
+	/** Returns the raw content of a text template file, or undefined if not found. */
 	getFile(path: string): string | undefined;
+
+	/** Returns the raw binary content of a file, or undefined if not found. */
+	getBinaryFile(path: string): Uint8Array | undefined;
 
 	/** Returns all available template file paths. */
 	listFiles(): string[];

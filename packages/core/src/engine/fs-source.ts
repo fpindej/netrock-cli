@@ -18,12 +18,11 @@ const BINARY_EXTENSIONS = new Set([
 /**
  * A filesystem-backed TemplateSource for Node.js environments.
  * Reads template files from a root directory on disk.
- * Binary files are base64-encoded with a `base64:` prefix.
- *
- * Not suitable for browser use - use a bundled source instead.
+ * Text files are stored as UTF-8 strings, binary files as raw Uint8Array.
  */
 export function createFsSource(rootDir: string): TemplateSource {
-	const files = new Map<string, string>();
+	const textFiles = new Map<string, string>();
+	const binaryFiles = new Map<string, Uint8Array>();
 
 	function walk(dir: string): void {
 		for (const entry of readdirSync(dir, { withFileTypes: true })) {
@@ -33,9 +32,9 @@ export function createFsSource(rootDir: string): TemplateSource {
 			} else {
 				const relPath = relative(rootDir, fullPath);
 				if (BINARY_EXTENSIONS.has(extname(fullPath))) {
-					files.set(relPath, 'base64:' + readFileSync(fullPath).toString('base64'));
+					binaryFiles.set(relPath, readFileSync(fullPath));
 				} else {
-					files.set(relPath, readFileSync(fullPath, 'utf-8'));
+					textFiles.set(relPath, readFileSync(fullPath, 'utf-8'));
 				}
 			}
 		}
@@ -45,10 +44,13 @@ export function createFsSource(rootDir: string): TemplateSource {
 
 	return {
 		getFile(path: string) {
-			return files.get(path);
+			return textFiles.get(path);
+		},
+		getBinaryFile(path: string) {
+			return binaryFiles.get(path);
 		},
 		listFiles() {
-			return [...files.keys()];
+			return [...textFiles.keys(), ...binaryFiles.keys()];
 		}
 	};
 }

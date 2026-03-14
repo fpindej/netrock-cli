@@ -10,13 +10,21 @@ import {
 	type TemplateSource,
 	type Feature
 } from '@netrock/core';
-import templateMap from 'virtual:templates';
+import { textFiles, binaryFiles } from 'virtual:templates';
 
 registerAllManifests();
 
 const source: TemplateSource = {
-	getFile: (path: string) => templateMap.get(path),
-	listFiles: () => [...templateMap.keys()]
+	getFile: (path: string) => textFiles.get(path),
+	getBinaryFile(path: string) {
+		const b64 = binaryFiles.get(path);
+		if (!b64) return undefined;
+		const bin = atob(b64);
+		const arr = new Uint8Array(bin.length);
+		for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+		return arr;
+	},
+	listFiles: () => [...textFiles.keys(), ...binaryFiles.keys()]
 };
 
 const GROUP_LABELS: Record<string, string> = {
@@ -151,7 +159,9 @@ class GeneratorState {
 	});
 
 	filePaths = $derived.by((): string[] => {
-		return this.project?.files.map((f) => f.path).sort() ?? [];
+		const p = this.project;
+		if (!p) return [];
+		return [...p.files.map((f) => f.path), ...p.binaryFiles.map((f) => f.path)].sort();
 	});
 
 	notes = $derived.by((): FeatureNote[] => {

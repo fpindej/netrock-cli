@@ -23,6 +23,9 @@ export interface TemplateEntry {
 	 * for its parent feature (e.g., `option: 'google'` on an oauth manifest file).
 	 */
 	option?: string;
+
+	/** If true, this file is binary (PNG, ICO, etc.) and bypasses text processing entirely. */
+	binary?: boolean;
 }
 
 /**

@@ -26,11 +26,12 @@ beforeAll(() => {
 	for (const file of result.files) {
 		const fullPath = join(outputDir, file.path);
 		mkdirSync(dirname(fullPath), { recursive: true });
-		if (file.content.startsWith('base64:')) {
-			writeFileSync(fullPath, Buffer.from(file.content.slice(7), 'base64'));
-		} else {
-			writeFileSync(fullPath, file.content, 'utf-8');
-		}
+		writeFileSync(fullPath, file.content, 'utf-8');
+	}
+	for (const file of result.binaryFiles) {
+		const fullPath = join(outputDir, file.path);
+		mkdirSync(dirname(fullPath), { recursive: true });
+		writeFileSync(fullPath, file.data);
 	}
 }, 30_000);
 

@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from 'node:fs';
-import { dirname, relative, resolve } from 'node:path';
+import { dirname, extname, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
@@ -40,33 +40,30 @@ const BINARY_EXTENSIONS = new Set([
 	'.eot'
 ]);
 
-function isBinary(path: string): boolean {
-	const ext = path.slice(path.lastIndexOf('.'));
-	return BINARY_EXTENSIONS.has(ext);
-}
-
 function netrockTemplates(): Plugin {
 	const virtualId = 'virtual:templates';
 	const resolvedId = '\0' + virtualId;
 	const templatesDir = resolve(__dirname, '../../templates');
 
-	function walk(dir: string): [string, string][] {
-		const entries: [string, string][] = [];
+	function walk(dir: string): { text: [string, string][]; binary: [string, string][] } {
+		const text: [string, string][] = [];
+		const binary: [string, string][] = [];
 		for (const entry of readdirSync(dir, { withFileTypes: true })) {
 			const full = resolve(dir, entry.name);
 			if (entry.isDirectory()) {
-				entries.push(...walk(full));
+				const sub = walk(full);
+				text.push(...sub.text);
+				binary.push(...sub.binary);
 			} else {
 				const rel = relative(templatesDir, full).replaceAll('\\', '/');
-				if (isBinary(rel)) {
-					const base64 = readFileSync(full).toString('base64');
-					entries.push([rel, 'base64:' + base64]);
+				if (BINARY_EXTENSIONS.has(extname(full))) {
+					binary.push([rel, readFileSync(full).toString('base64')]);
 				} else {
-					entries.push([rel, readFileSync(full, 'utf-8')]);
+					text.push([rel, readFileSync(full, 'utf-8')]);
 				}
 			}
 		}
-		return entries;
+		return { text, binary };
 	}
 
 	return {
@@ -76,8 +73,11 @@ function netrockTemplates(): Plugin {
 		},
 		load(id) {
 			if (id === resolvedId) {
-				const entries = walk(templatesDir);
-				return `export default new Map(${JSON.stringify(entries)});`;
+				const { text, binary } = walk(templatesDir);
+				return [
+					`export const textFiles = new Map(${JSON.stringify(text)});`,
+					`export const binaryFiles = new Map(${JSON.stringify(binary)});`
+				].join('\n');
 			}
 		}
 	};

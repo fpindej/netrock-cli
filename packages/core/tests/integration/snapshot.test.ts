@@ -24,7 +24,7 @@ function generateFileList(
 		{ projectName: 'snapshot-app', features: new Set<FeatureId>(features), featureOptions },
 		source
 	);
-	return result.files.map((f) => f.path).sort();
+	return [...result.files.map((f) => f.path), ...result.binaryFiles.map((f) => f.path)].sort();
 }
 
 /** Generates content of a specific file for a given feature set. */
@@ -401,14 +401,7 @@ describe('frontend feature gate content', () => {
 		});
 
 		it('all sub-features without admin excludes all admin files', () => {
-			const files = generateFrontend([
-				'core',
-				'auth',
-				'jobs',
-				'oauth',
-				'audit',
-				'frontend'
-			]);
+			const files = generateFrontend(['core', 'auth', 'jobs', 'oauth', 'audit', 'frontend']);
 			expect(files.filter((f) => f.path.includes('/admin/'))).toHaveLength(0);
 		});
 
