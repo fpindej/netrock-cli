@@ -36,7 +36,7 @@ public static class ApplicationBuilderExtensions
 
         if (isDevelopment)
         {
-            ApplyMigrations(services);
+            await ApplyMigrationsAsync(services);
         }
 
         // @feature auth
@@ -46,20 +46,20 @@ public static class ApplicationBuilderExtensions
         // @end
     }
 
-    private static void ApplyMigrations(IServiceProvider serviceProvider)
+    private static async Task ApplyMigrationsAsync(IServiceProvider serviceProvider)
     {
         var dbContext = serviceProvider.GetRequiredService<MyProjectDbContext>();
-        var pending = dbContext.Database.GetPendingMigrations();
+        var pending = await dbContext.Database.GetPendingMigrationsAsync();
 
         if (pending.Any())
         {
-            dbContext.Database.Migrate();
+            await dbContext.Database.MigrateAsync();
         }
         else
         {
             // No migrations yet - create schema from model.
             // Replace with Migrate() once you add: dotnet ef migrations add Initial
-            dbContext.Database.EnsureCreated();
+            await dbContext.Database.EnsureCreatedAsync();
         }
     }
 
