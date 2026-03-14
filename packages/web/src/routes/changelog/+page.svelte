@@ -82,7 +82,7 @@
 			<nav
 				class="sticky top-14 z-40 -mx-4 mt-6 border-b border-border-subtle bg-bg/90 px-4 py-2.5 backdrop-blur-sm"
 			>
-				<div class="flex flex-wrap gap-2">
+				<div class="flex gap-2 overflow-x-auto">
 					{#each releases as release}
 						<a
 							href="#v{release.version}"
