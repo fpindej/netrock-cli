@@ -241,6 +241,12 @@
 							</p>
 						</details>
 					{/each}
+					<a
+						href="/faq"
+						class="mt-1 inline-block font-mono text-[11px] text-text-muted transition-colors hover:text-accent"
+					>
+						More questions
+					</a>
 				</div>
 			</div>
 		{:else if currentStep === 1}
