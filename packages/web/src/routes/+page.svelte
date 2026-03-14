@@ -214,7 +214,7 @@
 				<div class="mt-8 space-y-2">
 					{#each [
 						{ q: 'What do I actually get?', a: 'A .NET 10 solution with Clean Architecture, PostgreSQL, and Aspire orchestration. You pick the features, it wires everything together. Builds and tests pass right away.' },
-						{ q: 'Can I swap pieces out later?', a: 'Absolutely. Clean Architecture keeps everything behind interfaces. Swap EF Core for Dapper, Postgres for SQL Server, or throw away the frontend entirely. The layers are built for that.' },
+						{ q: 'Can I swap pieces out later?', a: 'Absolutely. Clean Architecture keeps everything behind interfaces. Swap EF Core for Dapper, Postgres for SQL Server, whatever you need. The layers are built for that.' },
 						{ q: 'Isn\'t this too much for a small project?', a: 'That is what the generator solves. A core API is 88 files. Add auth, jobs, or email when you need them. Nothing unused ships.' },
 						{ q: 'How is this different from ABP?', a: 'ABP is a framework you depend on at runtime. This is a generator. Download the code and it is yours. No runtime dependency, just clean .NET you can read and change.' },
 						{ q: 'Is my data sent anywhere?', a: 'Nope. Everything runs in your browser. No tracking, no analytics, no cookies.' }
