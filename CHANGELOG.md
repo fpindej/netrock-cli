@@ -4,6 +4,19 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.8.3] - 2026-03-14
+
+### Added
+
+- Collapsible FAQ on step 1 with 9 community-sourced questions (swappability, ABP comparison, multitenancy, AI transparency, SvelteKit BFF, and more)
+- Aspire dashboard opens without login token after setup (scoped env var in setup scripts)
+- Aspire dashboard token note in generated CLAUDE.md
+
+### Fixed
+
+- Binary files (favicons, icons) separated from text template engine - no more UTF-8 corruption
+- Template favicons now match brand colors in generated projects
+
 ## [0.8.2] - 2026-03-14
 
 ### Fixed
