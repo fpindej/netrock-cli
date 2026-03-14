@@ -214,8 +214,11 @@
 				<div class="anim-up mt-8 space-y-2">
 					{#each [
 						{ q: 'What do I get?', a: 'A complete .NET 10 solution with Clean Architecture, PostgreSQL, Aspire orchestration, and every feature you pick. Builds and tests pass out of the box.' },
-						{ q: 'Do I need a frontend?', a: 'No. The API works standalone with any client. Optionally add a SvelteKit frontend that adapts to your features. Next.js is on the roadmap.' },
-						{ q: 'Is there lock-in?', a: 'None. Download a ZIP, it is your code. No framework dependency, no CLI to keep running, no packages to stay subscribed to.' },
+						{ q: 'Can I swap pieces out?', a: 'Yes. Clean Architecture keeps everything behind interfaces. Swap EF Core for Dapper, PostgreSQL for SQL Server, or throw away the frontend and use the API with React. The layers are designed for it.' },
+						{ q: 'Is it too much for a small project?', a: 'That is what the generator solves. Pick only what you need - a core API with just PostgreSQL is 88 files. Add auth, jobs, email as your project grows. No unused boilerplate.' },
+						{ q: 'Why SvelteKit with .NET?', a: 'SvelteKit acts as a BFF (backend-for-frontend) layer handling SSR and auth cookies, while the .NET API does the heavy lifting. The API is the product - the frontend is a reference client you can keep or replace.' },
+						{ q: 'Will there be more frontends?', a: 'Next.js is next on the roadmap. The API is framework-agnostic - use it with any client today.' },
+						{ q: 'How much was done with AI?', a: 'Architecture, security decisions, and code reviews are human. Implementation gets heavy AI assistance. Always tested, always reviewed. The repo includes the Claude skills and agent files so you can see the workflow.' },
 						{ q: 'Is my data sent anywhere?', a: 'No. Everything runs in your browser. The ZIP is generated client-side. Zero tracking, zero analytics, zero cookies.' }
 					] as item}
 						<details class="group rounded-lg border border-border-subtle bg-surface">
