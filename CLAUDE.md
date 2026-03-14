@@ -117,6 +117,52 @@ All changes to `packages/web` must follow these rules. Do not ask - just enforce
 - Run `pnpm build` + `pnpm --filter @netrock/web check` (0 errors, 0 warnings)
 - Update version + CHANGELOG.md for feature changes
 
+## Versioning & Changelog
+
+Version bumps and changelog entries are required for generator changes. The changelog is user-facing - it appears on netrock.dev/changelog.
+
+### When to bump
+
+| Change                                                                                      | Version                                            | Changelog?          |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------- | ------------------- |
+| New feature in generated projects (new feature, new template files, new `@feature` markers) | **Minor** (0.X.0)                                  | Yes                 |
+| New web UI feature (wizard, dependency graph, animations)                                   | **Minor** (0.X.0)                                  | Yes                 |
+| Bug fix in generated output (wrong markers, missing files, build failures)                  | **Patch** (0.0.X)                                  | Yes                 |
+| Bug fix in web UI (layout, responsiveness, broken interactions)                             | **Patch** (0.0.X)                                  | Yes                 |
+| Syncing template files from netrock source repo (PRs)                                       | **Minor** if new content, **Patch** if corrections | Yes                 |
+| SEO, meta tags, favicons, OG images                                                         | **Patch** unless significant                       | Yes if user-visible |
+| Internal refactoring (manifest restructuring, test updates, snapshot updates)               | No bump                                            | No                  |
+| CLAUDE.md or docs-only changes                                                              | No bump                                            | No                  |
+| Dependency updates (pnpm, animejs, etc.)                                                    | No bump                                            | No                  |
+
+### What goes in the changelog
+
+Focus on what users experience:
+
+- **Generated project changes** are the most important (new features, fixed gating, new templates)
+- **Web UI changes** matter when they affect the generator experience (wizard, graph, download)
+- **Do not log** internal refactoring, snapshot updates, CI changes, or CLAUDE.md edits
+
+### Changelog format
+
+```markdown
+## [X.Y.Z] - YYYY-MM-DD
+
+### Added
+
+- New capability or feature
+
+### Changed
+
+- Modified existing behavior
+
+### Fixed
+
+- Bug fix
+```
+
+Bump both `packages/core/package.json` and `packages/web/package.json` together. They share the same version.
+
 ## Template Sync
 
 Templates are synced manually from `fpindej/netrock` (the source project). When syncing:
