@@ -40,7 +40,15 @@
 			const rootDir = project.names.kebabCase;
 			const executableAttr = 0o755 << 16;
 			for (const file of project.files) {
-				const data = strToU8(file.content);
+				let data: Uint8Array;
+				if (file.content.startsWith('base64:')) {
+					const b64 = file.content.slice(7);
+					const bin = atob(b64);
+					data = new Uint8Array(bin.length);
+					for (let i = 0; i < bin.length; i++) data[i] = bin.charCodeAt(i);
+				} else {
+					data = strToU8(file.content);
+				}
 				const isExecutable = file.path.endsWith('.sh');
 				files[`${rootDir}/${file.path}`] = isExecutable ? [data, { attrs: executableAttr }] : data;
 			}

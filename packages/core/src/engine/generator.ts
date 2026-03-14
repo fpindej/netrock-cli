@@ -56,6 +56,13 @@ export function generateProject(config: GeneratorConfig, source: TemplateSource)
 		const rawContent = source.getFile(path);
 		if (rawContent === undefined) continue;
 
+		// Binary files (base64-encoded) pass through without text processing
+		if (rawContent.startsWith('base64:')) {
+			const outputPath = substitutePathNamespace(path, names);
+			files.push({ path: outputPath, content: rawContent });
+			continue;
+		}
+
 		// Process conditional markers if this is a templated file
 		let content = templated ? processTemplate(rawContent, enabledTags) : rawContent;
 

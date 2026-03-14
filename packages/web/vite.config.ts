@@ -27,6 +27,24 @@ function netrockChangelog(): Plugin {
 	};
 }
 
+const BINARY_EXTENSIONS = new Set([
+	'.png',
+	'.ico',
+	'.jpg',
+	'.jpeg',
+	'.gif',
+	'.webp',
+	'.woff',
+	'.woff2',
+	'.ttf',
+	'.eot'
+]);
+
+function isBinary(path: string): boolean {
+	const ext = path.slice(path.lastIndexOf('.'));
+	return BINARY_EXTENSIONS.has(ext);
+}
+
 function netrockTemplates(): Plugin {
 	const virtualId = 'virtual:templates';
 	const resolvedId = '\0' + virtualId;
@@ -40,7 +58,12 @@ function netrockTemplates(): Plugin {
 				entries.push(...walk(full));
 			} else {
 				const rel = relative(templatesDir, full).replaceAll('\\', '/');
-				entries.push([rel, readFileSync(full, 'utf-8')]);
+				if (isBinary(rel)) {
+					const base64 = readFileSync(full).toString('base64');
+					entries.push([rel, 'base64:' + base64]);
+				} else {
+					entries.push([rel, readFileSync(full, 'utf-8')]);
+				}
 			}
 		}
 		return entries;
