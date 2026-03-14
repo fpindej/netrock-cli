@@ -421,8 +421,15 @@ if [ "$DO_ASPIRE" = "1" ]; then
     print_step "Launching Aspire..."
     echo -e "  ${DIM}Opening Aspire Dashboard in your browser. Press Ctrl+C to stop.${NC}"
     echo ""
-    # Open browser after Aspire has time to start
-    (sleep 8 && if command -v open &>/dev/null; then open "http://localhost:15244"; elif command -v xdg-open &>/dev/null; then xdg-open "http://localhost:15244"; fi) &
+    # Poll until Aspire dashboard responds, then open browser
+    (for i in $(seq 1 30); do
+        if curl -s -o /dev/null -w '' http://localhost:15244 2>/dev/null; then
+            if command -v open &>/dev/null; then open "http://localhost:15244";
+            elif command -v xdg-open &>/dev/null; then xdg-open "http://localhost:15244"; fi
+            break
+        fi
+        sleep 1
+    done) &
     exec dotnet run --project "src/backend/MyProject.AppHost"
 else
     echo -e "

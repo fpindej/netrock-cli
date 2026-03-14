@@ -395,8 +395,12 @@ if ($doAspire) {
     Write-Step "Launching Aspire..."
     Write-Host "  Opening Aspire Dashboard in your browser. Press Ctrl+C to stop." -ForegroundColor DarkGray
     Write-Host ""
-    # Open browser after Aspire has time to start
-    Start-Job -ScriptBlock { Start-Sleep -Seconds 8; Start-Process "http://localhost:15244" } | Out-Null
+    # Poll until Aspire dashboard responds, then open browser
+    Start-Job -ScriptBlock {
+        for ($i = 0; $i -lt 30; $i++) {
+            try { $null = Invoke-WebRequest -Uri "http://localhost:15244" -UseBasicParsing -TimeoutSec 1 -ErrorAction Stop; Start-Process "http://localhost:15244"; break } catch { Start-Sleep -Seconds 1 }
+        }
+    } | Out-Null
     dotnet run --project "src/backend/MyProject.AppHost"
 } else {
     Write-Host ""
