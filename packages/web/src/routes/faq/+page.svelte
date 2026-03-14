@@ -30,18 +30,11 @@
 	<p class="mt-2 text-sm text-text-secondary">
 		Questions from the community. Can't find yours?
 		<a
-			href="https://discord.gg/5rHquRptSh"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="text-accent hover:text-accent-light"
-		>Ask on Discord</a>
-		or
-		<a
 			href="https://github.com/fpindej/netrock/discussions"
 			target="_blank"
 			rel="noopener noreferrer"
 			class="text-accent hover:text-accent-light"
-		>open a discussion</a>.
+		>Open a discussion</a>.
 	</p>
 
 	<div class="mt-8 space-y-2">
