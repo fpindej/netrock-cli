@@ -4,6 +4,12 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.8.1] - 2026-03-14
+
+### Fixed
+
+- Generated projects now ship with brand-colored favicons by default (were still using old generic ones)
+
 ## [0.8.0] - 2026-03-14
 
 ### Added
