@@ -393,8 +393,10 @@ if ($doAspire) {
     Write-Host "  Completed in ${elapsed}s" -ForegroundColor DarkGray
     Write-Host ""
     Write-Step "Launching Aspire..."
-    Write-Host "  The Aspire Dashboard URL will appear below. Press Ctrl+C to stop." -ForegroundColor DarkGray
+    Write-Host "  Opening Aspire Dashboard in your browser. Press Ctrl+C to stop." -ForegroundColor DarkGray
     Write-Host ""
+    # Open browser after Aspire has time to start
+    Start-Job -ScriptBlock { Start-Sleep -Seconds 8; Start-Process "http://localhost:15244" } | Out-Null
     dotnet run --project "src/backend/MyProject.AppHost"
 } else {
     Write-Host ""

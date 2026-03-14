@@ -419,8 +419,10 @@ if [ "$DO_ASPIRE" = "1" ]; then
   ${DIM}Completed in $(($(date +%s) - START_TIME))s${NC}
 "
     print_step "Launching Aspire..."
-    echo -e "  ${DIM}The Aspire Dashboard URL will appear below. Press Ctrl+C to stop.${NC}"
+    echo -e "  ${DIM}Opening Aspire Dashboard in your browser. Press Ctrl+C to stop.${NC}"
     echo ""
+    # Open browser after Aspire has time to start
+    (sleep 8 && if command -v open &>/dev/null; then open "http://localhost:15244"; elif command -v xdg-open &>/dev/null; then xdg-open "http://localhost:15244"; fi) &
     exec dotnet run --project "src/backend/MyProject.AppHost"
 else
     echo -e "
