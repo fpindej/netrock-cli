@@ -109,6 +109,7 @@
 	let tooltipX = $state(0);
 	let tooltipY = $state(0);
 	let svgEl: SVGSVGElement;
+	let containerEl: HTMLDivElement;
 
 	function oauthCount(): string {
 		const opts = generator.getSelectedOptions('oauth');
@@ -155,11 +156,13 @@
 
 	function showTip(node: GNode) {
 		hoveredNode = node.id;
-		if (!svgEl) return;
-		const rect = svgEl.getBoundingClientRect();
-		const scaleX = rect.width / 510;
-		tooltipX = rect.left + node.cx * scaleX;
-		tooltipY = rect.top + (node.cy - H / 2) * (rect.height / viewH);
+		if (!svgEl || !containerEl) return;
+		const svgRect = svgEl.getBoundingClientRect();
+		const containerRect = containerEl.getBoundingClientRect();
+		const scaleX = svgRect.width / 510;
+		const scaleY = svgRect.height / viewH;
+		tooltipX = svgRect.left - containerRect.left + node.cx * scaleX;
+		tooltipY = svgRect.top - containerRect.top + (node.cy - H / 2) * scaleY;
 	}
 
 	function hideTip() {
@@ -189,7 +192,7 @@
 	});
 </script>
 
-<div class="relative overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
+<div bind:this={containerEl} class="relative overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
 	<div class="mb-2 flex items-center justify-between px-1">
 		<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
 			{generator.isFrontendEnabled ? 'Full stack' : 'API only'} - backend dependencies
@@ -322,7 +325,7 @@
 <!-- Tooltip (positioned outside SVG, desktop only) -->
 {#if hoveredNode && tips[hoveredNode]}
 	<div
-		class="pointer-events-none fixed z-50 max-w-[220px] rounded-lg border border-border-subtle bg-surface px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-lg hover-tooltip"
+		class="pointer-events-none absolute z-50 max-w-[220px] rounded-lg border border-border-subtle bg-surface px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-lg hover-tooltip"
 		style="left: {tooltipX}px; top: {tooltipY - 8}px; transform: translate(-50%, -100%);"
 	>
 		<span class="font-mono font-medium text-accent-light">
