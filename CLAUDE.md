@@ -75,15 +75,19 @@ All changes to `packages/web` must follow these rules. Do not ask - just enforce
 
 ### Responsiveness
 
-- Every UI change must work on phones (320px), tablets (768px), and desktops (1280px+)
-- Test all screen orientations conceptually - no horizontal overflow, no clipped content
+- Pixel-perfect on phones (320px), tablets (768px), desktops (1280px+), and ultrawide
+- Both portrait and landscape orientations
+- No horizontal overflow anywhere - use `overflow-x-auto` for wide content (graphs, tables)
+- No clipped content - verify on smallest viewport (320px)
 - Use Tailwind responsive prefixes (`sm:`, `md:`, `lg:`) for breakpoint-specific sizing
+- No overflow on dialogs, modals, tooltips, or expandable sections
 
 ### Touch Targets
 
 - Minimum **44px** touch target on all interactive elements (buttons, links, toggles) on mobile
 - Use `min-h-[44px]` on mobile, `sm:min-h-0` on desktop for compact mode
 - Invisible hit areas (transparent rects) are acceptable for SVG elements
+- Verify with pixel math: `(element_size_in_svg_units * render_scale) >= 44px`
 
 ### Visual Standards
 
@@ -92,6 +96,7 @@ All changes to `packages/web` must follow these rules. Do not ask - just enforce
 - No browser default focus rings - use custom `focus-visible` styles with accent color
 - Monospace font (`font-mono`) for labels, stats, and technical text
 - Touch-friendly spacing on mobile, compact on desktop
+- Tooltips only on hover-capable devices (`@media (hover: hover)`)
 
 ### Anime.js
 
@@ -99,11 +104,16 @@ All changes to `packages/web` must follow these rules. Do not ask - just enforce
 - Easing names: `outCubic`, `inCubic`, `outQuad`, `outExpo` (no `ease` prefix)
 - Entrance animations: stagger + opacity + translateX/Y
 - Step transitions: slide + fade (200-300ms)
+- Animated elements start at `opacity: 0` in CSS to prevent flash before anime.js runs
+- Use `anim-up` class for fade-up entrance, `animate-card` for cards, `animate-pill` for pills
+- Be consistent: if one element animates in, everything on that step should animate in
 
 ### Before Shipping
 
-- Verify touch targets with pixel math: `(element_size_in_svg_units * render_scale) >= 44px`
 - Verify no content clipping on 320px viewport
+- Verify touch targets on all interactive elements
+- Verify no horizontal overflow on any screen size
+- Verify animations don't flash (elements hidden before anime.js takes over)
 - Run `pnpm build` + `pnpm --filter @netrock/web check` (0 errors, 0 warnings)
 - Update version + CHANGELOG.md for feature changes
 

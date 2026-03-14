@@ -72,6 +72,15 @@ body {
 	animation: blink 1s step-end infinite;
 }
 
+/* Hide scrollbar for horizontal nav strips */
+.scrollbar-hide {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+	display: none;
+}
+
 /* Scrollbar - Webkit only, Firefox uses default */
 ::-webkit-scrollbar {
 	width: 6px;
