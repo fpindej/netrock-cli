@@ -46,6 +46,15 @@
 			Why?
 		</a>
 		<a
+			href="/faq"
+			class="inline-flex min-h-[44px] items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:min-h-0
+				{page.url.pathname === '/faq'
+				? 'bg-accent-dim text-accent-light'
+				: 'text-text-muted hover:text-text-secondary'}"
+		>
+			FAQ
+		</a>
+		<a
 			href="/changelog"
 			class="hidden items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:inline-flex
 				{page.url.pathname === '/changelog'
