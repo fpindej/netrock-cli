@@ -4,6 +4,20 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.8.2] - 2026-03-14
+
+### Fixed
+
+- Binary files (favicons, icons) no longer corrupted in generated projects - separated from text template engine entirely
+- Generator now has clean text-only contract; binary files pass through as raw bytes with path substitution only
+
+### Changed
+
+- `GeneratedProject` now has `files` (text) and `binaryFiles` (Uint8Array) as separate arrays
+- `TemplateSource` interface gains `getBinaryFile()` method
+- `TemplateEntry` gains optional `binary` flag for manifest declarations
+- Vite plugin exports `textFiles` and `binaryFiles` as separate maps
+
 ## [0.8.1] - 2026-03-14
 
 ### Fixed
