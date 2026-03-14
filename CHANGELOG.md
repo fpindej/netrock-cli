@@ -4,6 +4,30 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.8.0] - 2026-03-14
+
+### Added
+
+- SEO fundamentals in generated projects: server-generated robots.txt with feature-gated disallow rules, dynamic sitemap.xml endpoint, OG/Twitter Card/canonical meta tags in root layout
+- Full favicon set matching brand colors (16, 32, ICO, apple-touch-icon, android-chrome 192/512)
+- OG preview image for social sharing (1200x630)
+- Sitemap.xml, robots.txt, canonical URLs, JSON-LD structured data, and keywords meta on the generator site
+- Per-page SEO meta on Why and Changelog pages
+- Web UI design rules codified in CLAUDE.md (touch targets, responsiveness, anime.js conventions)
+
+### Changed
+
+- robots.txt in generated projects is now a server route (dynamic origin for absolute sitemap URL)
+- Webmanifest colors updated to dark theme (#1b1917)
+- Generator site meta description rewritten to mention specific features
+- Twitter card upgraded to summary_large_image
+- New-page skill updated with sitemap step
+
+### Fixed
+
+- Deduplicated Routing using directive in Program.cs (CS0105 warnings with admin + jobs + oauth)
+- i18n cleanup keys in dashboard dev guide now reference per-feature file paths
+
 ## [0.7.0] - 2026-03-13
 
 ### Added
