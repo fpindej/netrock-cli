@@ -1,6 +1,7 @@
 <!-- @feature auth -->
 ---
-disable-model-invocation: true
+description: Add a permission constant across backend and frontend
+user-invocable: true
 ---
 
 Adds a permission constant across backend and frontend.
@@ -19,10 +20,11 @@ Adds a permission constant across backend and frontend.
    ```
    `AppPermissions.All` discovers permissions via reflection - no manual registration needed.
 2. Add `[RequirePermission(AppPermissions.Orders.View)]` to the relevant controller actions
-3. *(Optional)* Seed the permission for existing roles in `SeedRolePermissionsAsync()` in `src/backend/MyProject.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs`
+3. _(Optional)_ Seed the permission for existing roles in `SeedRolePermissionsAsync()` in `src/backend/MyProject.Infrastructure/Persistence/Extensions/ApplicationBuilderExtensions.cs`
 4. Verify: `dotnet build src/backend/MyProject.slnx`
 
 <!-- @feature frontend -->
+
 **Frontend:**
 
 5. Add matching constants to `src/frontend/src/lib/utils/permissions.ts`:
@@ -39,5 +41,5 @@ Adds a permission constant across backend and frontend.
    ```
 8. If adding a sidebar nav item: add `permission: Permissions.Orders.View` to the nav item in `AppSidebar.svelte` - items are filtered per-permission, not as a group
 9. Verify: `cd src/frontend && pnpm run test && pnpm run format && pnpm run lint && pnpm run check`
-<!-- @end -->
-<!-- @end -->
+   <!-- @end -->
+   <!-- @end -->

@@ -1,5 +1,6 @@
 ---
-disable-model-invocation: true
+description: Add an environment variable to backend or frontend
+user-invocable: true
 ---
 
 Adds an environment variable (backend or frontend).
@@ -12,6 +13,7 @@ Adds an environment variable (backend or frontend).
 4. If it needs an Options class: use `/add-options-class`
 
 <!-- @feature frontend -->
+
 ## Frontend-consumed variable
 
 1. Add to `src/frontend/.env.example` (documentation with placeholder)
@@ -27,4 +29,5 @@ Adds an environment variable (backend or frontend).
 4. Import: `import { PUBLIC_VAR } from '$env/static/public';`
 
 > For secrets or keys that differ per environment (like Turnstile site keys), prefer runtime configuration via `$env/dynamic/private` with SSR layout data instead of build-time `PUBLIC_*` args.
+
 <!-- @end -->

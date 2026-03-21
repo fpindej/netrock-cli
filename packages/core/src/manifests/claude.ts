@@ -23,6 +23,7 @@ export function registerClaudeManifest(): void {
 			// Agents (backend-relevant)
 			{ path: '.claude/agents/backend-engineer.md', templated: false },
 			{ path: '.claude/agents/backend-reviewer.md', templated: false },
+			{ path: '.claude/agents/devops-engineer.md', templated: false },
 			{ path: '.claude/agents/devops-reviewer.md', templated: false },
 			{ path: '.claude/agents/filemap-checker.md', templated: false },
 			{ path: '.claude/agents/product-owner.md', templated: false },

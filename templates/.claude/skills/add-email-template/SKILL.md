@@ -1,6 +1,7 @@
 <!-- @feature auth -->
 ---
-disable-model-invocation: true
+description: Add a transactional email template using Fluid (Liquid)
+user-invocable: true
 ---
 
 Adds a transactional email template using Fluid (Liquid).
@@ -24,8 +25,12 @@ Properties auto-map to snake_case Liquid variables (`OrderNumber` -> `order_numb
 
 - `order-confirmation.liquid` - HTML body fragment (injected into `_base.liquid` via `{{ body | raw }}`):
   ```html
-  <h2 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 700; color: #333333;">Order Confirmed</h2>
-  <p style="margin: 0 0 16px 0;">Your order <strong>{{ order_number }}</strong> totaling {{ total }} has been confirmed.</p>
+  <h2 style="margin: 0 0 20px 0; font-size: 22px; font-weight: 700; color: #333333;">
+  	Order Confirmed
+  </h2>
+  <p style="margin: 0 0 16px 0;">
+  	Your order <strong>{{ order_number }}</strong> totaling {{ total }} has been confirmed.
+  </p>
   ```
 - `order-confirmation.subject.liquid` - Subject line (plain text, no HTML)
 - `order-confirmation.text.liquid` - Plain text body (optional but recommended)

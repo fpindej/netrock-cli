@@ -1,6 +1,7 @@
 <!-- @feature jobs -->
 ---
-disable-model-invocation: true
+description: Add a Hangfire background job (recurring or one-time)
+user-invocable: true
 ---
 
 Adds a recurring or one-time Hangfire background job.
@@ -39,6 +40,7 @@ internal sealed class MyCleanupJob(
 ```
 
 Key conventions:
+
 - Mark `internal sealed`, use primary constructor
 - Descriptive `JobId` (kebab-case, e.g. `"expired-token-cleanup"`)
 - `Hangfire.Cron` helpers: `Cron.Hourly()`, `Cron.Daily()`, `Cron.Weekly()`
@@ -88,4 +90,5 @@ backgroundJobClient.Enqueue<WelcomeEmailJob>(job => job.ExecuteAsync(user.Id, us
 // Delayed
 backgroundJobClient.Schedule<WelcomeEmailJob>(job => job.ExecuteAsync(user.Id, user.Email), TimeSpan.FromMinutes(30));
 ```
+
 <!-- @end -->
