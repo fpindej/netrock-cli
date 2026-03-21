@@ -8,7 +8,22 @@ user-invocable: false
 ## Overview
 
 ```
+<!-- @feature file-storage -->
+<!-- @feature email -->
 Local dev:  Aspire AppHost -> PostgreSQL, MinIO, MailPit (containers) + API (process)
+<!-- @end -->
+<!-- @feature !email -->
+Local dev:  Aspire AppHost -> PostgreSQL, MinIO (containers) + API (process)
+<!-- @end -->
+<!-- @end -->
+<!-- @feature !file-storage -->
+<!-- @feature email -->
+Local dev:  Aspire AppHost -> PostgreSQL, MailPit (containers) + API (process)
+<!-- @end -->
+<!-- @feature !email -->
+Local dev:  Aspire AppHost -> PostgreSQL (containers) + API (process)
+<!-- @end -->
+<!-- @end -->
 Production: User's choice - Docker Compose, Coolify, Railway, Kubernetes, etc.
 ```
 

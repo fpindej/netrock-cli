@@ -1,3 +1,4 @@
+<!-- @feature auth -->
 ---
 name: security-reviewer
 description: "Reviews code for security vulnerabilities, auth bypasses, PII leakage, and OWASP risks. Use proactively when reviewing security-sensitive changes (auth, permissions, user data, API endpoints, middleware, cookies, tokens)."
@@ -29,3 +30,4 @@ End with overall risk assessment: `LOW RISK`, `MEDIUM RISK`, `HIGH RISK`, or `CR
 - Assume an attacker perspective - think about abuse cases
 - Check both the happy path and edge cases
 - Backend is authoritative - frontend guards are UX only
+<!-- @end -->

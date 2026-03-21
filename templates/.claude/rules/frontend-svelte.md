@@ -1,3 +1,4 @@
+<!-- @feature frontend -->
 # Frontend Svelte Rules
 
 Extends CLAUDE.md Hard Rules with implementation patterns.
@@ -22,3 +23,4 @@ Extends CLAUDE.md Hard Rules with implementation patterns.
 - Keys: `{domain}_{feature}_{element}`, add to correct feature file in ALL locale directories
 - Import: `import * as m from '$lib/paraglide/messages'`
 - Paraglide module errors in svelte-check are expected (generated at build time) - ignore them
+<!-- @end -->

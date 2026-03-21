@@ -1,3 +1,4 @@
+<!-- @feature aspire -->
 ---
 description: Add an infrastructure dependency to Aspire AppHost
 user-invocable: true
@@ -32,3 +33,4 @@ Adds an infrastructure dependency to Aspire AppHost.
    ```
 6. Add standalone defaults to `appsettings.Development.json` so the API can run without Aspire.
 7. Verify: `dotnet build src/backend/MyProject.slnx`
+<!-- @end -->

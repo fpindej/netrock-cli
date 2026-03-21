@@ -1,7 +1,12 @@
 ---
 description: Add tests following project test patterns
 user-invocable: true
+<!-- @feature frontend -->
 argument-hint: "[unit|component|api|validator|frontend-unit|frontend-component]"
+<!-- @end -->
+<!-- @feature !frontend -->
+argument-hint: "[unit|component|api|validator]"
+<!-- @end -->
 ---
 
 Adds tests. Specify test type or infer from context.
@@ -30,6 +35,7 @@ For service business logic with mocked dependencies.
 4. Assert on `Result`: `Assert.True(result.IsSuccess); Assert.Equal(expectedId, result.Value);`
 5. Verify: `dotnet test src/backend/tests/MyProject.Component.Tests -c Release`
 
+<!-- @feature auth -->
 ## API Integration Test
 
 For testing the full HTTP pipeline (routes, auth, validation, status codes).
@@ -58,6 +64,7 @@ For testing the full HTTP pipeline (routes, auth, validation, status codes).
 5. If service interface not mocked in `CustomWebApplicationFactory`, add it there first
 6. For 200/201 responses, add **response contract assertions** using frozen records in `Contracts/ResponseContracts.cs`
 7. Verify: `dotnet test src/backend/tests/MyProject.Api.Tests -c Release`
+<!-- @end -->
 
 ## Validator Test
 
@@ -89,6 +96,7 @@ For FluentValidation rules without starting the test server.
    ```
 3. Verify: `dotnet test src/backend/tests/MyProject.Api.Tests -c Release`
 
+<!-- @feature frontend -->
 ## Frontend Unit Test
 
 For utility functions, state modules, and pure logic in `$lib/`.
@@ -111,3 +119,4 @@ For Svelte components with DOM interactions.
    vi.mock('$lib/paraglide/messages', () => new Proxy({}, { get: (_, key) => () => String(key) }));
    ```
 4. Verify: `cd src/frontend && pnpm run test`
+<!-- @end -->

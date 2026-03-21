@@ -1,3 +1,4 @@
+<!-- @feature frontend -->
 ---
 description: Create a frontend page with routing, i18n, and navigation
 user-invocable: true
@@ -50,3 +51,4 @@ Use these as starting points - fill in the specifics from context:
 13. Commit: `feat({feature}): add {feature} page`
 
 Paraglide module errors (~32) are expected at check time - ignore those. Fix everything else.
+<!-- @end -->

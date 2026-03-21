@@ -1,15 +1,30 @@
 ---
+<!-- @feature frontend -->
 description: Scaffold a full-stack feature from entity to frontend page
+<!-- @end -->
+<!-- @feature !frontend -->
+description: Scaffold a backend feature from entity to API endpoint
+<!-- @end -->
 user-invocable: true
 ---
 
+<!-- @feature frontend -->
 Creates a full-stack feature: backend entity through to frontend page.
+<!-- @end -->
+<!-- @feature !frontend -->
+Creates a backend feature: entity through to API endpoint.
+<!-- @end -->
 
 Infers everything possible from the feature description. Asks only when genuinely ambiguous (multiple valid designs with different tradeoffs). Prefers conventions from existing features.
 
 ## Steps
 
+<!-- @feature frontend -->
 This chains entity -> service/API -> frontend. Commit atomically after each logical unit.
+<!-- @end -->
+<!-- @feature !frontend -->
+This chains entity -> service/API. Commit atomically after each logical unit.
+<!-- @end -->
 
 **Backend - Entity (see `/new-entity`):**
 
@@ -27,6 +42,7 @@ This chains entity -> service/API -> frontend. Commit atomically after each logi
 9. Verify: `dotnet test src/backend/MyProject.slnx -c Release` - loop until green
 10. Commit: `feat({feature}): add {Feature} service and API endpoints`
 
+<!-- @feature frontend -->
 **Frontend (see `/new-page`):**
 
 11. Regenerate types: `cd src/frontend && pnpm run api:generate`
@@ -38,4 +54,5 @@ This chains entity -> service/API -> frontend. Commit atomically after each logi
 17. Verify: `cd src/frontend && pnpm run format && pnpm run lint && pnpm run check` - loop until green
 18. Commit: `feat({feature}): add {feature} frontend page`
 
+<!-- @end -->
 **Always:** If build/check fails, read the error, fix it, re-run. Never stop to report a fixable error.

@@ -15,6 +15,7 @@ export function registerClaudeManifest(): void {
 			{ path: '.claude/hooks/stop-quality-gate.mjs', templated: false },
 
 			// Rules (orchestrator quick-reference)
+			{ path: '.claude/rules/frontend-svelte.md', templated: true },
 			{ path: '.claude/rules/backend-api.md', templated: true },
 			{ path: '.claude/rules/database.md', templated: true },
 			{ path: '.claude/rules/infrastructure.md', templated: false },
@@ -23,13 +24,13 @@ export function registerClaudeManifest(): void {
 			// Agents (backend-relevant)
 			{ path: '.claude/agents/backend-engineer.md', templated: false },
 			{ path: '.claude/agents/backend-reviewer.md', templated: false },
-			{ path: '.claude/agents/devops-engineer.md', templated: false },
+			{ path: '.claude/agents/devops-engineer.md', templated: true },
 			{ path: '.claude/agents/devops-reviewer.md', templated: false },
 			{ path: '.claude/agents/filemap-checker.md', templated: false },
-			{ path: '.claude/agents/product-owner.md', templated: false },
-			{ path: '.claude/agents/security-reviewer.md', templated: false },
+			{ path: '.claude/agents/product-owner.md', templated: true },
+			{ path: '.claude/agents/security-reviewer.md', templated: true },
 			{ path: '.claude/agents/tech-writer.md', templated: false },
-			{ path: '.claude/agents/test-writer.md', templated: false }
+			{ path: '.claude/agents/test-writer.md', templated: true }
 		]
 	});
 }

@@ -2058,7 +2058,6 @@ exports[`file list snapshots > core-only file list 1`] = `
 
 exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = `
 [
-  ".claude/rules/frontend-svelte.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "README.md",
@@ -2675,7 +2674,6 @@ exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = 
 
 exports[`file list snapshots > frontend full file list 1`] = `
 [
-  ".claude/rules/frontend-svelte.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "README.md",
@@ -3466,7 +3464,6 @@ exports[`file list snapshots > frontend full file list 1`] = `
 
 exports[`file list snapshots > frontend minimal (core + auth + frontend) file list 1`] = `
 [
-  ".claude/rules/frontend-svelte.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "README.md",
@@ -4054,7 +4051,6 @@ exports[`file list snapshots > full preset file list 1`] = `
   ".claude/skills/new-entity/assets/configuration.cs.md",
   ".claude/skills/new-entity/assets/entity.cs.md",
   ".claude/skills/new-feature/SKILL.md",
-  ".claude/skills/new-page/SKILL.md",
   ".claude/skills/review-dependabot/SKILL.md",
   ".claude/skills/review-pr/SKILL.md",
   ".claude/skills/review-pr/references/conventions-summary.md",

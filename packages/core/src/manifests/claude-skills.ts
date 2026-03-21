@@ -30,7 +30,7 @@ export function registerClaudeSkillsManifest(): void {
 			{ path: '.claude/skills/add-options-class/SKILL.md', templated: false },
 			{ path: '.claude/skills/add-rate-limit/SKILL.md', templated: false },
 			{ path: '.claude/skills/add-route-constraint/SKILL.md', templated: false },
-			{ path: '.claude/skills/add-test/SKILL.md', templated: false },
+			{ path: '.claude/skills/add-test/SKILL.md', templated: true },
 			{ path: '.claude/skills/create-issue/SKILL.md', templated: false },
 			{ path: '.claude/skills/create-pr/SKILL.md', templated: false },
 			{ path: '.claude/skills/create-release/SKILL.md', templated: false },

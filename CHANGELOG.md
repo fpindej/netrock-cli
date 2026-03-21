@@ -4,6 +4,17 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.3] - 2026-03-21
+
+### Fixed
+
+- `.claude/rules/frontend-svelte.md` no longer leaks into projects without Claude feature enabled
+- Agent and skill content now properly gated by feature: devops-engineer, test-writer, product-owner, and security-reviewer adapt to selected features
+- `new-page` and `new-feature` skills excluded when frontend is not selected
+- `add-aspire-dep` skill excluded when Aspire is not selected
+- `add-test` skill frontend sections excluded when frontend is not selected
+- `infra-conventions` overview adapts to selected infrastructure (MinIO, MailPit)
+
 ## [0.9.2] - 2026-03-21
 
 ### Added

@@ -5,9 +5,6 @@ export function registerFrontendManifest(): void {
 	registerManifest({
 		featureId: 'frontend',
 		files: [
-			// Claude Code rules (frontend-specific)
-			{ path: '.claude/rules/frontend-svelte.md', templated: false },
-
 			{ path: 'src/frontend/.dockerignore', templated: false },
 			{ path: 'src/frontend/.env.example', templated: false },
 			{ path: 'src/frontend/.env.test', templated: false },
