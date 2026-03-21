@@ -1,0 +1,8 @@
+{
+	"// README": "Copy to .claude/settings.local.json and customize. This file is gitignored.",
+	"permissions": {
+		"allow": [
+			"Bash(cp /path/to/your/web-app-template/* /path/to/netrock-cli/templates/*)"
+		]
+	}
+}
