@@ -2,14 +2,14 @@
 // PostToolUse hook: auto-formats files after Write|Edit operations via prettier
 
 import { readFileSync, existsSync } from 'fs';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { extname } from 'path';
 
 let input;
 try {
-  input = JSON.parse(readFileSync(0, 'utf8'));
+	input = JSON.parse(readFileSync(0, 'utf8'));
 } catch {
-  process.exit(0);
+	process.exit(0);
 }
 
 const filePath = input?.tool_input?.file_path;
@@ -22,14 +22,14 @@ const formattable = new Set(['.ts', '.js', '.mjs', '.svelte', '.json', '.css', '
 const ext = extname(filePath);
 
 try {
-  if (formattable.has(ext)) {
-    execSync(`pnpm prettier --write "${filePath}"`, {
-      cwd: projectDir,
-      stdio: 'ignore',
-    });
-  }
+	if (formattable.has(ext)) {
+		execFileSync('pnpm', ['prettier', '--write', filePath], {
+			cwd: projectDir,
+			stdio: 'ignore'
+		});
+	}
 } catch {
-  // Formatting is best-effort
+	// Formatting is best-effort
 }
 
 process.exit(0);
