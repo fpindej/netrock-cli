@@ -3,3 +3,4 @@ dist
 build
 .svelte-kit
 pnpm-lock.yaml
+templates/.claude/

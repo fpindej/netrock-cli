@@ -1,6 +1,7 @@
 <!-- @feature frontend -->
 ---
-disable-model-invocation: true
+description: Regenerate frontend API types from the backend OpenAPI spec
+user-invocable: true
 ---
 
 Regenerates frontend API types from the backend OpenAPI spec.
@@ -8,6 +9,7 @@ Regenerates frontend API types from the backend OpenAPI spec.
 ## Steps
 
 1. Try generating types:
+
    ```bash
    cd src/frontend && pnpm run api:generate
    ```
@@ -19,9 +21,11 @@ Regenerates frontend API types from the backend OpenAPI spec.
 4. Update type aliases in `src/frontend/src/lib/types/index.ts` if schemas changed
 
 5. Fix type errors:
+
    ```bash
    cd src/frontend && pnpm run check
    ```
+
    If errors: the backend made a breaking API change - fix all frontend consumers
 
 6. Format: `cd src/frontend && pnpm run format`

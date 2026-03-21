@@ -1,10 +1,17 @@
 ---
-disable-model-invocation: true
+description: Create a backend entity with EF Core configuration and migration
+user-invocable: true
 ---
 
 Creates a new backend entity with EF Core configuration and migration.
 
 Infers entity name, properties, feature name, and enum values from context. Asks only if the entity's purpose or key properties are genuinely ambiguous.
+
+## Templates
+
+Use these as starting points - fill in the specifics from context:
+- [Entity class template](assets/entity.cs.md)
+- [EF Core configuration template](assets/configuration.cs.md)
 
 ## Conventions
 

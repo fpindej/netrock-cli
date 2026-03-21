@@ -4012,6 +4012,7 @@ exports[`file list snapshots > full preset file list 1`] = `
 [
   ".claude/agents/backend-engineer.md",
   ".claude/agents/backend-reviewer.md",
+  ".claude/agents/devops-engineer.md",
   ".claude/agents/devops-reviewer.md",
   ".claude/agents/filemap-checker.md",
   ".claude/agents/product-owner.md",

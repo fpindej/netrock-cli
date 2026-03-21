@@ -4,6 +4,21 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.2] - 2026-03-21
+
+### Added
+
+- `devops-engineer` agent for infrastructure implementation (Dockerfiles, Aspire, CI/CD, env vars)
+- Agent escalation pattern: implementation agents stop and report to orchestrator after 3 failed attempts on out-of-scope issues
+- Review conflict handling: `/address-review` now flags contradictory comments for user judgment
+- Infra delegation pattern and autonomous behavior trigger in generated CLAUDE.md
+
+### Fixed
+
+- All 19 procedural skills now properly invocable (replaced `disable-model-invocation` with `user-invocable: true` and descriptions)
+- Skill frontmatter standardized to `user-invocable` (hyphen) per Claude Code docs
+- `security-reviewer` model changed from `sonnet` to `inherit` (matches session model)
+
 ## [0.9.1] - 2026-03-21
 
 ### Changed
