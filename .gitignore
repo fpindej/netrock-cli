@@ -19,6 +19,9 @@ Thumbs.db
 *.swp
 *.swo
 
+# Claude Code local settings (user-specific permission overrides)
+.claude/settings.local.json
+
 # Generated project output (pnpm generate defaults to output/)
 /output/
 /test-app/
