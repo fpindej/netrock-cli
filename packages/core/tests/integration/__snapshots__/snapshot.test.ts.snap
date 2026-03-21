@@ -2058,6 +2058,7 @@ exports[`file list snapshots > core-only file list 1`] = `
 
 exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = `
 [
+  ".claude/rules/frontend-svelte.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "README.md",
@@ -2674,6 +2675,7 @@ exports[`file list snapshots > frontend + admin (no jobs/oauth) file list 1`] = 
 
 exports[`file list snapshots > frontend full file list 1`] = `
 [
+  ".claude/rules/frontend-svelte.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "README.md",
@@ -3464,6 +3466,7 @@ exports[`file list snapshots > frontend full file list 1`] = `
 
 exports[`file list snapshots > frontend minimal (core + auth + frontend) file list 1`] = `
 [
+  ".claude/rules/frontend-svelte.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "README.md",
@@ -4019,7 +4022,12 @@ exports[`file list snapshots > full preset file list 1`] = `
   ".claude/hooks/session-start.mjs",
   ".claude/hooks/stop-quality-gate.mjs",
   ".claude/hooks/validate-bash.mjs",
+  ".claude/rules/backend-api.md",
+  ".claude/rules/database.md",
+  ".claude/rules/infrastructure.md",
+  ".claude/rules/testing.md",
   ".claude/settings.json",
+  ".claude/settings.local.json.example",
   ".claude/skills/add-aspire-dep/SKILL.md",
   ".claude/skills/add-background-job/SKILL.md",
   ".claude/skills/add-ci-area/SKILL.md",
@@ -4030,6 +4038,7 @@ exports[`file list snapshots > full preset file list 1`] = `
   ".claude/skills/add-rate-limit/SKILL.md",
   ".claude/skills/add-route-constraint/SKILL.md",
   ".claude/skills/add-test/SKILL.md",
+  ".claude/skills/address-review/SKILL.md",
   ".claude/skills/backend-conventions/SKILL.md",
   ".claude/skills/create-issue/SKILL.md",
   ".claude/skills/create-pr/SKILL.md",
@@ -4049,6 +4058,7 @@ exports[`file list snapshots > full preset file list 1`] = `
   ".claude/skills/review-pr/SKILL.md",
   ".claude/skills/review-pr/references/conventions-summary.md",
   ".claude/skills/security-conventions/SKILL.md",
+  ".claude/skills/verify/SKILL.md",
   ".config/dotnet-tools.json",
   ".gitignore",
   "CLAUDE.md",

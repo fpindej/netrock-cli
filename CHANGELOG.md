@@ -4,6 +4,27 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.0] - 2026-03-21
+
+### Added
+
+- Claude Code rules files in generated projects: backend-api, database, infrastructure, testing patterns (quick-reference for orchestrator)
+- Frontend Svelte rules file (included when SvelteKit frontend is selected)
+- `/verify` skill for running full backend build+test and frontend test+lint+check
+- `/address-review` skill for reading, evaluating, and addressing PR review comments
+- Claude Code permissions in generated projects (42 allow rules, 30 deny rules with cross-platform coverage)
+- `settings.local.json.example` for user-specific permission overrides
+- Delegation Rule in generated CLAUDE.md (orchestrator delegates `src/` code to specialized agents)
+- Stop-quality-gate hook now warns when session ends on main/master branch
+
+### Fixed
+
+- Shell injection vulnerability in auto-format hook (replaced `execSync` string interpolation with `execFileSync` args array)
+- Validate-bash hook now catches `git checkout -- .` variant (broadened regex)
+- Validate-bash hook blocks `npm install` (enforces pnpm-only)
+- Feature-gated `@feature` markers on auth-specific content in rules files (authorization, seeding, test auth)
+- Feature-gated `@feature frontend` on frontend testing rules and verify skill frontend section
+
 ## [0.8.3] - 2026-03-14
 
 ### Added

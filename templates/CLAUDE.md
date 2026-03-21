@@ -34,11 +34,13 @@ Backend layers: WebApi -> Application <- Infrastructure -> Domain + Shared
 The top-level agent is an orchestrator. It does not write application code in `src/` - that goes to specialized agents.
 
 **Default (application code in `src/`):**
+
 - Delegate implementation to `backend-engineer`
 - Run relevant reviewers in parallel after implementation completes
 - Run `filemap-checker` after modifying files with known consumers
 
 **Orchestrator handles directly (no delegation needed):**
+
 - Documentation, configuration, and tooling files (`.claude/`, `CLAUDE.md`, `FILEMAP.md`, `.gitignore`, `docs/`, CI/CD)
 - Quick answers, planning, research, and code review
 - Commits, PRs, and git operations
@@ -84,9 +86,9 @@ Do these automatically - never wait to be asked:
 | **Adding any feature**              | Write tests alongside the implementation - component, API integration, validator as applicable.                                                  |
 | **Build/test failure**              | Read the error, fix it, re-run. Repeat until green. Don't stop and report the error unless stuck after 3 attempts.                               |
 | **Unclear requirement**             | Infer from context and existing patterns first. Ask the user only when genuinely ambiguous (multiple valid approaches with different tradeoffs). |
-| **Backend-only task** | Delegate to `backend-engineer` (unless user overrides). Run `backend-reviewer` in parallel after. |
-| **After any implementation** | Run relevant reviewers in parallel (backend-reviewer, security-reviewer as applicable). |
-| **After modifying shared files** | Run `filemap-checker` to verify all downstream consumers are updated. |
+| **Backend-only task**               | Delegate to `backend-engineer` (unless user overrides). Run `backend-reviewer` in parallel after.                                                |
+| **After any implementation**        | Run relevant reviewers in parallel.                                                                                                              |
+| **After modifying shared files**    | Run `filemap-checker` to verify all downstream consumers are updated.                                                                            |
 
 ## Agent Team
 
