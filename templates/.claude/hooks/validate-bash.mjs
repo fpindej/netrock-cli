@@ -16,6 +16,10 @@ if (!command) process.exit(0);
 
 const blocks = [
   {
+    pattern: /(^|[;&|])\s*npm\s+install\b/,
+    msg: 'Use pnpm, not npm. Run: pnpm install',
+  },
+  {
     pattern: /git\s+push\s+.*--force(?!-)/,
     msg: 'Force push blocked. Use --force-with-lease if you must, or ask the user first.',
   },
@@ -32,7 +36,7 @@ const blocks = [
     msg: 'git clean blocked - this removes untracked files permanently.',
   },
   {
-    pattern: /git\s+(checkout|restore)\s+\.\s*$/m,
+    pattern: /git\s+(checkout|restore)\s+(--\s+)?\.\s*$/m,
     msg: 'Discarding all changes blocked. Specify individual files.',
   },
   {
