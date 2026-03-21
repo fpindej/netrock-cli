@@ -29,6 +29,24 @@ Backend layers: WebApi -> Application <- Infrastructure -> Domain + Shared
 - No dead code - remove unused imports, variables, functions, files, and stale references in the same commit
 - No em dashes - never use `---` anywhere (code, comments, docs, UI). Use `-` or rewrite the sentence.
 
+## Delegation Rule
+
+The top-level agent is an orchestrator. It does not write application code in `src/` - that goes to specialized agents.
+
+**Default (application code in `src/`):**
+
+- Delegate implementation to `backend-engineer`
+- Run relevant reviewers in parallel after implementation completes
+- Run `filemap-checker` after modifying files with known consumers
+
+**Orchestrator handles directly (no delegation needed):**
+
+- Documentation, configuration, and tooling files (`.claude/`, `CLAUDE.md`, `FILEMAP.md`, `.gitignore`, `docs/`, CI/CD)
+- Quick answers, planning, research, and code review
+- Commits, PRs, and git operations
+
+**User override:** If the user explicitly asks to skip delegation ("do it yourself", "directly", "don't delegate", "just fix it"), the orchestrator implements directly regardless of scope.
+
 ## Breaking Changes
 
 The backend API is public-facing. Treat every contract change with the same care as a published library.
@@ -68,10 +86,13 @@ Do these automatically - never wait to be asked:
 | **Adding any feature**              | Write tests alongside the implementation - component, API integration, validator as applicable.                                                  |
 | **Build/test failure**              | Read the error, fix it, re-run. Repeat until green. Don't stop and report the error unless stuck after 3 attempts.                               |
 | **Unclear requirement**             | Infer from context and existing patterns first. Ask the user only when genuinely ambiguous (multiple valid approaches with different tradeoffs). |
+| **Backend-only task**               | Delegate to `backend-engineer` (unless user overrides). Run `backend-reviewer` in parallel after.                                                |
+| **After any implementation**        | Run relevant reviewers in parallel.                                                                                                              |
+| **After modifying shared files**    | Run `filemap-checker` to verify all downstream consumers are updated.                                                                            |
 
 ## Agent Team
 
-Delegate to the right agent for the task. Run reviewers in parallel when reviewing.
+All application code in `src/` goes to specialized agents. User override is the only exception (see Delegation Rule). Run reviewers in parallel after every implementation.
 
 | Agent              | Role                       | When to use                      |
 | ------------------ | -------------------------- | -------------------------------- |

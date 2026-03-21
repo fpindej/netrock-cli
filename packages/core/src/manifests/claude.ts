@@ -14,6 +14,12 @@ export function registerClaudeManifest(): void {
 			{ path: '.claude/hooks/auto-format.mjs', templated: false },
 			{ path: '.claude/hooks/stop-quality-gate.mjs', templated: false },
 
+			// Rules (orchestrator quick-reference)
+			{ path: '.claude/rules/backend-api.md', templated: true },
+			{ path: '.claude/rules/database.md', templated: true },
+			{ path: '.claude/rules/infrastructure.md', templated: false },
+			{ path: '.claude/rules/testing.md', templated: true },
+
 			// Agents (backend-relevant)
 			{ path: '.claude/agents/backend-engineer.md', templated: false },
 			{ path: '.claude/agents/backend-reviewer.md', templated: false },

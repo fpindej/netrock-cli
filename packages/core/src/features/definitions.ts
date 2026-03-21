@@ -152,9 +152,9 @@ export const featureDefinitions: Feature[] = [
 		id: 'claude',
 		name: 'Claude agent team',
 		description:
-			'CLAUDE.md, FILEMAP.md, 8 specialized agents, and 4 lifecycle hooks for AI-assisted development',
+			'CLAUDE.md, FILEMAP.md, 8 specialized agents, 5 rules files, and 4 lifecycle hooks for AI-assisted development',
 		details:
-			'Adds project-specific Claude Code configuration: CLAUDE.md with project rules and conventions, FILEMAP.md for change impact tracking, 8 specialized agents (backend engineer, reviewers, test writer, etc.), and 4 lifecycle hooks for auto-formatting and safety gates.',
+			'Adds project-specific Claude Code configuration: CLAUDE.md with project rules, delegation model, and conventions, FILEMAP.md for change impact tracking, 8 specialized agents (backend engineer, reviewers, test writer, etc.), 5 rules files (backend API, database, infrastructure, testing, frontend), and 4 lifecycle hooks for auto-formatting and safety gates.',
 		dependencies: ['core'],
 		required: false,
 		defaultEnabled: true,
@@ -164,9 +164,9 @@ export const featureDefinitions: Feature[] = [
 		id: 'claude-skills',
 		name: 'Claude skills & conventions',
 		description:
-			'22 Claude Code skills, 3 convention references, and skill assets for code generation',
+			'24 Claude Code skills, 3 convention references, permissions config, and skill assets for code generation',
 		details:
-			'Adds slash-command skills for common workflows: adding permissions, background jobs, email templates, API endpoints, and more. Includes convention reference documents that agents auto-load for consistent code style. Skills generate code following established project patterns.',
+			'Adds slash-command skills for common workflows: /verify, /address-review, adding permissions, background jobs, email templates, API endpoints, and more. Includes convention reference documents that agents auto-load for consistent code style, permission allow/deny lists for safe tool usage, and a local settings example for user overrides.',
 		dependencies: ['claude'],
 		required: false,
 		defaultEnabled: true,

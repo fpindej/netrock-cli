@@ -4,6 +4,43 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.1] - 2026-03-21
+
+### Changed
+
+- Backend: .NET 10.0.3 to 10.0.5 (framework, EF tools)
+- Backend: Microsoft.Extensions.Caching.Hybrid, Http.Resilience, ServiceDiscovery 10.3.0 to 10.4.0
+- Backend: Npgsql.EntityFrameworkCore.PostgreSQL 10.0.0 to 10.0.1
+- Backend: OpenTelemetry.Instrumentation.AspNetCore 1.15.0 to 1.15.1
+- Backend: Scalar.AspNetCore 2.13.2 to 2.13.9
+- Backend: AWSSDK.S3 3.7.510.14 to 3.7.511.1
+- Backend: Microsoft.Extensions.TimeProvider.Testing 10.3.0 to 10.4.0
+- Frontend: @inlang/paraglide-js 2.13.2 to 2.15.0
+- Frontend: @sveltejs/kit 2.53.4 to 2.55.0
+- Frontend: svelte 5.53.8 to 5.53.12
+- Frontend: typescript-eslint 8.57.0 to 8.57.1
+
+## [0.9.0] - 2026-03-21
+
+### Added
+
+- Claude Code rules files in generated projects: backend-api, database, infrastructure, testing patterns (quick-reference for orchestrator)
+- Frontend Svelte rules file (included when SvelteKit frontend is selected)
+- `/verify` skill for running full backend build+test and frontend test+lint+check
+- `/address-review` skill for reading, evaluating, and addressing PR review comments
+- Claude Code permissions in generated projects (42 allow rules, 30 deny rules with cross-platform coverage)
+- `settings.local.json.example` for user-specific permission overrides
+- Delegation Rule in generated CLAUDE.md (orchestrator delegates `src/` code to specialized agents)
+- Stop-quality-gate hook now warns when session ends on main/master branch
+
+### Fixed
+
+- Shell injection vulnerability in auto-format hook (replaced `execSync` string interpolation with `execFileSync` args array)
+- Validate-bash hook now catches `git checkout -- .` variant (broadened regex)
+- Validate-bash hook blocks `npm install` (enforces pnpm-only)
+- Feature-gated `@feature` markers on auth-specific content in rules files (authorization, seeding, test auth)
+- Feature-gated `@feature frontend` on frontend testing rules and verify skill frontend section
+
 ## [0.8.3] - 2026-03-14
 
 ### Added

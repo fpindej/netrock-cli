@@ -5,8 +5,9 @@ export function registerClaudeSkillsManifest(): void {
 	registerManifest({
 		featureId: 'claude-skills',
 		files: [
-			// Settings (hooks config)
+			// Settings (hooks config + permissions)
 			{ path: '.claude/settings.json', templated: false },
+			{ path: '.claude/settings.local.json.example', templated: false },
 
 			// Convention skills (auto-injected into agents, not user-invocable)
 			{ path: '.claude/skills/backend-conventions/SKILL.md', templated: true },
@@ -22,6 +23,8 @@ export function registerClaudeSkillsManifest(): void {
 			{ path: '.claude/skills/review-pr/references/conventions-summary.md', templated: true },
 
 			// Generic skills (always available)
+			{ path: '.claude/skills/address-review/SKILL.md', templated: false },
+			{ path: '.claude/skills/verify/SKILL.md', templated: true },
 			{ path: '.claude/skills/add-ci-area/SKILL.md', templated: false },
 			{ path: '.claude/skills/add-env-var/SKILL.md', templated: true },
 			{ path: '.claude/skills/add-options-class/SKILL.md', templated: false },

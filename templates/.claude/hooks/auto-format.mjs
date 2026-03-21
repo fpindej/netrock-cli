@@ -2,7 +2,7 @@
 // PostToolUse hook: auto-formats files after Write|Edit operations
 
 import { readFileSync, existsSync, readdirSync } from 'fs';
-import { execSync } from 'child_process';
+import { execFileSync } from 'child_process';
 import { resolve, extname } from 'path';
 
 let input;
@@ -25,8 +25,9 @@ try {
     const backendDir = resolve(projectDir, 'src/backend');
     const slnx = readdirSync(backendDir).find((f) => f.endsWith('.slnx'));
     if (slnx) {
-      execSync(
-        `dotnet format "${resolve(backendDir, slnx)}" --include "${filePath}" --no-restore`,
+      execFileSync(
+        'dotnet',
+        ['format', resolve(backendDir, slnx), '--include', filePath, '--no-restore'],
         { stdio: 'ignore' },
       );
     }
