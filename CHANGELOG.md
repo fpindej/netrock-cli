@@ -4,6 +4,18 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.4] - 2026-03-30
+
+### Changed
+
+- Aspire hosting packages updated to 13.2.0, Scalar to 2.13.13, AWSSDK.S3 to 4.0
+- Frontend template dependencies updated (Svelte 5.55, Tailwind CSS 4.2.2)
+- Test SDK updated to 18.3, coverlet to 8.0
+
+### Fixed
+
+- Aspire AppHost SDK version now matches hosting packages (13.2.0), preventing build failures in generated projects
+
 ## [0.9.3] - 2026-03-21
 
 ### Fixed
