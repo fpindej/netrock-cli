@@ -50,6 +50,7 @@ using MyProject.WebApi.Routing;
 // @end
 // @end
 // @end
+using MyProject.WebApi.Shared;
 using Serilog;
 using LoggerConfigurationExtensions = MyProject.Infrastructure.Logging.Extensions.LoggerConfigurationExtensions;
 
@@ -165,6 +166,7 @@ try
         options.CustomizeProblemDetails = context =>
         {
             context.ProblemDetails.Instance = context.HttpContext.Request.Path;
+            ProblemFactory.EnsureCode(context.ProblemDetails);
         };
     });
 

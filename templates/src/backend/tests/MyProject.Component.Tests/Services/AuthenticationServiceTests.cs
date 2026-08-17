@@ -399,7 +399,8 @@ public class AuthenticationServiceTests : IDisposable
         var result = await _sut.Register(input);
 
         Assert.True(result.IsFailure);
-        Assert.Contains("Duplicate email", result.Error);
+        Assert.Equal(ErrorMessages.Auth.RegistrationInvalid.Code, result.Error?.Code);
+        Assert.Contains("Duplicate email", result.Error?.Message);
     }
 
     [Fact]
@@ -888,7 +889,8 @@ public class AuthenticationServiceTests : IDisposable
         var result = await _sut.ChangePasswordAsync(new ChangePasswordInput("current", "newPass1!"));
 
         Assert.True(result.IsFailure);
-        Assert.Contains("Password too common", result.Error);
+        Assert.Equal(ErrorMessages.Auth.PasswordPolicyViolation.Code, result.Error?.Code);
+        Assert.Contains("Password too common", result.Error?.Message);
     }
 
     #endregion
@@ -1177,7 +1179,8 @@ public class AuthenticationServiceTests : IDisposable
             new ResetPasswordInput(rawToken, "weak"));
 
         Assert.True(result.IsFailure);
-        Assert.Contains("Password too short", result.Error);
+        Assert.Equal(ErrorMessages.Auth.PasswordPolicyViolation.Code, result.Error?.Code);
+        Assert.Contains("Password too short", result.Error?.Message);
     }
 
     #endregion
