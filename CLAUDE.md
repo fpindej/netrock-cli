@@ -91,12 +91,15 @@ All changes to `packages/web` must follow these rules. Do not ask - just enforce
 
 ### Visual Standards
 
-- Dark theme only - all colors from `app.css` theme variables
+- Visual language is a geological survey sheet: basalt background, chalk text, one warm iron accent, square corners (no `rounded-*`), hairline borders, no glow/blur/gradient blobs
+- Dark theme only - all colors from `app.css` theme variables; strata tones (`--color-strata-*`) are reserved for the `StrataColumn` legend and architecture diagrams
+- Type: `.display` / `.display-md` (Bricolage Grotesque) for headlines and big numbers, IBM Plex Sans for body, `font-mono` (IBM Plex Mono) and `.label` for labels, stats, and technical text
+- The `StrataColumn` (project layers by file share) is the signature element - it appears on every wizard step and must stay in sync with the resolved features
 - No white flash - inline `background` on `<html>` for instant dark paint
-- No browser default focus rings - use custom `focus-visible` styles with accent color
-- Monospace font (`font-mono`) for labels, stats, and technical text
+- No browser default focus rings - global `focus-visible` outline in accent color
 - Touch-friendly spacing on mobile, compact on desktop
 - Tooltips only on hover-capable devices (`@media (hover: hover)`)
+- Respect `prefers-reduced-motion` (global rule in `app.css`)
 
 ### Anime.js
 

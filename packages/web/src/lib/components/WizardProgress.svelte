@@ -7,60 +7,41 @@
 
 	let { currentStep, onNavigate, canAdvance }: Props = $props();
 
-	const steps = [
-		{ label: 'Name', short: '1' },
-		{ label: 'Stack', short: '2' },
-		{ label: 'Download', short: '3' }
-	];
+	const steps = ['Name', 'Stack', 'Download'];
 </script>
 
-<div
-	class="fixed top-[49px] z-40 w-full border-b border-border-subtle bg-bg/90 px-4 backdrop-blur-sm sm:px-6"
->
-	<div class="mx-auto flex max-w-lg items-center gap-1 py-2.5">
-		{#each steps as step, i}
+<!-- Sheet index: 01 / 02 / 03, the way a drawing set numbers its sheets -->
+<div class="fixed top-14 z-40 w-full border-b border-border-subtle bg-bg px-4 sm:top-12 sm:px-6">
+	<div class="mx-auto flex max-w-5xl items-stretch">
+		{#each steps as label, i}
 			{@const isActive = currentStep === i}
 			{@const isDone = currentStep > i}
-			{@const isReachable = i === 0 || (i === 1 && canAdvance) || (i === 2 && canAdvance)}
+			{@const isReachable = i === 0 || canAdvance}
 			<button
 				type="button"
 				onclick={() => isReachable && onNavigate(i)}
 				disabled={!isReachable}
-				class="relative flex min-h-[44px] items-center gap-1.5 rounded-md px-2 py-1 font-mono text-xs transition-all sm:min-h-0 sm:gap-2 sm:px-3
+				aria-current={isActive ? 'step' : undefined}
+				class="relative flex min-h-[44px] flex-1 items-center gap-2 border-e border-border-subtle px-3 py-2 font-mono text-xs transition-colors last:border-e-0 sm:flex-none sm:pe-8
 					{isActive
-					? 'text-accent-light'
+					? 'text-text-primary'
 					: isDone
-						? 'text-accent/60'
+						? 'text-text-secondary'
 						: isReachable
 							? 'text-text-muted hover:text-text-secondary'
-							: 'text-text-muted/40 cursor-default'}"
+							: 'cursor-default text-text-muted/50'}"
 			>
-				<span
-					class="flex size-5 items-center justify-center rounded-full border text-[10px] font-medium transition-all
-						{isActive
-						? 'border-accent bg-accent text-bg'
-						: isDone
-							? 'border-accent/40 bg-accent/10 text-accent/80'
-							: 'border-border-active bg-transparent'}"
-				>
-					{#if isDone}
-						<svg class="size-3" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
-							<path d="M2 6l3 3 5-5" />
-						</svg>
-					{:else}
-						{step.short}
-					{/if}
-				</span>
-				<span class="hidden sm:inline">{step.label}</span>
+				<span class="tabular-nums {isActive ? 'text-accent' : ''}">0{i + 1}</span>
+				<span>{label}</span>
+				{#if isDone}
+					<svg class="size-3 text-emerald" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" aria-label="done">
+						<path d="M2 6l3 3 5-5" />
+					</svg>
+				{/if}
+				{#if isActive}
+					<span class="absolute inset-x-0 -bottom-px h-0.5 bg-accent"></span>
+				{/if}
 			</button>
-			{#if i < steps.length - 1}
-				<div class="h-px flex-1 bg-border-subtle">
-					<div
-						class="h-full bg-accent/40 transition-all duration-500"
-						style="width: {currentStep > i ? '100%' : '0%'}"
-					></div>
-				</div>
-			{/if}
 		{/each}
 	</div>
 </div>

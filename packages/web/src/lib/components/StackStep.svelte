@@ -2,6 +2,7 @@
 	import { generator } from '$lib/stores/generator.svelte';
 	import FeatureCard from './FeatureCard.svelte';
 	import DependencyGraph from './DependencyGraph.svelte';
+	import StrataColumn from './StrataColumn.svelte';
 
 	const presetMeta: Record<string, { badge?: string; icon: string }> = {
 		minimal: { icon: '>' },
@@ -12,14 +13,14 @@
 	const comingSoonFrameworks = ['Angular', 'Next.js', 'Nuxt', 'React SPA'];
 </script>
 
-<section class="mx-auto w-full max-w-4xl px-4">
-	<div class="anim-up mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-		Choose your stack
-	</div>
+<section class="mx-auto grid w-full max-w-5xl gap-10 px-4 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-16">
+<div class="min-w-0">
+	<h1 class="display-md anim-up mb-8 text-3xl text-text-primary sm:text-4xl">Choose your stack.</h1>
 
 	<!-- Architecture selector -->
 	<div class="anim-up mb-10">
-		<div class="overflow-hidden rounded-xl border border-border-subtle">
+		<div class="label mb-2">Architecture</div>
+		<div class="border border-border-subtle">
 			<div class="grid grid-cols-2">
 				<!-- API only -->
 				<button
@@ -27,20 +28,21 @@
 					onclick={() => {
 						if (generator.isFrontendEnabled) generator.toggleFrontend();
 					}}
-					class="flex flex-col items-center px-4 py-6 transition-all sm:px-6
+					class="flex flex-col items-center px-4 py-6 transition-colors sm:px-6
 						{!generator.isFrontendEnabled
 						? 'bg-accent-dim'
-						: 'bg-surface hover:bg-surface-raised'}"
+						: 'bg-transparent hover:bg-surface'}"
 				>
 					<!-- Visual: single layer -->
 					<div
-						class="flex h-10 w-20 items-center justify-center rounded-lg border transition-colors
+						class="hatch-cross flex h-10 w-20 items-center justify-center border transition-colors
 							{!generator.isFrontendEnabled
-							? 'border-accent/40 bg-accent/10'
-							: 'border-border-subtle bg-surface-raised'}"
+							? 'border-accent/60'
+							: 'border-border-subtle'}"
+						style="--strata: {!generator.isFrontendEnabled ? 'var(--color-accent)' : 'var(--color-border-active)'}"
 					>
 						<span
-							class="font-mono text-[11px] font-semibold transition-colors
+							class="bg-bg px-1 font-mono text-[11px] font-semibold transition-colors
 								{!generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
 						>.NET</span>
 					</div>
@@ -56,37 +58,34 @@
 					onclick={() => {
 						if (!generator.isFrontendEnabled) generator.toggleFrontend();
 					}}
-					class="flex flex-col items-center border-s border-border-subtle px-4 py-6 transition-all sm:px-6
+					class="flex flex-col items-center border-s border-border-subtle px-4 py-6 transition-colors sm:px-6
 						{generator.isFrontendEnabled
 						? 'bg-accent-dim'
-						: 'bg-surface hover:bg-surface-raised'}"
+						: 'bg-transparent hover:bg-surface'}"
 				>
 					<!-- Visual: two stacked layers -->
 					<div
-						class="w-20 overflow-hidden rounded-lg border transition-colors
+						class="w-20 overflow-hidden border transition-colors
 							{generator.isFrontendEnabled
-							? 'border-accent/40'
+							? 'border-accent/60'
 							: 'border-border-subtle'}"
 					>
 						<div
-							class="flex h-[19px] items-center justify-center transition-colors
-								{generator.isFrontendEnabled
-								? 'bg-accent/10'
-								: 'bg-surface-raised'}"
+							class="hatch-solid flex h-[19px] items-center justify-center transition-colors"
+							style="--strata: {generator.isFrontendEnabled ? 'color-mix(in srgb, var(--color-strata-frontend) 35%, var(--color-bg))' : 'var(--color-surface-raised)'}"
 						>
 							<span
 								class="font-mono text-[10px] font-semibold transition-colors
-									{generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
+									{generator.isFrontendEnabled ? 'text-text-primary' : 'text-text-muted'}"
 							>Svelte</span>
 						</div>
 						<div
-							class="flex h-[19px] items-center justify-center border-t transition-colors
-								{generator.isFrontendEnabled
-								? 'border-accent/30 bg-accent/10'
-								: 'border-border-subtle bg-surface-raised'}"
+							class="hatch-cross flex h-[19px] items-center justify-center border-t transition-colors
+								{generator.isFrontendEnabled ? 'border-accent/40' : 'border-border-subtle'}"
+							style="--strata: {generator.isFrontendEnabled ? 'var(--color-accent)' : 'var(--color-border-active)'}"
 						>
 							<span
-								class="font-mono text-[10px] font-semibold transition-colors
+								class="bg-bg px-1 font-mono text-[10px] font-semibold transition-colors
 									{generator.isFrontendEnabled ? 'text-accent' : 'text-text-muted'}"
 							>.NET</span>
 						</div>
@@ -100,47 +99,42 @@
 		</div>
 
 		<!-- Coming soon frameworks -->
-		<div class="mt-3 flex flex-wrap items-center justify-center gap-2">
-			<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
-				Coming soon
-			</span>
-			{#each comingSoonFrameworks as framework}
-				<span
-					class="rounded-lg border border-border-subtle bg-surface px-2.5 py-1 font-mono text-[10px] text-text-muted"
-				>
-					{framework}
-				</span>
-			{/each}
-		</div>
+		<p class="mt-2 font-mono text-[10px] text-text-muted">
+			<span class="tracking-wider uppercase">Coming soon</span>
+			<span class="mx-1 text-border-active">/</span>
+			{comingSoonFrameworks.join(', ')}
+		</p>
 	</div>
 
 	<!-- Backend presets -->
-	<div class="anim-up mb-8 grid grid-cols-3 gap-3">
-		{#each generator.presets as preset}
-			{@const meta = presetMeta[preset.id]}
-			<button
-				type="button"
-				onclick={() => generator.applyPreset(preset.id)}
-				class="relative flex flex-col items-center rounded-xl border px-3 py-4 transition-all
-					{generator.activePresetId === preset.id
-					? 'border-accent bg-accent-dim'
-					: 'border-border-subtle bg-surface hover:border-border-active hover:bg-surface-raised'}"
-			>
-				{#if meta?.badge}
-					<span
-						class="absolute -top-2 rounded-full bg-accent px-2 py-0.5 text-[10px] font-medium text-bg"
-					>
-						{meta.badge}
+	<div class="anim-up mb-10">
+		<div class="label mb-2">Presets</div>
+		<div class="grid grid-cols-3 border border-border-subtle">
+			{#each generator.presets as preset, i}
+				{@const meta = presetMeta[preset.id]}
+				<button
+					type="button"
+					onclick={() => generator.applyPreset(preset.id)}
+					class="relative flex flex-col items-start px-3 py-3 text-start transition-colors sm:px-4
+						{i > 0 ? 'border-s border-border-subtle' : ''}
+						{generator.activePresetId === preset.id
+						? 'bg-accent-dim'
+						: 'hover:bg-surface'}"
+				>
+					<span class="flex w-full items-baseline justify-between font-mono text-[10px]">
+						<span class="{generator.activePresetId === preset.id ? 'text-accent' : 'text-text-muted'}">{meta?.icon}</span>
+						{#if meta?.badge}
+							<span class="tracking-wider text-text-muted uppercase">{meta.badge}</span>
+						{/if}
 					</span>
-				{/if}
-				<span class="mb-1 font-mono text-xs text-text-muted">{meta?.icon}</span>
-				<span class="text-sm font-medium text-text-primary">{preset.name}</span>
-				<span class="mt-0.5 text-center text-xs text-text-secondary">{preset.description}</span>
-				<span class="mt-2 font-mono text-xs text-text-muted">
-					{preset.features.length} features
-				</span>
-			</button>
-		{/each}
+					<span class="mt-1 text-sm font-medium text-text-primary">{preset.name}</span>
+					<span class="mt-0.5 hidden text-xs text-text-secondary sm:block">{preset.description}</span>
+					<span class="mt-2 font-mono text-[11px] tabular-nums text-text-muted">
+						{preset.features.length} features
+					</span>
+				</button>
+			{/each}
+		</div>
 	</div>
 
 	<!-- Dependency graph -->
@@ -150,7 +144,7 @@
 
 	<!-- Notes -->
 	{#if generator.notes.length > 0}
-		<details class="group mb-6 rounded-xl border border-amber/30 bg-amber-dim">
+		<details class="group mb-6 border border-amber/30 bg-amber-dim">
 			<summary
 				class="flex min-h-[44px] cursor-pointer items-center gap-2.5 px-4 py-3 select-none sm:min-h-0"
 			>
@@ -191,7 +185,7 @@
 	<!-- Feature cards (collapsed by default) -->
 	<details id="feature-cards" class="group">
 		<summary
-			class="flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg px-1 py-2 font-mono text-xs text-text-muted transition-colors select-none hover:text-text-secondary sm:min-h-0"
+			class="flex min-h-[44px] cursor-pointer items-center gap-2 py-2 font-mono text-xs text-text-muted transition-colors select-none hover:text-text-secondary sm:min-h-0"
 		>
 			<svg
 				class="size-3.5 transition-transform group-open:rotate-90"
@@ -208,10 +202,8 @@
 		<div class="mt-4 space-y-6">
 			{#each generator.groups as group}
 				<div>
-					<h3 class="mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-						{group.label}
-					</h3>
-					<div class="grid gap-2 sm:grid-cols-2">
+					<h3 class="label mb-2">{group.label}</h3>
+					<div class="grid gap-px border border-border-subtle bg-border-subtle sm:grid-cols-2">
 						{#each group.features as feature}
 							<FeatureCard {feature} />
 						{/each}
@@ -220,5 +212,12 @@
 			{/each}
 		</div>
 	</details>
+</div>
 
+<aside class="anim-up order-first self-start lg:order-none lg:sticky lg:top-32">
+	<StrataColumn compact />
+	<p class="mt-3 text-[11px] leading-relaxed text-text-muted">
+		Updates as you toggle. Thickness reflects each feature's share of files.
+	</p>
+</aside>
 </section>

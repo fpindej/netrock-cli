@@ -25,8 +25,8 @@
 
 <Header />
 
-<main class="mx-auto max-w-2xl px-4 pt-28 pb-20 sm:pt-32">
-	<h1 class="font-mono text-2xl font-bold text-text-primary sm:text-3xl">FAQ</h1>
+<main class="mx-auto max-w-2xl px-4 pt-24 pb-20 sm:pt-28">
+	<h1 class="display text-5xl text-text-primary sm:text-6xl">Questions.</h1>
 	<p class="mt-2 text-sm text-text-secondary">
 		Questions from the community. Can't find yours?
 		<a
@@ -37,26 +37,16 @@
 		>Open a discussion</a>.
 	</p>
 
-	<div class="mt-8 space-y-2">
+	<div class="mt-10 border-t border-border-subtle">
 		{#each questions as item}
-			<details class="group rounded-lg border border-border-subtle bg-surface">
+			<details class="group border-b border-border-subtle">
 				<summary
-					class="flex min-h-[44px] cursor-pointer items-center justify-between px-4 py-2.5 text-sm font-medium text-text-primary select-none sm:min-h-0"
+					class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 py-3 text-sm text-text-primary select-none sm:text-[15px]"
 				>
 					{item.q}
-					<svg
-						class="size-4 shrink-0 text-text-muted transition-transform group-open:rotate-180"
-						viewBox="0 0 16 16"
-						fill="currentColor"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-							clip-rule="evenodd"
-						/>
-					</svg>
+					<span class="font-mono text-text-muted transition-transform group-open:rotate-45" aria-hidden="true">+</span>
 				</summary>
-				<p class="px-4 pb-3 text-xs leading-relaxed text-text-secondary">
+				<p class="pb-4 text-sm leading-relaxed text-text-secondary">
 					{item.a}
 				</p>
 			</details>

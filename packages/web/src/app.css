@@ -1,28 +1,41 @@
 @import 'tailwindcss';
 
 @theme {
-	--font-sans: 'Inter', system-ui, sans-serif;
-	--font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+	--font-sans: 'IBM Plex Sans', system-ui, sans-serif;
+	--font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+	--font-display: 'Bricolage Grotesque', 'IBM Plex Sans', system-ui, sans-serif;
 
-	--color-bg: #08080d;
-	--color-surface: #111118;
-	--color-surface-raised: #191922;
-	--color-border-subtle: #222233;
-	--color-border-active: #334155;
+	/* Basalt, shale, chalk - a survey sheet read at night */
+	--color-bg: #121416;
+	--color-surface: #191c1f;
+	--color-surface-raised: #212529;
+	--color-border-subtle: #2a2f35;
+	--color-border-active: #454c55;
 
-	--color-text-primary: #ececf1;
-	--color-text-secondary: #8e8ea0;
-	--color-text-muted: #555566;
+	--color-text-primary: #ebe6da;
+	--color-text-secondary: #a39d90;
+	--color-text-muted: #6d6860;
 
-	--color-accent: #06b6d4;
-	--color-accent-light: #22d3ee;
-	--color-accent-dim: #06b6d415;
+	/* Iron oxide - the one warm accent */
+	--color-accent: #e08a3c;
+	--color-accent-light: #f0a55c;
+	--color-accent-dim: #e08a3c1f;
 
-	--color-emerald: #10b981;
-	--color-emerald-dim: #10b98115;
+	/* Lichen - success */
+	--color-emerald: #8fb573;
+	--color-emerald-dim: #8fb5731a;
 
-	--color-amber: #f59e0b;
-	--color-amber-dim: #f59e0b14;
+	/* Sulfur - caution */
+	--color-amber: #d9b44a;
+	--color-amber-dim: #d9b44a17;
+
+	/* Strata tones - one per feature group, used only in the column and legend */
+	--color-strata-core: #7d8590;
+	--color-strata-auth: #c39a5b;
+	--color-strata-infra: #6f8ea3;
+	--color-strata-addon: #b3746a;
+	--color-strata-tooling: #8fa37a;
+	--color-strata-frontend: #d8d1c2;
 }
 
 html {
@@ -38,38 +51,102 @@ body {
 }
 
 ::selection {
-	background-color: #06b6d459;
+	background-color: #e08a3c66;
 }
 
-/* Typewriter animation */
-@keyframes typewriter {
-	from {
-		max-width: 0;
+@layer components {
+	/* Display type: condensed, heavy, tight */
+	.display {
+		font-family: var(--font-display);
+		font-variation-settings:
+			'opsz' 96,
+			'wdth' 85;
+		font-weight: 800;
+		letter-spacing: -0.02em;
+		line-height: 0.95;
 	}
-	to {
-		max-width: 8ch;
+
+	.display-md {
+		font-family: var(--font-display);
+		font-variation-settings:
+			'opsz' 48,
+			'wdth' 90;
+		font-weight: 700;
+		letter-spacing: -0.015em;
+		line-height: 1.05;
+	}
+
+	/* Survey-sheet label: small caps mono */
+	.label {
+		font-family: var(--font-mono);
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--color-text-muted);
 	}
 }
 
-@keyframes blink {
-	0%,
-	100% {
-		opacity: 1;
+/* Hatch fills for strata layers */
+.hatch-solid {
+	background-color: var(--strata);
+}
+.hatch-diag {
+	background-color: color-mix(in srgb, var(--strata) 55%, var(--color-bg));
+	background-image: repeating-linear-gradient(135deg, var(--strata) 0 1.5px, transparent 1.5px 7px);
+}
+.hatch-cross {
+	background-color: color-mix(in srgb, var(--strata) 45%, var(--color-bg));
+	background-image:
+		repeating-linear-gradient(45deg, var(--strata) 0 1px, transparent 1px 8px),
+		repeating-linear-gradient(135deg, var(--strata) 0 1px, transparent 1px 8px);
+}
+.hatch-dots {
+	background-color: color-mix(in srgb, var(--strata) 40%, var(--color-bg));
+	background-image: radial-gradient(var(--strata) 1.1px, transparent 1.2px);
+	background-size: 7px 7px;
+}
+.hatch-brick {
+	background-color: color-mix(in srgb, var(--strata) 50%, var(--color-bg));
+	background-image:
+		repeating-linear-gradient(0deg, var(--strata) 0 1px, transparent 1px 8px),
+		repeating-linear-gradient(90deg, var(--strata) 0 1px, transparent 1px 16px);
+}
+.hatch-wave {
+	background-color: color-mix(in srgb, var(--strata) 60%, var(--color-bg));
+	background-image: repeating-linear-gradient(0deg, var(--strata) 0 1px, transparent 1px 5px);
+}
+
+@layer components {
+	.btn-primary {
+		display: inline-flex;
+		min-height: 44px;
+		align-items: center;
+		gap: 0.5rem;
+		background: var(--color-accent);
+		color: var(--color-bg);
+		padding: 0.625rem 1.5rem;
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		font-weight: 500;
+		transition:
+			background-color 0.15s,
+			opacity 0.15s;
 	}
-	50% {
-		opacity: 0;
+	.btn-primary:hover:not(:disabled) {
+		background: var(--color-accent-light);
+	}
+	.btn-primary:disabled {
+		opacity: 0.4;
 	}
 }
 
-.typewriter {
-	display: inline-flex;
-	overflow: hidden;
-	white-space: nowrap;
-	animation: typewriter 1s steps(7) 0.3s both;
+/* Focus ring - iron, offset, no browser default */
+:where(button, a, summary, [tabindex]):focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 2px;
 }
-
-.cursor-blink {
-	animation: blink 1s step-end infinite;
+:where(button, a, summary, [tabindex]):focus:not(:focus-visible) {
+	outline: none;
 }
 
 /* Hide scrollbar for horizontal nav strips */
@@ -91,4 +168,14 @@ body {
 ::-webkit-scrollbar-thumb {
 	background: var(--color-border-subtle);
 	border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }

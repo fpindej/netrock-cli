@@ -3,6 +3,7 @@
 	import { zipSync, strToU8, type Zippable } from 'fflate';
 	import FileTree from './FileTree.svelte';
 	import AnimatedNumber from './AnimatedNumber.svelte';
+	import StrataColumn from './StrataColumn.svelte';
 
 	let isDownloading = $state(false);
 	let copiedCmd = $state<string | null>(null);
@@ -62,53 +63,36 @@
 	}
 </script>
 
-<section class="mx-auto w-full max-w-4xl px-4">
-	<div class="anim-up mb-3 font-mono text-xs tracking-widest text-text-muted uppercase">
-		Review &amp; download
-	</div>
+<section class="mx-auto grid w-full max-w-5xl gap-10 px-4 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-16">
+<div class="min-w-0">
+	<h1 class="display-md anim-up mb-8 text-3xl text-text-primary sm:text-4xl">Review and download.</h1>
 
 	{#if generator.project}
-		<!-- Stats -->
-		<div class="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-			<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-3 text-center">
-				<div class="font-mono text-2xl font-bold text-accent-light">
-					<AnimatedNumber value={generator.featureCount} />
-				</div>
-				<div class="mt-0.5 text-xs text-text-muted">features</div>
+		<!-- Stats: a survey table row -->
+		<dl class="animate-card mb-8 grid grid-cols-2 gap-px border-y border-border-subtle bg-border-subtle sm:grid-cols-4">
+			<div class="bg-bg py-3 pe-4">
+				<dt class="label">Project</dt>
+				<dd class="mt-1 truncate font-mono text-lg text-text-primary">{generator.project.names.kebabCase}</dd>
 			</div>
-			<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-3 text-center">
-				<div class="font-mono text-2xl font-bold text-text-primary">
+			<div class="bg-bg py-3 ps-4">
+				<dt class="label">Files</dt>
+				<dd class="display-md mt-1 text-2xl tabular-nums text-text-primary">
 					<AnimatedNumber value={generator.fileCount} />
-				</div>
-				<div class="mt-0.5 text-xs text-text-muted">files</div>
+				</dd>
 			</div>
-			<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-3 text-center">
-				<div class="font-mono text-2xl font-bold text-text-primary">
-					.NET 10
-				</div>
-				<div class="mt-0.5 text-xs text-text-muted">backend</div>
+			<div class="bg-bg py-3 pe-4 sm:ps-4">
+				<dt class="label">Features</dt>
+				<dd class="display-md mt-1 text-2xl tabular-nums text-text-primary">
+					<AnimatedNumber value={generator.featureCount} />
+				</dd>
 			</div>
-			<div class="animate-card rounded-xl border border-border-subtle bg-surface px-4 py-3 text-center">
-				<div class="font-mono text-2xl font-bold text-text-primary">
-					{generator.resolvedFeatures.has('frontend') ? 'Svelte 5' : 'API'}
-				</div>
-				<div class="mt-0.5 text-xs text-text-muted">
-					{generator.resolvedFeatures.has('frontend') ? 'frontend' : 'only'}
-				</div>
+			<div class="bg-bg py-3 ps-4">
+				<dt class="label">Stack</dt>
+				<dd class="mt-1 font-mono text-sm text-text-primary">
+					.NET 10{generator.resolvedFeatures.has('frontend') ? ' + Svelte 5' : ' API'}
+				</dd>
 			</div>
-		</div>
-
-		<!-- Enabled features summary -->
-		<div class="mb-6 flex flex-wrap gap-1.5">
-			{#each generator.project.summary.enabledFeatures as featureId}
-				{@const def = generator.definitions.find((d) => d.id === featureId)}
-				<span
-					class="animate-pill rounded-full border border-accent/20 bg-accent-dim px-2.5 py-1 font-mono text-xs text-accent-light"
-				>
-					{def?.name ?? featureId}
-				</span>
-			{/each}
-		</div>
+		</dl>
 
 		<!-- File tree -->
 		<div class="anim-up">
@@ -116,7 +100,7 @@
 		</div>
 
 		<!-- Before You Ship -->
-		<details id="before-you-ship" class="anim-up group mt-8 rounded-xl border border-amber/30 bg-amber-dim">
+		<details id="before-you-ship" class="anim-up group mt-8 border border-amber/30 bg-amber-dim">
 			<summary
 				class="flex cursor-pointer items-center gap-2 px-5 py-3.5 font-mono text-sm font-medium text-amber select-none"
 			>
@@ -201,7 +185,7 @@
 					type="button"
 					onclick={download}
 					disabled={isDownloading}
-					class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-accent px-8 py-3 font-mono text-sm font-medium text-bg transition-all hover:bg-accent-light disabled:opacity-50 sm:w-auto"
+					class="btn-primary min-h-12 w-full justify-center px-8 sm:w-auto"
 				>
 					{#if isDownloading}
 						Generating...
@@ -220,10 +204,10 @@
 				<button
 					type="button"
 					onclick={copyShareLink}
-					class="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-border-subtle bg-surface px-6 py-3 font-mono text-sm font-medium text-text-primary transition-all hover:border-border-active hover:bg-surface-raised sm:w-auto"
+					class="inline-flex min-h-12 w-full items-center justify-center gap-2 border border-border-active px-6 py-3 font-mono text-sm font-medium text-text-primary transition-colors hover:border-text-secondary hover:bg-surface sm:w-auto"
 				>
 					{#if linkCopied}
-						<svg class="size-4 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+						<svg class="size-4 text-emerald" viewBox="0 0 20 20" fill="currentColor">
 							<path
 								fill-rule="evenodd"
 								d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z"
@@ -250,7 +234,7 @@
 		</div>
 
 		<!-- Setup instructions -->
-		<div class="anim-up mt-6 rounded-xl border border-accent/20 bg-surface px-5 py-4">
+		<div class="anim-up mt-6 border border-border-subtle px-5 py-4">
 			<div class="mb-3 flex items-center gap-2">
 				<svg class="size-4 text-accent" viewBox="0 0 20 20" fill="currentColor">
 					<path
@@ -266,24 +250,22 @@
 			<div class="space-y-2.5">
 				{#each setupCmds as cmd}
 					<div>
-						<p class="mb-1 font-mono text-[10px] uppercase tracking-wider text-text-muted">
-							{cmd.label}
-						</p>
+						<p class="label mb-1">{cmd.label}</p>
 						<div class="relative">
 							<code
-								class="block rounded-lg bg-bg pe-10 ps-3 py-2 font-mono text-xs leading-relaxed text-text-secondary"
+								class="block bg-surface pe-10 ps-3 py-2 font-mono text-xs leading-relaxed text-text-secondary"
 							>
 								{cmd.text}
 							</code>
 							<button
 								type="button"
 								onclick={() => copyCommand(cmd.text, cmd.id)}
-								class="absolute end-1.5 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-text-muted transition-colors hover:bg-surface hover:text-text-primary"
+								class="absolute end-1.5 top-1/2 -translate-y-1/2 p-1.5 text-text-muted transition-colors hover:bg-surface-raised hover:text-text-primary"
 								title="Copy to clipboard"
 							>
 								{#if copiedCmd === cmd.id}
 									<svg
-										class="size-3.5 text-green-400"
+										class="size-3.5 text-emerald"
 										viewBox="0 0 20 20"
 										fill="currentColor"
 									>
@@ -315,4 +297,9 @@
 		</div>
 
 	{/if}
+</div>
+
+<aside class="anim-up order-first self-start lg:order-none lg:sticky lg:top-32">
+	<StrataColumn compact />
+</aside>
 </section>

@@ -6,7 +6,6 @@
 
 	const W = 88;
 	const H = 30;
-	const R = 6;
 	const HIT_PAD = 16;
 
 	interface GNode {
@@ -192,11 +191,9 @@
 	});
 </script>
 
-<div bind:this={containerEl} class="relative overflow-x-auto rounded-xl border border-border-subtle bg-surface/60 p-3 sm:p-4">
+<div bind:this={containerEl} class="relative overflow-x-auto border border-border-subtle p-3 sm:p-4">
 	<div class="mb-2 flex items-center justify-between px-1">
-		<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
-			{generator.isFrontendEnabled ? 'Full stack' : 'API only'} - backend dependencies
-		</span>
+		<span class="label">Backend dependencies</span>
 		<span class="font-mono text-[10px] text-text-muted">click nodes to toggle</span>
 	</div>
 	<svg
@@ -207,29 +204,20 @@
 	>
 		<defs>
 			<pattern id="gg" width="20" height="20" patternUnits="userSpaceOnUse">
-				<path d="M20 0 L0 0 0 20" fill="none" stroke="#222233" stroke-width="0.3" opacity="0.5" />
+				<path d="M20 0 L0 0 0 20" fill="none" stroke="var(--color-border-subtle)" stroke-width="0.4" opacity="0.6" />
 			</pattern>
-			<filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
-				<feGaussianBlur in="SourceAlpha" stdDeviation="5" result="b" />
-				<feFlood flood-color="#06b6d4" flood-opacity="0.25" result="c" />
-				<feComposite in="c" in2="b" operator="in" result="g" />
-				<feMerge>
-					<feMergeNode in="g" />
-					<feMergeNode in="SourceGraphic" />
-				</feMerge>
-			</filter>
 		</defs>
 
-		<rect width="510" height={viewH} fill="url(#gg)" rx="8" />
+		<rect width="510" height={viewH} fill="url(#gg)" />
 
 		<!-- Layer labels -->
-		<text x="48" y={labelY} text-anchor="middle" fill="#555566" font-size="8" font-family="var(--font-mono)">
+		<text x="48" y={labelY} text-anchor="middle" fill="var(--color-text-muted)" font-size="8" font-family="var(--font-mono)" letter-spacing="1">
 			required
 		</text>
-		<text x="298" y={labelY} text-anchor="middle" fill="#555566" font-size="8" font-family="var(--font-mono)">
+		<text x="298" y={labelY} text-anchor="middle" fill="var(--color-text-muted)" font-size="8" font-family="var(--font-mono)" letter-spacing="1">
 			features
 		</text>
-		<text x="458" y={labelY} text-anchor="middle" fill="#555566" font-size="8" font-family="var(--font-mono)">
+		<text x="458" y={labelY} text-anchor="middle" fill="var(--color-text-muted)" font-size="8" font-family="var(--font-mono)" letter-spacing="1">
 			extensions
 		</text>
 
@@ -241,19 +229,11 @@
 				class="gedge"
 				d={d}
 				fill="none"
-				stroke={active ? '#06b6d4' : '#222233'}
+				stroke={active ? 'var(--color-accent)' : 'var(--color-border-active)'}
 				stroke-width={active ? 1.2 : 0.6}
-				opacity={active ? 0.7 : 0.25}
+				opacity={active ? 0.8 : 0.4}
 				style="transition: stroke 0.3s, stroke-width 0.3s, opacity 0.3s;"
 			/>
-			{#if active}
-				<circle r="2.5" fill="#22d3ee" opacity="0.8">
-					<animateMotion dur="2.2s" repeatCount="indefinite" path={d} />
-				</circle>
-				<circle r="1.5" fill="#06b6d4" opacity="0.4">
-					<animateMotion dur="2.2s" repeatCount="indefinite" path={d} begin="0.8s" />
-				</circle>
-			{/if}
 		{/each}
 
 		<!-- Nodes -->
@@ -277,7 +257,6 @@
 						y={node.cy - H / 2 - HIT_PAD}
 						width={W + HIT_PAD * 2}
 						height={H + HIT_PAD * 2}
-						rx={R + 2}
 						fill="transparent"
 					/>
 				{/if}
@@ -287,11 +266,10 @@
 					y={node.cy - H / 2}
 					width={W}
 					height={H}
-					rx={R}
-					fill={on ? '#06b6d415' : '#191922'}
-					stroke={on ? '#06b6d4' : '#222233'}
-					stroke-width={on ? 1.5 : 0.8}
-					filter={on ? 'url(#glow)' : 'none'}
+					rx="1"
+					fill={on ? 'var(--color-accent-dim)' : 'var(--color-surface)'}
+					stroke={on ? 'var(--color-accent)' : 'var(--color-border-subtle)'}
+					stroke-width={on ? 1.2 : 0.8}
 					style="transition: fill 0.3s, stroke 0.3s, stroke-width 0.3s;"
 				/>
 				<text
@@ -299,7 +277,7 @@
 					y={node.cy + 1}
 					text-anchor="middle"
 					dominant-baseline="central"
-					fill={on ? '#22d3ee' : '#555566'}
+					fill={on ? 'var(--color-text-primary)' : 'var(--color-text-muted)'}
 					font-size={node.id === 'oauth' && isOn('oauth') ? '9' : '11'}
 					font-family="var(--font-mono)"
 					class="pointer-events-none select-none"
@@ -308,14 +286,7 @@
 					{nodeLabel(node)}
 				</text>
 				{#if isRequired}
-					<circle cx={node.cx} cy={node.cy - H / 2 - 4} r="2" fill="#06b6d4" opacity="0.6">
-						<animate
-							attributeName="opacity"
-							values="0.6;1;0.6"
-							dur="2s"
-							repeatCount="indefinite"
-						/>
-					</circle>
+					<rect x={node.cx - 2} y={node.cy - H / 2 - 5} width="4" height="2" fill="var(--color-accent)" />
 				{/if}
 			</g>
 		{/each}
@@ -325,10 +296,10 @@
 <!-- Tooltip (positioned outside SVG, desktop only) -->
 {#if hoveredNode && tips[hoveredNode]}
 	<div
-		class="pointer-events-none absolute z-50 max-w-[220px] rounded-lg border border-border-subtle bg-surface px-3 py-2 text-xs leading-relaxed text-text-secondary shadow-lg hover-tooltip"
+		class="pointer-events-none absolute z-50 max-w-[220px] border border-border-active bg-surface px-3 py-2 text-xs leading-relaxed text-text-secondary hover-tooltip"
 		style="left: {tooltipX}px; top: {tooltipY - 8}px; transform: translate(-50%, -100%);"
 	>
-		<span class="font-mono font-medium text-accent-light">
+		<span class="font-mono font-medium text-text-primary">
 			{nodes.find((n) => n.id === hoveredNode)?.label}
 		</span>
 		<span class="mx-1 text-border-active">-</span>
@@ -338,7 +309,7 @@
 
 <style>
 	.gnode:focus-visible .gnode-rect {
-		stroke: #22d3ee;
+		stroke: var(--color-accent-light);
 		stroke-width: 2;
 	}
 
