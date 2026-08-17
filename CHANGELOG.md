@@ -4,6 +4,19 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.10.0] - 2026-08-17
+
+### Added
+
+- Machine-readable error codes on every ProblemDetails response: `ErrorMessages` entries are now `Error` records (stable snake_case `code` + message), `Result.Failure()` takes an `Error`, and `ProblemFactory` writes the code to the `code` extension (framework-generated bodies get `validation_failed` or a snake_case reason phrase such as `not_found`). New `ProblemDetailsSchemaTransformer` documents the extension in OpenAPI, and `ErrorMessagesTests` enforce code naming and uniqueness
+- Hangfire-backed email delivery: with both `email` and `jobs` enabled, transactional emails are queued as `EmailDeliveryJob` via `BackgroundEmailService` and retried automatically (5 attempts, 30s to 1h backoff) instead of being lost on SMTP failure. Without `jobs`, `SmtpEmailService` still sends inline
+- New API tests (`ProblemFactoryTests`, `ProblemDetailsCodeTests`, `ProblemDetailsAssert` fixture) and component tests for the email job pipeline
+- Frontend: `getErrorCode()` and `getErrorMessage(error, fallback, messagesByCode)` translate by backend code; login form and OAuth callback page map on codes instead of English `detail` text
+
+### Fixed
+
+- Frontend API proxy buffers request bodies so backend 401 responses pass through instead of surfacing as 502 on Node 24 (undici streaming issue)
+
 ## [0.9.5] - 2026-08-17
 
 ### Changed

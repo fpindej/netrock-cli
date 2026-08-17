@@ -4009,6 +4009,8 @@ export interface components {
 			status?: null | number;
 			detail?: null | string;
 			instance?: null | string;
+			/** @description Stable, machine-readable error code (snake_case). Use it to branch on the error or as a translation key instead of matching the human-readable detail. */
+			code?: string;
 		};
 		/** @description Detailed recurring job response including execution history. */
 		RecurringJobDetailResponse: {

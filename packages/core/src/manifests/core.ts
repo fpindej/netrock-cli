@@ -15,6 +15,7 @@ export function registerCoreManifest(): void {
 			{ path: 'src/backend/MyProject.Domain/MyProject.Domain.csproj', templated: false },
 
 			// Shared
+			{ path: 'src/backend/MyProject.Shared/Error.cs', templated: false },
 			{ path: 'src/backend/MyProject.Shared/ErrorMessages.cs', templated: true },
 			{ path: 'src/backend/MyProject.Shared/ErrorType.cs', templated: false },
 			{ path: 'src/backend/MyProject.Shared/MyProject.Shared.csproj', templated: false },
@@ -119,6 +120,10 @@ export function registerCoreManifest(): void {
 			},
 			{
 				path: 'src/backend/MyProject.WebApi/Features/OpenApi/Transformers/EnumSchemaTransformer.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.WebApi/Features/OpenApi/Transformers/ProblemDetailsSchemaTransformer.cs',
 				templated: false
 			},
 			{

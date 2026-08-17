@@ -230,7 +230,7 @@ internal class AuthenticationService(
         if (!result.Succeeded)
         {
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            return Result<Guid>.Failure(errors);
+            return Result<Guid>.Failure(ErrorMessages.Auth.RegistrationInvalid with { Message = errors });
         }
 
         var roleResult = await userManager.AddToRoleAsync(user, AppRoles.User);
@@ -300,7 +300,7 @@ internal class AuthenticationService(
         if (!changeResult.Succeeded)
         {
             var errors = string.Join(", ", changeResult.Errors.Select(e => e.Description));
-            return Result.Failure(errors);
+            return Result.Failure(ErrorMessages.Auth.PasswordPolicyViolation with { Message = errors });
         }
 
         await tokenSessionService.RevokeUserTokensAsync(userId.Value, cancellationToken);
@@ -372,7 +372,7 @@ internal class AuthenticationService(
                 return Result.Failure(ErrorMessages.Auth.ResetPasswordTokenInvalid);
             }
 
-            return Result.Failure(string.Join(" ", errors));
+            return Result.Failure(ErrorMessages.Auth.PasswordPolicyViolation with { Message = string.Join(" ", errors) });
         }
 
         emailToken.IsUsed = true;
