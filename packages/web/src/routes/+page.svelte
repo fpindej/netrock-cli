@@ -7,6 +7,7 @@
 	import NameStep from '$lib/components/NameStep.svelte';
 	import StackStep from '$lib/components/StackStep.svelte';
 	import ReviewStep from '$lib/components/ReviewStep.svelte';
+	import StrataColumn from '$lib/components/StrataColumn.svelte';
 	import { generator } from '$lib/stores/generator.svelte';
 
 	let currentStep = $state(0);
@@ -56,25 +57,6 @@
 					delay: stagger(40, { start: 400 }),
 					duration: 300,
 					ease: 'outCubic'
-				});
-			}
-
-			// Hero glow
-			const glow = document.querySelector('.hero-glow');
-			if (glow) {
-				animate(glow, {
-					opacity: [0, 0.6, 0.4],
-					scale: [0.8, 1.1, 1],
-					duration: 2000,
-					ease: 'outCubic'
-				});
-				animate(glow, {
-					opacity: [0.4, 0.7, 0.4],
-					scale: [1, 1.08, 1],
-					duration: 4000,
-					ease: 'inOutSine',
-					loop: true,
-					delay: 2000
 				});
 			}
 		});
@@ -170,48 +152,50 @@
 
 <Header />
 <WizardProgress {currentStep} onNavigate={goToStep} canAdvance={generator.isValidName} />
-<main class="pb-28 pt-28">
+<main class="pb-28 pt-32 sm:pt-36">
 	<div bind:this={mainEl}>
 		{#if currentStep === 0}
-			<!-- Step 1: Name + Value proposition -->
-			<div class="relative flex flex-col items-center px-4 pb-6 text-center">
-				<div class="hero-glow absolute -top-16 size-64 rounded-full sm:size-80"></div>
-				<h1 class="relative font-mono text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-					<span class="typewriter">
-						<span class="text-accent-light">net</span><span class="text-text-primary"
-							>rock</span
-						>
-					</span><span class="cursor-blink text-accent-light">_</span>
-				</h1>
-				<p class="anim-up mt-4 text-base text-text-secondary sm:text-lg">
-					Your next <span class="text-text-primary">.NET</span> project starts here.
-				</p>
-			</div>
+			<!-- Sheet 01: name the project -->
+			<section class="mx-auto grid max-w-5xl gap-12 px-4 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-20">
+				<div>
+					<h1 class="display anim-up text-[clamp(2.75rem,8.5vw,5.75rem)] text-text-primary">
+						Solid ground for your next <span class="text-accent">.NET</span> project.
+					</h1>
+					<p class="anim-up mt-6 max-w-md text-base leading-relaxed text-text-secondary sm:text-lg">
+						Name it, pick the layers, download a solution that builds and passes its tests.
+						Everything runs in your browser.
+					</p>
 
-			<div class="anim-up mt-2">
-				<NameStep />
-			</div>
+					<div class="anim-up mt-10">
+						<NameStep />
+					</div>
 
-			<div class="anim-up mx-auto mt-8 max-w-2xl px-4 text-center">
-				<div class="flex flex-wrap items-center justify-center gap-2 font-mono text-[10px] text-text-muted">
-					<span class="animate-pill rounded bg-surface-raised px-2 py-1">.NET 10</span>
-					<span class="animate-pill text-border-active">+</span>
-					<span class="animate-pill rounded bg-surface-raised px-2 py-1">Clean Architecture</span>
-					<span class="animate-pill text-border-active">+</span>
-					<span class="animate-pill rounded bg-surface-raised px-2 py-1">PostgreSQL</span>
-					<span class="animate-pill text-border-active">+</span>
-					<span class="animate-pill rounded bg-surface-raised px-2 py-1">Aspire</span>
-					<span class="animate-pill text-border-active">+</span>
-					<span class="animate-pill rounded bg-surface-raised px-2 py-1">SvelteKit</span>
+					<ul class="anim-up mt-8 flex flex-wrap gap-x-5 gap-y-1.5 font-mono text-[11px] text-text-muted">
+						{#each ['.NET 10', 'Clean Architecture', 'PostgreSQL', 'Aspire', 'SvelteKit'] as item}
+							<li class="flex items-center gap-2">
+								<span class="size-1.5 bg-border-active"></span>{item}
+							</li>
+						{/each}
+					</ul>
 				</div>
 
-				<p class="anim-up mt-4 text-xs text-text-muted">
-					100% client-side. Zero tracking.
-					<a href="/why" class="text-text-secondary hover:text-accent">Why netrock?</a>
-				</p>
+				<aside class="anim-up lg:pt-3">
+					<StrataColumn />
+					<p class="mt-4 text-[11px] leading-relaxed text-text-muted">
+						Every layer is a feature. Thickness is its share of files. You will shape this on the next sheet.
+					</p>
+				</aside>
+			</section>
 
-				<!-- FAQ -->
-				<div class="mt-8 space-y-2">
+			<!-- Questions -->
+			<section class="mx-auto mt-20 max-w-5xl px-4">
+				<div class="anim-up mb-4 flex items-baseline justify-between">
+					<h2 class="label">Questions</h2>
+					<a href="/faq" class="font-mono text-[11px] text-text-muted transition-colors hover:text-accent">
+						More questions
+					</a>
+				</div>
+				<div class="border-t border-border-subtle">
 					{#each [
 						{ q: 'What do I actually get?', a: 'A .NET 10 solution with Clean Architecture, PostgreSQL, and Aspire orchestration. You pick the features, it wires everything together. Builds and tests pass right away.' },
 						{ q: 'Can I swap pieces out later?', a: 'Absolutely. Clean Architecture keeps everything behind interfaces. Swap EF Core for Dapper, Postgres for SQL Server, whatever you need. The layers are built for that.' },
@@ -219,36 +203,24 @@
 						{ q: 'How is this different from ABP?', a: 'ABP is a framework you depend on at runtime. This is a generator. Download the code and it is yours. No runtime dependency, just clean .NET you can read and change.' },
 						{ q: 'Is my data sent anywhere?', a: 'Nope. Everything runs in your browser. No tracking, no analytics, no cookies.' }
 					] as item}
-						<details class="animate-card group rounded-lg border border-border-subtle bg-surface">
+						<details class="animate-card group border-b border-border-subtle">
 							<summary
-								class="flex min-h-[44px] cursor-pointer items-center justify-between px-4 py-2.5 text-sm font-medium text-text-primary select-none sm:min-h-0"
+								class="flex min-h-[44px] cursor-pointer items-center justify-between gap-4 py-3 text-sm text-text-primary select-none sm:text-[15px]"
 							>
 								{item.q}
-								<svg
-									class="size-4 shrink-0 text-text-muted transition-transform group-open:rotate-180"
-									viewBox="0 0 16 16"
-									fill="currentColor"
-								>
-									<path
-										fill-rule="evenodd"
-										d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-										clip-rule="evenodd"
-									/>
-								</svg>
+								<span class="font-mono text-text-muted transition-transform group-open:rotate-45" aria-hidden="true">+</span>
 							</summary>
-							<p class="px-4 pb-3 text-xs leading-relaxed text-text-secondary">
+							<p class="max-w-2xl pb-4 text-sm leading-relaxed text-text-secondary">
 								{item.a}
 							</p>
 						</details>
 					{/each}
-					<a
-						href="/faq"
-						class="mt-1 inline-block font-mono text-[11px] text-text-muted transition-colors hover:text-accent"
-					>
-						More questions
-					</a>
 				</div>
-			</div>
+				<p class="anim-up mt-6 font-mono text-[11px] text-text-muted">
+					100% client-side. Zero tracking.
+					<a href="/why" class="text-text-secondary underline decoration-border-active underline-offset-4 hover:text-accent">Why netrock?</a>
+				</p>
+			</section>
 		{:else if currentStep === 1}
 			<!-- Step 2: Stack -->
 			<StackStep />
@@ -261,16 +233,16 @@
 
 <!-- Fixed bottom bar -->
 <div
-	class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg/90 px-4 py-3 backdrop-blur-sm"
+	class="fixed inset-x-0 bottom-0 z-40 border-t border-border-subtle bg-bg px-4 py-3"
 >
-	<div class="mx-auto flex max-w-4xl items-center justify-between">
+	<div class="mx-auto flex max-w-5xl items-center justify-between">
 		<div>
 			{#if currentStep > 0}
 				<button
 					type="button"
 					onclick={back}
 					disabled={transitioning}
-					class="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg px-4 py-2 font-mono text-xs text-text-muted transition-colors hover:text-text-secondary"
+					class="inline-flex min-h-[44px] items-center gap-1.5 px-3 py-2 font-mono text-xs text-text-muted transition-colors hover:text-text-secondary"
 				>
 					<svg class="size-3.5" viewBox="0 0 16 16" fill="currentColor">
 						<path
@@ -292,7 +264,7 @@
 					type="button"
 					onclick={next}
 					disabled={!generator.isValidName || transitioning}
-					class="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-accent px-6 py-2.5 font-mono text-sm font-medium text-bg transition-all hover:bg-accent-light disabled:opacity-40"
+					class="btn-primary"
 				>
 					Choose your stack
 					<svg class="size-3.5" viewBox="0 0 16 16" fill="currentColor">
@@ -311,7 +283,7 @@
 					type="button"
 					onclick={next}
 					disabled={transitioning}
-					class="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-accent px-6 py-2.5 font-mono text-sm font-medium text-bg transition-all hover:bg-accent-light"
+					class="btn-primary"
 				>
 					Review & download
 					<svg class="size-3.5" viewBox="0 0 16 16" fill="currentColor">
@@ -330,10 +302,7 @@
 					type="button"
 					onclick={download}
 					disabled={isDownloading || downloadDone || transitioning}
-					class="dl-btn inline-flex min-h-[44px] items-center gap-2 rounded-lg px-6 py-2.5 font-mono text-sm font-medium transition-all disabled:opacity-90
-						{downloadDone
-						? 'bg-emerald text-bg'
-						: 'bg-accent text-bg hover:bg-accent-light'}"
+					class="dl-btn btn-primary disabled:opacity-100 {downloadDone ? 'bg-emerald hover:bg-emerald' : ''}"
 				>
 					{#if isDownloading}
 						Generating...
@@ -364,12 +333,6 @@
 </div>
 
 <style>
-	.hero-glow {
-		background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
-		pointer-events: none;
-		opacity: 0;
-	}
-
 	:global(.anim-up),
 	:global(.animate-card),
 	:global(.animate-pill) {

@@ -8,10 +8,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- Web UI redesign: a "survey sheet" visual language with a basalt/chalk/iron palette, Bricolage Grotesque display type with IBM Plex body and mono, square corners and hairline rules
+- Strata column: every wizard step shows the project as layered rock, one layer per feature with thickness proportional to its share of files, updating live as features are toggled
+
 - Machine-readable error codes on every ProblemDetails response: `ErrorMessages` entries are now `Error` records (stable snake_case `code` + message), `Result.Failure()` takes an `Error`, and `ProblemFactory` writes the code to the `code` extension (framework-generated bodies get `validation_failed` or a snake_case reason phrase such as `not_found`). New `ProblemDetailsSchemaTransformer` documents the extension in OpenAPI, and `ErrorMessagesTests` enforce code naming and uniqueness
 - Hangfire-backed email delivery: with both `email` and `jobs` enabled, transactional emails are queued as `EmailDeliveryJob` via `BackgroundEmailService` and retried automatically (5 attempts, 30s to 1h backoff) instead of being lost on SMTP failure. Without `jobs`, `SmtpEmailService` still sends inline
 - New API tests (`ProblemFactoryTests`, `ProblemDetailsCodeTests`, `ProblemDetailsAssert` fixture) and component tests for the email job pipeline
 - Frontend: `getErrorCode()` and `getErrorMessage(error, fallback, messagesByCode)` translate by backend code; login form and OAuth callback page map on codes instead of English `detail` text
+
+### Changed
+
+- Header is a title block with a strata mark and revision number; the wizard progress is a numbered sheet index (01 Name, 02 Stack, 03 Download)
+- Landing page leads with a headline and the project name field beside the strata column; FAQ, Why, and Changelog pages restyled to match
+- Dependency graph, presets, architecture selector, feature cards, review stats, and file tree restyled; glow filters, traveling particles, and the typewriter effect removed
+- Changelog page renders inline code in entries
 
 ### Fixed
 

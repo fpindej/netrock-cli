@@ -36,6 +36,11 @@
 		return releases;
 	}
 
+	/** Splits a changelog line on backticks: odd segments are inline code. */
+	function segments(text: string): { code: boolean; text: string }[] {
+		return text.split('`').map((part, i) => ({ code: i % 2 === 1, text: part }));
+	}
+
 	const releases = parseChangelog(changelog);
 	let activeVersion = $state(releases[0]?.version ?? '');
 
@@ -71,25 +76,25 @@
 
 <Header />
 
-<main class="mx-auto max-w-2xl px-4 pt-28 pb-20 sm:pt-32">
+<main class="mx-auto max-w-2xl px-4 pt-24 pb-20 sm:pt-28">
 	<article class="text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-relaxed">
 		<div>
-			<h1 class="font-mono text-2xl font-bold text-text-primary sm:text-3xl">Changelog</h1>
+			<h1 class="display text-5xl text-text-primary sm:text-6xl">Changelog.</h1>
 			<p class="mt-2 text-text-muted">Notable changes to the netrock generator.</p>
 		</div>
 
 		{#if releases.length > 1}
 			<nav
-				class="sticky top-14 z-40 -mx-4 mt-6 border-b border-border-subtle bg-bg/90 px-4 py-2.5 backdrop-blur-sm"
+				class="sticky top-14 z-40 -mx-4 mt-6 border-b border-border-subtle bg-bg px-4 py-2 sm:top-12"
 			>
 				<div class="flex gap-2 overflow-x-auto scrollbar-hide">
 					{#each releases as release}
 						<a
 							href="#v{release.version}"
-							class="inline-flex min-h-[36px] items-center rounded-md px-3 py-1.5 font-mono text-xs transition-colors sm:min-h-0 sm:px-2.5 sm:py-1
+							class="inline-flex min-h-[36px] items-center border-b-2 px-2 py-1 font-mono text-xs transition-colors sm:min-h-0
 								{activeVersion === release.version
-								? 'bg-accent-dim text-accent-light'
-								: 'text-text-muted hover:bg-surface-raised hover:text-text-secondary'}"
+								? 'border-accent text-text-primary'
+								: 'border-transparent text-text-muted hover:text-text-secondary'}"
 						>
 							{release.version}
 						</a>
@@ -102,7 +107,7 @@
 			{#each releases as release}
 				<section id="v{release.version}" class="scroll-mt-28 space-y-4">
 					<div class="flex items-baseline gap-3">
-						<h2 class="font-mono text-lg font-bold text-text-primary">
+						<h2 class="display-md text-2xl text-text-primary">
 							{release.version}
 						</h2>
 						<span class="font-mono text-xs text-text-muted">{release.date}</span>
@@ -110,16 +115,16 @@
 
 					{#each release.sections as section}
 						<div>
-							<h3 class="mb-2 font-mono text-sm font-semibold text-accent">
-								{section.title}
-							</h3>
+							<h3 class="label mb-2 text-accent">{section.title}</h3>
 							<ul class="space-y-1">
 								{#each section.items as item}
 									<li class="flex gap-2">
-										<span
-											class="mt-2 size-1 flex-shrink-0 rounded-full bg-border-active"
-										></span>
-										<span>{item}</span>
+										<span class="mt-2.5 size-1 flex-shrink-0 bg-border-active"></span>
+										<span>
+											{#each segments(item) as seg}
+												{#if seg.code}<code class="font-mono text-[0.85em] text-text-primary">{seg.text}</code>{:else}{seg.text}{/if}
+											{/each}
+										</span>
 									</li>
 								{/each}
 							</ul>
@@ -132,7 +137,7 @@
 		<div class="pt-8">
 			<a
 				href="/"
-				class="inline-flex min-h-11 items-center rounded-lg bg-accent px-5 py-2 text-sm font-medium text-bg transition-opacity hover:opacity-90"
+				class="btn-primary"
 			>
 				Back to generator
 			</a>

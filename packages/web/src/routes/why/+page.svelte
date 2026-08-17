@@ -13,20 +13,20 @@
 
 <Header />
 
-<main class="mx-auto max-w-2xl px-4 pt-28 pb-20 sm:pt-32">
+<main class="mx-auto max-w-2xl px-4 pt-24 pb-20 sm:pt-28">
 	<article class="space-y-6 text-sm leading-relaxed text-text-secondary sm:text-base sm:leading-relaxed">
-		<h1 class="font-mono text-2xl font-bold text-text-primary sm:text-3xl">Why netrock?</h1>
+		<h1 class="display text-5xl text-text-primary sm:text-6xl">Why netrock?</h1>
 
 		<p>
-			If you work in JavaScript, you have <code class="font-mono text-xs text-accent">create-next-app</code>,
-			<code class="font-mono text-xs text-accent">create-svelte</code>,
-			<code class="font-mono text-xs text-accent">create-t3-app</code>, and dozens more.
+			If you work in JavaScript, you have <code class="font-mono text-xs text-accent-light">create-next-app</code>,
+			<code class="font-mono text-xs text-accent-light">create-svelte</code>,
+			<code class="font-mono text-xs text-accent-light">create-t3-app</code>, and dozens more.
 			Go has its own generators. Rails has been doing this for twenty years.
 		</p>
 
 		<p>
 			In .NET? I never found anything like it. You either start from
-			<code class="font-mono text-xs text-accent">dotnet new webapi</code> and spend
+			<code class="font-mono text-xs text-accent-light">dotnet new webapi</code> and spend
 			days wiring up authentication, EF Core, background jobs, email, and all the plumbing
 			that every real project needs - or you copy-paste from your last project and hope you
 			renamed everything.
@@ -34,7 +34,7 @@
 
 		<p>
 			That's why I built netrock. It started as my own template -
-			a <a href="https://github.com/fpindej/netrock" class="text-accent hover:text-accent-light">production .NET + SvelteKit repository</a>
+			a <a href="https://github.com/fpindej/netrock" class="text-text-primary underline decoration-accent/60 underline-offset-4 hover:decoration-accent">production .NET + SvelteKit repository</a>
 			that I kept reusing across projects. Every time I started something new, I'd clone it, rename
 			things, delete the features I didn't need, and fix all the broken references. It worked, but it
 			was tedious and error-prone.
@@ -46,7 +46,7 @@
 			No magic, no lock-in, no hidden runtime. Just your code.
 		</p>
 
-		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Opinionated on purpose</h2>
+		<h2 class="display-md pt-4 text-2xl text-text-primary">Opinionated on purpose</h2>
 
 		<p>
 			Netrock is opinionated. Clean Architecture. Result pattern for error handling. ProblemDetails for
@@ -67,17 +67,17 @@
 			one is free and open source for anyone to use.
 		</p>
 
-		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Built with Claude</h2>
+		<h2 class="display-md pt-4 text-2xl text-text-primary">Built with Claude</h2>
 
 		<p>
 			Full transparency: this generator - the template engine, dependency resolver, feature
 			manifests, web UI, and the page you're reading - was built 99% with
-			<a href="https://claude.ai" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">Claude</a>.
+			<a href="https://claude.ai" class="text-text-primary underline decoration-accent/60 underline-offset-4 hover:decoration-accent" target="_blank" rel="noopener noreferrer">Claude</a>.
 		</p>
 
 		<p>
 			The original
-			<a href="https://github.com/fpindej/netrock" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">netrock</a>
+			<a href="https://github.com/fpindej/netrock" class="text-text-primary underline decoration-accent/60 underline-offset-4 hover:decoration-accent" target="_blank" rel="noopener noreferrer">netrock</a>
 			repository is a different story. It's Claude-assisted, but it grew out of patterns and
 			learnings from years of professional .NET experience. The architecture, conventions, and
 			decisions behind the template are mine - Claude helped me organize, structure, and refine
@@ -91,27 +91,27 @@
 			production experience behind it is human.
 		</p>
 
-		<h2 class="pt-4 font-mono text-lg font-bold text-text-primary">Early, but real</h2>
+		<h2 class="display-md pt-4 text-2xl text-text-primary">Early, but real</h2>
 
 		<p>
 			This is early, but it works. 15 features with a dependency graph that validates all 960
 			valid combinations. The backend generates clean .NET 10 solutions that build and pass tests
 			out of the box. The SvelteKit frontend generates feature-gated pages and components that
 			match your backend selection. Check the
-			<a href="/changelog" class="text-accent hover:text-accent-light">changelog</a>
+			<a href="/changelog" class="text-text-primary underline decoration-accent/60 underline-offset-4 hover:decoration-accent">changelog</a>
 			for what's new. There will still be rough edges.
 		</p>
 
 		<p>
 			If you find something broken,
-			<a href="https://github.com/fpindej/netrock/issues" class="text-accent hover:text-accent-light" target="_blank" rel="noopener noreferrer">open an issue</a>.
+			<a href="https://github.com/fpindej/netrock/issues" class="text-text-primary underline decoration-accent/60 underline-offset-4 hover:decoration-accent" target="_blank" rel="noopener noreferrer">open an issue</a>.
 			If you want to help, PRs are welcome.
 		</p>
 
 		<div class="flex flex-wrap gap-3 pt-4">
 			<a
 				href="/"
-				class="inline-flex min-h-11 items-center rounded-lg bg-accent px-5 py-2 text-sm font-medium text-bg transition-opacity hover:opacity-90"
+				class="btn-primary"
 			>
 				Try the generator
 			</a>
@@ -119,7 +119,7 @@
 				href="https://github.com/fpindej/netrock"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="inline-flex min-h-11 items-center gap-2 rounded-lg border border-border-subtle bg-surface-raised px-4 py-2 text-sm font-medium text-text-primary transition-colors hover:border-border-active hover:text-accent-light"
+				class="inline-flex min-h-11 items-center gap-2 border border-border-active px-4 py-2 font-mono text-sm text-text-primary transition-colors hover:border-text-secondary hover:bg-surface"
 			>
 				<svg class="size-4" viewBox="0 0 24 24" fill="currentColor">
 					<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />

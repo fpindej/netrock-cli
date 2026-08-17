@@ -23,10 +23,8 @@
 
 <div
 	data-feature={feature.id}
-	class="flex w-full flex-col rounded-xl border transition-all
-		{isOn
-		? 'border-accent/30 bg-accent-dim'
-		: 'border-border-subtle bg-surface hover:border-border-active hover:bg-surface-raised'}
+	class="flex w-full flex-col transition-colors
+		{isOn ? 'bg-accent-dim' : 'bg-bg hover:bg-surface'}
 		{isRequired ? 'opacity-70' : ''}"
 >
 	<button
@@ -39,7 +37,7 @@
 		<!-- Toggle indicator -->
 		<div class="mt-0.5 flex-shrink-0">
 			<div
-				class="flex size-5 items-center justify-center rounded-md border transition-all
+				class="flex size-5 items-center justify-center border transition-colors
 					{isOn
 					? 'border-accent bg-accent text-bg'
 					: 'border-border-active bg-transparent'}"
@@ -64,42 +62,38 @@
 				<span class="text-sm font-medium text-text-primary">{feature.name}</span>
 				{#if isRequired}
 					<span
-						class="rounded bg-border-subtle px-1.5 py-0.5 font-mono text-[10px] text-text-muted"
+						class="border border-border-subtle px-1.5 py-0.5 font-mono text-[10px] text-text-muted"
 					>
 						required
 					</span>
 				{/if}
 				{#if isAutoEnabled && !isRequired}
-					<span class="rounded bg-accent-dim px-1.5 py-0.5 font-mono text-[10px] text-accent">
+					<span class="border border-accent/40 px-1.5 py-0.5 font-mono text-[10px] text-accent">
 						auto
 					</span>
 				{/if}
 				{#if showOptions}
-					<span class="rounded bg-surface px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
+					<span class="font-mono text-[10px] tabular-nums text-text-muted">
 						{selectedCount}/{feature.options!.length}
 					</span>
 				{/if}
 			</div>
 			<p class="mt-0.5 text-xs leading-relaxed text-text-secondary">{feature.description}</p>
 			{#if feature.dependencies.length > 0}
-				<div class="mt-1.5 flex flex-wrap gap-1">
-					{#each feature.dependencies as dep}
-						<span class="rounded bg-surface px-1.5 py-0.5 font-mono text-[10px] text-text-muted">
-							{dep}
-						</span>
-					{/each}
-				</div>
+				<p class="mt-1.5 font-mono text-[10px] text-text-muted">
+					needs {feature.dependencies.join(', ')}
+				</p>
 			{/if}
 		</div>
 	</button>
 
 	<!-- Info toggle + details panel -->
 	{#if feature.details}
-		<div class="flex items-start gap-2 border-t border-border-subtle/50 px-4 py-2">
+		<div class="flex items-start gap-2 border-t border-border-subtle px-4 py-2">
 			<button
 				type="button"
 				onclick={() => (showDetails = !showDetails)}
-				class="inline-flex items-center gap-1.5 rounded-md py-0.5 font-mono text-[10px] text-text-muted transition-colors hover:text-accent"
+				class="inline-flex items-center gap-1.5 py-0.5 font-mono text-[10px] text-text-muted transition-colors hover:text-accent"
 			>
 				<svg
 					class="size-3.5 transition-transform {showDetails ? 'rotate-90' : ''}"
@@ -122,7 +116,7 @@
 
 	<!-- Inline options panel -->
 	{#if showOptions}
-		<div class="border-t border-accent/20 px-4 pb-3.5 pt-3">
+		<div class="border-t border-border-subtle px-4 pb-3.5 pt-3">
 			<div class="mb-2.5 flex items-center justify-between">
 				<span class="font-mono text-[10px] uppercase tracking-wider text-text-muted">
 					Providers
@@ -141,13 +135,13 @@
 					<button
 						type="button"
 						onclick={() => generator.toggleOption(feature.id, option.id)}
-						class="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-3 font-mono text-xs transition-all
+						class="inline-flex min-h-9 items-center gap-1.5 border px-3 font-mono text-xs transition-colors
 							{isSelected
-							? 'bg-accent/15 text-accent-light'
-							: 'bg-surface/60 text-text-muted hover:bg-surface hover:text-text-secondary'}"
+							? 'border-accent/50 text-text-primary'
+							: 'border-border-subtle text-text-muted hover:border-border-active hover:text-text-secondary'}"
 					>
 						<div
-							class="flex size-3.5 items-center justify-center rounded border transition-all
+							class="flex size-3.5 items-center justify-center border transition-colors
 								{isSelected
 								? 'border-accent bg-accent text-bg'
 								: 'border-border-active bg-transparent'}"

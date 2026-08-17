@@ -113,9 +113,9 @@
 	}
 </script>
 
-<div class="overflow-hidden rounded-xl border border-border-subtle bg-surface">
+<div class="border border-border-subtle">
 	<div class="flex items-center justify-between border-b border-border-subtle px-4 py-2">
-		<span class="font-mono text-xs text-text-muted">{paths.length} files</span>
+		<span class="label">Files <span class="tabular-nums">{paths.length}</span></span>
 		<button
 			type="button"
 			onclick={() => (isAllExpanded ? collapseAll() : expandAll())}
@@ -142,7 +142,7 @@
 							type="button"
 							onclick={() => toggle(node.path)}
 							style="padding-inline-start: {depth * 20}px"
-							class="flex min-h-[34px] w-full min-w-0 items-center gap-1.5 rounded py-1 text-start transition-colors hover:bg-surface-raised/50 sm:min-h-0 sm:py-0.5"
+							class="flex min-h-[34px] w-full min-w-0 items-center gap-1.5 py-1 text-start transition-colors hover:bg-surface sm:min-h-0 sm:py-0.5"
 						>
 							<svg
 								class="size-3 shrink-0 text-text-muted transition-transform {isOpen
@@ -155,7 +155,7 @@
 									d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
 								/>
 							</svg>
-							<span class="min-w-0 truncate text-accent-light">{node.name}/</span>
+							<span class="min-w-0 truncate text-text-primary">{node.name}/</span>
 							{#if !isOpen}
 								<span class="shrink-0 text-[10px] text-text-muted/40">
 									{countFiles(node)}
