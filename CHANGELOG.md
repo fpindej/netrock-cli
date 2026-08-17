@@ -4,6 +4,19 @@ All notable changes to the netrock generator will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.9.5] - 2026-08-17
+
+### Changed
+
+- Backend template packages updated to latest: .NET 10.0.11, Aspire 13.4.6 (hosting packages and AppHost SDK), Microsoft.Extensions 10.9, OpenTelemetry 1.17, SkiaSharp 4.151, NSubstitute 6.2, xunit.runner.visualstudio 4.0, JetBrains.Annotations 2026.2, plus minor bumps (AWSSDK.S3, MailKit, Hangfire, Npgsql, Scalar, Serilog, Test SDK, coverlet)
+- Frontend template packages updated to latest: ESLint 10, Vite 8, Vitest 4, vite-plugin-svelte 7, TypeScript 6, prettier-plugin-svelte 4, @lucide/svelte 1.x, SvelteKit 2.70, Svelte 5.56, Tailwind CSS 4.3, paraglide 2.24, pnpm 10.34.5
+- Frontend Docker images and CI now use Node.js 24 (active LTS)
+
+### Fixed
+
+- Vitest 4 compatibility in generated frontend tests (`clearMocks` config, constructible `Image` stub)
+- ESLint 10 `no-useless-assignment` in sidebar trigger (`ref` is now forwarded via `bind:ref`)
+
 ## [0.9.4] - 2026-03-30
 
 ### Changed
