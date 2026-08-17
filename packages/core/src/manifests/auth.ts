@@ -439,12 +439,24 @@ export function registerAuthManifest(): void {
 				templated: false
 			},
 			{
+				path: 'src/backend/tests/MyProject.Api.Tests/Fixtures/ProblemDetailsAssert.cs',
+				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Api.Tests/Shared/ProblemFactoryTests.cs',
+				templated: false
+			},
+			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Contracts/ResponseContracts.cs',
 				templated: false
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Middlewares/OriginValidationMiddlewareTests.cs',
 				templated: false
+			},
+			{
+				path: 'src/backend/tests/MyProject.Api.Tests/Middlewares/ProblemDetailsCodeTests.cs',
+				templated: true
 			},
 			{
 				path: 'src/backend/tests/MyProject.Api.Tests/Validation/CorsOptionsValidationTests.cs',

@@ -34,7 +34,7 @@
 
 ## Error Flow
 
-Backend `ErrorMessages.*` -> `Result.Failure()` -> `ProblemFactory.Create()` -> `ProblemDetails.detail`
+Backend `ErrorMessages.*` (`Error`: code + message) -> `Result.Failure()` -> `ProblemFactory.Create()` -> `ProblemDetails.detail` + `code`
 
 ## Dockerfile
 

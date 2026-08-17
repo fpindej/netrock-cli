@@ -26,11 +26,19 @@ export function registerEmailManifest(): void {
 			// Infrastructure - Email services and configuration
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Email/Extensions/ServiceCollectionExtensions.cs',
-				templated: false
+				templated: true
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Jobs/EmailDeliveryJob.cs',
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Email/Options/EmailOptions.cs',
 				templated: false
+			},
+			{
+				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/BackgroundEmailService.cs',
+				templated: true
 			},
 			{
 				path: 'src/backend/MyProject.Infrastructure/Features/Email/Services/FluidEmailTemplateRenderer.cs',
@@ -56,6 +64,18 @@ export function registerEmailManifest(): void {
 			},
 
 			// Tests - Email services
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Extensions/EmailServiceRegistrationTests.cs',
+				templated: true
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/BackgroundEmailServiceTests.cs',
+				templated: true
+			},
+			{
+				path: 'src/backend/tests/MyProject.Component.Tests/Services/EmailDeliveryJobTests.cs',
+				templated: true
+			},
 			{
 				path: 'src/backend/tests/MyProject.Component.Tests/Services/FluidEmailTemplateRendererTests.cs',
 				templated: false
